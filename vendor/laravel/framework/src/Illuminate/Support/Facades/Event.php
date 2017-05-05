@@ -7,14 +7,15 @@ use Illuminate\Support\Testing\Fakes\EventFake;
 /**
  * @see \Illuminate\Events\Dispatcher
  */
-class Event extends Facade {
-
+class Event extends Facade
+{
     /**
      * Replace the bound instance with a fake.
      *
      * @return void
      */
-    public static function fake() {
+    public static function fake()
+    {
         static::swap(new EventFake);
     }
 
@@ -23,8 +24,8 @@ class Event extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return 'events';
     }
-
 }

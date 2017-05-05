@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\Log;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface DebugLoggerInterface {
-
+interface DebugLoggerInterface
+{
     /**
      * Returns an array of logs.
      *

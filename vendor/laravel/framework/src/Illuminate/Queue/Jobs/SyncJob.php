@@ -5,8 +5,8 @@ namespace Illuminate\Queue\Jobs;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-class SyncJob extends Job implements JobContract {
-
+class SyncJob extends Job implements JobContract
+{
     /**
      * The class name of the job.
      *
@@ -30,7 +30,8 @@ class SyncJob extends Job implements JobContract {
      * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, $payload, $connectionName, $queue) {
+    public function __construct(Container $container, $payload, $connectionName, $queue)
+    {
         $this->queue = $queue;
         $this->payload = $payload;
         $this->container = $container;
@@ -43,7 +44,8 @@ class SyncJob extends Job implements JobContract {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         parent::release($delay);
     }
 
@@ -52,7 +54,8 @@ class SyncJob extends Job implements JobContract {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         return 1;
     }
 
@@ -61,7 +64,8 @@ class SyncJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getJobId() {
+    public function getJobId()
+    {
         return '';
     }
 
@@ -70,7 +74,8 @@ class SyncJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getRawBody() {
+    public function getRawBody()
+    {
         return $this->payload;
     }
 
@@ -79,8 +84,8 @@ class SyncJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getQueue() {
+    public function getQueue()
+    {
         return 'sync';
     }
-
 }

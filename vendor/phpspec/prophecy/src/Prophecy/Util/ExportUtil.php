@@ -18,8 +18,8 @@ use SebastianBergmann\RecursionContext\Context;
  * This class is a modification from sebastianbergmann/exporter
  * @see https://github.com/sebastianbergmann/exporter
  */
-class ExportUtil {
-
+class ExportUtil
+{
     /**
      * Exports a value as a string
      *
@@ -37,7 +37,8 @@ class ExportUtil {
      * @param  int    $indentation The indentation level of the 2nd+ line
      * @return string
      */
-    public static function export($value, $indentation = 0) {
+    public static function export($value, $indentation = 0)
+    {
         return self::recursiveExport($value, $indentation);
     }
 
@@ -48,7 +49,8 @@ class ExportUtil {
      * @param  mixed $value
      * @return array
      */
-    public static function toArray($value) {
+    public static function toArray($value)
+    {
         if (!is_object($value)) {
             return (array) $value;
         }
@@ -108,7 +110,8 @@ class ExportUtil {
      * @return string
      * @see    SebastianBergmann\Exporter\Exporter::export
      */
-    protected static function recursiveExport(&$value, $indentation, $processed = null) {
+    protected static function recursiveExport(&$value, $indentation, $processed = null)
+    {
         if ($value === null) {
             return 'null';
         }
@@ -127,7 +130,9 @@ class ExportUtil {
 
         if (is_resource($value)) {
             return sprintf(
-                    'resource(%d) of type (%s)', $value, get_resource_type($value)
+                'resource(%d) of type (%s)',
+                $value,
+                get_resource_type($value)
             );
         }
 
@@ -138,8 +143,8 @@ class ExportUtil {
             }
 
             return "'" .
-                    str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value) .
-                    "'";
+            str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value) .
+            "'";
         }
 
         $whitespace = str_repeat(' ', 4 * $indentation);
@@ -153,14 +158,17 @@ class ExportUtil {
                 return 'Array &' . $key;
             }
 
-            $array = $value;
-            $key = $processed->add($value);
+            $array  = $value;
+            $key    = $processed->add($value);
             $values = '';
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                            '%s    %s => %s' . "\n", $whitespace, self::recursiveExport($k, $indentation), self::recursiveExport($value[$k], $indentation + 1, $processed)
+                        '%s    %s => %s' . "\n",
+                        $whitespace,
+                        self::recursiveExport($k, $indentation),
+                        self::recursiveExport($value[$k], $indentation + 1, $processed)
                     );
                 }
 
@@ -179,14 +187,17 @@ class ExportUtil {
                 return sprintf('%s:%s Object', $class, $hash);
             }
 
-            $hash = $processed->add($value);
+            $hash   = $processed->add($value);
             $values = '';
-            $array = self::toArray($value);
+            $array  = self::toArray($value);
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                            '%s    %s => %s' . "\n", $whitespace, self::recursiveExport($k, $indentation), self::recursiveExport($v, $indentation + 1, $processed)
+                        '%s    %s => %s' . "\n",
+                        $whitespace,
+                        self::recursiveExport($k, $indentation),
+                        self::recursiveExport($v, $indentation + 1, $processed)
                     );
                 }
 
@@ -198,5 +209,4 @@ class ExportUtil {
 
         return var_export($value, true);
     }
-
 }

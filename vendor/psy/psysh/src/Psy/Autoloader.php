@@ -14,14 +14,15 @@ namespace Psy;
 /**
  * Psy class autoloader.
  */
-class Autoloader {
-
+class Autoloader
+{
     /**
      * Register autoload() as an SPL autoloader.
      *
      * @see self::autoload
      */
-    public static function register() {
+    public static function register()
+    {
         spl_autoload_register(array(__CLASS__, 'autoload'));
     }
 
@@ -30,7 +31,8 @@ class Autoloader {
      *
      * @param string $class
      */
-    public static function autoload($class) {
+    public static function autoload($class)
+    {
         if (0 !== strpos($class, 'Psy')) {
             return;
         }
@@ -40,5 +42,4 @@ class Autoloader {
             require $file;
         }
     }
-
 }

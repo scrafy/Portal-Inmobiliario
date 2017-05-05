@@ -6,8 +6,8 @@ use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ConsoleMakeCommand extends GeneratorCommand {
-
+class ConsoleMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -36,7 +36,8 @@ class ConsoleMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function replaceClass($stub, $name) {
+    protected function replaceClass($stub, $name)
+    {
         $stub = parent::replaceClass($stub, $name);
 
         return str_replace('dummy:command', $this->option('command'), $stub);
@@ -47,8 +48,9 @@ class ConsoleMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/console.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/console.stub';
     }
 
     /**
@@ -57,8 +59,9 @@ class ConsoleMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Console\Commands';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Console\Commands';
     }
 
     /**
@@ -66,7 +69,8 @@ class ConsoleMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the command.'],
         ];
@@ -77,10 +81,10 @@ class ConsoleMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['command', null, InputOption::VALUE_OPTIONAL, 'The terminal command that should be assigned.', 'command:name'],
         ];
     }
-
 }

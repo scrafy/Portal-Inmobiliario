@@ -7,8 +7,8 @@ use PhpParser\Node;
 use PhpParser\Node\Scalar\DNumber;
 use PhpParser\Node\Stmt;
 
-class InterfaceTest extends \PHPUnit_Framework_TestCase {
-
+class InterfaceTest extends \PHPUnit_Framework_TestCase
+{
     /** @var Interface_ */
     protected $builder;
 
@@ -30,12 +30,12 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase {
     public function testExtending() {
         $contract = $this->builder->extend('Space\Root1', 'Root2')->getNode();
         $this->assertEquals(
-                new Stmt\Interface_('Contract', array(
-            'extends' => array(
-                new Node\Name('Space\Root1'),
-                new Node\Name('Root2')
-            ),
-                )), $contract
+            new Stmt\Interface_('Contract', array(
+                'extends' => array(
+                    new Node\Name('Space\Root1'),
+                    new Node\Name('Root2')
+                ),
+            )), $contract
         );
     }
 
@@ -59,9 +59,9 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase {
         ));
         $method = new Stmt\ClassMethod('doSomething');
         $contract = $this->builder
-                ->addStmt($method)
-                ->addStmt($const)
-                ->getNode()
+            ->addStmt($method)
+            ->addStmt($const)
+            ->getNode()
         ;
 
         $this->assertInstanceOf('PhpParser\Node\Stmt\ClassConst', $contract->stmts[0]);
@@ -70,12 +70,12 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase {
 
     public function testDocComment() {
         $node = $this->builder
-                ->setDocComment('/** Test */')
-                ->getNode();
+            ->setDocComment('/** Test */')
+            ->getNode();
 
         $this->assertEquals(new Stmt\Interface_('Contract', array(), array(
             'comments' => array(new Comment\Doc('/** Test */'))
-                )), $node);
+        )), $node);
     }
 
     /**
@@ -92,14 +92,14 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase {
         ));
         $method = new Stmt\ClassMethod('doSomething');
         $contract = $this->builder
-                ->addStmt($method)
-                ->addStmt($const)
-                ->getNode()
+            ->addStmt($method)
+            ->addStmt($const)
+            ->getNode()
         ;
 
         eval($this->dump($contract));
 
         $this->assertTrue(interface_exists('Contract', false));
     }
-
 }
+

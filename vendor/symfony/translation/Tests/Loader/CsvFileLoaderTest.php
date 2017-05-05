@@ -15,11 +15,12 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Loader\CsvFileLoader;
 use Symfony\Component\Config\Resource\FileResource;
 
-class CsvFileLoaderTest extends TestCase {
-
-    public function testLoad() {
+class CsvFileLoaderTest extends TestCase
+{
+    public function testLoad()
+    {
         $loader = new CsvFileLoader();
-        $resource = __DIR__ . '/../fixtures/resources.csv';
+        $resource = __DIR__.'/../fixtures/resources.csv';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
         $this->assertEquals(array('foo' => 'bar'), $catalogue->all('domain1'));
@@ -27,9 +28,10 @@ class CsvFileLoaderTest extends TestCase {
         $this->assertEquals(array(new FileResource($resource)), $catalogue->getResources());
     }
 
-    public function testLoadDoesNothingIfEmpty() {
+    public function testLoadDoesNothingIfEmpty()
+    {
         $loader = new CsvFileLoader();
-        $resource = __DIR__ . '/../fixtures/empty.csv';
+        $resource = __DIR__.'/../fixtures/empty.csv';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
         $this->assertEquals(array(), $catalogue->all('domain1'));
@@ -40,19 +42,20 @@ class CsvFileLoaderTest extends TestCase {
     /**
      * @expectedException \Symfony\Component\Translation\Exception\NotFoundResourceException
      */
-    public function testLoadNonExistingResource() {
+    public function testLoadNonExistingResource()
+    {
         $loader = new CsvFileLoader();
-        $resource = __DIR__ . '/../fixtures/not-exists.csv';
+        $resource = __DIR__.'/../fixtures/not-exists.csv';
         $loader->load($resource, 'en', 'domain1');
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\InvalidResourceException
      */
-    public function testLoadNonLocalResource() {
+    public function testLoadNonLocalResource()
+    {
         $loader = new CsvFileLoader();
         $resource = 'http://example.com/resources.csv';
         $loader->load($resource, 'en', 'domain1');
     }
-
 }

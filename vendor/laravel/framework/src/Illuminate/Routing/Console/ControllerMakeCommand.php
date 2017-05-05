@@ -7,8 +7,8 @@ use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand {
-
+class ControllerMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -35,14 +35,15 @@ class ControllerMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
+    protected function getStub()
+    {
         if ($this->option('model')) {
-            return __DIR__ . '/stubs/controller.model.stub';
+            return __DIR__.'/stubs/controller.model.stub';
         } elseif ($this->option('resource')) {
-            return __DIR__ . '/stubs/controller.stub';
+            return __DIR__.'/stubs/controller.stub';
         }
 
-        return __DIR__ . '/stubs/controller.plain.stub';
+        return __DIR__.'/stubs/controller.plain.stub';
     }
 
     /**
@@ -51,8 +52,9 @@ class ControllerMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Http\Controllers';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Http\Controllers';
     }
 
     /**
@@ -63,7 +65,8 @@ class ControllerMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function buildClass($name) {
+    protected function buildClass($name)
+    {
         $controllerNamespace = $this->getNamespace($name);
 
         $replace = [];
@@ -71,7 +74,7 @@ class ControllerMakeCommand extends GeneratorCommand {
         if ($this->option('model')) {
             $modelClass = $this->parseModel($this->option('model'));
 
-            if (!class_exists($modelClass)) {
+            if (! class_exists($modelClass)) {
                 if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
                     $this->call('make:model', ['name' => $modelClass]);
                 }
@@ -87,7 +90,7 @@ class ControllerMakeCommand extends GeneratorCommand {
         $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
         return str_replace(
-                array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
 
@@ -97,15 +100,16 @@ class ControllerMakeCommand extends GeneratorCommand {
      * @param  string  $model
      * @return string
      */
-    protected function parseModel($model) {
+    protected function parseModel($model)
+    {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace . $model;
+        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+            $model = $rootNamespace.$model;
         }
 
         return $model;
@@ -116,11 +120,12 @@ class ControllerMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
         ];
     }
-
 }

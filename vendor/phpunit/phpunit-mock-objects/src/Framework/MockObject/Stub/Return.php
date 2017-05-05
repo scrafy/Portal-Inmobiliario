@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -16,24 +15,27 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_MockObject_Stub {
-
+class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_MockObject_Stub
+{
     protected $value;
 
-    public function __construct($value) {
+    public function __construct($value)
+    {
         $this->value = $value;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation) {
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
         return $this->value;
     }
 
-    public function toString() {
+    public function toString()
+    {
         $exporter = new Exporter;
 
         return sprintf(
-                'return user-specified value %s', $exporter->export($this->value)
+            'return user-specified value %s',
+            $exporter->export($this->value)
         );
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\cs_CZ;
 
-class Company extends \Faker\Provider\Company {
-
+class Company extends \Faker\Provider\Company
+{
     /**
      * @var array Czech company name formats.
      */
@@ -59,7 +59,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseNoun() {
+    public function catchPhraseNoun()
+    {
         return static::randomElement(static::$noun);
     }
 
@@ -68,7 +69,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseAttribute() {
+    public function catchPhraseAttribute()
+    {
         return static::randomElement(static::$attribute);
     }
 
@@ -77,14 +79,16 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseVerb() {
+    public function catchPhraseVerb()
+    {
         return static::randomElement(static::$verb);
     }
 
     /**
      * @return string
      */
-    public function catchPhrase() {
+    public function catchPhrase()
+    {
         $format = static::randomElement(static::$catchPhraseFormats);
 
         return ucfirst($this->generator->parse($format));
@@ -96,7 +100,8 @@ class Company extends \Faker\Provider\Company {
      * @see http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
      * @return string
      */
-    public function ico() {
+    public function ico()
+    {
         $ico = static::numerify('#######');
         $split = str_split($ico);
         $prod = 0;
@@ -112,5 +117,4 @@ class Company extends \Faker\Provider\Company {
 
         return $ico . (11 - $mod);
     }
-
 }

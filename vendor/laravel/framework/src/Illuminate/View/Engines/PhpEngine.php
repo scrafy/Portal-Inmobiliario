@@ -6,8 +6,8 @@ use Exception;
 use Throwable;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
-class PhpEngine implements EngineInterface {
-
+class PhpEngine implements EngineInterface
+{
     /**
      * Get the evaluated contents of the view.
      *
@@ -15,7 +15,8 @@ class PhpEngine implements EngineInterface {
      * @param  array   $data
      * @return string
      */
-    public function get($path, array $data = []) {
+    public function get($path, array $data = [])
+    {
         return $this->evaluatePath($path, $data);
     }
 
@@ -26,7 +27,8 @@ class PhpEngine implements EngineInterface {
      * @param  array   $__data
      * @return string
      */
-    protected function evaluatePath($__path, $__data) {
+    protected function evaluatePath($__path, $__data)
+    {
         $obLevel = ob_get_level();
 
         ob_start();
@@ -56,12 +58,12 @@ class PhpEngine implements EngineInterface {
      *
      * @throws $e
      */
-    protected function handleViewException(Exception $e, $obLevel) {
+    protected function handleViewException(Exception $e, $obLevel)
+    {
         while (ob_get_level() > $obLevel) {
             ob_end_clean();
         }
 
         throw $e;
     }
-
 }

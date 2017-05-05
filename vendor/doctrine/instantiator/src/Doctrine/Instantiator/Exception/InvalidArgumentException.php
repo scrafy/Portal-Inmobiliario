@@ -1,5 +1,4 @@
 <?php
-
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,14 +27,15 @@ use ReflectionClass;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface {
-
+class InvalidArgumentException extends BaseInvalidArgumentException implements ExceptionInterface
+{
     /**
      * @param string $className
      *
      * @return self
      */
-    public static function fromNonExistingClass($className) {
+    public static function fromNonExistingClass($className)
+    {
         if (interface_exists($className)) {
             return new self(sprintf('The provided type "%s" is an interface, and can not be instantiated', $className));
         }
@@ -52,10 +52,11 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements E
      *
      * @return self
      */
-    public static function fromAbstractClass(ReflectionClass $reflectionClass) {
+    public static function fromAbstractClass(ReflectionClass $reflectionClass)
+    {
         return new self(sprintf(
-                        'The provided class "%s" is abstract, and can not be instantiated', $reflectionClass->getName()
+            'The provided class "%s" is abstract, and can not be instantiated',
+            $reflectionClass->getName()
         ));
     }
-
 }

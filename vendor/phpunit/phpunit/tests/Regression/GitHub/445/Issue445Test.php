@@ -1,20 +1,21 @@
 <?php
-
-class Issue445Test extends PHPUnit_Framework_TestCase {
-
-    public function testOutputWithExpectationBefore() {
+class Issue445Test extends PHPUnit_Framework_TestCase
+{
+    public function testOutputWithExpectationBefore()
+    {
         $this->expectOutputString('test');
         print 'test';
     }
 
-    public function testOutputWithExpectationAfter() {
+    public function testOutputWithExpectationAfter()
+    {
         print 'test';
         $this->expectOutputString('test');
     }
 
-    public function testNotMatchingOutput() {
+    public function testNotMatchingOutput()
+    {
         print 'bar';
         $this->expectOutputString('foo');
     }
-
 }

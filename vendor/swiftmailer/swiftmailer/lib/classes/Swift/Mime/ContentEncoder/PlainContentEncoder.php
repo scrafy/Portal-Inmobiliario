@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_ContentEncoder {
-
+class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_ContentEncoder
+{
     /**
      * The name of this encoding scheme (probably 7bit or 8bit).
      *
@@ -35,7 +35,8 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      * @param string $name
      * @param bool   $canonical If canonicalization transformation should be done.
      */
-    public function __construct($name, $canonical = false) {
+    public function __construct($name, $canonical = false)
+    {
         $this->_name = $name;
         $this->_canonical = $canonical;
     }
@@ -49,7 +50,8 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      *
      * @return string
      */
-    public function encodeString($string, $firstLineOffset = 0, $maxLineLength = 0) {
+    public function encodeString($string, $firstLineOffset = 0, $maxLineLength = 0)
+    {
         if ($this->_canonical) {
             $string = $this->_canonicalize($string);
         }
@@ -65,10 +67,11 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      * @param int                    $firstLineOffset ignored
      * @param int                    $maxLineLength   optional, 0 means no wrapping will occur
      */
-    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0) {
+    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
+    {
         $leftOver = '';
         while (false !== $bytes = $os->read(8192)) {
-            $toencode = $leftOver . $bytes;
+            $toencode = $leftOver.$bytes;
             if ($this->_canonical) {
                 $toencode = $this->_canonicalize($toencode);
             }
@@ -89,15 +92,16 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->_name;
     }
 
     /**
      * Not used.
      */
-    public function charsetChanged($charset) {
-        
+    public function charsetChanged($charset)
+    {
     }
 
     /**
@@ -109,7 +113,8 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      *
      * @return string
      */
-    private function _safeWordwrap($string, $length = 75, $le = "\r\n") {
+    private function _safeWordwrap($string, $length = 75, $le = "\r\n")
+    {
         if (0 >= $length) {
             return $string;
         }
@@ -127,7 +132,8 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
             $chunks = preg_split('/(?<=\s)/', $originalLine);
 
             foreach ($chunks as $chunk) {
-                if (0 != strlen($currentLine) && strlen($currentLine . $chunk) > $length) {
+                if (0 != strlen($currentLine)
+                    && strlen($currentLine.$chunk) > $length) {
                     $lines[] = '';
                     $currentLine = &$lines[$lineCount++];
                 }
@@ -145,10 +151,12 @@ class Swift_Mime_ContentEncoder_PlainContentEncoder implements Swift_Mime_Conten
      *
      * @return string
      */
-    private function _canonicalize($string) {
+    private function _canonicalize($string)
+    {
         return str_replace(
-                array("\r\n", "\r", "\n"), array("\n", "\n", "\r\n"), $string
-        );
+            array("\r\n", "\r", "\n"),
+            array("\n", "\n", "\r\n"),
+            $string
+            );
     }
-
 }

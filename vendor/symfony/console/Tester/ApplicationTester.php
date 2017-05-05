@@ -28,19 +28,19 @@ use Symfony\Component\Console\Output\StreamOutput;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ApplicationTester {
-
+class ApplicationTester
+{
     private $application;
     private $input;
     private $statusCode;
-
     /**
      * @var OutputInterface
      */
     private $output;
     private $captureStreamsIndependently = false;
 
-    public function __construct(Application $application) {
+    public function __construct(Application $application)
+    {
         $this->application = $application;
     }
 
@@ -59,7 +59,8 @@ class ApplicationTester {
      *
      * @return int The command exit code
      */
-    public function run(array $input, $options = array()) {
+    public function run(array $input, $options = array())
+    {
         $this->input = new ArrayInput($input);
         if (isset($options['interactive'])) {
             $this->input->setInteractive($options['interactive']);
@@ -76,7 +77,8 @@ class ApplicationTester {
             }
         } else {
             $this->output = new ConsoleOutput(
-                    isset($options['verbosity']) ? $options['verbosity'] : ConsoleOutput::VERBOSITY_NORMAL, isset($options['decorated']) ? $options['decorated'] : null
+                isset($options['verbosity']) ? $options['verbosity'] : ConsoleOutput::VERBOSITY_NORMAL,
+                isset($options['decorated']) ? $options['decorated'] : null
             );
 
             $errorOutput = new StreamOutput(fopen('php://memory', 'w', false));
@@ -105,7 +107,8 @@ class ApplicationTester {
      *
      * @return string The display
      */
-    public function getDisplay($normalize = false) {
+    public function getDisplay($normalize = false)
+    {
         rewind($this->output->getStream());
 
         $display = stream_get_contents($this->output->getStream());
@@ -124,7 +127,8 @@ class ApplicationTester {
      *
      * @return string
      */
-    public function getErrorOutput($normalize = false) {
+    public function getErrorOutput($normalize = false)
+    {
         if (!$this->captureStreamsIndependently) {
             throw new \LogicException('The error output is not available when the tester is run without "capture_stderr_separately" option set.');
         }
@@ -145,7 +149,8 @@ class ApplicationTester {
      *
      * @return InputInterface The current input instance
      */
-    public function getInput() {
+    public function getInput()
+    {
         return $this->input;
     }
 
@@ -154,7 +159,8 @@ class ApplicationTester {
      *
      * @return OutputInterface The current output instance
      */
-    public function getOutput() {
+    public function getOutput()
+    {
         return $this->output;
     }
 
@@ -163,8 +169,8 @@ class ApplicationTester {
      *
      * @return int The status code
      */
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
-
 }

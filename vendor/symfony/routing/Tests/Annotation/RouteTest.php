@@ -14,24 +14,27 @@ namespace Symfony\Component\Routing\Tests\Annotation;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RouteTest extends TestCase {
-
+class RouteTest extends TestCase
+{
     /**
      * @expectedException \BadMethodCallException
      */
-    public function testInvalidRouteParameter() {
+    public function testInvalidRouteParameter()
+    {
         $route = new Route(array('foo' => 'bar'));
     }
 
     /**
      * @dataProvider getValidParameters
      */
-    public function testRouteParameters($parameter, $value, $getter) {
+    public function testRouteParameters($parameter, $value, $getter)
+    {
         $route = new Route(array($parameter => $value));
         $this->assertEquals($route->$getter(), $value);
     }
 
-    public function getValidParameters() {
+    public function getValidParameters()
+    {
         return array(
             array('value', '/Blog', 'getPath'),
             array('requirements', array('locale' => 'en'), 'getRequirements'),
@@ -44,5 +47,4 @@ class RouteTest extends TestCase {
             array('condition', 'context.getMethod() == "GET"', 'getCondition'),
         );
     }
-
 }

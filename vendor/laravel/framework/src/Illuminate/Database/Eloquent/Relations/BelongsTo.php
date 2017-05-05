@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class BelongsTo extends Relation {
-
+class BelongsTo extends Relation
+{
     /**
      * The child model instance of the relation.
      */
@@ -51,7 +51,8 @@ class BelongsTo extends Relation {
      * @param  string  $relation
      * @return void
      */
-    public function __construct(Builder $query, Model $child, $foreignKey, $ownerKey, $relation) {
+    public function __construct(Builder $query, Model $child, $foreignKey, $ownerKey, $relation)
+    {
         $this->ownerKey = $ownerKey;
         $this->relation = $relation;
         $this->foreignKey = $foreignKey;
@@ -69,7 +70,8 @@ class BelongsTo extends Relation {
      *
      * @return mixed
      */
-    public function getResults() {
+    public function getResults()
+    {
         return $this->query->first();
     }
 
@@ -78,14 +80,15 @@ class BelongsTo extends Relation {
      *
      * @return void
      */
-    public function addConstraints() {
+    public function addConstraints()
+    {
         if (static::$constraints) {
             // For belongs to relationships, which are essentially the inverse of has one
             // or has many relationships, we need to actually query on the primary key
             // of the related models matching on the foreign key that's on a parent.
             $table = $this->related->getTable();
 
-            $this->query->where($table . '.' . $this->ownerKey, '=', $this->child->{$this->foreignKey});
+            $this->query->where($table.'.'.$this->ownerKey, '=', $this->child->{$this->foreignKey});
         }
     }
 
@@ -95,11 +98,12 @@ class BelongsTo extends Relation {
      * @param  array  $models
      * @return void
      */
-    public function addEagerConstraints(array $models) {
+    public function addEagerConstraints(array $models)
+    {
         // We'll grab the primary key name of the related models since it could be set to
         // a non-standard name and not "id". We will then construct the constraint for
         // our eagerly loading query so it returns the proper models from execution.
-        $key = $this->related->getTable() . '.' . $this->ownerKey;
+        $key = $this->related->getTable().'.'.$this->ownerKey;
 
         $this->query->whereIn($key, $this->getEagerModelKeys($models));
     }
@@ -110,14 +114,15 @@ class BelongsTo extends Relation {
      * @param  array  $models
      * @return array
      */
-    protected function getEagerModelKeys(array $models) {
+    protected function getEagerModelKeys(array $models)
+    {
         $keys = [];
 
         // First we need to gather all of the keys from the parent models so we know what
         // to query for via the eager loading query. We will add them to an array then
         // execute a "where in" statement to gather up all of those related records.
         foreach ($models as $model) {
-            if (!is_null($value = $model->{$this->foreignKey})) {
+            if (! is_null($value = $model->{$this->foreignKey})) {
                 $keys[] = $value;
             }
         }
@@ -141,7 +146,8 @@ class BelongsTo extends Relation {
      * @param  string  $relation
      * @return array
      */
-    public function initRelation(array $models, $relation) {
+    public function initRelation(array $models, $relation)
+    {
         foreach ($models as $model) {
             $model->setRelation($relation, null);
         }
@@ -157,7 +163,8 @@ class BelongsTo extends Relation {
      * @param  string  $relation
      * @return array
      */
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         $foreign = $this->foreignKey;
 
         $owner = $this->ownerKey;
@@ -189,7 +196,8 @@ class BelongsTo extends Relation {
      * @param  array  $attributes
      * @return mixed
      */
-    public function update(array $attributes) {
+    public function update(array $attributes)
+    {
         return $this->getResults()->fill($attributes)->save();
     }
 
@@ -199,7 +207,8 @@ class BelongsTo extends Relation {
      * @param  \Illuminate\Database\Eloquent\Model|int  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function associate($model) {
+    public function associate($model)
+    {
         $ownerKey = $model instanceof Model ? $model->getAttribute($this->ownerKey) : $model;
 
         $this->child->setAttribute($this->foreignKey, $ownerKey);
@@ -216,7 +225,8 @@ class BelongsTo extends Relation {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function dissociate() {
+    public function dissociate()
+    {
         $this->child->setAttribute($this->foreignKey, null);
 
         return $this->child->setRelation($this->relation, null);
@@ -230,13 +240,14 @@ class BelongsTo extends Relation {
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*']) {
+    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
         if ($parentQuery->getQuery()->from == $query->getQuery()->from) {
             return $this->getRelationExistenceQueryForSelfRelation($query, $parentQuery, $columns);
         }
 
         return $query->select($columns)->whereColumn(
-                        $this->getQualifiedForeignKey(), '=', $query->getModel()->getTable() . '.' . $this->ownerKey
+            $this->getQualifiedForeignKey(), '=', $query->getModel()->getTable().'.'.$this->ownerKey
         );
     }
 
@@ -248,15 +259,16 @@ class BelongsTo extends Relation {
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQueryForSelfRelation(Builder $query, Builder $parentQuery, $columns = ['*']) {
+    public function getRelationExistenceQueryForSelfRelation(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
         $query->select($columns)->from(
-                $query->getModel()->getTable() . ' as ' . $hash = $this->getRelationCountHash()
+            $query->getModel()->getTable().' as '.$hash = $this->getRelationCountHash()
         );
 
         $query->getModel()->setTable($hash);
 
         return $query->whereColumn(
-                        $hash . '.' . $query->getModel()->getKeyName(), '=', $this->getQualifiedForeignKey()
+            $hash.'.'.$query->getModel()->getKeyName(), '=', $this->getQualifiedForeignKey()
         );
     }
 
@@ -265,8 +277,9 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getRelationCountHash() {
-        return 'laravel_reserved_' . static::$selfJoinCount++;
+    public function getRelationCountHash()
+    {
+        return 'laravel_reserved_'.static::$selfJoinCount++;
     }
 
     /**
@@ -274,9 +287,10 @@ class BelongsTo extends Relation {
      *
      * @return bool
      */
-    protected function relationHasIncrementingId() {
+    protected function relationHasIncrementingId()
+    {
         return $this->related->getIncrementing() &&
-                $this->related->getKeyType() === 'int';
+                                $this->related->getKeyType() === 'int';
     }
 
     /**
@@ -284,7 +298,8 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getForeignKey() {
+    public function getForeignKey()
+    {
         return $this->foreignKey;
     }
 
@@ -293,8 +308,9 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getQualifiedForeignKey() {
-        return $this->child->getTable() . '.' . $this->foreignKey;
+    public function getQualifiedForeignKey()
+    {
+        return $this->child->getTable().'.'.$this->foreignKey;
     }
 
     /**
@@ -302,7 +318,8 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getOwnerKey() {
+    public function getOwnerKey()
+    {
         return $this->ownerKey;
     }
 
@@ -311,8 +328,9 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getQualifiedOwnerKeyName() {
-        return $this->related->getTable() . '.' . $this->ownerKey;
+    public function getQualifiedOwnerKeyName()
+    {
+        return $this->related->getTable().'.'.$this->ownerKey;
     }
 
     /**
@@ -320,8 +338,8 @@ class BelongsTo extends Relation {
      *
      * @return string
      */
-    public function getRelation() {
+    public function getRelation()
+    {
         return $this->relation;
     }
-
 }

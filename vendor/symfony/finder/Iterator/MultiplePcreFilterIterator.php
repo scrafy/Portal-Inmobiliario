@@ -16,8 +16,8 @@ namespace Symfony\Component\Finder\Iterator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class MultiplePcreFilterIterator extends FilterIterator {
-
+abstract class MultiplePcreFilterIterator extends FilterIterator
+{
     protected $matchRegexps = array();
     protected $noMatchRegexps = array();
 
@@ -28,7 +28,8 @@ abstract class MultiplePcreFilterIterator extends FilterIterator {
      * @param array     $matchPatterns   An array of patterns that need to match
      * @param array     $noMatchPatterns An array of patterns that need to not match
      */
-    public function __construct(\Iterator $iterator, array $matchPatterns, array $noMatchPatterns) {
+    public function __construct(\Iterator $iterator, array $matchPatterns, array $noMatchPatterns)
+    {
         foreach ($matchPatterns as $pattern) {
             $this->matchRegexps[] = $this->toRegex($pattern);
         }
@@ -51,7 +52,8 @@ abstract class MultiplePcreFilterIterator extends FilterIterator {
      *
      * @return bool
      */
-    protected function isAccepted($string) {
+    protected function isAccepted($string)
+    {
         // should at least not match one rule to exclude
         foreach ($this->noMatchRegexps as $regex) {
             if (preg_match($regex, $string)) {
@@ -81,7 +83,8 @@ abstract class MultiplePcreFilterIterator extends FilterIterator {
      *
      * @return bool Whether the given string is a regex
      */
-    protected function isRegex($str) {
+    protected function isRegex($str)
+    {
         if (preg_match('/^(.{3,}?)[imsxuADU]*$/', $str, $m)) {
             $start = substr($m[1], 0, 1);
             $end = substr($m[1], -1);

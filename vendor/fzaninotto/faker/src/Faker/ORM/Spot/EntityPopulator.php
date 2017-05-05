@@ -11,8 +11,8 @@ use Spot\Relation\BelongsTo;
 /**
  * Service class for populating a table through a Spot Entity class.
  */
-class EntityPopulator {
-
+class EntityPopulator
+{
     /**
      * When fetching existing data - fetch only few first rows.
      */
@@ -32,7 +32,6 @@ class EntityPopulator {
      * @var array
      */
     protected $columnFormatters = array();
-
     /**
      * @var array
      */
@@ -50,7 +49,8 @@ class EntityPopulator {
      * @param Locator $locator
      * @param $useExistingData
      */
-    public function __construct(Mapper $mapper, Locator $locator, $useExistingData = false) {
+    public function __construct(Mapper $mapper, Locator $locator, $useExistingData = false)
+    {
         $this->mapper = $mapper;
         $this->locator = $locator;
         $this->useExistingData = $useExistingData;
@@ -59,49 +59,56 @@ class EntityPopulator {
     /**
      * @return string
      */
-    public function getMapper() {
+    public function getMapper()
+    {
         return $this->mapper;
     }
 
     /**
      * @param $columnFormatters
      */
-    public function setColumnFormatters($columnFormatters) {
+    public function setColumnFormatters($columnFormatters)
+    {
         $this->columnFormatters = $columnFormatters;
     }
 
     /**
      * @return array
      */
-    public function getColumnFormatters() {
+    public function getColumnFormatters()
+    {
         return $this->columnFormatters;
     }
 
     /**
      * @param $columnFormatters
      */
-    public function mergeColumnFormattersWith($columnFormatters) {
+    public function mergeColumnFormattersWith($columnFormatters)
+    {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
     }
 
     /**
      * @param array $modifiers
      */
-    public function setModifiers(array $modifiers) {
+    public function setModifiers(array $modifiers)
+    {
         $this->modifiers = $modifiers;
     }
 
     /**
      * @return array
      */
-    public function getModifiers() {
+    public function getModifiers()
+    {
         return $this->modifiers;
     }
 
     /**
      * @param array $modifiers
      */
-    public function mergeModifiersWith(array $modifiers) {
+    public function mergeModifiersWith(array $modifiers)
+    {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
     }
 
@@ -109,7 +116,8 @@ class EntityPopulator {
      * @param Generator $generator
      * @return array
      */
-    public function guessColumnFormatters(Generator $generator) {
+    public function guessColumnFormatters(Generator $generator)
+    {
         $formatters = array();
         $nameGuesser = new Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
@@ -161,6 +169,7 @@ class EntityPopulator {
                         }
                     }
                 };
+
             }
         }
 
@@ -173,7 +182,8 @@ class EntityPopulator {
      * @param $insertedEntities
      * @return string
      */
-    public function execute($insertedEntities) {
+    public function execute($insertedEntities)
+    {
         $obj = $this->mapper->build([]);
 
         $this->fillColumns($obj, $insertedEntities);
@@ -189,7 +199,8 @@ class EntityPopulator {
      * @param $obj
      * @param $insertedEntities
      */
-    private function fillColumns($obj, $insertedEntities) {
+    private function fillColumns($obj, $insertedEntities)
+    {
         foreach ($this->columnFormatters as $field => $format) {
             if (null !== $format) {
                 $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
@@ -202,10 +213,10 @@ class EntityPopulator {
      * @param $obj
      * @param $insertedEntities
      */
-    private function callMethods($obj, $insertedEntities) {
+    private function callMethods($obj, $insertedEntities)
+    {
         foreach ($this->getModifiers() as $modifier) {
             $modifier($obj, $insertedEntities);
         }
     }
-
 }

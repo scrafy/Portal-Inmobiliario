@@ -5,8 +5,8 @@ namespace Cron;
 /**
  * Abstract CRON expression field
  */
-abstract class AbstractField implements FieldInterface {
-
+abstract class AbstractField implements FieldInterface
+{
     /**
      * Check to see if a field is satisfied by a value
      *
@@ -15,7 +15,8 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return bool
      */
-    public function isSatisfied($dateValue, $value) {
+    public function isSatisfied($dateValue, $value)
+    {
         if ($this->isIncrementsOfRanges($value)) {
             return $this->isInIncrementsOfRanges($dateValue, $value);
         } elseif ($this->isRange($value)) {
@@ -32,7 +33,8 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return bool
      */
-    public function isRange($value) {
+    public function isRange($value)
+    {
         return strpos($value, '-') !== false;
     }
 
@@ -43,7 +45,8 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return bool
      */
-    public function isIncrementsOfRanges($value) {
+    public function isIncrementsOfRanges($value)
+    {
         return strpos($value, '/') !== false;
     }
 
@@ -55,7 +58,8 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return bool
      */
-    public function isInRange($dateValue, $value) {
+    public function isInRange($dateValue, $value)
+    {
         $parts = array_map('trim', explode('-', $value, 2));
 
         return $dateValue >= $parts[0] && $dateValue <= $parts[1];
@@ -69,7 +73,8 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return bool
      */
-    public function isInIncrementsOfRanges($dateValue, $value) {
+    public function isInIncrementsOfRanges($dateValue, $value)
+    {
         $parts = array_map('trim', explode('/', $value, 2));
         $stepSize = isset($parts[1]) ? (int) $parts[1] : 0;
 
@@ -90,10 +95,10 @@ abstract class AbstractField implements FieldInterface {
         }
 
         if ($dateValue > $offset && 0 === $stepSize) {
-            return false;
+          return false;
         }
 
-        for ($i = $offset; $i <= $to; $i += $stepSize) {
+        for ($i = $offset; $i <= $to; $i+= $stepSize) {
             if ($i == $dateValue) {
                 return true;
             }
@@ -110,14 +115,16 @@ abstract class AbstractField implements FieldInterface {
      *
      * @return array
      */
-    public function getRangeForExpression($expression, $max) {
+    public function getRangeForExpression($expression, $max)
+    {
         $values = array();
 
         if ($this->isRange($expression) || $this->isIncrementsOfRanges($expression)) {
             if (!$this->isIncrementsOfRanges($expression)) {
                 list ($offset, $to) = explode('-', $expression);
                 $stepSize = 1;
-            } else {
+            }
+            else {
                 $range = array_map('trim', explode('/', $expression, 2));
                 $stepSize = isset($range[1]) ? $range[1] : 0;
                 $range = $range[0];
@@ -130,7 +137,8 @@ abstract class AbstractField implements FieldInterface {
                 $values[] = $i;
             }
             sort($values);
-        } else {
+        }
+        else {
             $values = array($expression);
         }
 

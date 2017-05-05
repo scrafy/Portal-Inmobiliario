@@ -13,8 +13,8 @@
  *
  * @author Fabien Potencier
  */
-interface Swift_Spool {
-
+interface Swift_Spool
+{
     /**
      * Starts this Spool mechanism.
      */

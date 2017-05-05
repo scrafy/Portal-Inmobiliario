@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,14 +12,15 @@
  * An author.
  *
  */
-class Author {
-
+class Author
+{
     // the order of properties is important for testing the cycle!
     public $books = [];
+
     private $name = '';
 
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
-
 }

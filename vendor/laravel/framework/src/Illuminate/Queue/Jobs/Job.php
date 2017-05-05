@@ -4,8 +4,8 @@ namespace Illuminate\Queue\Jobs;
 
 use Illuminate\Queue\InteractsWithTime;
 
-abstract class Job {
-
+abstract class Job
+{
     use InteractsWithTime;
 
     /**
@@ -60,7 +60,8 @@ abstract class Job {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $payload = $this->payload();
 
         list($class, $method) = JobName::parse($payload['job']);
@@ -73,7 +74,8 @@ abstract class Job {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         $this->deleted = true;
     }
 
@@ -82,7 +84,8 @@ abstract class Job {
      *
      * @return bool
      */
-    public function isDeleted() {
+    public function isDeleted()
+    {
         return $this->deleted;
     }
 
@@ -92,7 +95,8 @@ abstract class Job {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         $this->released = true;
     }
 
@@ -101,7 +105,8 @@ abstract class Job {
      *
      * @return bool
      */
-    public function isReleased() {
+    public function isReleased()
+    {
         return $this->released;
     }
 
@@ -110,7 +115,8 @@ abstract class Job {
      *
      * @return bool
      */
-    public function isDeletedOrReleased() {
+    public function isDeletedOrReleased()
+    {
         return $this->isDeleted() || $this->isReleased();
     }
 
@@ -119,7 +125,8 @@ abstract class Job {
      *
      * @return bool
      */
-    public function hasFailed() {
+    public function hasFailed()
+    {
         return $this->failed;
     }
 
@@ -128,7 +135,8 @@ abstract class Job {
      *
      * @return void
      */
-    public function markAsFailed() {
+    public function markAsFailed()
+    {
         $this->failed = true;
     }
 
@@ -138,7 +146,8 @@ abstract class Job {
      * @param  \Exception  $e
      * @return void
      */
-    public function failed($e) {
+    public function failed($e)
+    {
         $this->markAsFailed();
 
         $payload = $this->payload();
@@ -156,7 +165,8 @@ abstract class Job {
      * @param  string  $class
      * @return mixed
      */
-    protected function resolve($class) {
+    protected function resolve($class)
+    {
         return $this->container->make($class);
     }
 
@@ -165,7 +175,8 @@ abstract class Job {
      *
      * @return array
      */
-    public function payload() {
+    public function payload()
+    {
         return json_decode($this->getRawBody(), true);
     }
 
@@ -174,7 +185,8 @@ abstract class Job {
      *
      * @return int|null
      */
-    public function maxTries() {
+    public function maxTries()
+    {
         return array_get($this->payload(), 'maxTries');
     }
 
@@ -183,7 +195,8 @@ abstract class Job {
      *
      * @return int|null
      */
-    public function timeout() {
+    public function timeout()
+    {
         return array_get($this->payload(), 'timeout');
     }
 
@@ -192,7 +205,8 @@ abstract class Job {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->payload()['job'];
     }
 
@@ -203,7 +217,8 @@ abstract class Job {
      *
      * @return string
      */
-    public function resolveName() {
+    public function resolveName()
+    {
         return JobName::resolve($this->getName(), $this->payload());
     }
 
@@ -212,7 +227,8 @@ abstract class Job {
      *
      * @return string
      */
-    public function getConnectionName() {
+    public function getConnectionName()
+    {
         return $this->connectionName;
     }
 
@@ -221,7 +237,8 @@ abstract class Job {
      *
      * @return string
      */
-    public function getQueue() {
+    public function getQueue()
+    {
         return $this->queue;
     }
 
@@ -230,8 +247,8 @@ abstract class Job {
      *
      * @return \Illuminate\Container\Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container;
     }
-
 }

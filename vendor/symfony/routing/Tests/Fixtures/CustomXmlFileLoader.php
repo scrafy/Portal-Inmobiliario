@@ -17,12 +17,10 @@ use Symfony\Component\Config\Util\XmlUtils;
 /**
  * XmlFileLoader with schema validation turned off.
  */
-class CustomXmlFileLoader extends XmlFileLoader {
-
-    protected function loadFile($file) {
-        return XmlUtils::loadFile($file, function () {
-                    return true;
-                });
+class CustomXmlFileLoader extends XmlFileLoader
+{
+    protected function loadFile($file)
+    {
+        return XmlUtils::loadFile($file, function () { return true; });
     }
-
 }

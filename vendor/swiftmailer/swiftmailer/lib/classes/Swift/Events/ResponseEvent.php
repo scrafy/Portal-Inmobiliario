@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Events_ResponseEvent extends Swift_Events_EventObject {
-
+class Swift_Events_ResponseEvent extends Swift_Events_EventObject
+{
     /**
      * The overall result.
      *
@@ -36,7 +36,8 @@ class Swift_Events_ResponseEvent extends Swift_Events_EventObject {
      * @param string          $response
      * @param bool            $valid
      */
-    public function __construct(Swift_Transport $source, $response, $valid = false) {
+    public function __construct(Swift_Transport $source, $response, $valid = false)
+    {
         parent::__construct($source);
         $this->_response = $response;
         $this->_valid = $valid;
@@ -47,7 +48,8 @@ class Swift_Events_ResponseEvent extends Swift_Events_EventObject {
      *
      * @return string
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->_response;
     }
 
@@ -56,8 +58,8 @@ class Swift_Events_ResponseEvent extends Swift_Events_EventObject {
      *
      * @return bool
      */
-    public function isValid() {
+    public function isValid()
+    {
         return $this->_valid;
     }
-
 }

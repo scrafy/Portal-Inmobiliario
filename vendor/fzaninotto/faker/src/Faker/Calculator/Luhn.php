@@ -10,13 +10,14 @@ namespace Faker\Calculator;
  *
  * @see http://en.wikipedia.org/wiki/Luhn_algorithm
  */
-class Luhn {
-
+class Luhn
+{
     /**
      * @param string $number
      * @return int
      */
-    private static function checksum($number) {
+    private static function checksum($number)
+    {
         $number = (string) $number;
         $length = strlen($number);
         $sum = 0;
@@ -34,7 +35,8 @@ class Luhn {
      * @param $partialNumber
      * @return string
      */
-    public static function computeCheckDigit($partialNumber) {
+    public static function computeCheckDigit($partialNumber)
+    {
         $checkDigit = self::checksum($partialNumber . '0');
         if ($checkDigit === 0) {
             return 0;
@@ -49,8 +51,8 @@ class Luhn {
      * @param string $number
      * @return bool
      */
-    public static function isValid($number) {
+    public static function isValid($number)
+    {
         return self::checksum($number) === 0;
     }
-
 }

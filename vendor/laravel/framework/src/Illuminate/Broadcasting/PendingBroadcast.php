@@ -4,8 +4,8 @@ namespace Illuminate\Broadcasting;
 
 use Illuminate\Contracts\Events\Dispatcher;
 
-class PendingBroadcast {
-
+class PendingBroadcast
+{
     /**
      * The event dispatcher implementation.
      *
@@ -27,7 +27,8 @@ class PendingBroadcast {
      * @param  mixed  $event
      * @return void
      */
-    public function __construct(Dispatcher $events, $event) {
+    public function __construct(Dispatcher $events, $event)
+    {
         $this->event = $event;
         $this->events = $events;
     }
@@ -37,7 +38,8 @@ class PendingBroadcast {
      *
      * @return $this
      */
-    public function toOthers() {
+    public function toOthers()
+    {
         if (method_exists($this->event, 'dontBroadcastToCurrentUser')) {
             $this->event->dontBroadcastToCurrentUser();
         }
@@ -50,8 +52,8 @@ class PendingBroadcast {
      *
      * @return void
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->events->dispatch($this->event);
     }
-
 }

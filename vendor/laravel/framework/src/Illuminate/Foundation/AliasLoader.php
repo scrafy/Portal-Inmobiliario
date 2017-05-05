@@ -2,8 +2,8 @@
 
 namespace Illuminate\Foundation;
 
-class AliasLoader {
-
+class AliasLoader
+{
     /**
      * The array of class aliases.
      *
@@ -37,7 +37,8 @@ class AliasLoader {
      *
      * @param  array  $aliases
      */
-    private function __construct($aliases) {
+    private function __construct($aliases)
+    {
         $this->aliases = $aliases;
     }
 
@@ -47,7 +48,8 @@ class AliasLoader {
      * @param  array  $aliases
      * @return \Illuminate\Foundation\AliasLoader
      */
-    public static function getInstance(array $aliases = []) {
+    public static function getInstance(array $aliases = [])
+    {
         if (is_null(static::$instance)) {
             return static::$instance = new static($aliases);
         }
@@ -65,7 +67,8 @@ class AliasLoader {
      * @param  string  $alias
      * @return bool|null
      */
-    public function load($alias) {
+    public function load($alias)
+    {
         if (static::$facadeNamespace && strpos($alias, static::$facadeNamespace) === 0) {
             $this->loadFacade($alias);
 
@@ -83,7 +86,8 @@ class AliasLoader {
      * @param  string  $alias
      * @return bool
      */
-    protected function loadFacade($alias) {
+    protected function loadFacade($alias)
+    {
         tap($this->ensureFacadeExists($alias), function ($path) {
             require $path;
         });
@@ -95,13 +99,14 @@ class AliasLoader {
      * @param  string  $alias
      * @return string
      */
-    protected function ensureFacadeExists($alias) {
-        if (file_exists($path = storage_path('framework/cache/facade-' . sha1($alias) . '.php'))) {
+    protected function ensureFacadeExists($alias)
+    {
+        if (file_exists($path = storage_path('framework/cache/facade-'.sha1($alias).'.php'))) {
             return $path;
         }
 
         file_put_contents($path, $this->formatFacadeStub(
-                        $alias, file_get_contents(__DIR__ . '/stubs/facade.stub')
+            $alias, file_get_contents(__DIR__.'/stubs/facade.stub')
         ));
 
         return $path;
@@ -114,7 +119,8 @@ class AliasLoader {
      * @param  string  $stub
      * @return string
      */
-    protected function formatFacadeStub($alias, $stub) {
+    protected function formatFacadeStub($alias, $stub)
+    {
         $replacements = [
             str_replace('/', '\\', dirname(str_replace('\\', '/', $alias))),
             class_basename($alias),
@@ -122,7 +128,7 @@ class AliasLoader {
         ];
 
         return str_replace(
-                ['DummyNamespace', 'DummyClass', 'DummyTarget'], $replacements, $stub
+            ['DummyNamespace', 'DummyClass', 'DummyTarget'], $replacements, $stub
         );
     }
 
@@ -133,7 +139,8 @@ class AliasLoader {
      * @param  string  $alias
      * @return void
      */
-    public function alias($class, $alias) {
+    public function alias($class, $alias)
+    {
         $this->aliases[$class] = $alias;
     }
 
@@ -142,8 +149,9 @@ class AliasLoader {
      *
      * @return void
      */
-    public function register() {
-        if (!$this->registered) {
+    public function register()
+    {
+        if (! $this->registered) {
             $this->prependToLoaderStack();
 
             $this->registered = true;
@@ -155,7 +163,8 @@ class AliasLoader {
      *
      * @return void
      */
-    protected function prependToLoaderStack() {
+    protected function prependToLoaderStack()
+    {
         spl_autoload_register([$this, 'load'], true, true);
     }
 
@@ -164,7 +173,8 @@ class AliasLoader {
      *
      * @return array
      */
-    public function getAliases() {
+    public function getAliases()
+    {
         return $this->aliases;
     }
 
@@ -174,7 +184,8 @@ class AliasLoader {
      * @param  array  $aliases
      * @return void
      */
-    public function setAliases(array $aliases) {
+    public function setAliases(array $aliases)
+    {
         $this->aliases = $aliases;
     }
 
@@ -183,7 +194,8 @@ class AliasLoader {
      *
      * @return bool
      */
-    public function isRegistered() {
+    public function isRegistered()
+    {
         return $this->registered;
     }
 
@@ -193,7 +205,8 @@ class AliasLoader {
      * @param  bool  $value
      * @return void
      */
-    public function setRegistered($value) {
+    public function setRegistered($value)
+    {
         $this->registered = $value;
     }
 
@@ -203,8 +216,9 @@ class AliasLoader {
      * @param  string  $namespace
      * @return void
      */
-    public static function setFacadeNamespace($namespace) {
-        static::$facadeNamespace = rtrim($namespace, '\\') . '\\';
+    public static function setFacadeNamespace($namespace)
+    {
+        static::$facadeNamespace = rtrim($namespace, '\\').'\\';
     }
 
     /**
@@ -213,7 +227,8 @@ class AliasLoader {
      * @param  \Illuminate\Foundation\AliasLoader  $loader
      * @return void
      */
-    public static function setInstance($loader) {
+    public static function setInstance($loader)
+    {
         static::$instance = $loader;
     }
 
@@ -222,8 +237,8 @@ class AliasLoader {
      *
      * @return void
      */
-    private function __clone() {
+    private function __clone()
+    {
         //
     }
-
 }

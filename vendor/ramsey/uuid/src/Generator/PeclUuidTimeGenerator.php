@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -21,8 +20,8 @@ namespace Ramsey\Uuid\Generator;
  *
  * @link https://pecl.php.net/package/uuid
  */
-class PeclUuidTimeGenerator implements TimeGeneratorInterface {
-
+class PeclUuidTimeGenerator implements TimeGeneratorInterface
+{
     /**
      * Generate a version 1 UUID using the PECL UUID extension
      *
@@ -30,10 +29,10 @@ class PeclUuidTimeGenerator implements TimeGeneratorInterface {
      * @param int $clockSeq Not used in this context
      * @return string A binary string
      */
-    public function generate($node = null, $clockSeq = null) {
+    public function generate($node = null, $clockSeq = null)
+    {
         $uuid = uuid_create(UUID_TYPE_TIME);
 
         return uuid_parse($uuid);
     }
-
 }

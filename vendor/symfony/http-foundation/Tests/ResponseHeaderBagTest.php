@@ -18,18 +18,20 @@ use Symfony\Component\HttpFoundation\Cookie;
 /**
  * @group time-sensitive
  */
-class ResponseHeaderBagTest extends TestCase {
-
+class ResponseHeaderBagTest extends TestCase
+{
     /**
      * @dataProvider provideAllPreserveCase
      */
-    public function testAllPreserveCase($headers, $expected) {
+    public function testAllPreserveCase($headers, $expected)
+    {
         $bag = new ResponseHeaderBag($headers);
 
         $this->assertEquals($expected, $bag->allPreserveCase(), '->allPreserveCase() gets all input keys in original case');
     }
 
-    public function provideAllPreserveCase() {
+    public function provideAllPreserveCase()
+    {
         return array(
             array(
                 array('fOo' => 'BAR'),
@@ -62,7 +64,8 @@ class ResponseHeaderBagTest extends TestCase {
         );
     }
 
-    public function testCacheControlHeader() {
+    public function testCacheControlHeader()
+    {
         $bag = new ResponseHeaderBag(array());
         $this->assertEquals('no-cache, private', $bag->get('Cache-Control'));
         $this->assertTrue($bag->hasCacheControlDirective('no-cache'));
@@ -109,14 +112,16 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertEquals('private, must-revalidate', $bag->get('Cache-Control'));
     }
 
-    public function testCacheControlClone() {
+    public function testCacheControlClone()
+    {
         $headers = array('foo' => 'bar');
         $bag1 = new ResponseHeaderBag($headers);
         $bag2 = new ResponseHeaderBag($bag1->allPreserveCase());
         $this->assertEquals($bag1->allPreserveCase(), $bag2->allPreserveCase());
     }
 
-    public function testToStringIncludesCookieHeaders() {
+    public function testToStringIncludesCookieHeaders()
+    {
         $bag = new ResponseHeaderBag(array());
         $bag->setCookie(new Cookie('foo', 'bar'));
 
@@ -124,18 +129,20 @@ class ResponseHeaderBagTest extends TestCase {
 
         $bag->clearCookie('foo');
 
-        $this->assertSetCookieHeader('foo=deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001) . '; path=/; httponly', $bag);
+        $this->assertSetCookieHeader('foo=deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; path=/; httponly', $bag);
     }
 
-    public function testClearCookieSecureNotHttpOnly() {
+    public function testClearCookieSecureNotHttpOnly()
+    {
         $bag = new ResponseHeaderBag(array());
 
         $bag->clearCookie('foo', '/', null, true, false);
 
-        $this->assertSetCookieHeader('foo=deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001) . '; path=/; secure', $bag);
+        $this->assertSetCookieHeader('foo=deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; path=/; secure', $bag);
     }
 
-    public function testReplace() {
+    public function testReplace()
+    {
         $bag = new ResponseHeaderBag(array());
         $this->assertEquals('no-cache, private', $bag->get('Cache-Control'));
         $this->assertTrue($bag->hasCacheControlDirective('no-cache'));
@@ -145,7 +152,8 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertTrue($bag->hasCacheControlDirective('public'));
     }
 
-    public function testReplaceWithRemove() {
+    public function testReplaceWithRemove()
+    {
         $bag = new ResponseHeaderBag(array());
         $this->assertEquals('no-cache, private', $bag->get('Cache-Control'));
         $this->assertTrue($bag->hasCacheControlDirective('no-cache'));
@@ -156,7 +164,8 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertTrue($bag->hasCacheControlDirective('no-cache'));
     }
 
-    public function testCookiesWithSameNames() {
+    public function testCookiesWithSameNames()
+    {
         $bag = new ResponseHeaderBag();
         $bag->setCookie(new Cookie('foo', 'bar', 0, '/path/foo', 'foo.bar'));
         $bag->setCookie(new Cookie('foo', 'bar', 0, '/path/bar', 'foo.bar'));
@@ -177,7 +186,8 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertTrue(isset($cookies['']['/']['foo']));
     }
 
-    public function testRemoveCookie() {
+    public function testRemoveCookie()
+    {
         $bag = new ResponseHeaderBag();
         $bag->setCookie(new Cookie('foo', 'bar', 0, '/path/foo', 'foo.bar'));
         $bag->setCookie(new Cookie('bar', 'foo', 0, '/path/bar', 'foo.bar'));
@@ -196,7 +206,8 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertFalse(isset($cookies['foo.bar']));
     }
 
-    public function testRemoveCookieWithNullRemove() {
+    public function testRemoveCookieWithNullRemove()
+    {
         $bag = new ResponseHeaderBag();
         $bag->setCookie(new Cookie('foo', 'bar', 0));
         $bag->setCookie(new Cookie('bar', 'foo', 0));
@@ -216,7 +227,8 @@ class ResponseHeaderBagTest extends TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testGetCookiesWithInvalidArgument() {
+    public function testGetCookiesWithInvalidArgument()
+    {
         $bag = new ResponseHeaderBag();
 
         $bag->getCookies('invalid_argument');
@@ -225,7 +237,8 @@ class ResponseHeaderBagTest extends TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testMakeDispositionInvalidDisposition() {
+    public function testMakeDispositionInvalidDisposition()
+    {
         $headers = new ResponseHeaderBag();
 
         $headers->makeDisposition('invalid', 'foo.html');
@@ -234,13 +247,15 @@ class ResponseHeaderBagTest extends TestCase {
     /**
      * @dataProvider provideMakeDisposition
      */
-    public function testMakeDisposition($disposition, $filename, $filenameFallback, $expected) {
+    public function testMakeDisposition($disposition, $filename, $filenameFallback, $expected)
+    {
         $headers = new ResponseHeaderBag();
 
         $this->assertEquals($expected, $headers->makeDisposition($disposition, $filename, $filenameFallback));
     }
 
-    public function testToStringDoesntMessUpHeaders() {
+    public function testToStringDoesntMessUpHeaders()
+    {
         $headers = new ResponseHeaderBag();
 
         $headers->set('Location', 'http://www.symfony.com');
@@ -253,7 +268,8 @@ class ResponseHeaderBagTest extends TestCase {
         $this->assertEquals(array('text/html'), $allHeaders['Content-type']);
     }
 
-    public function provideMakeDisposition() {
+    public function provideMakeDisposition()
+    {
         return array(
             array('attachment', 'foo.html', 'foo.html', 'attachment; filename="foo.html"'),
             array('attachment', 'foo.html', '', 'attachment; filename="foo.html"'),
@@ -268,13 +284,15 @@ class ResponseHeaderBagTest extends TestCase {
      * @dataProvider provideMakeDispositionFail
      * @expectedException \InvalidArgumentException
      */
-    public function testMakeDispositionFail($disposition, $filename) {
+    public function testMakeDispositionFail($disposition, $filename)
+    {
         $headers = new ResponseHeaderBag();
 
         $headers->makeDisposition($disposition, $filename);
     }
 
-    public function provideMakeDispositionFail() {
+    public function provideMakeDispositionFail()
+    {
         return array(
             array('attachment', 'foo%20bar.html'),
             array('attachment', 'foo/bar.html'),
@@ -285,8 +303,8 @@ class ResponseHeaderBagTest extends TestCase {
         );
     }
 
-    private function assertSetCookieHeader($expected, ResponseHeaderBag $actual) {
-        $this->assertRegExp('#^Set-Cookie:\s+' . preg_quote($expected, '#') . '$#m', str_replace("\r\n", "\n", (string) $actual));
+    private function assertSetCookieHeader($expected, ResponseHeaderBag $actual)
+    {
+        $this->assertRegExp('#^Set-Cookie:\s+'.preg_quote($expected, '#').'$#m', str_replace("\r\n", "\n", (string) $actual));
     }
-
 }

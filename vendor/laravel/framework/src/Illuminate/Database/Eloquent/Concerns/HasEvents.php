@@ -4,8 +4,8 @@ namespace Illuminate\Database\Eloquent\Concerns;
 
 use Illuminate\Contracts\Events\Dispatcher;
 
-trait HasEvents {
-
+trait HasEvents
+{
     /**
      * The event map for the model.
      *
@@ -30,7 +30,8 @@ trait HasEvents {
      * @param  object|string  $class
      * @return void
      */
-    public static function observe($class) {
+    public static function observe($class)
+    {
         $instance = new static;
 
         $className = is_string($class) ? $class : get_class($class);
@@ -40,7 +41,7 @@ trait HasEvents {
         // it into the model's event system, making it convenient to watch these.
         foreach ($instance->getObservableEvents() as $event) {
             if (method_exists($class, $event)) {
-                static::registerModelEvent($event, $className . '@' . $event);
+                static::registerModelEvent($event, $className.'@'.$event);
             }
         }
     }
@@ -50,13 +51,15 @@ trait HasEvents {
      *
      * @return array
      */
-    public function getObservableEvents() {
+    public function getObservableEvents()
+    {
         return array_merge(
-                [
-            'creating', 'created', 'updating', 'updated',
-            'deleting', 'deleted', 'saving', 'saved',
-            'restoring', 'restored',
-                ], $this->observables
+            [
+                'creating', 'created', 'updating', 'updated',
+                'deleting', 'deleted', 'saving', 'saved',
+                'restoring', 'restored',
+            ],
+            $this->observables
         );
     }
 
@@ -66,7 +69,8 @@ trait HasEvents {
      * @param  array  $observables
      * @return $this
      */
-    public function setObservableEvents(array $observables) {
+    public function setObservableEvents(array $observables)
+    {
         $this->observables = $observables;
 
         return $this;
@@ -78,9 +82,10 @@ trait HasEvents {
      * @param  array|mixed  $observables
      * @return void
      */
-    public function addObservableEvents($observables) {
+    public function addObservableEvents($observables)
+    {
         $this->observables = array_unique(array_merge(
-                        $this->observables, is_array($observables) ? $observables : func_get_args()
+            $this->observables, is_array($observables) ? $observables : func_get_args()
         ));
     }
 
@@ -90,9 +95,10 @@ trait HasEvents {
      * @param  array|mixed  $observables
      * @return void
      */
-    public function removeObservableEvents($observables) {
+    public function removeObservableEvents($observables)
+    {
         $this->observables = array_diff(
-                $this->observables, is_array($observables) ? $observables : func_get_args()
+            $this->observables, is_array($observables) ? $observables : func_get_args()
         );
     }
 
@@ -103,7 +109,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    protected static function registerModelEvent($event, $callback) {
+    protected static function registerModelEvent($event, $callback)
+    {
         if (isset(static::$dispatcher)) {
             $name = static::class;
 
@@ -118,8 +125,9 @@ trait HasEvents {
      * @param  bool  $halt
      * @return mixed
      */
-    protected function fireModelEvent($event, $halt = true) {
-        if (!isset(static::$dispatcher)) {
+    protected function fireModelEvent($event, $halt = true)
+    {
+        if (! isset(static::$dispatcher)) {
             return true;
         }
 
@@ -134,8 +142,8 @@ trait HasEvents {
             return false;
         }
 
-        return !empty($result) ? $result : static::$dispatcher->{$method}(
-                        "eloquent.{$event}: " . static::class, $this
+        return ! empty($result) ? $result : static::$dispatcher->{$method}(
+            "eloquent.{$event}: ".static::class, $this
         );
     }
 
@@ -146,14 +154,15 @@ trait HasEvents {
      * @param  string  $method
      * @return mixed|null
      */
-    protected function fireCustomModelEvent($event, $method) {
-        if (!isset($this->events[$event])) {
+    protected function fireCustomModelEvent($event, $method)
+    {
+        if (! isset($this->events[$event])) {
             return;
         }
 
         $result = static::$dispatcher->$method(new $this->events[$event]($this));
 
-        if (!is_null($result)) {
+        if (! is_null($result)) {
             return $result;
         }
     }
@@ -164,7 +173,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function saving($callback) {
+    public static function saving($callback)
+    {
         static::registerModelEvent('saving', $callback);
     }
 
@@ -174,7 +184,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function saved($callback) {
+    public static function saved($callback)
+    {
         static::registerModelEvent('saved', $callback);
     }
 
@@ -184,7 +195,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function updating($callback) {
+    public static function updating($callback)
+    {
         static::registerModelEvent('updating', $callback);
     }
 
@@ -194,7 +206,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function updated($callback) {
+    public static function updated($callback)
+    {
         static::registerModelEvent('updated', $callback);
     }
 
@@ -204,7 +217,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function creating($callback) {
+    public static function creating($callback)
+    {
         static::registerModelEvent('creating', $callback);
     }
 
@@ -214,7 +228,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function created($callback) {
+    public static function created($callback)
+    {
         static::registerModelEvent('created', $callback);
     }
 
@@ -224,7 +239,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function deleting($callback) {
+    public static function deleting($callback)
+    {
         static::registerModelEvent('deleting', $callback);
     }
 
@@ -234,7 +250,8 @@ trait HasEvents {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function deleted($callback) {
+    public static function deleted($callback)
+    {
         static::registerModelEvent('deleted', $callback);
     }
 
@@ -243,15 +260,16 @@ trait HasEvents {
      *
      * @return void
      */
-    public static function flushEventListeners() {
-        if (!isset(static::$dispatcher)) {
+    public static function flushEventListeners()
+    {
+        if (! isset(static::$dispatcher)) {
             return;
         }
 
         $instance = new static;
 
         foreach ($instance->getObservableEvents() as $event) {
-            static::$dispatcher->forget("eloquent.{$event}: " . static::class);
+            static::$dispatcher->forget("eloquent.{$event}: ".static::class);
         }
     }
 
@@ -260,7 +278,8 @@ trait HasEvents {
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
-    public static function getEventDispatcher() {
+    public static function getEventDispatcher()
+    {
         return static::$dispatcher;
     }
 
@@ -270,7 +289,8 @@ trait HasEvents {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
      */
-    public static function setEventDispatcher(Dispatcher $dispatcher) {
+    public static function setEventDispatcher(Dispatcher $dispatcher)
+    {
         static::$dispatcher = $dispatcher;
     }
 
@@ -279,8 +299,8 @@ trait HasEvents {
      *
      * @return void
      */
-    public static function unsetEventDispatcher() {
+    public static function unsetEventDispatcher()
+    {
         static::$dispatcher = null;
     }
-
 }

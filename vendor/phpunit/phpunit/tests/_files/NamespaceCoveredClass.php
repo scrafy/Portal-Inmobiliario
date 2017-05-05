@@ -1,37 +1,38 @@
 <?php
-
 namespace Foo;
 
-class CoveredParentClass {
-
-    private function privateMethod() {
-        
+class CoveredParentClass
+{
+    private function privateMethod()
+    {
     }
 
-    protected function protectedMethod() {
+    protected function protectedMethod()
+    {
         $this->privateMethod();
     }
 
-    public function publicMethod() {
+    public function publicMethod()
+    {
         $this->protectedMethod();
     }
-
 }
 
-class CoveredClass extends CoveredParentClass {
-
-    private function privateMethod() {
-        
+class CoveredClass extends CoveredParentClass
+{
+    private function privateMethod()
+    {
     }
 
-    protected function protectedMethod() {
+    protected function protectedMethod()
+    {
         parent::protectedMethod();
         $this->privateMethod();
     }
 
-    public function publicMethod() {
+    public function publicMethod()
+    {
         parent::publicMethod();
         $this->protectedMethod();
     }
-
 }

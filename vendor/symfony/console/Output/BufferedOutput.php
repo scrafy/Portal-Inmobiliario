@@ -14,8 +14,8 @@ namespace Symfony\Component\Console\Output;
 /**
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-class BufferedOutput extends Output {
-
+class BufferedOutput extends Output
+{
     /**
      * @var string
      */
@@ -26,7 +26,8 @@ class BufferedOutput extends Output {
      *
      * @return string
      */
-    public function fetch() {
+    public function fetch()
+    {
         $content = $this->buffer;
         $this->buffer = '';
 
@@ -36,12 +37,12 @@ class BufferedOutput extends Output {
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($message, $newline) {
+    protected function doWrite($message, $newline)
+    {
         $this->buffer .= $message;
 
         if ($newline) {
             $this->buffer .= "\n";
         }
     }
-
 }

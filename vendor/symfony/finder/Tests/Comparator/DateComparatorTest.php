@@ -14,9 +14,10 @@ namespace Symfony\Component\Finder\Tests\Comparator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Comparator\DateComparator;
 
-class DateComparatorTest extends TestCase {
-
-    public function testConstructor() {
+class DateComparatorTest extends TestCase
+{
+    public function testConstructor()
+    {
         try {
             new DateComparator('foobar');
             $this->fail('__construct() throws an \InvalidArgumentException if the test expression is not valid.');
@@ -35,7 +36,8 @@ class DateComparatorTest extends TestCase {
     /**
      * @dataProvider getTestData
      */
-    public function testTest($test, $match, $noMatch) {
+    public function testTest($test, $match, $noMatch)
+    {
         $c = new DateComparator($test);
 
         foreach ($match as $m) {
@@ -47,7 +49,8 @@ class DateComparatorTest extends TestCase {
         }
     }
 
-    public function getTestData() {
+    public function getTestData()
+    {
         return array(
             array('< 2005-10-10', array(strtotime('2005-10-09')), array(strtotime('2005-10-15'))),
             array('until 2005-10-10', array(strtotime('2005-10-09')), array(strtotime('2005-10-15'))),
@@ -58,5 +61,4 @@ class DateComparatorTest extends TestCase {
             array('!= 2005-10-10', array(strtotime('2005-10-11')), array(strtotime('2005-10-10'))),
         );
     }
-
 }

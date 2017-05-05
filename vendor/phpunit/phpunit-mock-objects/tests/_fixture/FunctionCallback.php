@@ -1,6 +1,6 @@
 <?php
-
-function functionCallback() {
+function functionCallback()
+{
     $args = func_get_args();
 
     if ($args == ['foo', 'bar']) {

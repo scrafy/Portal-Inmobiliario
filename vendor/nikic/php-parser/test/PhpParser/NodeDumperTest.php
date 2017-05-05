@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-class NodeDumperTest extends \PHPUnit_Framework_TestCase {
-
+class NodeDumperTest extends \PHPUnit_Framework_TestCase
+{
     private function canonicalize($string) {
         return str_replace("\r\n", "\n", $string);
     }
@@ -21,12 +21,12 @@ class NodeDumperTest extends \PHPUnit_Framework_TestCase {
         return array(
             array(
                 array(),
-                'array(
+'array(
 )'
             ),
             array(
                 array('Foo', 'Bar', 'Key' => 'FooBar'),
-                'array(
+'array(
     0: Foo
     1: Bar
     Key: FooBar
@@ -34,7 +34,7 @@ class NodeDumperTest extends \PHPUnit_Framework_TestCase {
             ),
             array(
                 new Node\Name(array('Hallo', 'World')),
-                'Name(
+'Name(
     parts: array(
         0: Hallo
         1: World
@@ -44,8 +44,8 @@ class NodeDumperTest extends \PHPUnit_Framework_TestCase {
             array(
                 new Node\Expr\Array_(array(
                     new Node\Expr\ArrayItem(new Node\Scalar\String_('Foo'))
-                        )),
-                'Expr_Array(
+                )),
+'Expr_Array(
     items: array(
         0: Expr_ArrayItem(
             key: null
@@ -62,7 +62,8 @@ class NodeDumperTest extends \PHPUnit_Framework_TestCase {
 
     public function testDumpWithPositions() {
         $parser = (new ParserFactory)->create(
-                ParserFactory::ONLY_PHP7, new Lexer(['usedAttributes' => ['startLine', 'endLine', 'startFilePos', 'endFilePos']])
+            ParserFactory::ONLY_PHP7,
+            new Lexer(['usedAttributes' => ['startLine', 'endLine', 'startFilePos', 'endFilePos']])
         );
         $dumper = new NodeDumper(['dumpPositions' => true]);
 
@@ -101,5 +102,4 @@ OUT;
         $dumper = new NodeDumper;
         $dumper->dump(new \stdClass);
     }
-
 }

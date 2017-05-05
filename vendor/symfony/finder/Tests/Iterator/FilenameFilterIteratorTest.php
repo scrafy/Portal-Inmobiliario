@@ -13,12 +13,13 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 
 use Symfony\Component\Finder\Iterator\FilenameFilterIterator;
 
-class FilenameFilterIteratorTest extends IteratorTestCase {
-
+class FilenameFilterIteratorTest extends IteratorTestCase
+{
     /**
      * @dataProvider getAcceptData
      */
-    public function testAccept($matchPatterns, $noMatchPatterns, $expected) {
+    public function testAccept($matchPatterns, $noMatchPatterns, $expected)
+    {
         $inner = new InnerNameIterator(array('test.php', 'test.py', 'foo.php'));
 
         $iterator = new FilenameFilterIterator($inner, $matchPatterns, $noMatchPatterns);
@@ -26,7 +27,8 @@ class FilenameFilterIteratorTest extends IteratorTestCase {
         $this->assertIterator($expected, $iterator);
     }
 
-    public function getAcceptData() {
+    public function getAcceptData()
+    {
         return array(
             array(array('test.*'), array(), array('test.php', 'test.py')),
             array(array(), array('test.*'), array('foo.php')),
@@ -36,17 +38,17 @@ class FilenameFilterIteratorTest extends IteratorTestCase {
             array(array(), array('/\.php$/'), array('test.py')),
         );
     }
-
 }
 
-class InnerNameIterator extends \ArrayIterator {
-
-    public function current() {
+class InnerNameIterator extends \ArrayIterator
+{
+    public function current()
+    {
         return new \SplFileInfo(parent::current());
     }
 
-    public function getFilename() {
+    public function getFilename()
+    {
         return parent::current();
     }
-
 }

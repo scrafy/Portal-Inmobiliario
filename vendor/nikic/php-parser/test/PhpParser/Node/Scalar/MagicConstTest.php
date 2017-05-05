@@ -3,7 +3,6 @@
 namespace PhpParser\Node\Scalar;
 
 class MagicConstTest extends \PHPUnit_Framework_TestCase {
-
     /**
      * @dataProvider provideTestGetName
      */
@@ -23,5 +22,4 @@ class MagicConstTest extends \PHPUnit_Framework_TestCase {
             array(new MagicConst\Trait_, '__TRAIT__'),
         );
     }
-
 }

@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
  *
  * @author Drak <drak@zikula.org>
  */
-interface SessionInterface {
-
+interface SessionInterface
+{
     /**
      * Starts the session storage.
      *

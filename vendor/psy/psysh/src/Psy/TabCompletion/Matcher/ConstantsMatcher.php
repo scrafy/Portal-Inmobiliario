@@ -18,12 +18,13 @@ namespace Psy\TabCompletion\Matcher;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class ConstantsMatcher extends AbstractMatcher {
-
+class ConstantsMatcher extends AbstractMatcher
+{
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array()) {
+    public function getMatches(array $tokens, array $info = array())
+    {
         $const = $this->getInput($tokens);
 
         return array_filter(array_keys(get_defined_constants()), function ($constant) use ($const) {
@@ -34,7 +35,8 @@ class ConstantsMatcher extends AbstractMatcher {
     /**
      * {@inheritdoc}
      */
-    public function hasMatched(array $tokens) {
+    public function hasMatched(array $tokens)
+    {
         $token = array_pop($tokens);
         $prevToken = array_pop($tokens);
 
@@ -49,5 +51,4 @@ class ConstantsMatcher extends AbstractMatcher {
 
         return false;
     }
-
 }

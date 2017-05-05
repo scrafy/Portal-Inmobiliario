@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Auth;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Get a guard instance by name.
      *

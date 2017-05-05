@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -15,8 +14,8 @@ namespace phpDocumentor\Reflection\DocBlock;
 
 use phpDocumentor\Reflection\Types\Context as TypeContext;
 
-interface TagFactory {
-
+interface TagFactory
+{
     /**
      * Adds a parameter to the service locator that can be injected in a tag's factory method.
      *

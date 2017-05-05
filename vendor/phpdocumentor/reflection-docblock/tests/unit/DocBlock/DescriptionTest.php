@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -20,8 +19,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Description
  */
-class DescriptionTest extends \PHPUnit_Framework_TestCase {
-
+class DescriptionTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::__construct
      * @covers ::render
@@ -29,7 +28,8 @@ class DescriptionTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      */
-    public function testDescriptionCanRenderUsingABodyWithPlaceholdersAndTags() {
+    public function testDescriptionCanRenderUsingABodyWithPlaceholdersAndTags()
+    {
         $body = 'This is a %1$s body.';
         $expected = 'This is a {@internal significant } body.';
         $tags = [new Generic('internal', new Description('significant '))];
@@ -53,22 +53,23 @@ class DescriptionTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      */
-    public function testDescriptionCanBeCastToString() {
+    public function testDescriptionCanBeCastToString()
+    {
         $body = 'This is a %1$s body.';
         $expected = 'This is a {@internal significant } body.';
         $tags = [new Generic('internal', new Description('significant '))];
 
         $fixture = new Description($body, $tags);
 
-        $this->assertSame($expected, (string) $fixture);
+        $this->assertSame($expected, (string)$fixture);
     }
 
     /**
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testBodyTemplateMustBeAString() {
+    public function testBodyTemplateMustBeAString()
+    {
         new Description([]);
     }
-
 }

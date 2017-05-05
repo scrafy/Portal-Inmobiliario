@@ -23,8 +23,8 @@ use Psr\Log\LoggerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Profiler {
-
+class Profiler
+{
     /**
      * @var ProfilerStorageInterface
      */
@@ -51,7 +51,8 @@ class Profiler {
      * @param ProfilerStorageInterface $storage A ProfilerStorageInterface instance
      * @param LoggerInterface          $logger  A LoggerInterface instance
      */
-    public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = null) {
+    public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = null)
+    {
         $this->storage = $storage;
         $this->logger = $logger;
     }
@@ -59,14 +60,16 @@ class Profiler {
     /**
      * Disables the profiler.
      */
-    public function disable() {
+    public function disable()
+    {
         $this->enabled = false;
     }
 
     /**
      * Enables the profiler.
      */
-    public function enable() {
+    public function enable()
+    {
         $this->enabled = true;
     }
 
@@ -77,7 +80,8 @@ class Profiler {
      *
      * @return Profile|false A Profile instance
      */
-    public function loadProfileFromResponse(Response $response) {
+    public function loadProfileFromResponse(Response $response)
+    {
         if (!$token = $response->headers->get('X-Debug-Token')) {
             return false;
         }
@@ -92,7 +96,8 @@ class Profiler {
      *
      * @return Profile A Profile instance
      */
-    public function loadProfile($token) {
+    public function loadProfile($token)
+    {
         return $this->storage->read($token);
     }
 
@@ -103,7 +108,8 @@ class Profiler {
      *
      * @return bool
      */
-    public function saveProfile(Profile $profile) {
+    public function saveProfile(Profile $profile)
+    {
         // late collect
         foreach ($profile->getCollectors() as $collector) {
             if ($collector instanceof LateDataCollectorInterface) {
@@ -121,7 +127,8 @@ class Profiler {
     /**
      * Purges all data from the storage.
      */
-    public function purge() {
+    public function purge()
+    {
         $this->storage->purge();
     }
 
@@ -140,7 +147,8 @@ class Profiler {
      *
      * @see http://php.net/manual/en/datetime.formats.php for the supported date/time formats
      */
-    public function find($ip, $url, $limit, $method, $start, $end, $statusCode = null) {
+    public function find($ip, $url, $limit, $method, $start, $end, $statusCode = null)
+    {
         return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end), $statusCode);
     }
 
@@ -153,7 +161,8 @@ class Profiler {
      *
      * @return Profile|null A Profile instance or null if the profiler is disabled
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         if (false === $this->enabled) {
             return;
         }
@@ -186,7 +195,8 @@ class Profiler {
      *
      * @return array An array of collectors
      */
-    public function all() {
+    public function all()
+    {
         return $this->collectors;
     }
 
@@ -195,7 +205,8 @@ class Profiler {
      *
      * @param DataCollectorInterface[] $collectors An array of collectors
      */
-    public function set(array $collectors = array()) {
+    public function set(array $collectors = array())
+    {
         $this->collectors = array();
         foreach ($collectors as $collector) {
             $this->add($collector);
@@ -207,7 +218,8 @@ class Profiler {
      *
      * @param DataCollectorInterface $collector A DataCollectorInterface instance
      */
-    public function add(DataCollectorInterface $collector) {
+    public function add(DataCollectorInterface $collector)
+    {
         $this->collectors[$collector->getName()] = $collector;
     }
 
@@ -218,7 +230,8 @@ class Profiler {
      *
      * @return bool
      */
-    public function has($name) {
+    public function has($name)
+    {
         return isset($this->collectors[$name]);
     }
 
@@ -231,7 +244,8 @@ class Profiler {
      *
      * @throws \InvalidArgumentException if the collector does not exist
      */
-    public function get($name) {
+    public function get($name)
+    {
         if (!isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
         }
@@ -239,18 +253,18 @@ class Profiler {
         return $this->collectors[$name];
     }
 
-    private function getTimestamp($value) {
+    private function getTimestamp($value)
+    {
         if (null === $value || '' == $value) {
             return;
         }
 
         try {
-            $value = new \DateTime(is_numeric($value) ? '@' . $value : $value);
+            $value = new \DateTime(is_numeric($value) ? '@'.$value : $value);
         } catch (\Exception $e) {
             return;
         }
 
         return $value->getTimestamp();
     }
-
 }

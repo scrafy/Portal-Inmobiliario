@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,8 +12,8 @@
  * Constraint that asserts that the value it is evaluated for is less than
  * a given value.
  */
-class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
+{
     /**
      * @var numeric
      */
@@ -23,7 +22,8 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
     /**
      * @param numeric $value
      */
-    public function __construct($value) {
+    public function __construct($value)
+    {
         parent::__construct();
         $this->value = $value;
     }
@@ -36,7 +36,8 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return $this->value > $other;
     }
 
@@ -45,8 +46,8 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'is less than ' . $this->exporter->export($this->value);
     }
-
 }

@@ -20,8 +20,8 @@ use Symfony\Component\Config\Resource\DirectoryResource;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class AnnotationDirectoryLoader extends AnnotationFileLoader {
-
+class AnnotationDirectoryLoader extends AnnotationFileLoader
+{
     /**
      * Loads from annotations from a directory.
      *
@@ -32,17 +32,20 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader {
      *
      * @throws \InvalidArgumentException When the directory does not exist or its routes cannot be parsed
      */
-    public function load($path, $type = null) {
+    public function load($path, $type = null)
+    {
         $dir = $this->locator->locate($path);
 
         $collection = new RouteCollection();
         $collection->addResource(new DirectoryResource($dir, '/\.php$/'));
         $files = iterator_to_array(new \RecursiveIteratorIterator(
-                new \RecursiveCallbackFilterIterator(
-                new \RecursiveDirectoryIterator($dir), function (\SplFileInfo $current) {
-            return '.' !== substr($current->getBasename(), 0, 1);
-        }
-                ), \RecursiveIteratorIterator::LEAVES_ONLY
+            new \RecursiveCallbackFilterIterator(
+                new \RecursiveDirectoryIterator($dir),
+                function (\SplFileInfo $current) {
+                    return '.' !== substr($current->getBasename(), 0, 1);
+                }
+            ),
+            \RecursiveIteratorIterator::LEAVES_ONLY
         ));
         usort($files, function (\SplFileInfo $a, \SplFileInfo $b) {
             return (string) $a > (string) $b ? 1 : -1;
@@ -69,7 +72,8 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         if (!is_string($resource)) {
             return false;
         }
@@ -82,5 +86,4 @@ class AnnotationDirectoryLoader extends AnnotationFileLoader {
 
         return is_dir($path) && (!$type || 'annotation' === $type);
     }
-
 }

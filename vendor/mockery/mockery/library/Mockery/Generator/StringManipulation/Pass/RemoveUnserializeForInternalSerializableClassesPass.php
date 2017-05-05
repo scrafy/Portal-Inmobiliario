@@ -10,11 +10,12 @@ use Mockery\Generator\MockConfiguration;
  * implements Serializable, we need to replace the standard unserialize method
  * definition with a dummy
  */
-class RemoveUnserializeForInternalSerializableClassesPass {
-
+class RemoveUnserializeForInternalSerializableClassesPass
+{
     const DUMMY_METHOD_DEFINITION = 'public function unserialize($string) {} ';
 
-    public function apply($code, MockConfiguration $config) {
+    public function apply($code, MockConfiguration $config)
+    {
         $target = $config->getTargetClass();
 
         if (!$target) {
@@ -30,10 +31,10 @@ class RemoveUnserializeForInternalSerializableClassesPass {
         return $code;
     }
 
-    protected function appendToClass($class, $code) {
+    protected function appendToClass($class, $code)
+    {
         $lastBrace = strrpos($class, "}");
         $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
         return $class;
     }
-
 }

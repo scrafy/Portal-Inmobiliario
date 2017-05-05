@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Auth;
 
-interface Authenticatable {
-
+interface Authenticatable
+{
     /**
      * Get the name of the unique identifier for the user.
      *

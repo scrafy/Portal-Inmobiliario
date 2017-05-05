@@ -11,8 +11,8 @@ use Illuminate\Support\Traits\Macroable;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class TestResponse {
-
+class TestResponse
+{
     use Macroable {
         __call as macroCall;
     }
@@ -30,7 +30,8 @@ class TestResponse {
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    public function __construct($response) {
+    public function __construct($response)
+    {
         $this->baseResponse = $response;
     }
 
@@ -40,7 +41,8 @@ class TestResponse {
      * @param  \Illuminate\Http\Response  $response
      * @return static
      */
-    public static function fromBaseResponse($response) {
+    public static function fromBaseResponse($response)
+    {
         return new static($response);
     }
 
@@ -50,11 +52,13 @@ class TestResponse {
      * @param  int  $status
      * @return $this
      */
-    public function assertStatus($status) {
+    public function assertStatus($status)
+    {
         $actual = $this->getStatusCode();
 
         PHPUnit::assertTrue(
-                $actual === $status, "Expected status code {$status} but received {$actual}."
+            $actual === $status,
+            "Expected status code {$status} but received {$actual}."
         );
 
         return $this;
@@ -66,9 +70,10 @@ class TestResponse {
      * @param  string  $uri
      * @return $this
      */
-    public function assertRedirect($uri) {
+    public function assertRedirect($uri)
+    {
         PHPUnit::assertTrue(
-                $this->isRedirect(), 'Response status code [' . $this->status() . '] is not a redirect status code.'
+            $this->isRedirect(), 'Response status code ['.$this->status().'] is not a redirect status code.'
         );
 
         PHPUnit::assertEquals(app('url')->to($uri), $this->headers->get('Location'));
@@ -83,16 +88,18 @@ class TestResponse {
      * @param  mixed  $value
      * @return $this
      */
-    public function assertHeader($headerName, $value = null) {
+    public function assertHeader($headerName, $value = null)
+    {
         PHPUnit::assertTrue(
-                $this->headers->has($headerName), "Header [{$headerName}] not present on response."
+            $this->headers->has($headerName), "Header [{$headerName}] not present on response."
         );
 
         $actual = $this->headers->get($headerName);
 
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             PHPUnit::assertEquals(
-                    $this->headers->get($headerName), $value, "Header [{$headerName}] was found, but value [{$actual}] does not match [{$value}]."
+                $this->headers->get($headerName), $value,
+                "Header [{$headerName}] was found, but value [{$actual}] does not match [{$value}]."
             );
         }
 
@@ -106,7 +113,8 @@ class TestResponse {
      * @param  mixed  $value
      * @return $this
      */
-    public function assertPlainCookie($cookieName, $value = null) {
+    public function assertPlainCookie($cookieName, $value = null)
+    {
         $this->assertCookie($cookieName, $value, false);
 
         return $this;
@@ -120,21 +128,25 @@ class TestResponse {
      * @param  bool  $encrypted
      * @return $this
      */
-    public function assertCookie($cookieName, $value = null, $encrypted = true) {
+    public function assertCookie($cookieName, $value = null, $encrypted = true)
+    {
         PHPUnit::assertNotNull(
-                $cookie = $this->getCookie($cookieName), "Cookie [{$cookieName}] not present on response."
+            $cookie = $this->getCookie($cookieName),
+            "Cookie [{$cookieName}] not present on response."
         );
 
-        if (!$cookie || is_null($value)) {
+        if (! $cookie || is_null($value)) {
             return $this;
         }
 
         $cookieValue = $cookie->getValue();
 
-        $actual = $encrypted ? app('encrypter')->decrypt($cookieValue) : $cookieValue;
+        $actual = $encrypted
+            ? app('encrypter')->decrypt($cookieValue) : $cookieValue;
 
         PHPUnit::assertEquals(
-                $actual, $value, "Cookie [{$cookieName}] was found, but value [{$actual}] does not match [{$value}]."
+            $actual, $value,
+            "Cookie [{$cookieName}] was found, but value [{$actual}] does not match [{$value}]."
         );
 
         return $this;
@@ -146,7 +158,8 @@ class TestResponse {
      * @param  string  $cookieName
      * @return Cookie|null
      */
-    protected function getCookie($cookieName) {
+    protected function getCookie($cookieName)
+    {
         foreach ($this->headers->getCookies() as $cookie) {
             if ($cookie->getName() === $cookieName) {
                 return $cookie;
@@ -160,7 +173,8 @@ class TestResponse {
      * @param  string  $value
      * @return $this
      */
-    public function assertSee($value) {
+    public function assertSee($value)
+    {
         PHPUnit::assertContains($value, $this->getContent());
 
         return $this;
@@ -172,7 +186,8 @@ class TestResponse {
      * @param  string  $value
      * @return $this
      */
-    public function assertDontSee($value) {
+    public function assertDontSee($value)
+    {
         PHPUnit::assertNotContains($value, $this->getContent());
 
         return $this;
@@ -184,9 +199,10 @@ class TestResponse {
      * @param  array  $data
      * @return $this
      */
-    public function assertJson(array $data) {
+    public function assertJson(array $data)
+    {
         PHPUnit::assertArraySubset(
-                $data, $this->decodeResponseJson(), false, $this->assertJsonMessage($data)
+            $data, $this->decodeResponseJson(), false, $this->assertJsonMessage($data)
         );
 
         return $this;
@@ -198,15 +214,16 @@ class TestResponse {
      * @param  array  $data
      * @return string
      */
-    protected function assertJsonMessage(array $data) {
+    protected function assertJsonMessage(array $data)
+    {
         $expected = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         $actual = json_encode($this->decodeResponseJson(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
-        return 'Unable to find JSON: ' . PHP_EOL . PHP_EOL .
-                "[{$expected}]" . PHP_EOL . PHP_EOL .
-                'within response JSON:' . PHP_EOL . PHP_EOL .
-                "[{$actual}]." . PHP_EOL . PHP_EOL;
+        return 'Unable to find JSON: '.PHP_EOL.PHP_EOL.
+            "[{$expected}]".PHP_EOL.PHP_EOL.
+            'within response JSON:'.PHP_EOL.PHP_EOL.
+            "[{$actual}].".PHP_EOL.PHP_EOL;
     }
 
     /**
@@ -215,9 +232,10 @@ class TestResponse {
      * @param  array  $data
      * @return $this
      */
-    public function assertExactJson(array $data) {
+    public function assertExactJson(array $data)
+    {
         $actual = json_encode(Arr::sortRecursive(
-                        (array) $this->decodeResponseJson()
+            (array) $this->decodeResponseJson()
         ));
 
         PHPUnit::assertEquals(json_encode(Arr::sortRecursive($data)), $actual);
@@ -231,19 +249,21 @@ class TestResponse {
      * @param  array  $data
      * @return $this
      */
-    public function assertJsonFragment(array $data) {
+    public function assertJsonFragment(array $data)
+    {
         $actual = json_encode(Arr::sortRecursive(
-                        (array) $this->decodeResponseJson()
+            (array) $this->decodeResponseJson()
         ));
 
         foreach (Arr::sortRecursive($data) as $key => $value) {
             $expected = substr(json_encode([$key => $value]), 1, -1);
 
             PHPUnit::assertTrue(
-                    Str::contains($actual, $expected), 'Unable to find JSON fragment: ' . PHP_EOL . PHP_EOL .
-                    "[{$expected}]" . PHP_EOL . PHP_EOL .
-                    'within' . PHP_EOL . PHP_EOL .
-                    "[{$actual}]."
+                Str::contains($actual, $expected),
+                'Unable to find JSON fragment: '.PHP_EOL.PHP_EOL.
+                "[{$expected}]".PHP_EOL.PHP_EOL.
+                'within'.PHP_EOL.PHP_EOL.
+                "[{$actual}]."
             );
         }
 
@@ -257,7 +277,8 @@ class TestResponse {
      * @param  array|null  $responseData
      * @return $this
      */
-    public function assertJsonStructure(array $structure = null, $responseData = null) {
+    public function assertJsonStructure(array $structure = null, $responseData = null)
+    {
         if (is_null($structure)) {
             return $this->assertJson();
         }
@@ -290,7 +311,8 @@ class TestResponse {
      *
      * @return array
      */
-    public function decodeResponseJson() {
+    public function decodeResponseJson()
+    {
         $decodedResponse = json_decode($this->getContent(), true);
 
         if (is_null($decodedResponse) || $decodedResponse === false) {
@@ -309,7 +331,8 @@ class TestResponse {
      *
      * @return array
      */
-    public function json() {
+    public function json()
+    {
         return $this->decodeResponseJson();
     }
 
@@ -320,7 +343,8 @@ class TestResponse {
      * @param  mixed  $value
      * @return $this
      */
-    public function assertViewHas($key, $value = null) {
+    public function assertViewHas($key, $value = null)
+    {
         if (is_array($key)) {
             return $this->assertViewHasAll($key);
         }
@@ -344,7 +368,8 @@ class TestResponse {
      * @param  array  $bindings
      * @return $this
      */
-    public function assertViewHasAll(array $bindings) {
+    public function assertViewHasAll(array $bindings)
+    {
         foreach ($bindings as $key => $value) {
             if (is_int($key)) {
                 $this->assertViewHas($value);
@@ -362,7 +387,8 @@ class TestResponse {
      * @param  string  $key
      * @return $this
      */
-    public function assertViewMissing($key) {
+    public function assertViewMissing($key)
+    {
         $this->ensureResponseHasView();
 
         PHPUnit::assertArrayNotHasKey($key, $this->original->getData());
@@ -375,8 +401,9 @@ class TestResponse {
      *
      * @return $this
      */
-    protected function ensureResponseHasView() {
-        if (!isset($this->original) || !$this->original instanceof View) {
+    protected function ensureResponseHasView()
+    {
+        if (! isset($this->original) || ! $this->original instanceof View) {
             return PHPUnit::fail('The response is not a view.');
         }
 
@@ -390,14 +417,16 @@ class TestResponse {
      * @param  mixed  $value
      * @return $this
      */
-    public function assertSessionHas($key, $value = null) {
+    public function assertSessionHas($key, $value = null)
+    {
         if (is_array($key)) {
             return $this->assertSessionHasAll($key);
         }
 
         if (is_null($value)) {
             PHPUnit::assertTrue(
-                    $this->session()->has($key), "Session is missing expected key [{$key}]."
+                $this->session()->has($key),
+                "Session is missing expected key [{$key}]."
             );
         } else {
             PHPUnit::assertEquals($value, app('session.store')->get($key));
@@ -412,7 +441,8 @@ class TestResponse {
      * @param  array  $bindings
      * @return $this
      */
-    public function assertSessionHasAll(array $bindings) {
+    public function assertSessionHasAll(array $bindings)
+    {
         foreach ($bindings as $key => $value) {
             if (is_int($key)) {
                 $this->assertSessionHas($value);
@@ -431,7 +461,8 @@ class TestResponse {
      * @param  mixed  $format
      * @return $this
      */
-    public function assertSessionHasErrors($keys = [], $format = null) {
+    public function assertSessionHasErrors($keys = [], $format = null)
+    {
         $this->assertSessionHas('errors');
 
         $keys = (array) $keys;
@@ -455,14 +486,16 @@ class TestResponse {
      * @param  string|array  $key
      * @return $this
      */
-    public function assertSessionMissing($key) {
+    public function assertSessionMissing($key)
+    {
         if (is_array($key)) {
             foreach ($key as $value) {
                 $this->assertSessionMissing($value);
             }
         } else {
             PHPUnit::assertFalse(
-                    $this->session()->has($key), "Session has unexpected key [{$key}]."
+                $this->session()->has($key),
+                "Session has unexpected key [{$key}]."
             );
         }
 
@@ -474,7 +507,8 @@ class TestResponse {
      *
      * @return \Illuminate\Session\Store
      */
-    protected function session() {
+    protected function session()
+    {
         return app('session.store');
     }
 
@@ -483,7 +517,8 @@ class TestResponse {
      *
      * @return void
      */
-    public function dump() {
+    public function dump()
+    {
         $content = $this->getContent();
 
         $json = json_decode($content);
@@ -501,7 +536,8 @@ class TestResponse {
      * @param  string  $key
      * @return mixed
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->baseResponse->{$key};
     }
 
@@ -511,7 +547,8 @@ class TestResponse {
      * @param  string  $key
      * @return mixed
      */
-    public function __isset($key) {
+    public function __isset($key)
+    {
         return isset($this->baseResponse->{$key});
     }
 
@@ -522,12 +559,12 @@ class TestResponse {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $args);
         }
 
         return $this->baseResponse->{$method}(...$args);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -26,8 +25,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-if (!is_callable('random_bytes')) {
 
+if (!is_callable('random_bytes')) {
     /**
      * Windows with PHP < 5.3.0 will not have the function
      * openssl_random_pseudo_bytes() available, so let's use
@@ -39,25 +38,26 @@ if (!is_callable('random_bytes')) {
      *
      * @return string
      */
-    function random_bytes($bytes) {
+    function random_bytes($bytes)
+    {
         try {
             $bytes = RandomCompat_intval($bytes);
         } catch (TypeError $ex) {
             throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
+                'random_bytes(): $bytes must be an integer'
             );
         }
 
         if ($bytes < 1) {
             throw new Error(
-            'Length must be greater than 0'
+                'Length must be greater than 0'
             );
         }
 
         $buf = '';
         if (!class_exists('COM')) {
             throw new Error(
-            'COM does not exist'
+                'COM does not exist'
             );
         }
         $util = new COM('CAPICOM.Utilities.1');
@@ -82,8 +82,7 @@ if (!is_callable('random_bytes')) {
          * If we reach here, PHP has failed us.
          */
         throw new Exception(
-        'Could not gather sufficient random data'
+            'Could not gather sufficient random data'
         );
     }
-
 }

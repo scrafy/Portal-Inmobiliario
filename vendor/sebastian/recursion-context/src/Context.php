@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Recursion Context package.
  *
@@ -15,8 +14,8 @@ namespace SebastianBergmann\RecursionContext;
  * A context containing previously processed arrays and objects
  * when recursively processing a value.
  */
-final class Context {
-
+final class Context
+{
     /**
      * @var array[]
      */
@@ -30,8 +29,9 @@ final class Context {
     /**
      * Initialises the context
      */
-    public function __construct() {
-        $this->arrays = array();
+    public function __construct()
+    {
+        $this->arrays  = array();
         $this->objects = new \SplObjectStorage;
     }
 
@@ -44,7 +44,8 @@ final class Context {
      *
      * @throws InvalidArgumentException Thrown if $value is not an array or object
      */
-    public function add(&$value) {
+    public function add(&$value)
+    {
         if (is_array($value)) {
             return $this->addArray($value);
         } elseif (is_object($value)) {
@@ -52,7 +53,7 @@ final class Context {
         }
 
         throw new InvalidArgumentException(
-        'Only arrays and objects are supported'
+            'Only arrays and objects are supported'
         );
     }
 
@@ -65,7 +66,8 @@ final class Context {
      *
      * @throws InvalidArgumentException Thrown if $value is not an array or object
      */
-    public function contains(&$value) {
+    public function contains(&$value)
+    {
         if (is_array($value)) {
             return $this->containsArray($value);
         } elseif (is_object($value)) {
@@ -73,7 +75,7 @@ final class Context {
         }
 
         throw new InvalidArgumentException(
-        'Only arrays and objects are supported'
+            'Only arrays and objects are supported'
         );
     }
 
@@ -82,14 +84,15 @@ final class Context {
      *
      * @return bool|int
      */
-    private function addArray(array &$array) {
+    private function addArray(array &$array)
+    {
         $key = $this->containsArray($array);
 
         if ($key !== false) {
             return $key;
         }
 
-        $key = count($this->arrays);
+        $key            = count($this->arrays);
         $this->arrays[] = &$array;
 
         if (!isset($array[PHP_INT_MAX]) && !isset($array[PHP_INT_MAX - 1])) {
@@ -117,7 +120,8 @@ final class Context {
      *
      * @return string
      */
-    private function addObject($object) {
+    private function addObject($object)
+    {
         if (!$this->objects->contains($object)) {
             $this->objects->attach($object);
         }
@@ -130,7 +134,8 @@ final class Context {
      *
      * @return int|false
      */
-    private function containsArray(array &$array) {
+    private function containsArray(array &$array)
+    {
         $end = array_slice($array, -2);
 
         return isset($end[1]) && $end[1] === $this->objects ? $end[0] : false;
@@ -141,7 +146,8 @@ final class Context {
      *
      * @return string|false
      */
-    private function containsObject($value) {
+    private function containsObject($value)
+    {
         if ($this->objects->contains($value)) {
             return spl_object_hash($value);
         }
@@ -149,7 +155,8 @@ final class Context {
         return false;
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         foreach ($this->arrays as &$array) {
             if (is_array($array)) {
                 array_pop($array);
@@ -157,5 +164,4 @@ final class Context {
             }
         }
     }
-
 }

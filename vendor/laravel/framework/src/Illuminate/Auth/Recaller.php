@@ -4,8 +4,8 @@ namespace Illuminate\Auth;
 
 use Illuminate\Support\Str;
 
-class Recaller {
-
+class Recaller
+{
     /**
      * The "recaller" / "remember me" cookie string.
      *
@@ -19,7 +19,8 @@ class Recaller {
      * @param  string  $recaller
      * @return void
      */
-    public function __construct($recaller) {
+    public function __construct($recaller)
+    {
         $this->recaller = $recaller;
     }
 
@@ -28,7 +29,8 @@ class Recaller {
      *
      * @return string
      */
-    public function id() {
+    public function id()
+    {
         return explode('|', $this->recaller, 2)[0];
     }
 
@@ -37,7 +39,8 @@ class Recaller {
      *
      * @return string
      */
-    public function token() {
+    public function token()
+    {
         return explode('|', $this->recaller, 2)[1];
     }
 
@@ -46,7 +49,8 @@ class Recaller {
      *
      * @return bool
      */
-    public function valid() {
+    public function valid()
+    {
         return $this->properString() && $this->hasBothSegments();
     }
 
@@ -55,7 +59,8 @@ class Recaller {
      *
      * @return bool
      */
-    protected function properString() {
+    protected function properString()
+    {
         return is_string($this->recaller) && Str::contains($this->recaller, '|');
     }
 
@@ -64,10 +69,10 @@ class Recaller {
      *
      * @return bool
      */
-    protected function hasBothSegments() {
+    protected function hasBothSegments()
+    {
         $segments = explode('|', $this->recaller);
 
         return count($segments) == 2 && trim($segments[0]) !== '' && trim($segments[1]) !== '';
     }
-
 }

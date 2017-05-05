@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -26,12 +25,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
     define('RANDOM_COMPAT_READ_BUFFER', 8);
 }
 
 if (!is_callable('random_bytes')) {
-
     /**
      * Unless open_basedir is enabled, use /dev/urandom for
      * random numbers in accordance with best practices
@@ -45,7 +44,8 @@ if (!is_callable('random_bytes')) {
      *
      * @return string
      */
-    function random_bytes($bytes) {
+    function random_bytes($bytes)
+    {
         static $fp = null;
         /**
          * This block should only be run once
@@ -86,13 +86,13 @@ if (!is_callable('random_bytes')) {
             $bytes = RandomCompat_intval($bytes);
         } catch (TypeError $ex) {
             throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
+                'random_bytes(): $bytes must be an integer'
             );
         }
 
         if ($bytes < 1) {
             throw new Error(
-            'Length must be greater than 0'
+                'Length must be greater than 0'
             );
         }
 
@@ -161,8 +161,7 @@ if (!is_callable('random_bytes')) {
          * If we reach here, PHP has failed us.
          */
         throw new Exception(
-        'Error reading from source device'
+            'Error reading from source device'
         );
     }
-
 }

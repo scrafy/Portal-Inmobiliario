@@ -21,14 +21,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @author Magnus Nordlander <magnus@fervo.se>
  */
-class ValidateRequestListener implements EventSubscriberInterface {
-
+class ValidateRequestListener implements EventSubscriberInterface
+{
     /**
      * Performs the validation.
      *
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(GetResponseEvent $event)
+    {
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -43,12 +44,12 @@ class ValidateRequestListener implements EventSubscriberInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             KernelEvents::REQUEST => array(
                 array('onKernelRequest', 256),
             ),
         );
     }
-
 }

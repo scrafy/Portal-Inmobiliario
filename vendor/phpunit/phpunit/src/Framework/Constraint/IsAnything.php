@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Constraint that accepts any input value.
  */
-class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constraint
+{
     /**
      * Evaluates the constraint for parameter $other
      *
@@ -32,7 +31,8 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = false) {
+    public function evaluate($other, $description = '', $returnResult = false)
+    {
         return $returnResult ? true : null;
     }
 
@@ -41,7 +41,8 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'is anything';
     }
 
@@ -50,8 +51,8 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return 0;
     }
-
 }

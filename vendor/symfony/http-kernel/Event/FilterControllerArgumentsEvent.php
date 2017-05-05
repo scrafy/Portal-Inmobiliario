@@ -26,11 +26,12 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class FilterControllerArgumentsEvent extends FilterControllerEvent {
-
+class FilterControllerArgumentsEvent extends FilterControllerEvent
+{
     private $arguments;
 
-    public function __construct(HttpKernelInterface $kernel, callable $controller, array $arguments, Request $request, $requestType) {
+    public function __construct(HttpKernelInterface $kernel, callable $controller, array $arguments, Request $request, $requestType)
+    {
         parent::__construct($kernel, $controller, $request, $requestType);
 
         $this->arguments = $arguments;
@@ -39,15 +40,16 @@ class FilterControllerArgumentsEvent extends FilterControllerEvent {
     /**
      * @return array
      */
-    public function getArguments() {
+    public function getArguments()
+    {
         return $this->arguments;
     }
 
     /**
      * @param array $arguments
      */
-    public function setArguments(array $arguments) {
+    public function setArguments(array $arguments)
+    {
         $this->arguments = $arguments;
     }
-
 }

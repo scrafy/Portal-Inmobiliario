@@ -5,8 +5,8 @@ namespace Faker\Provider;
 /**
  * Depends on image generation from http://lorempixel.com/
  */
-class Image extends Base {
-
+class Image extends Base
+{
     protected static $categories = array(
         'abstract', 'animals', 'business', 'cats', 'city', 'food', 'nightlife',
         'fashion', 'people', 'nature', 'sports', 'technics', 'transport'
@@ -19,14 +19,15 @@ class Image extends Base {
      *
      * @example 'http://lorempixel.com/640/480/?12345'
      */
-    public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false) {
+    public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false)
+    {
         $baseUrl = "http://lorempixel.com/";
         $url = "{$width}/{$height}/";
-
+        
         if ($gray) {
             $url = "gray/" . $url;
         }
-
+        
         if ($category) {
             if (!in_array($category, static::$categories)) {
                 throw new \InvalidArgumentException(sprintf('Unknown image category "%s"', $category));
@@ -51,7 +52,8 @@ class Image extends Base {
      *
      * @example '/path/to/dir/13b73edae8443990be1aa8f1a483bc27.jpg'
      */
-    public static function image($dir = null, $width = 640, $height = 480, $category = null, $fullPath = true, $randomize = true, $word = null) {
+    public static function image($dir = null, $width = 640, $height = 480, $category = null, $fullPath = true, $randomize = true, $word = null)
+    {
         $dir = is_null($dir) ? sys_get_temp_dir() : $dir; // GNU/Linux / OS X / Windows compatible
         // Validate directory path
         if (!is_dir($dir) || !is_writable($dir)) {
@@ -61,7 +63,7 @@ class Image extends Base {
         // Generate a random filename. Use the server address so that a file
         // generated at the same time on a different server won't have a collision.
         $name = md5(uniqid(empty($_SERVER['SERVER_ADDR']) ? '' : $_SERVER['SERVER_ADDR'], true));
-        $filename = $name . '.jpg';
+        $filename = $name .'.jpg';
         $filepath = $dir . DIRECTORY_SEPARATOR . $filename;
 
         $url = static::imageUrl($width, $height, $category, $randomize, $word);
@@ -89,5 +91,4 @@ class Image extends Base {
 
         return $fullPath ? $filepath : $filename;
     }
-
 }

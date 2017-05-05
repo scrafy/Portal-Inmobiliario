@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
-class ShareErrorsFromSession {
-
+class ShareErrorsFromSession
+{
     /**
      * The view factory implementation.
      *
@@ -21,7 +21,8 @@ class ShareErrorsFromSession {
      * @param  \Illuminate\Contracts\View\Factory  $view
      * @return void
      */
-    public function __construct(ViewFactory $view) {
+    public function __construct(ViewFactory $view)
+    {
         $this->view = $view;
     }
 
@@ -32,12 +33,13 @@ class ShareErrorsFromSession {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
         // If the current session has an "errors" variable bound to it, we will share
         // its value with all view instances so the views can easily access errors
         // without having to bind. An empty bag is set when there aren't errors.
         $this->view->share(
-                'errors', $request->session()->get('errors') ?: new ViewErrorBag
+            'errors', $request->session()->get('errors') ?: new ViewErrorBag
         );
 
         // Putting the errors in the view for every view allows the developer to just
@@ -46,5 +48,4 @@ class ShareErrorsFromSession {
 
         return $next($request);
     }
-
 }

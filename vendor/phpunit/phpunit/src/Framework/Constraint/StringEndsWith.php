@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,8 +12,8 @@
  * Constraint that asserts that the string it is evaluated for ends with a given
  * suffix.
  */
-class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Constraint
+{
     /**
      * @var string
      */
@@ -23,7 +22,8 @@ class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Cons
     /**
      * @param string $suffix
      */
-    public function __construct($suffix) {
+    public function __construct($suffix)
+    {
         parent::__construct();
         $this->suffix = $suffix;
     }
@@ -36,7 +36,8 @@ class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Cons
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return substr($other, 0 - strlen($this->suffix)) == $this->suffix;
     }
 
@@ -45,8 +46,8 @@ class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Cons
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'ends with "' . $this->suffix . '"';
     }
-
 }

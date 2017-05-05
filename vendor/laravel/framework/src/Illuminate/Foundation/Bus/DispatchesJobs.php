@@ -4,15 +4,16 @@ namespace Illuminate\Foundation\Bus;
 
 use Illuminate\Contracts\Bus\Dispatcher;
 
-trait DispatchesJobs {
-
+trait DispatchesJobs
+{
     /**
      * Dispatch a job to its appropriate handler.
      *
      * @param  mixed  $job
      * @return mixed
      */
-    protected function dispatch($job) {
+    protected function dispatch($job)
+    {
         return app(Dispatcher::class)->dispatch($job);
     }
 
@@ -22,8 +23,8 @@ trait DispatchesJobs {
      * @param  mixed  $job
      * @return mixed
      */
-    public function dispatchNow($job) {
+    public function dispatchNow($job)
+    {
         return app(Dispatcher::class)->dispatchNow($job);
     }
-
 }

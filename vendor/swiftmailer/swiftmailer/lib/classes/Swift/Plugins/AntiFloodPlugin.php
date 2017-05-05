@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_Plugins_Sleeper {
-
+class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_Plugins_Sleeper
+{
     /**
      * The number of emails to send before restarting Transport.
      *
@@ -50,7 +50,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      * @param int                   $sleep     time
      * @param Swift_Plugins_Sleeper $sleeper   (not needed really)
      */
-    public function __construct($threshold = 99, $sleep = 0, Swift_Plugins_Sleeper $sleeper = null) {
+    public function __construct($threshold = 99, $sleep = 0, Swift_Plugins_Sleeper $sleeper = null)
+    {
         $this->setThreshold($threshold);
         $this->setSleepTime($sleep);
         $this->_sleeper = $sleeper;
@@ -61,7 +62,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @param int $threshold
      */
-    public function setThreshold($threshold) {
+    public function setThreshold($threshold)
+    {
         $this->_threshold = $threshold;
     }
 
@@ -70,7 +72,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @return int
      */
-    public function getThreshold() {
+    public function getThreshold()
+    {
         return $this->_threshold;
     }
 
@@ -79,7 +82,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @param int $sleep time
      */
-    public function setSleepTime($sleep) {
+    public function setSleepTime($sleep)
+    {
         $this->_sleep = $sleep;
     }
 
@@ -88,7 +92,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @return int
      */
-    public function getSleepTime() {
+    public function getSleepTime()
+    {
         return $this->_sleep;
     }
 
@@ -97,8 +102,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @param Swift_Events_SendEvent $evt
      */
-    public function beforeSendPerformed(Swift_Events_SendEvent $evt) {
-        
+    public function beforeSendPerformed(Swift_Events_SendEvent $evt)
+    {
     }
 
     /**
@@ -106,7 +111,8 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @param Swift_Events_SendEvent $evt
      */
-    public function sendPerformed(Swift_Events_SendEvent $evt) {
+    public function sendPerformed(Swift_Events_SendEvent $evt)
+    {
         ++$this->_counter;
         if ($this->_counter >= $this->_threshold) {
             $transport = $evt->getTransport();
@@ -124,12 +130,12 @@ class Swift_Plugins_AntiFloodPlugin implements Swift_Events_SendListener, Swift_
      *
      * @param int $seconds
      */
-    public function sleep($seconds) {
+    public function sleep($seconds)
+    {
         if (isset($this->_sleeper)) {
             $this->_sleeper->sleep($seconds);
         } else {
             sleep($seconds);
         }
     }
-
 }

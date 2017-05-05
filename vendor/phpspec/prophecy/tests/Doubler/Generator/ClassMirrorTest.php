@@ -4,12 +4,13 @@ namespace Tests\Prophecy\Doubler\Generator;
 
 use Prophecy\Doubler\Generator\ClassMirror;
 
-class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
-
+class ClassMirrorTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
-    public function it_reflects_allowed_magic_methods() {
+    public function it_reflects_allowed_magic_methods()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\SpecialMethods');
 
         $mirror = new ClassMirror();
@@ -22,7 +23,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_reflects_protected_abstract_methods() {
+    public function it_reflects_protected_abstract_methods()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithProtectedAbstractMethod');
 
         $mirror = new ClassMirror();
@@ -40,7 +42,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_reflects_public_static_methods() {
+    public function it_reflects_public_static_methods()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithStaticMethod');
 
         $mirror = new ClassMirror();
@@ -58,7 +61,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_marks_required_args_without_types_as_not_optional() {
+    public function it_marks_required_args_without_types_as_not_optional()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithArguments');
 
         $mirror = new ClassMirror();
@@ -80,7 +84,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_properly_reads_methods_arguments_with_types() {
+    public function it_properly_reads_methods_arguments_with_types()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithArguments');
 
         $mirror = new ClassMirror();
@@ -114,7 +119,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @requires PHP 5.4
      */
-    public function it_properly_reads_methods_arguments_with_callable_types() {
+    public function it_properly_reads_methods_arguments_with_callable_types()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithCallableArgument');
 
         $mirror = new ClassMirror();
@@ -143,7 +149,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @requires PHP 5.6
      */
-    public function it_properly_reads_methods_variadic_arguments() {
+    public function it_properly_reads_methods_variadic_arguments()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithVariadicArgument');
 
         $mirror = new ClassMirror();
@@ -165,7 +172,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @requires PHP 5.6
      */
-    public function it_properly_reads_methods_typehinted_variadic_arguments() {
+    public function it_properly_reads_methods_typehinted_variadic_arguments()
+    {
         if (defined('HHVM_VERSION_ID')) {
             $this->markTestSkipped('HHVM does not support typehints on variadic arguments.');
         }
@@ -190,7 +198,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_marks_passed_by_reference_args_as_passed_by_reference() {
+    public function it_marks_passed_by_reference_args_as_passed_by_reference()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithReferences');
 
         $mirror = new ClassMirror();
@@ -210,7 +219,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_throws_an_exception_if_class_is_final() {
+    public function it_throws_an_exception_if_class_is_final()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\FinalClass');
 
         $mirror = new ClassMirror();
@@ -223,7 +233,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_ignores_final_methods() {
+    public function it_ignores_final_methods()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithFinalMethod');
 
         $mirror = new ClassMirror();
@@ -236,7 +247,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_marks_final_methods_as_unextendable() {
+    public function it_marks_final_methods_as_unextendable()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithFinalMethod');
 
         $mirror = new ClassMirror();
@@ -250,7 +262,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_throws_an_exception_if_interface_provided_instead_of_class() {
+    public function it_throws_an_exception_if_interface_provided_instead_of_class()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\EmptyInterface');
 
         $mirror = new ClassMirror();
@@ -263,7 +276,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_reflects_all_interfaces_methods() {
+    public function it_reflects_all_interfaces_methods()
+    {
         $mirror = new ClassMirror();
 
         $classNode = $mirror->reflect(null, array(
@@ -276,7 +290,7 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
             'Prophecy\Doubler\Generator\ReflectionInterface',
             'Fixtures\Prophecy\ModifierInterface',
             'Fixtures\Prophecy\Named',
-                ), $classNode->getInterfaces());
+        ), $classNode->getInterfaces());
 
         $this->assertCount(3, $classNode->getMethods());
         $this->assertTrue($classNode->hasMethod('getName'));
@@ -287,7 +301,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_ignores_virtually_private_methods() {
+    public function it_ignores_virtually_private_methods()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithVirtuallyPrivateMethod');
 
         $mirror = new ClassMirror();
@@ -303,7 +318,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_does_not_throw_exception_for_virtually_private_finals() {
+    public function it_does_not_throw_exception_for_virtually_private_finals()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithFinalVirtuallyPrivateMethod');
 
         $mirror = new ClassMirror();
@@ -317,7 +333,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @requires PHP 7
      */
-    public function it_reflects_return_typehints() {
+    public function it_reflects_return_typehints()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\WithReturnTypehints');
 
         $mirror = new ClassMirror();
@@ -337,7 +354,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_throws_an_exception_if_class_provided_in_interfaces_list() {
+    public function it_throws_an_exception_if_class_provided_in_interfaces_list()
+    {
         $class = new \ReflectionClass('Fixtures\Prophecy\EmptyClass');
 
         $mirror = new ClassMirror();
@@ -350,7 +368,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_throws_an_exception_if_not_reflection_provided_as_interface() {
+    public function it_throws_an_exception_if_not_reflection_provided_as_interface()
+    {
         $mirror = new ClassMirror();
 
         $this->setExpectedException('InvalidArgumentException');
@@ -361,7 +380,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_doesnt_use_scalar_typehints() {
+    public function it_doesnt_use_scalar_typehints()
+    {
         $mirror = new ClassMirror();
 
         $classNode = $mirror->reflect(new \ReflectionClass('ReflectionMethod'), array());
@@ -376,7 +396,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_doesnt_fail_to_typehint_nonexistent_FQCN() {
+    public function it_doesnt_fail_to_typehint_nonexistent_FQCN()
+    {
         $mirror = new ClassMirror();
 
         $classNode = $mirror->reflect(new \ReflectionClass('Fixtures\Prophecy\OptionalDepsClass'), array());
@@ -388,7 +409,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function it_doesnt_fail_to_typehint_nonexistent_RQCN() {
+    public function it_doesnt_fail_to_typehint_nonexistent_RQCN()
+    {
         $mirror = new ClassMirror();
 
         $classNode = $mirror->reflect(new \ReflectionClass('Fixtures\Prophecy\OptionalDepsClass'), array());
@@ -400,7 +422,8 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    function it_changes_argument_names_if_they_are_varying() {
+    function it_changes_argument_names_if_they_are_varying()
+    {
         // Use test doubles in this test, as arguments named ... in the Reflection API can only happen for internal classes
         $class = $this->prophesize('ReflectionClass');
         $method = $this->prophesize('ReflectionMethod');
@@ -443,5 +466,4 @@ class ClassMirrorTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals('__dot_dot_dot__', $argumentNode->getName());
     }
-
 }

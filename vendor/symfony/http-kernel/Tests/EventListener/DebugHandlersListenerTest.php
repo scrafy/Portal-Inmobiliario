@@ -33,13 +33,12 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class DebugHandlersListenerTest extends TestCase {
-
-    public function testConfigure() {
+class DebugHandlersListenerTest extends TestCase
+{
+    public function testConfigure()
+    {
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock();
-        $userHandler = function () {
-            
-        };
+        $userHandler = function () {};
         $listener = new DebugHandlersListener($userHandler, $logger);
         $xHandler = new ExceptionHandler();
         $eHandler = new ErrorHandler();
@@ -51,7 +50,6 @@ class DebugHandlersListenerTest extends TestCase {
         try {
             $listener->configure();
         } catch (\Exception $exception) {
-            
         }
         restore_exception_handler();
         restore_error_handler();
@@ -68,11 +66,14 @@ class DebugHandlersListenerTest extends TestCase {
         $this->assertSame(array($logger, LogLevel::INFO), $loggers[E_DEPRECATED]);
     }
 
-    public function testConfigureForHttpKernelWithNoTerminateWithException() {
+    public function testConfigureForHttpKernelWithNoTerminateWithException()
+    {
         $listener = new DebugHandlersListener(null);
         $eHandler = new ErrorHandler();
         $event = new KernelEvent(
-                $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock(), Request::create('/'), HttpKernelInterface::MASTER_REQUEST
+            $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock(),
+            Request::create('/'),
+            HttpKernelInterface::MASTER_REQUEST
         );
 
         $exception = null;
@@ -80,7 +81,6 @@ class DebugHandlersListenerTest extends TestCase {
         try {
             $listener->configure($event);
         } catch (\Exception $exception) {
-            
         }
         restore_exception_handler();
 
@@ -91,7 +91,8 @@ class DebugHandlersListenerTest extends TestCase {
         $this->assertNull($h);
     }
 
-    public function testConsoleEvent() {
+    public function testConsoleEvent()
+    {
         $dispatcher = new EventDispatcher();
         $listener = new DebugHandlersListener(null);
         $app = $this->getMockBuilder('Symfony\Component\Console\Application')->getMock();
@@ -115,7 +116,6 @@ class DebugHandlersListenerTest extends TestCase {
         try {
             $dispatcher->dispatch(ConsoleEvents::COMMAND, $event);
         } catch (\Exception $exception) {
-            
         }
         restore_exception_handler();
         restore_error_handler();
@@ -128,9 +128,8 @@ class DebugHandlersListenerTest extends TestCase {
         $this->assertInstanceOf('Closure', $xHandler);
 
         $app->expects($this->once())
-                ->method('renderException');
+            ->method('renderException');
 
         $xHandler(new \Exception());
     }
-
 }

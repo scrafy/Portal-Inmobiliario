@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Unset_ extends Node\Stmt {
-
+class Unset_ extends Node\Stmt
+{
     /** @var Node\Expr[] Variables to unset */
     public $vars;
 
@@ -23,5 +23,4 @@ class Unset_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('vars');
     }
-
 }

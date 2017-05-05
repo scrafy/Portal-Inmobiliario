@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\Exception;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class NotFoundHttpException extends HttpException {
-
+class NotFoundHttpException extends HttpException
+{
     /**
      * Constructor.
      *
@@ -25,8 +25,8 @@ class NotFoundHttpException extends HttpException {
      * @param \Exception $previous The previous exception
      * @param int        $code     The internal exception code
      */
-    public function __construct($message = null, \Exception $previous = null, $code = 0) {
+    public function __construct($message = null, \Exception $previous = null, $code = 0)
+    {
         parent::__construct(404, $message, $previous, array(), $code);
     }
-
 }

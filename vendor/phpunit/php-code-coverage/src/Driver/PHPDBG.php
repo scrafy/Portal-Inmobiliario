@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -18,21 +17,22 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
  *
  * @codeCoverageIgnore
  */
-class PHPDBG implements Driver {
-
+class PHPDBG implements Driver
+{
     /**
      * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         if (PHP_SAPI !== 'phpdbg') {
             throw new RuntimeException(
-            'This driver requires the PHPDBG SAPI'
+                'This driver requires the PHPDBG SAPI'
             );
         }
 
         if (!function_exists('phpdbg_start_oplog')) {
             throw new RuntimeException(
-            'This build of PHPDBG does not support code coverage'
+                'This build of PHPDBG does not support code coverage'
             );
         }
     }
@@ -42,7 +42,8 @@ class PHPDBG implements Driver {
      *
      * @param bool $determineUnusedAndDead
      */
-    public function start($determineUnusedAndDead = true) {
+    public function start($determineUnusedAndDead = true)
+    {
         phpdbg_start_oplog();
     }
 
@@ -51,7 +52,8 @@ class PHPDBG implements Driver {
      *
      * @return array
      */
-    public function stop() {
+    public function stop()
+    {
         static $fetchedLines = [];
 
         $dbgData = phpdbg_end_oplog();
@@ -60,12 +62,13 @@ class PHPDBG implements Driver {
             $sourceLines = phpdbg_get_executable();
         } else {
             $newFiles = array_diff(
-                    get_included_files(), array_keys($fetchedLines)
+                get_included_files(),
+                array_keys($fetchedLines)
             );
 
             if ($newFiles) {
                 $sourceLines = phpdbg_get_executable(
-                        ['files' => $newFiles]
+                    ['files' => $newFiles]
                 );
             } else {
                 $sourceLines = [];
@@ -91,7 +94,8 @@ class PHPDBG implements Driver {
      *
      * @return array
      */
-    private function detectExecutedLines(array $sourceLines, array $dbgData) {
+    private function detectExecutedLines(array $sourceLines, array $dbgData)
+    {
         foreach ($dbgData as $file => $coveredLines) {
             foreach ($coveredLines as $lineNo => $numExecuted) {
                 // phpdbg also reports $lineNo=0 when e.g. exceptions get thrown.
@@ -104,5 +108,4 @@ class PHPDBG implements Driver {
 
         return $sourceLines;
     }
-
 }

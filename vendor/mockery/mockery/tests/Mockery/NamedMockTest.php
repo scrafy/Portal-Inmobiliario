@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -19,20 +18,23 @@
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
+
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class NamedMockTest extends MockeryTestCase {
-
+class NamedMockTest extends MockeryTestCase
+{
     /** @test */
-    public function itCreatesANamedMock() {
+    public function itCreatesANamedMock()
+    {
         $mock = Mockery::namedMock("Mockery\Dave123");
         $this->assertEquals("Mockery\Dave123", get_class($mock));
     }
 
     /** @test */
-    public function itCreatesPassesFurtherArgumentsJustLikeMock() {
+    public function itCreatesPassesFurtherArgumentsJustLikeMock()
+    {
         $mock = Mockery::namedMock("Mockery\Dave456", "DateTime", array(
-                    "getDave" => "dave"
+            "getDave" => "dave"
         ));
 
         $this->assertInstanceOf("DateTime", $mock);
@@ -44,9 +46,9 @@ class NamedMockTest extends MockeryTestCase {
      * @expectedException Mockery\Exception
      * @expectedExceptionMessage The mock named 'Mockery\Dave7' has been already defined with a different mock configuration
      */
-    public function itShouldThrowIfAttemptingToRedefineNamedMock() {
+    public function itShouldThrowIfAttemptingToRedefineNamedMock()
+    {
         $mock = Mockery::namedMock("Mockery\Dave7");
         $mock = Mockery::namedMock("Mockery\Dave7", "DateTime");
     }
-
 }

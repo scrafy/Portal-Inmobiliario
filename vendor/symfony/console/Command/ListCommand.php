@@ -23,17 +23,18 @@ use Symfony\Component\Console\Input\InputDefinition;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ListCommand extends Command {
-
+class ListCommand extends Command
+{
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('list')
-                ->setDefinition($this->createDefinition())
-                ->setDescription('Lists commands')
-                ->setHelp(<<<'EOF'
+            ->setName('list')
+            ->setDefinition($this->createDefinition())
+            ->setDescription('Lists commands')
+            ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command lists all commands:
 
   <info>php %command.full_name%</info>
@@ -50,21 +51,23 @@ It's also possible to get raw list of commands (useful for embedding command run
 
   <info>php %command.full_name% --raw</info>
 EOF
-                )
+            )
         ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNativeDefinition() {
+    public function getNativeDefinition()
+    {
         return $this->createDefinition();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $helper = new DescriptorHelper();
         $helper->describe($output, $this->getApplication(), array(
             'format' => $input->getOption('format'),
@@ -76,12 +79,12 @@ EOF
     /**
      * {@inheritdoc}
      */
-    private function createDefinition() {
+    private function createDefinition()
+    {
         return new InputDefinition(array(
             new InputArgument('namespace', InputArgument::OPTIONAL, 'The namespace name'),
             new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command list'),
             new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
         ));
     }
-
 }

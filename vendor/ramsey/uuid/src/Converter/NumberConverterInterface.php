@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -19,8 +18,8 @@ namespace Ramsey\Uuid\Converter;
  * NumberConverterInterface converts UUIDs from hexadecimal characters into
  * representations of integers and vice versa
  */
-interface NumberConverterInterface {
-
+interface NumberConverterInterface
+{
     /**
      * Converts a hexadecimal number into an integer representation of the number
      *

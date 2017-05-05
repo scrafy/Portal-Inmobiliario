@@ -21,21 +21,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Read the documentation for an object, class, constant, method or property.
  */
-class DocCommand extends ReflectingCommand {
-
+class DocCommand extends ReflectingCommand
+{
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('doc')
-                ->setAliases(array('rtfm', 'man'))
-                ->setDefinition(array(
-                    new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to document.'),
-                ))
-                ->setDescription('Read the documentation for an object, class, constant, method or property.')
-                ->setHelp(
-                        <<<HELP
+            ->setName('doc')
+            ->setAliases(array('rtfm', 'man'))
+            ->setDefinition(array(
+                new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to document.'),
+            ))
+            ->setDescription('Read the documentation for an object, class, constant, method or property.')
+            ->setHelp(
+                <<<HELP
 Read the documentation for an object, class, constant, method or property.
 
 It's awesome for well-documented code, not quite as awesome for poorly documented code.
@@ -47,13 +48,14 @@ e.g.
 <return>>>> \$s = new Psy\Shell</return>
 <return>>>> doc \$s->run</return>
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $value = $input->getArgument('value');
         if (ReflectionLanguageConstruct::isLanguageConstruct($value)) {
             $reflector = new ReflectionLanguageConstruct($value);
@@ -82,7 +84,8 @@ HELP
         $this->setCommandScopeVariables($reflector);
     }
 
-    private function getManualDoc($reflector) {
+    private function getManualDoc($reflector)
+    {
         switch (get_class($reflector)) {
             case 'ReflectionFunction':
                 $id = $reflector->name;
@@ -99,12 +102,12 @@ HELP
         return $this->getManualDocById($id);
     }
 
-    private function getManualDocById($id) {
+    private function getManualDocById($id)
+    {
         if ($db = $this->getApplication()->getManualDb()) {
             return $db
-                            ->query(sprintf('SELECT doc FROM php_manual WHERE id = %s', $db->quote($id)))
-                            ->fetchColumn(0);
+                ->query(sprintf('SELECT doc FROM php_manual WHERE id = %s', $db->quote($id)))
+                ->fetchColumn(0);
         }
     }
-
 }

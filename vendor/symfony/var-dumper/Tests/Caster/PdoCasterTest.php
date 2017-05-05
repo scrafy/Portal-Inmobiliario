@@ -19,14 +19,15 @@ use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class PdoCasterTest extends TestCase {
-
+class PdoCasterTest extends TestCase
+{
     use VarDumperTestTrait;
 
     /**
      * @requires extension pdo_sqlite
      */
-    public function testCastPdo() {
+    public function testCastPdo()
+    {
         $pdo = new \PDO('sqlite::memory:');
         $pdo->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array('PDOStatement', array($pdo)));
 
@@ -60,5 +61,4 @@ EODUMP;
 
         $this->assertDumpMatchesFormat($xDump, $cast);
     }
-
 }

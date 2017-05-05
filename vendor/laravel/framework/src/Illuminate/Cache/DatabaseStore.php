@@ -9,8 +9,8 @@ use Illuminate\Contracts\Cache\Store;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
 
-class DatabaseStore implements Store {
-
+class DatabaseStore implements Store
+{
     use RetrievesMultipleKeys;
 
     /**
@@ -50,7 +50,9 @@ class DatabaseStore implements Store {
      * @param  string  $prefix
      * @return void
      */
-    public function __construct(ConnectionInterface $connection, EncrypterContract $encrypter, $table, $prefix = '') {
+    public function __construct(ConnectionInterface $connection, EncrypterContract $encrypter,
+                                $table, $prefix = '')
+    {
         $this->table = $table;
         $this->prefix = $prefix;
         $this->encrypter = $encrypter;
@@ -63,8 +65,9 @@ class DatabaseStore implements Store {
      * @param  string|array  $key
      * @return mixed
      */
-    public function get($key) {
-        $prefixed = $this->prefix . $key;
+    public function get($key)
+    {
+        $prefixed = $this->prefix.$key;
 
         $cache = $this->table()->where('key', '=', $prefixed)->first();
 
@@ -97,8 +100,9 @@ class DatabaseStore implements Store {
      * @param  float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes) {
-        $key = $this->prefix . $key;
+    public function put($key, $value, $minutes)
+    {
+        $key = $this->prefix.$key;
 
         // All of the cached values in the database are encrypted in case this is used
         // as a session data store by the consumer. We'll also calculate the expire
@@ -121,10 +125,11 @@ class DatabaseStore implements Store {
      * @param  mixed   $value
      * @return int|bool
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         return $this->incrementOrDecrement($key, $value, function ($current, $value) {
-                    return $current + $value;
-                });
+            return $current + $value;
+        });
     }
 
     /**
@@ -134,10 +139,11 @@ class DatabaseStore implements Store {
      * @param  mixed   $value
      * @return int|bool
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         return $this->incrementOrDecrement($key, $value, function ($current, $value) {
-                    return $current - $value;
-                });
+            return $current - $value;
+        });
     }
 
     /**
@@ -148,42 +154,43 @@ class DatabaseStore implements Store {
      * @param  \Closure  $callback
      * @return int|bool
      */
-    protected function incrementOrDecrement($key, $value, Closure $callback) {
+    protected function incrementOrDecrement($key, $value, Closure $callback)
+    {
         return $this->connection->transaction(function () use ($key, $value, $callback) {
-                    $prefixed = $this->prefix . $key;
+            $prefixed = $this->prefix.$key;
 
-                    $cache = $this->table()->where('key', $prefixed)
-                                    ->lockForUpdate()->first();
+            $cache = $this->table()->where('key', $prefixed)
+                        ->lockForUpdate()->first();
 
-                    // If there is no value in the cache, we will return false here. Otherwise the
-                    // value will be decrypted and we will proceed with this function to either
-                    // increment or decrement this value based on the given action callbacks.
-                    if (is_null($cache)) {
-                        return false;
-                    }
+            // If there is no value in the cache, we will return false here. Otherwise the
+            // value will be decrypted and we will proceed with this function to either
+            // increment or decrement this value based on the given action callbacks.
+            if (is_null($cache)) {
+                return false;
+            }
 
-                    $cache = is_array($cache) ? (object) $cache : $cache;
+            $cache = is_array($cache) ? (object) $cache : $cache;
 
-                    $current = $this->encrypter->decrypt($cache->value);
+            $current = $this->encrypter->decrypt($cache->value);
 
-                    // Here we'll call this callback function that was given to the function which
-                    // is used to either increment or decrement the function. We use a callback
-                    // so we do not have to recreate all this logic in each of the functions.
-                    $new = $callback((int) $current, $value);
+            // Here we'll call this callback function that was given to the function which
+            // is used to either increment or decrement the function. We use a callback
+            // so we do not have to recreate all this logic in each of the functions.
+            $new = $callback((int) $current, $value);
 
-                    if (!is_numeric($current)) {
-                        return false;
-                    }
+            if (! is_numeric($current)) {
+                return false;
+            }
 
-                    // Here we will update the values in the table. We will also encrypt the value
-                    // since database cache values are encrypted by default with secure storage
-                    // that can't be easily read. We will return the new value after storing.
-                    $this->table()->where('key', $prefixed)->update([
-                        'value' => $this->encrypter->encrypt($new),
-                    ]);
+            // Here we will update the values in the table. We will also encrypt the value
+            // since database cache values are encrypted by default with secure storage
+            // that can't be easily read. We will return the new value after storing.
+            $this->table()->where('key', $prefixed)->update([
+                'value' => $this->encrypter->encrypt($new),
+            ]);
 
-                    return $new;
-                });
+            return $new;
+        });
     }
 
     /**
@@ -191,7 +198,8 @@ class DatabaseStore implements Store {
      *
      * @return int
      */
-    protected function getTime() {
+    protected function getTime()
+    {
         return Carbon::now()->getTimestamp();
     }
 
@@ -202,7 +210,8 @@ class DatabaseStore implements Store {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         $this->put($key, $value, 5256000);
     }
 
@@ -212,8 +221,9 @@ class DatabaseStore implements Store {
      * @param  string  $key
      * @return bool
      */
-    public function forget($key) {
-        $this->table()->where('key', '=', $this->prefix . $key)->delete();
+    public function forget($key)
+    {
+        $this->table()->where('key', '=', $this->prefix.$key)->delete();
 
         return true;
     }
@@ -223,7 +233,8 @@ class DatabaseStore implements Store {
      *
      * @return bool
      */
-    public function flush() {
+    public function flush()
+    {
         return (bool) $this->table()->delete();
     }
 
@@ -232,7 +243,8 @@ class DatabaseStore implements Store {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function table() {
+    protected function table()
+    {
         return $this->connection->table($this->table);
     }
 
@@ -241,7 +253,8 @@ class DatabaseStore implements Store {
      *
      * @return \Illuminate\Database\ConnectionInterface
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 
@@ -250,7 +263,8 @@ class DatabaseStore implements Store {
      *
      * @return \Illuminate\Contracts\Encryption\Encrypter
      */
-    public function getEncrypter() {
+    public function getEncrypter()
+    {
         return $this->encrypter;
     }
 
@@ -259,8 +273,8 @@ class DatabaseStore implements Store {
      *
      * @return string
      */
-    public function getPrefix() {
+    public function getPrefix()
+    {
         return $this->prefix;
     }
-
 }

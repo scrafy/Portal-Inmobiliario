@@ -2,8 +2,8 @@
 
 namespace Illuminate\Translation;
 
-class ArrayLoader implements LoaderInterface {
-
+class ArrayLoader implements LoaderInterface
+{
     /**
      * All of the translation messages.
      *
@@ -19,7 +19,8 @@ class ArrayLoader implements LoaderInterface {
      * @param  string  $namespace
      * @return array
      */
-    public function load($locale, $group, $namespace = null) {
+    public function load($locale, $group, $namespace = null)
+    {
         $namespace = $namespace ?: '*';
 
         if (isset($this->messages[$namespace][$locale][$group])) {
@@ -36,7 +37,8 @@ class ArrayLoader implements LoaderInterface {
      * @param  string  $hint
      * @return void
      */
-    public function addNamespace($namespace, $hint) {
+    public function addNamespace($namespace, $hint)
+    {
         //
     }
 
@@ -49,7 +51,8 @@ class ArrayLoader implements LoaderInterface {
      * @param  string|null  $namespace
      * @return $this
      */
-    public function addMessages($locale, $group, array $messages, $namespace = null) {
+    public function addMessages($locale, $group, array $messages, $namespace = null)
+    {
         $namespace = $namespace ?: '*';
 
         $this->messages[$namespace][$locale][$group] = $messages;
@@ -62,8 +65,8 @@ class ArrayLoader implements LoaderInterface {
      *
      * @return array
      */
-    public function namespaces() {
+    public function namespaces()
+    {
         return [];
     }
-
 }

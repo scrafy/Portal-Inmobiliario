@@ -7,8 +7,8 @@ use Swift_Mime_Message;
 use Swift_Events_SendEvent;
 use Swift_Events_EventListener;
 
-abstract class Transport implements Swift_Transport {
-
+abstract class Transport implements Swift_Transport
+{
     /**
      * The plug-ins registered with the transport.
      *
@@ -19,21 +19,24 @@ abstract class Transport implements Swift_Transport {
     /**
      * {@inheritdoc}
      */
-    public function isStarted() {
+    public function isStarted()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function start() {
+    public function start()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function stop() {
+    public function stop()
+    {
         return true;
     }
 
@@ -43,7 +46,8 @@ abstract class Transport implements Swift_Transport {
      * @param  \Swift_Events_EventListener  $plugin
      * @return void
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) {
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
         array_push($this->plugins, $plugin);
     }
 
@@ -53,7 +57,8 @@ abstract class Transport implements Swift_Transport {
      * @param  \Swift_Mime_Message  $message
      * @return void
      */
-    protected function beforeSendPerformed(Swift_Mime_Message $message) {
+    protected function beforeSendPerformed(Swift_Mime_Message $message)
+    {
         $event = new Swift_Events_SendEvent($this, $message);
 
         foreach ($this->plugins as $plugin) {
@@ -69,7 +74,8 @@ abstract class Transport implements Swift_Transport {
      * @param  \Swift_Mime_Message  $message
      * @return void
      */
-    protected function sendPerformed(Swift_Mime_Message $message) {
+    protected function sendPerformed(Swift_Mime_Message $message)
+    {
         $event = new Swift_Events_SendEvent($this, $message);
 
         foreach ($this->plugins as $plugin) {
@@ -85,10 +91,10 @@ abstract class Transport implements Swift_Transport {
      * @param  \Swift_Mime_Message  $message
      * @return int
      */
-    protected function numberOfRecipients(Swift_Mime_Message $message) {
+    protected function numberOfRecipients(Swift_Mime_Message $message)
+    {
         return count(array_merge(
-                        (array) $message->getTo(), (array) $message->getCc(), (array) $message->getBcc()
+            (array) $message->getTo(), (array) $message->getCc(), (array) $message->getBcc()
         ));
     }
-
 }

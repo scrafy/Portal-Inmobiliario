@@ -1,5 +1,4 @@
 <?php
-
 /**
  * SplClassLoader implementation that implements the technical interoperability
  * standards for PHP 5.3 namespaces and class names.
@@ -20,8 +19,8 @@
 
 namespace Mockery;
 
-class Loader {
-
+class Loader
+{
     private $_fileExtension = '.php';
     private $_namespace;
     private $_includePath;
@@ -33,7 +32,8 @@ class Loader {
      *
      * @param string $ns The namespace to use.
      */
-    public function __construct($ns = 'Mockery', $includePath = null) {
+    public function __construct($ns = 'Mockery', $includePath = null)
+    {
         $this->_namespace = $ns;
         $this->_includePath = $includePath;
     }
@@ -43,7 +43,8 @@ class Loader {
      *
      * @param string $sep The separator to use.
      */
-    public function setNamespaceSeparator($sep) {
+    public function setNamespaceSeparator($sep)
+    {
         $this->_namespaceSeparator = $sep;
     }
 
@@ -52,7 +53,8 @@ class Loader {
      *
      * @return void
      */
-    public function getNamespaceSeparator() {
+    public function getNamespaceSeparator()
+    {
         return $this->_namespaceSeparator;
     }
 
@@ -61,7 +63,8 @@ class Loader {
      *
      * @param string $includePath
      */
-    public function setIncludePath($includePath) {
+    public function setIncludePath($includePath)
+    {
         $this->_includePath = $includePath;
     }
 
@@ -70,7 +73,8 @@ class Loader {
      *
      * @return string $includePath
      */
-    public function getIncludePath() {
+    public function getIncludePath()
+    {
         return $this->_includePath;
     }
 
@@ -79,7 +83,8 @@ class Loader {
      *
      * @param string $fileExtension
      */
-    public function setFileExtension($fileExtension) {
+    public function setFileExtension($fileExtension)
+    {
         $this->_fileExtension = $fileExtension;
     }
 
@@ -88,7 +93,8 @@ class Loader {
      *
      * @return string $fileExtension
      */
-    public function getFileExtension() {
+    public function getFileExtension()
+    {
         return $this->_fileExtension;
     }
 
@@ -97,14 +103,16 @@ class Loader {
      *
      * @param bool $prepend If true, prepend autoloader on the autoload stack
      */
-    public function register($prepend = false) {
+    public function register($prepend = false)
+    {
         spl_autoload_register(array($this, 'loadClass'), true, $prepend);
     }
 
     /**
      * Uninstalls this class loader from the SPL autoloader stack.
      */
-    public function unregister() {
+    public function unregister()
+    {
         spl_autoload_unregister(array($this, 'loadClass'));
     }
 
@@ -114,12 +122,14 @@ class Loader {
      * @param string $className The name of the class to load.
      * @return void
      */
-    public function loadClass($className) {
+    public function loadClass($className)
+    {
         if ($className === 'Mockery') {
             require $this->getFullPath('Mockery.php');
             return;
         }
-        if (null === $this->_namespace || $this->_namespace . $this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace . $this->_namespaceSeparator))) {
+        if (null === $this->_namespace
+        || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
             $fileName = '';
             $namespace = '';
             if (false !== ($lastNsPos = strripos($className, $this->_namespaceSeparator))) {
@@ -138,8 +148,8 @@ class Loader {
      * @param string $fileName relative to include path.
      * @return string
      */
-    private function getFullPath($fileName) {
+    private function getFullPath($fileName)
+    {
         return ($this->_includePath !== null ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
     }
-
 }

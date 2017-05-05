@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Transport_Esmtp_Authenticator {
-
+interface Swift_Transport_Esmtp_Authenticator
+{
     /**
      * Get the name of the AUTH mechanism this Authenticator handles.
      *

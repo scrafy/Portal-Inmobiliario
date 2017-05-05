@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class PropertyProperty extends Node\Stmt {
-
+class PropertyProperty extends Node\Stmt
+{
     /** @var string Name */
     public $name;
-
     /** @var null|Node\Expr Default */
     public $default;
 
@@ -28,5 +27,4 @@ class PropertyProperty extends Node\Stmt {
     public function getSubNodeNames() {
         return array('name', 'default');
     }
-
 }

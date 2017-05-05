@@ -21,17 +21,18 @@ use Symfony\Component\Config\Resource\FileResource;
  *
  * @author stealth35
  */
-class IcuDatFileLoader extends IcuResFileLoader {
-
+class IcuDatFileLoader extends IcuResFileLoader
+{
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $locale, $domain = 'messages') {
-        if (!stream_is_local($resource . '.dat')) {
+    public function load($resource, $locale, $domain = 'messages')
+    {
+        if (!stream_is_local($resource.'.dat')) {
             throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));
         }
 
-        if (!file_exists($resource . '.dat')) {
+        if (!file_exists($resource.'.dat')) {
             throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
         }
 
@@ -53,10 +54,9 @@ class IcuDatFileLoader extends IcuResFileLoader {
         $catalogue->add($messages, $domain);
 
         if (class_exists('Symfony\Component\Config\Resource\FileResource')) {
-            $catalogue->addResource(new FileResource($resource . '.dat'));
+            $catalogue->addResource(new FileResource($resource.'.dat'));
         }
 
         return $catalogue;
     }
-
 }

@@ -35,8 +35,8 @@ namespace Symfony\Component\Routing\Generator;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-interface ConfigurableRequirementsInterface {
-
+interface ConfigurableRequirementsInterface
+{
     /**
      * Enables or disables the exception on incorrect parameters.
      * Passing null will deactivate the requirements check completely.

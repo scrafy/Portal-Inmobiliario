@@ -5,8 +5,8 @@ namespace League\Flysystem\Adapter\Polyfill;
 /**
  * A helper for adapters that only handle strings to provide read streams.
  */
-trait StreamedReadingTrait {
-
+trait StreamedReadingTrait
+{
     /**
      * Reads a file as a stream.
      *
@@ -16,8 +16,9 @@ trait StreamedReadingTrait {
      *
      * @see League\Flysystem\ReadInterface::readStream()
      */
-    public function readStream($path) {
-        if (!$data = $this->read($path)) {
+    public function readStream($path)
+    {
+        if ( ! $data = $this->read($path)) {
             return false;
         }
 

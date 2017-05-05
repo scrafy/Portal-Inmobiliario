@@ -6,6 +6,7 @@
  * after this file is read.
  */
 return [
+
     // A list of directories that should be parsed for class and
     // method information. After excluding the directories
     // defined in exclude_analysis_directory_list, the remaining
@@ -27,6 +28,7 @@ return [
         'vendor/symfony/finder/',
         'vendor/symfony/var-dumper/',
     ],
+
     // A directory list that defines files that will be excluded
     // from static analysis, but whose class and method
     // information should be included.

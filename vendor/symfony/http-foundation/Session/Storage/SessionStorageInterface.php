@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
  */
-interface SessionStorageInterface {
-
+interface SessionStorageInterface
+{
     /**
      * Starts the session.
      *

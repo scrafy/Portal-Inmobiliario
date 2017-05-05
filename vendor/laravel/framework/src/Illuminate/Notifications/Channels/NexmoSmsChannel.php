@@ -6,8 +6,8 @@ use Nexmo\Client as NexmoClient;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\NexmoMessage;
 
-class NexmoSmsChannel {
-
+class NexmoSmsChannel
+{
     /**
      * The Nexmo client instance.
      *
@@ -29,7 +29,8 @@ class NexmoSmsChannel {
      * @param  string  $from
      * @return void
      */
-    public function __construct(NexmoClient $nexmo, $from) {
+    public function __construct(NexmoClient $nexmo, $from)
+    {
         $this->from = $from;
         $this->nexmo = $nexmo;
     }
@@ -41,8 +42,9 @@ class NexmoSmsChannel {
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return \Nexmo\Message\Message
      */
-    public function send($notifiable, Notification $notification) {
-        if (!$to = $notifiable->routeNotificationFor('nexmo')) {
+    public function send($notifiable, Notification $notification)
+    {
+        if (! $to = $notifiable->routeNotificationFor('nexmo')) {
             return;
         }
 
@@ -53,11 +55,10 @@ class NexmoSmsChannel {
         }
 
         return $this->nexmo->message()->send([
-                    'type' => $message->type,
-                    'from' => $message->from ?: $this->from,
-                    'to' => $to,
-                    'text' => trim($message->content),
+            'type' => $message->type,
+            'from' => $message->from ?: $this->from,
+            'to' => $to,
+            'text' => trim($message->content),
         ]);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -27,29 +26,31 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 /**
  * @requires PHP 7.1.0RC3
  */
-class MockingVoidMethodsTest extends MockeryTestCase {
-
-    public function setup() {
+class MockingVoidMethodsTest extends MockeryTestCase
+{
+    public function setup()
+    {
         require_once __DIR__ . '/Fixtures/VoidMethod.php';
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown() {
+    public function teardown()
+    {
         $this->container->mockery_close();
     }
 
     /** @test */
-    public function shouldAllowMockingVoidMethods() {
+    public function shouldAllowMockingVoidMethods()
+    {
         $this->expectOutputString('1');
 
         $mock = $this->container->mock('test\Mockery\Fixtures\VoidMethod');
         $mock->shouldReceive("foo")->andReturnUsing(
-                function () {
-            echo 1;
-        }
+            function () {
+                echo 1;
+            }
         );
 
         $mock->foo();
     }
-
 }

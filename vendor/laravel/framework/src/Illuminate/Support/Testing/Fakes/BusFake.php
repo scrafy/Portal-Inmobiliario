@@ -5,8 +5,8 @@ namespace Illuminate\Support\Testing\Fakes;
 use Illuminate\Contracts\Bus\Dispatcher;
 use PHPUnit_Framework_Assert as PHPUnit;
 
-class BusFake implements Dispatcher {
-
+class BusFake implements Dispatcher
+{
     /**
      * The commands that have been dispatched.
      *
@@ -21,9 +21,11 @@ class BusFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertDispatched($command, $callback = null) {
+    public function assertDispatched($command, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->dispatched($command, $callback)->count() > 0, "The expected [{$command}] job was not dispatched."
+            $this->dispatched($command, $callback)->count() > 0,
+            "The expected [{$command}] job was not dispatched."
         );
     }
 
@@ -34,9 +36,11 @@ class BusFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertNotDispatched($command, $callback = null) {
+    public function assertNotDispatched($command, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->dispatched($command, $callback)->count() === 0, "The unexpected [{$command}] job was dispatched."
+            $this->dispatched($command, $callback)->count() === 0,
+            "The unexpected [{$command}] job was dispatched."
         );
     }
 
@@ -47,8 +51,9 @@ class BusFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function dispatched($command, $callback = null) {
-        if (!$this->hasDispatched($command)) {
+    public function dispatched($command, $callback = null)
+    {
+        if (! $this->hasDispatched($command)) {
             return collect();
         }
 
@@ -57,8 +62,8 @@ class BusFake implements Dispatcher {
         };
 
         return collect($this->commands[$command])->filter(function ($command) use ($callback) {
-                    return $callback($command);
-                });
+            return $callback($command);
+        });
     }
 
     /**
@@ -67,8 +72,9 @@ class BusFake implements Dispatcher {
      * @param  string  $command
      * @return bool
      */
-    public function hasDispatched($command) {
-        return isset($this->commands[$command]) && !empty($this->commands[$command]);
+    public function hasDispatched($command)
+    {
+        return isset($this->commands[$command]) && ! empty($this->commands[$command]);
     }
 
     /**
@@ -77,7 +83,8 @@ class BusFake implements Dispatcher {
      * @param  mixed  $command
      * @return mixed
      */
-    public function dispatch($command) {
+    public function dispatch($command)
+    {
         return $this->dispatchNow($command);
     }
 
@@ -88,7 +95,8 @@ class BusFake implements Dispatcher {
      * @param  mixed  $handler
      * @return mixed
      */
-    public function dispatchNow($command, $handler = null) {
+    public function dispatchNow($command, $handler = null)
+    {
         $this->commands[get_class($command)][] = $command;
     }
 
@@ -98,8 +106,8 @@ class BusFake implements Dispatcher {
      * @param  array  $pipes
      * @return $this
      */
-    public function pipeThrough(array $pipes) {
+    public function pipeThrough(array $pipes)
+    {
         //
     }
-
 }

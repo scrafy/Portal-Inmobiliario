@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Config;
 
-interface Repository {
-
+interface Repository
+{
     /**
      * Determine if the given configuration value exists.
      *

@@ -24,14 +24,15 @@ namespace Illuminate\Support\Facades;
  * @see \Illuminate\Contracts\Auth\Guard
  * @see \Illuminate\Contracts\Auth\StatefulGuard
  */
-class Auth extends Facade {
-
+class Auth extends Facade
+{
     /**
      * Get the registered name of the component.
      *
      * @return string
      */
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return 'auth';
     }
 
@@ -40,8 +41,8 @@ class Auth extends Facade {
      *
      * @return void
      */
-    public static function routes() {
+    public static function routes()
+    {
         static::$app->make('router')->auth();
     }
-
 }

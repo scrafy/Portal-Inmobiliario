@@ -27,8 +27,8 @@ use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerPatterns;
  *
  * @internal
  */
-class IdentifierHandler implements HandlerInterface {
-
+class IdentifierHandler implements HandlerInterface
+{
     /**
      * @var TokenizerPatterns
      */
@@ -43,7 +43,8 @@ class IdentifierHandler implements HandlerInterface {
      * @param TokenizerPatterns $patterns
      * @param TokenizerEscaping $escaping
      */
-    public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping) {
+    public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
+    {
         $this->patterns = $patterns;
         $this->escaping = $escaping;
     }
@@ -51,7 +52,8 @@ class IdentifierHandler implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function handle(Reader $reader, TokenStream $stream) {
+    public function handle(Reader $reader, TokenStream $stream)
+    {
         $match = $reader->findPattern($this->patterns->getIdentifierPattern());
 
         if (!$match) {
@@ -64,5 +66,4 @@ class IdentifierHandler implements HandlerInterface {
 
         return true;
     }
-
 }

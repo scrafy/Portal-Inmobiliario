@@ -13,22 +13,25 @@ namespace Psy\Test\CodeCleaner;
 
 use Psy\CodeCleaner\ImplicitReturnPass;
 
-class ImplicitReturnPassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
+class ImplicitReturnPassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
         $this->setPass(new ImplicitReturnPass());
     }
 
     /**
      * @dataProvider implicitReturns
      */
-    public function testProcess($from, $to) {
+    public function testProcess($from, $to)
+    {
         $this->assertProcessesAs($from, $to);
     }
 
-    public function implicitReturns() {
+    public function implicitReturns()
+    {
         $values = array(
-            array('4', 'return 4;'),
+            array('4',     'return 4;'),
             array('foo()', 'return foo();'),
         );
 
@@ -40,5 +43,4 @@ class ImplicitReturnPassTest extends CodeCleanerTestCase {
 
         return $values;
     }
-
 }

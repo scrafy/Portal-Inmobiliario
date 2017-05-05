@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -27,8 +26,8 @@ namespace phpDocumentor\Reflection\Types;
  * @see ContextFactory::createFromClassReflector()
  * @see ContextFactory::createForNamespace()
  */
-final class Context {
-
+final class Context
+{
     /** @var string The current namespace. */
     private $namespace = '';
 
@@ -42,8 +41,11 @@ final class Context {
      * @param string $namespace The namespace where this DocBlock resides in.
      * @param array $namespaceAliases List of namespace aliases => Fully Qualified Namespace.
      */
-    public function __construct($namespace, array $namespaceAliases = []) {
-        $this->namespace = ('global' !== $namespace && 'default' !== $namespace) ? trim((string) $namespace, '\\') : '';
+    public function __construct($namespace, array $namespaceAliases = [])
+    {
+        $this->namespace = ('global' !== $namespace && 'default' !== $namespace)
+            ? trim((string)$namespace, '\\')
+            : '';
 
         foreach ($namespaceAliases as $alias => $fqnn) {
             if ($fqnn[0] === '\\') {
@@ -64,7 +66,8 @@ final class Context {
      *
      * @return string
      */
-    public function getNamespace() {
+    public function getNamespace()
+    {
         return $this->namespace;
     }
 
@@ -74,8 +77,8 @@ final class Context {
      *
      * @return string[]
      */
-    public function getNamespaceAliases() {
+    public function getNamespaceAliases()
+    {
         return $this->namespaceAliases;
     }
-
 }

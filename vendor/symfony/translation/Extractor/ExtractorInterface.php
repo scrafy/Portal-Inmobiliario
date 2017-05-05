@@ -19,8 +19,8 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-interface ExtractorInterface {
-
+interface ExtractorInterface
+{
     /**
      * Extracts translation messages from files, a file or a directory to the catalogue.
      *

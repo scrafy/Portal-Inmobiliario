@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Constraint that accepts infinite.
  */
-class PHPUnit_Framework_Constraint_IsInfinite extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_IsInfinite extends PHPUnit_Framework_Constraint
+{
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -22,7 +21,8 @@ class PHPUnit_Framework_Constraint_IsInfinite extends PHPUnit_Framework_Constrai
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return is_infinite($other);
     }
 
@@ -31,8 +31,8 @@ class PHPUnit_Framework_Constraint_IsInfinite extends PHPUnit_Framework_Constrai
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'is infinite';
     }
-
 }

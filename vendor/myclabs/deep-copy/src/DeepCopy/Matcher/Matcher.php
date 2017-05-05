@@ -5,8 +5,8 @@ namespace DeepCopy\Matcher;
 /**
  * Matcher interface
  */
-interface Matcher {
-
+interface Matcher
+{
     /**
      * @param object $object
      * @param string $property

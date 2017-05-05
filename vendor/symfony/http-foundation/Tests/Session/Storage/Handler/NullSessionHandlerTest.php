@@ -24,14 +24,16 @@ use Symfony\Component\HttpFoundation\Session\Session;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class NullSessionHandlerTest extends TestCase {
-
-    public function testSaveHandlers() {
+class NullSessionHandlerTest extends TestCase
+{
+    public function testSaveHandlers()
+    {
         $storage = $this->getStorage();
         $this->assertEquals('user', ini_get('session.save_handler'));
     }
 
-    public function testSession() {
+    public function testSession()
+    {
         session_id('nullsessionstorage');
         $storage = $this->getStorage();
         $session = new Session($storage);
@@ -40,7 +42,8 @@ class NullSessionHandlerTest extends TestCase {
         $this->assertEquals('unique', $session->get('something'));
     }
 
-    public function testNothingIsPersisted() {
+    public function testNothingIsPersisted()
+    {
         session_id('nullsessionstorage');
         $storage = $this->getStorage();
         $session = new Session($storage);
@@ -49,8 +52,8 @@ class NullSessionHandlerTest extends TestCase {
         $this->assertNull($session->get('something'));
     }
 
-    public function getStorage() {
+    public function getStorage()
+    {
         return new NativeSessionStorage(array(), new NullSessionHandler());
     }
-
 }

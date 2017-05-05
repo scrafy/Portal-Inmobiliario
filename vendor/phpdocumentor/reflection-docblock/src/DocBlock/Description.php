@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -49,8 +48,8 @@ use Webmozart\Assert\Assert;
  * @see DescriptionFactory to create a new Description.
  * @see Description\Formatter for the formatting of the body and tags.
  */
-class Description {
-
+class Description
+{
     /** @var string */
     private $bodyTemplate;
 
@@ -63,7 +62,8 @@ class Description {
      * @param string $bodyTemplate
      * @param Tag[] $tags
      */
-    public function __construct($bodyTemplate, array $tags = []) {
+    public function __construct($bodyTemplate, array $tags = [])
+    {
         Assert::string($bodyTemplate);
 
         $this->bodyTemplate = $bodyTemplate;
@@ -78,7 +78,8 @@ class Description {
      *
      * @return string
      */
-    public function render(Formatter $formatter = null) {
+    public function render(Formatter $formatter = null)
+    {
         if ($formatter === null) {
             $formatter = new PassthroughFormatter();
         }
@@ -95,8 +96,8 @@ class Description {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->render();
     }
-
 }

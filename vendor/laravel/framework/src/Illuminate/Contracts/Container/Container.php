@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Container;
 
 use Closure;
 
-interface Container {
-
+interface Container
+{
     /**
      * Determine if the given abstract type has been bound.
      *

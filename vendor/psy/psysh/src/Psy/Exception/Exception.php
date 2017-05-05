@@ -14,8 +14,8 @@ namespace Psy\Exception;
 /**
  * An interface for Psy Exceptions.
  */
-interface Exception {
-
+interface Exception
+{
     /**
      * This is the only thing, really...
      *

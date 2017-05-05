@@ -17,26 +17,29 @@ use Psy\Exception\BreakException;
 /**
  * Hoa\Console Readline implementation.
  */
-class HoaConsole implements Readline {
-
+class HoaConsole implements Readline
+{
     /** @var HoaReadline */
     private $hoaReadline;
 
     /**
      * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return class_exists('\Hoa\Console\Console', true);
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->hoaReadline = new HoaReadline();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addHistory($line) {
+    public function addHistory($line)
+    {
         $this->hoaReadline->addHistory($line);
 
         return true;
@@ -45,7 +48,8 @@ class HoaConsole implements Readline {
     /**
      * {@inheritdoc}
      */
-    public function clearHistory() {
+    public function clearHistory()
+    {
         $this->hoaReadline->clearHistory();
 
         return true;
@@ -54,7 +58,8 @@ class HoaConsole implements Readline {
     /**
      * {@inheritdoc}
      */
-    public function listHistory() {
+    public function listHistory()
+    {
         $i = 0;
         $list = array();
         while (($item = $this->hoaReadline->getHistory($i++)) !== null) {
@@ -67,7 +72,8 @@ class HoaConsole implements Readline {
     /**
      * {@inheritdoc}
      */
-    public function readHistory() {
+    public function readHistory()
+    {
         return true;
     }
 
@@ -78,22 +84,24 @@ class HoaConsole implements Readline {
      *
      * @return string
      */
-    public function readline($prompt = null) {
+    public function readline($prompt = null)
+    {
         return $this->hoaReadline->readLine($prompt);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function redisplay() {
+    public function redisplay()
+    {
         // noop
     }
 
     /**
      * {@inheritdoc}
      */
-    public function writeHistory() {
+    public function writeHistory()
+    {
         return true;
     }
-
 }

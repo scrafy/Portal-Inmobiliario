@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Pagination;
 
-interface Paginator {
-
+interface Paginator
+{
     /**
      * Get the URL for a given page.
      *

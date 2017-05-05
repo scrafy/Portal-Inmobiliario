@@ -16,8 +16,8 @@ use Symfony\Component\VarDumper\Caster\Caster;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class Data {
-
+class Data
+{
     private $data;
     private $position = 0;
     private $key = 0;
@@ -28,14 +28,16 @@ class Data {
     /**
      * @param array $data A array as returned by ClonerInterface::cloneVar()
      */
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
         $this->data = $data;
     }
 
     /**
      * @return array The raw data structure
      */
-    public function getRawData() {
+    public function getRawData()
+    {
         return $this->data;
     }
 
@@ -46,7 +48,8 @@ class Data {
      *
      * @return self A clone of $this
      */
-    public function withMaxDepth($maxDepth) {
+    public function withMaxDepth($maxDepth)
+    {
         $data = clone $this;
         $data->maxDepth = (int) $maxDepth;
 
@@ -60,7 +63,8 @@ class Data {
      *
      * @return self A clone of $this
      */
-    public function withMaxItemsPerDepth($maxItemsPerDepth) {
+    public function withMaxItemsPerDepth($maxItemsPerDepth)
+    {
         $data = clone $this;
         $data->maxItemsPerDepth = (int) $maxItemsPerDepth;
 
@@ -74,7 +78,8 @@ class Data {
      *
      * @return self A clone of $this
      */
-    public function withRefHandles($useRefHandles) {
+    public function withRefHandles($useRefHandles)
+    {
         $data = clone $this;
         $data->useRefHandles = $useRefHandles ? -1 : 0;
 
@@ -88,7 +93,8 @@ class Data {
      *
      * @return self|null A clone of $this of null if the key is not set
      */
-    public function seek($key) {
+    public function seek($key)
+    {
         $item = $this->data[$this->position][$this->key];
 
         if (!$item instanceof Stub || !$item->position) {
@@ -98,9 +104,9 @@ class Data {
 
         switch ($item->type) {
             case Stub::TYPE_OBJECT:
-                $keys[] = Caster::PREFIX_DYNAMIC . $key;
-                $keys[] = Caster::PREFIX_PROTECTED . $key;
-                $keys[] = Caster::PREFIX_VIRTUAL . $key;
+                $keys[] = Caster::PREFIX_DYNAMIC.$key;
+                $keys[] = Caster::PREFIX_PROTECTED.$key;
+                $keys[] = Caster::PREFIX_VIRTUAL.$key;
                 $keys[] = "\0$item->class\0$key";
             case Stub::TYPE_ARRAY:
             case Stub::TYPE_RESOURCE:
@@ -127,7 +133,8 @@ class Data {
     /**
      * Dumps data with a DumperInterface dumper.
      */
-    public function dump(DumperInterface $dumper) {
+    public function dump(DumperInterface $dumper)
+    {
         $refs = array(0);
         $this->dumpItem($dumper, new Cursor(), $refs, $this->data[$this->position][$this->key]);
     }
@@ -140,7 +147,8 @@ class Data {
      * @param array           &$refs  A map of all references discovered while dumping
      * @param mixed           $item   A Stub object or the original value being dumped
      */
-    private function dumpItem($dumper, $cursor, &$refs, $item) {
+    private function dumpItem($dumper, $cursor, &$refs, $item)
+    {
         $cursor->refIndex = 0;
         $cursor->softRefTo = $cursor->softRefHandle = $cursor->softRefCount = 0;
         $cursor->hardRefTo = $cursor->hardRefHandle = $cursor->hardRefCount = 0;
@@ -199,7 +207,7 @@ class Data {
                     $item = clone $item;
                     $item->type = $item->class;
                     $item->class = $item->value;
-                // No break;
+                    // No break;
                 case Stub::TYPE_OBJECT:
                 case Stub::TYPE_RESOURCE:
                     $withChildren = $children && $cursor->depth !== $this->maxDepth && $this->maxItemsPerDepth;
@@ -238,7 +246,8 @@ class Data {
      *
      * @return int The final number of removed items
      */
-    private function dumpChildren($dumper, $parentCursor, &$refs, $children, $hashCut, $hashType, $dumpKeys) {
+    private function dumpChildren($dumper, $parentCursor, &$refs, $children, $hashCut, $hashType, $dumpKeys)
+    {
         $cursor = clone $parentCursor;
         ++$cursor->depth;
         $cursor->hashType = $hashType;
@@ -258,5 +267,4 @@ class Data {
 
         return $hashCut;
     }
-
 }

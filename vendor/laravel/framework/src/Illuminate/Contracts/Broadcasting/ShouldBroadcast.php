@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Broadcasting;
 
-interface ShouldBroadcast {
-
+interface ShouldBroadcast
+{
     /**
      * Get the channels the event should broadcast on.
      *

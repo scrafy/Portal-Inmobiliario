@@ -17,19 +17,21 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 /**
  * @author Sebastian Marek <proofek@gmail.com>
  */
-class ProcessFailedExceptionTest extends TestCase {
-
+class ProcessFailedExceptionTest extends TestCase
+{
     /**
      * tests ProcessFailedException throws exception if the process was successful.
      */
-    public function testProcessFailedExceptionThrowsException() {
+    public function testProcessFailedExceptionThrowsException()
+    {
         $process = $this->getMockBuilder('Symfony\Component\Process\Process')->setMethods(array('isSuccessful'))->setConstructorArgs(array('php'))->getMock();
         $process->expects($this->once())
-                ->method('isSuccessful')
-                ->will($this->returnValue(true));
+            ->method('isSuccessful')
+            ->will($this->returnValue(true));
 
         $this->{method_exists($this, $_ = 'expectException') ? $_ : 'setExpectedException'}(
-                '\InvalidArgumentException', 'Expected a failed process, but the given process was successful.'
+            '\InvalidArgumentException',
+            'Expected a failed process, but the given process was successful.'
         );
 
         new ProcessFailedException($process);
@@ -39,7 +41,8 @@ class ProcessFailedExceptionTest extends TestCase {
      * tests ProcessFailedException uses information from process output
      * to generate exception message.
      */
-    public function testProcessFailedExceptionPopulatesInformationFromProcessOutput() {
+    public function testProcessFailedExceptionPopulatesInformationFromProcessOutput()
+    {
         $cmd = 'php';
         $exitCode = 1;
         $exitText = 'General error';
@@ -49,37 +52,38 @@ class ProcessFailedExceptionTest extends TestCase {
 
         $process = $this->getMockBuilder('Symfony\Component\Process\Process')->setMethods(array('isSuccessful', 'getOutput', 'getErrorOutput', 'getExitCode', 'getExitCodeText', 'isOutputDisabled', 'getWorkingDirectory'))->setConstructorArgs(array($cmd))->getMock();
         $process->expects($this->once())
-                ->method('isSuccessful')
-                ->will($this->returnValue(false));
+            ->method('isSuccessful')
+            ->will($this->returnValue(false));
 
         $process->expects($this->once())
-                ->method('getOutput')
-                ->will($this->returnValue($output));
+            ->method('getOutput')
+            ->will($this->returnValue($output));
 
         $process->expects($this->once())
-                ->method('getErrorOutput')
-                ->will($this->returnValue($errorOutput));
+            ->method('getErrorOutput')
+            ->will($this->returnValue($errorOutput));
 
         $process->expects($this->once())
-                ->method('getExitCode')
-                ->will($this->returnValue($exitCode));
+            ->method('getExitCode')
+            ->will($this->returnValue($exitCode));
 
         $process->expects($this->once())
-                ->method('getExitCodeText')
-                ->will($this->returnValue($exitText));
+            ->method('getExitCodeText')
+            ->will($this->returnValue($exitText));
 
         $process->expects($this->once())
-                ->method('isOutputDisabled')
-                ->will($this->returnValue(false));
+            ->method('isOutputDisabled')
+            ->will($this->returnValue(false));
 
         $process->expects($this->once())
-                ->method('getWorkingDirectory')
-                ->will($this->returnValue($workingDirectory));
+            ->method('getWorkingDirectory')
+            ->will($this->returnValue($workingDirectory));
 
         $exception = new ProcessFailedException($process);
 
         $this->assertEquals(
-                "The command \"$cmd\" failed.\n\nExit Code: $exitCode($exitText)\n\nWorking directory: {$workingDirectory}\n\nOutput:\n================\n{$output}\n\nError Output:\n================\n{$errorOutput}", $exception->getMessage()
+            "The command \"$cmd\" failed.\n\nExit Code: $exitCode($exitText)\n\nWorking directory: {$workingDirectory}\n\nOutput:\n================\n{$output}\n\nError Output:\n================\n{$errorOutput}",
+            $exception->getMessage()
         );
     }
 
@@ -87,7 +91,8 @@ class ProcessFailedExceptionTest extends TestCase {
      * Tests that ProcessFailedException does not extract information from
      * process output if it was previously disabled.
      */
-    public function testDisabledOutputInFailedExceptionDoesNotPopulateOutput() {
+    public function testDisabledOutputInFailedExceptionDoesNotPopulateOutput()
+    {
         $cmd = 'php';
         $exitCode = 1;
         $exitText = 'General error';
@@ -95,36 +100,36 @@ class ProcessFailedExceptionTest extends TestCase {
 
         $process = $this->getMockBuilder('Symfony\Component\Process\Process')->setMethods(array('isSuccessful', 'isOutputDisabled', 'getExitCode', 'getExitCodeText', 'getOutput', 'getErrorOutput', 'getWorkingDirectory'))->setConstructorArgs(array($cmd))->getMock();
         $process->expects($this->once())
-                ->method('isSuccessful')
-                ->will($this->returnValue(false));
+            ->method('isSuccessful')
+            ->will($this->returnValue(false));
 
         $process->expects($this->never())
-                ->method('getOutput');
+            ->method('getOutput');
 
         $process->expects($this->never())
-                ->method('getErrorOutput');
+            ->method('getErrorOutput');
 
         $process->expects($this->once())
-                ->method('getExitCode')
-                ->will($this->returnValue($exitCode));
+            ->method('getExitCode')
+            ->will($this->returnValue($exitCode));
 
         $process->expects($this->once())
-                ->method('getExitCodeText')
-                ->will($this->returnValue($exitText));
+            ->method('getExitCodeText')
+            ->will($this->returnValue($exitText));
 
         $process->expects($this->once())
-                ->method('isOutputDisabled')
-                ->will($this->returnValue(true));
+            ->method('isOutputDisabled')
+            ->will($this->returnValue(true));
 
         $process->expects($this->once())
-                ->method('getWorkingDirectory')
-                ->will($this->returnValue($workingDirectory));
+            ->method('getWorkingDirectory')
+            ->will($this->returnValue($workingDirectory));
 
         $exception = new ProcessFailedException($process);
 
         $this->assertEquals(
-                "The command \"$cmd\" failed.\n\nExit Code: $exitCode($exitText)\n\nWorking directory: {$workingDirectory}", $exception->getMessage()
+            "The command \"$cmd\" failed.\n\nExit Code: $exitCode($exitText)\n\nWorking directory: {$workingDirectory}",
+            $exception->getMessage()
         );
     }
-
 }

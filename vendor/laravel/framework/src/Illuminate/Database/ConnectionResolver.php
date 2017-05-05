@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database;
 
-class ConnectionResolver implements ConnectionResolverInterface {
-
+class ConnectionResolver implements ConnectionResolverInterface
+{
     /**
      * All of the registered connections.
      *
@@ -24,7 +24,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      * @param  array  $connections
      * @return void
      */
-    public function __construct(array $connections = []) {
+    public function __construct(array $connections = [])
+    {
         foreach ($connections as $name => $connection) {
             $this->addConnection($name, $connection);
         }
@@ -36,7 +37,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      * @param  string  $name
      * @return \Illuminate\Database\ConnectionInterface
      */
-    public function connection($name = null) {
+    public function connection($name = null)
+    {
         if (is_null($name)) {
             $name = $this->getDefaultConnection();
         }
@@ -51,7 +53,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      * @param  \Illuminate\Database\ConnectionInterface  $connection
      * @return void
      */
-    public function addConnection($name, ConnectionInterface $connection) {
+    public function addConnection($name, ConnectionInterface $connection)
+    {
         $this->connections[$name] = $connection;
     }
 
@@ -61,7 +64,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      * @param  string  $name
      * @return bool
      */
-    public function hasConnection($name) {
+    public function hasConnection($name)
+    {
         return isset($this->connections[$name]);
     }
 
@@ -70,7 +74,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      *
      * @return string
      */
-    public function getDefaultConnection() {
+    public function getDefaultConnection()
+    {
         return $this->default;
     }
 
@@ -80,8 +85,8 @@ class ConnectionResolver implements ConnectionResolverInterface {
      * @param  string  $name
      * @return void
      */
-    public function setDefaultConnection($name) {
+    public function setDefaultConnection($name)
+    {
         $this->default = $name;
     }
-
 }

@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class Assign extends Expr {
-
+class Assign extends Expr
+{
     /** @var Expr Variable */
     public $var;
-
     /** @var Expr Expression */
     public $expr;
 
@@ -28,5 +27,4 @@ class Assign extends Expr {
     public function getSubNodeNames() {
         return array('var', 'expr');
     }
-
 }

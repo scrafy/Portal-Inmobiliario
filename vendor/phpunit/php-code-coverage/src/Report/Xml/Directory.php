@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -11,6 +10,6 @@
 
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
-class Directory extends Node {
-    
+class Directory extends Node
+{
 }

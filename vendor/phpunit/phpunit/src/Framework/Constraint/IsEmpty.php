@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Constraint that checks whether a variable is empty().
  */
-class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
+{
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -22,7 +21,8 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint 
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         if ($other instanceof Countable) {
             return count($other) === 0;
         }
@@ -35,7 +35,8 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint 
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'is empty';
     }
 
@@ -49,12 +50,15 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint 
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         $type = gettype($other);
 
         return sprintf(
-                '%s %s %s', $type[0] == 'a' || $type[0] == 'o' ? 'an' : 'a', $type, $this->toString()
+            '%s %s %s',
+            $type[0] == 'a' || $type[0] == 'o' ? 'an' : 'a',
+            $type,
+            $this->toString()
         );
     }
-
 }

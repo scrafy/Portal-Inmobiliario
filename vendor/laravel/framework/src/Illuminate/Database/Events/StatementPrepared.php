@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Events;
 
-class StatementPrepared {
-
+class StatementPrepared
+{
     /**
      * The database connection instance.
      *
@@ -25,9 +25,9 @@ class StatementPrepared {
      * @param  \PDOStatement  $statement
      * @return void
      */
-    public function __construct($connection, $statement) {
+    public function __construct($connection, $statement)
+    {
         $this->statement = $statement;
         $this->connection = $connection;
     }
-
 }

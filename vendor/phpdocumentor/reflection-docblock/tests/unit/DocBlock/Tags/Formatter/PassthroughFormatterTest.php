@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -20,22 +19,23 @@ use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
  */
-class PassthroughFormatterTest extends \PHPUnit_Framework_TestCase {
-
+class PassthroughFormatterTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::format
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses \phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testFormatterCallsToStringAndReturnsAStandardRepresentation() {
+    public function testFormatterCallsToStringAndReturnsAStandardRepresentation()
+    {
         $expected = '@unknown-tag This is a description';
 
         $fixture = new PassthroughFormatter();
 
         $this->assertSame(
-                $expected, $fixture->format(new Generic('unknown-tag', new Description('This is a description')))
+            $expected,
+            $fixture->format(new Generic('unknown-tag', new Description('This is a description')))
         );
     }
-
 }

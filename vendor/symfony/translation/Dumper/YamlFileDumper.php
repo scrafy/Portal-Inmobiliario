@@ -21,12 +21,13 @@ use Symfony\Component\Translation\Exception\LogicException;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-class YamlFileDumper extends FileDumper {
-
+class YamlFileDumper extends FileDumper
+{
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array()) {
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    {
         if (!class_exists('Symfony\Component\Yaml\Yaml')) {
             throw new LogicException('Dumping translations in the YAML format requires the Symfony Yaml component.');
         }
@@ -47,8 +48,8 @@ class YamlFileDumper extends FileDumper {
     /**
      * {@inheritdoc}
      */
-    protected function getExtension() {
+    protected function getExtension()
+    {
         return 'yml';
     }
-
 }

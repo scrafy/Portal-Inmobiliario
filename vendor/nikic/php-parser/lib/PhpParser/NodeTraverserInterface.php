@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-interface NodeTraverserInterface {
-
+interface NodeTraverserInterface
+{
     /**
      * Adds a visitor.
      *
@@ -27,3 +27,4 @@ interface NodeTraverserInterface {
      */
     function traverse(array $nodes);
 }
+

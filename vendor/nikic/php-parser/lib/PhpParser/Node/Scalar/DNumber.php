@@ -4,8 +4,8 @@ namespace PhpParser\Node\Scalar;
 
 use PhpParser\Node\Scalar;
 
-class DNumber extends Scalar {
-
+class DNumber extends Scalar
+{
     /** @var float Number value */
     public $value;
 
@@ -61,5 +61,4 @@ class DNumber extends Scalar {
         // dec
         return (float) $str;
     }
-
 }

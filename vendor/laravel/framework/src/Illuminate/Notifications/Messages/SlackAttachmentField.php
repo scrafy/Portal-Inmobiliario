@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Messages;
 
-class SlackAttachmentField {
-
+class SlackAttachmentField
+{
     /**
      * The title field of the attachment field.
      *
@@ -31,7 +31,8 @@ class SlackAttachmentField {
      * @param  string $title
      * @return $this
      */
-    public function title($title) {
+    public function title($title)
+    {
         $this->title = $title;
 
         return $this;
@@ -43,7 +44,8 @@ class SlackAttachmentField {
      * @param  string $content
      * @return $this
      */
-    public function content($content) {
+    public function content($content)
+    {
         $this->content = $content;
 
         return $this;
@@ -54,7 +56,8 @@ class SlackAttachmentField {
      *
      * @return $this
      */
-    public function long() {
+    public function long()
+    {
         $this->short = false;
 
         return $this;
@@ -65,12 +68,12 @@ class SlackAttachmentField {
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return [
             'title' => $this->title,
             'value' => $this->content,
             'short' => $this->short,
         ];
     }
-
 }

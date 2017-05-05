@@ -4,8 +4,8 @@ namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\Store;
 
-class NullStore extends TaggableStore implements Store {
-
+class NullStore extends TaggableStore implements Store
+{
     use RetrievesMultipleKeys;
 
     /**
@@ -21,7 +21,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  string  $key
      * @return mixed
      */
-    public function get($key) {
+    public function get($key)
+    {
         //
     }
 
@@ -33,7 +34,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes) {
+    public function put($key, $value, $minutes)
+    {
         //
     }
 
@@ -44,7 +46,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         //
     }
 
@@ -55,7 +58,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         //
     }
 
@@ -66,7 +70,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         //
     }
 
@@ -76,7 +81,8 @@ class NullStore extends TaggableStore implements Store {
      * @param  string  $key
      * @return void
      */
-    public function forget($key) {
+    public function forget($key)
+    {
         //
     }
 
@@ -85,7 +91,8 @@ class NullStore extends TaggableStore implements Store {
      *
      * @return bool
      */
-    public function flush() {
+    public function flush()
+    {
         return true;
     }
 
@@ -94,8 +101,8 @@ class NullStore extends TaggableStore implements Store {
      *
      * @return string
      */
-    public function getPrefix() {
+    public function getPrefix()
+    {
         return '';
     }
-
 }

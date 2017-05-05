@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class GetResponseForControllerResultEvent extends GetResponseEvent {
-
+class GetResponseForControllerResultEvent extends GetResponseEvent
+{
     /**
      * The return value of the controller.
      *
@@ -32,7 +32,8 @@ class GetResponseForControllerResultEvent extends GetResponseEvent {
      */
     private $controllerResult;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, $requestType, $controllerResult) {
+    public function __construct(HttpKernelInterface $kernel, Request $request, $requestType, $controllerResult)
+    {
         parent::__construct($kernel, $request, $requestType);
 
         $this->controllerResult = $controllerResult;
@@ -43,7 +44,8 @@ class GetResponseForControllerResultEvent extends GetResponseEvent {
      *
      * @return mixed The controller return value
      */
-    public function getControllerResult() {
+    public function getControllerResult()
+    {
         return $this->controllerResult;
     }
 
@@ -52,8 +54,8 @@ class GetResponseForControllerResultEvent extends GetResponseEvent {
      *
      * @param mixed $controllerResult The controller return value
      */
-    public function setControllerResult($controllerResult) {
+    public function setControllerResult($controllerResult)
+    {
         $this->controllerResult = $controllerResult;
     }
-
 }

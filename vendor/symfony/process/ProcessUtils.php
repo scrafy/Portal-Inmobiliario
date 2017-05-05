@@ -20,13 +20,13 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class ProcessUtils {
-
+class ProcessUtils
+{
     /**
      * This class should not be instantiated.
      */
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
     /**
@@ -36,7 +36,8 @@ class ProcessUtils {
      *
      * @return string The escaped argument
      */
-    public static function escapeArgument($argument) {
+    public static function escapeArgument($argument)
+    {
         //Fix for PHP bug #43784 escapeshellarg removes % from given string
         //Fix for PHP bug #49446 escapeshellarg doesn't work on Windows
         //@see https://bugs.php.net/bug.php?id=43784
@@ -53,7 +54,7 @@ class ProcessUtils {
                     $escapedArgument .= '\\"';
                 } elseif (self::isSurroundedBy($part, '%')) {
                     // Avoid environment variable expansion
-                    $escapedArgument .= '^%"' . substr($part, 1, -1) . '"^%';
+                    $escapedArgument .= '^%"'.substr($part, 1, -1).'"^%';
                 } else {
                     // escape trailing backslash
                     if ('\\' === substr($part, -1)) {
@@ -64,13 +65,13 @@ class ProcessUtils {
                 }
             }
             if ($quote) {
-                $escapedArgument = '"' . $escapedArgument . '"';
+                $escapedArgument = '"'.$escapedArgument.'"';
             }
 
             return $escapedArgument;
         }
 
-        return "'" . str_replace("'", "'\\''", $argument) . "'";
+        return "'".str_replace("'", "'\\''", $argument)."'";
     }
 
     /**
@@ -83,7 +84,8 @@ class ProcessUtils {
      *
      * @throws InvalidArgumentException In case the input is not valid
      */
-    public static function validateInput($caller, $input) {
+    public static function validateInput($caller, $input)
+    {
         if (null !== $input) {
             if (is_resource($input)) {
                 return $input;
@@ -110,8 +112,8 @@ class ProcessUtils {
         return $input;
     }
 
-    private static function isSurroundedBy($arg, $char) {
+    private static function isSurroundedBy($arg, $char)
+    {
         return 2 < strlen($arg) && $char === $arg[0] && $char === $arg[strlen($arg) - 1];
     }
-
 }

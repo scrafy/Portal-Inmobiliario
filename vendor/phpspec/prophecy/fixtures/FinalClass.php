@@ -2,6 +2,6 @@
 
 namespace Fixtures\Prophecy;
 
-final class FinalClass {
-    
+final class FinalClass
+{
 }

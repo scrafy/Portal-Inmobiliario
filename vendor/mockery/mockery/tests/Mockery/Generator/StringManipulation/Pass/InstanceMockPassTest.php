@@ -6,12 +6,13 @@ use Mockery as m;
 use Mockery\Generator\MockConfigurationBuilder;
 use Mockery\Generator\StringManipulation\Pass\InstanceMockPass;
 
-class InstanceMockPassTest extends \PHPUnit_Framework_TestCase {
-
+class InstanceMockPassTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
-    public function shouldAppendConstructorAndPropertyForInstanceMock() {
+    public function shouldAppendConstructorAndPropertyForInstanceMock()
+    {
         $builder = new MockConfigurationBuilder;
         $builder->setInstanceMock(true);
         $config = $builder->getMockConfiguration();
@@ -20,5 +21,4 @@ class InstanceMockPassTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains('public function __construct', $code);
         $this->assertContains('protected $_mockery_ignoreVerification', $code);
     }
-
 }

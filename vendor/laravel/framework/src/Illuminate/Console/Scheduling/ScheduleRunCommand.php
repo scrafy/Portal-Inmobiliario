@@ -4,8 +4,8 @@ namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
 
-class ScheduleRunCommand extends Command {
-
+class ScheduleRunCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -33,7 +33,8 @@ class ScheduleRunCommand extends Command {
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    public function __construct(Schedule $schedule) {
+    public function __construct(Schedule $schedule)
+    {
         $this->schedule = $schedule;
 
         parent::__construct();
@@ -44,24 +45,24 @@ class ScheduleRunCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $eventsRan = false;
 
         foreach ($this->schedule->dueEvents($this->laravel) as $event) {
-            if (!$event->filtersPass($this->laravel)) {
+            if (! $event->filtersPass($this->laravel)) {
                 continue;
             }
 
-            $this->line('<info>Running scheduled command:</info> ' . $event->getSummaryForDisplay());
+            $this->line('<info>Running scheduled command:</info> '.$event->getSummaryForDisplay());
 
             $event->run($this->laravel);
 
             $eventsRan = true;
         }
 
-        if (!$eventsRan) {
+        if (! $eventsRan) {
             $this->info('No scheduled commands are ready to run.');
         }
     }
-
 }

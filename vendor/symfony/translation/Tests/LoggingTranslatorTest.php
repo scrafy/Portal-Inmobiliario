@@ -16,13 +16,14 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
-class LoggingTranslatorTest extends TestCase {
-
-    public function testTransWithNoTranslationIsLogged() {
+class LoggingTranslatorTest extends TestCase
+{
+    public function testTransWithNoTranslationIsLogged()
+    {
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock();
         $logger->expects($this->exactly(2))
-                ->method('warning')
-                ->with('Translation not found.')
+            ->method('warning')
+            ->with('Translation not found.')
         ;
 
         $translator = new Translator('ar');
@@ -31,11 +32,12 @@ class LoggingTranslatorTest extends TestCase {
         $loggableTranslator->trans('bar');
     }
 
-    public function testTransChoiceFallbackIsLogged() {
+    public function testTransChoiceFallbackIsLogged()
+    {
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock();
         $logger->expects($this->once())
-                ->method('debug')
-                ->with('Translation use fallback catalogue.')
+            ->method('debug')
+            ->with('Translation use fallback catalogue.')
         ;
 
         $translator = new Translator('ar');
@@ -45,5 +47,4 @@ class LoggingTranslatorTest extends TestCase {
         $loggableTranslator = new LoggingTranslator($translator, $logger);
         $loggableTranslator->transChoice('some_message2', 10, array('%count%' => 10));
     }
-
 }

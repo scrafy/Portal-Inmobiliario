@@ -6,8 +6,8 @@ use Closure;
 use Exception;
 use Throwable;
 
-trait ManagesTransactions {
-
+trait ManagesTransactions
+{
     /**
      * Execute a Closure within a transaction.
      *
@@ -17,7 +17,8 @@ trait ManagesTransactions {
      *
      * @throws \Exception|\Throwable
      */
-    public function transaction(Closure $callback, $attempts = 1) {
+    public function transaction(Closure $callback, $attempts = 1)
+    {
         for ($currentAttempt = 1; $currentAttempt <= $attempts; $currentAttempt++) {
             $this->beginTransaction();
 
@@ -35,7 +36,7 @@ trait ManagesTransactions {
             // exception back out and let the developer handle an uncaught exceptions.
             catch (Exception $e) {
                 $this->handleTransactionException(
-                        $e, $currentAttempt, $attempts
+                    $e, $currentAttempt, $attempts
                 );
             } catch (Throwable $e) {
                 $this->rollBack();
@@ -55,12 +56,13 @@ trait ManagesTransactions {
      *
      * @throws \Exception
      */
-    protected function handleTransactionException($e, $currentAttempt, $maxAttempts) {
+    protected function handleTransactionException($e, $currentAttempt, $maxAttempts)
+    {
         // On a deadlock, MySQL rolls back the entire transaction so we can't just
         // retry the query. We have to throw this exception all the way out and
         // let the developer handle it in another way. We will decrement too.
         if ($this->causedByDeadlock($e) &&
-                $this->transactions > 1) {
+            $this->transactions > 1) {
             --$this->transactions;
 
             throw $e;
@@ -72,7 +74,7 @@ trait ManagesTransactions {
         $this->rollBack();
 
         if ($this->causedByDeadlock($e) &&
-                $currentAttempt < $maxAttempts) {
+            $currentAttempt < $maxAttempts) {
             return;
         }
 
@@ -85,7 +87,8 @@ trait ManagesTransactions {
      * @return void
      * @throws \Exception
      */
-    public function beginTransaction() {
+    public function beginTransaction()
+    {
         $this->createTransaction();
 
         ++$this->transactions;
@@ -98,7 +101,8 @@ trait ManagesTransactions {
      *
      * @return void
      */
-    protected function createTransaction() {
+    protected function createTransaction()
+    {
         if ($this->transactions == 0) {
             try {
                 $this->getPdo()->beginTransaction();
@@ -115,9 +119,10 @@ trait ManagesTransactions {
      *
      * @return void
      */
-    protected function createSavepoint() {
+    protected function createSavepoint()
+    {
         $this->getPdo()->exec(
-                $this->queryGrammar->compileSavepoint('trans' . ($this->transactions + 1))
+            $this->queryGrammar->compileSavepoint('trans'.($this->transactions + 1))
         );
     }
 
@@ -129,7 +134,8 @@ trait ManagesTransactions {
      *
      * @throws \Exception
      */
-    protected function handleBeginTransactionException($e) {
+    protected function handleBeginTransactionException($e)
+    {
         if ($this->causedByLostConnection($e)) {
             $this->reconnect();
 
@@ -144,7 +150,8 @@ trait ManagesTransactions {
      *
      * @return void
      */
-    public function commit() {
+    public function commit()
+    {
         if ($this->transactions == 1) {
             $this->getPdo()->commit();
         }
@@ -160,11 +167,14 @@ trait ManagesTransactions {
      * @param  int|null  $toLevel
      * @return void
      */
-    public function rollBack($toLevel = null) {
+    public function rollBack($toLevel = null)
+    {
         // We allow developers to rollback to a certain transaction level. We will verify
         // that this given transaction level is valid before attempting to rollback to
         // that level. If it's not we will just return out and not attempt anything.
-        $toLevel = is_null($toLevel) ? $this->transactions - 1 : $toLevel;
+        $toLevel = is_null($toLevel)
+                    ? $this->transactions - 1
+                    : $toLevel;
 
         if ($toLevel < 0 || $toLevel >= $this->transactions) {
             return;
@@ -186,12 +196,13 @@ trait ManagesTransactions {
      * @param  int  $toLevel
      * @return void
      */
-    protected function performRollBack($toLevel) {
+    protected function performRollBack($toLevel)
+    {
         if ($toLevel == 0) {
             $this->getPdo()->rollBack();
         } elseif ($this->queryGrammar->supportsSavepoints()) {
             $this->getPdo()->exec(
-                    $this->queryGrammar->compileSavepointRollBack('trans' . ($toLevel + 1))
+                $this->queryGrammar->compileSavepointRollBack('trans'.($toLevel + 1))
             );
         }
     }
@@ -201,8 +212,8 @@ trait ManagesTransactions {
      *
      * @return int
      */
-    public function transactionLevel() {
+    public function transactionLevel()
+    {
         return $this->transactions;
     }
-
 }

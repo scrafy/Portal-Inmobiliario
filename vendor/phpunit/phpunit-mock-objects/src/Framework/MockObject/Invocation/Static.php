@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -16,18 +15,18 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing {
-
+class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
+{
     /**
      * @var array
      */
     protected static $uncloneableExtensions = [
-        'mysqli' => true,
-        'SQLite' => true,
-        'sqlite3' => true,
-        'tidy' => true,
+        'mysqli'    => true,
+        'SQLite'    => true,
+        'sqlite3'   => true,
+        'tidy'      => true,
         'xmlwriter' => true,
-        'xsl' => true
+        'xsl'       => true
     ];
 
     /**
@@ -75,13 +74,14 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @param string $returnType
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false) {
-        $this->className = $className;
+    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false)
+    {
+        $this->className  = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
 
         if (strpos($returnType, '?') === 0) {
-            $returnType = substr($returnType, 1);
+            $returnType               = substr($returnType, 1);
             $this->returnTypeNullable = true;
         }
 
@@ -101,42 +101,46 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         $exporter = new Exporter;
 
         return sprintf(
-                '%s::%s(%s)%s', $this->className, $this->methodName, implode(
-                        ', ', array_map(
-                                [$exporter, 'shortenedExport'], $this->parameters
-                        )
-                ), $this->returnType ? sprintf(': %s', $this->returnType) : ''
+            '%s::%s(%s)%s',
+            $this->className,
+            $this->methodName,
+            implode(
+                ', ',
+                array_map(
+                    [$exporter, 'shortenedExport'],
+                    $this->parameters
+                )
+            ),
+            $this->returnType ? sprintf(': %s', $this->returnType) : ''
         );
     }
 
     /**
      * @return mixed Mocked return value.
      */
-    public function generateReturnValue() {
+    public function generateReturnValue()
+    {
         switch ($this->returnType) {
-            case '': return;
+            case '':       return;
             case 'string': return $this->returnTypeNullable ? null : '';
-            case 'float': return $this->returnTypeNullable ? null : 0.0;
-            case 'int': return $this->returnTypeNullable ? null : 0;
-            case 'bool': return $this->returnTypeNullable ? null : false;
-            case 'array': return $this->returnTypeNullable ? null : [];
-            case 'void': return;
+            case 'float':  return $this->returnTypeNullable ? null : 0.0;
+            case 'int':    return $this->returnTypeNullable ? null : 0;
+            case 'bool':   return $this->returnTypeNullable ? null : false;
+            case 'array':  return $this->returnTypeNullable ? null : [];
+            case 'void':   return;
 
             case 'callable':
             case 'Closure':
-                return function () {
-                    
-                };
+                return function () {};
 
             case 'Traversable':
             case 'Generator':
-                $generator = function () {
-                    yield;
-                };
+                $generator = function () { yield; };
 
                 return $generator();
 
@@ -156,14 +160,15 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      *
      * @return object
      */
-    protected function cloneObject($original) {
+    protected function cloneObject($original)
+    {
         $cloneable = null;
-        $object = new ReflectionObject($original);
+        $object    = new ReflectionObject($original);
 
         // Check the blacklist before asking PHP reflection to work around
         // https://bugs.php.net/bug.php?id=53967
         if ($object->isInternal() &&
-                isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
+            isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
             $cloneable = false;
         }
 
@@ -181,7 +186,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         }
 
         if ($cloneable === null && $object->hasMethod('__clone')) {
-            $method = $object->getMethod('__clone');
+            $method    = $object->getMethod('__clone');
             $cloneable = $method->isPublic();
         }
 
@@ -199,5 +204,4 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             return $original;
         }
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Broadcasting;
 
-class Channel {
-
+class Channel
+{
     /**
      * The channel's name.
      *
@@ -17,7 +17,8 @@ class Channel {
      * @param  string  $name
      * @return void
      */
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
@@ -26,8 +27,8 @@ class Channel {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
-
 }

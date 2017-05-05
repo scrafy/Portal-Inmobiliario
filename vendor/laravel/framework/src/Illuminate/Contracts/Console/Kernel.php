@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Console;
 
-interface Kernel {
-
+interface Kernel
+{
     /**
      * Handle an incoming console command.
      *

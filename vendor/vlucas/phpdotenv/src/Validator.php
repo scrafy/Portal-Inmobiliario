@@ -10,8 +10,8 @@ use Dotenv\Exception\ValidationException;
  *
  * It's responsible for applying validations against a number of variables.
  */
-class Validator {
-
+class Validator
+{
     /**
      * The variables to validate.
      *
@@ -34,14 +34,16 @@ class Validator {
      *
      * @return void
      */
-    public function __construct(array $variables, Loader $loader) {
+    public function __construct(array $variables, Loader $loader)
+    {
         $this->variables = $variables;
         $this->loader = $loader;
 
         $this->assertCallback(
-                function ($value) {
-            return $value !== null;
-        }, 'is missing'
+            function ($value) {
+                return $value !== null;
+            },
+            'is missing'
         );
     }
 
@@ -50,11 +52,13 @@ class Validator {
      *
      * @return \Dotenv\Validator
      */
-    public function notEmpty() {
+    public function notEmpty()
+    {
         return $this->assertCallback(
-                        function ($value) {
-                    return strlen(trim($value)) > 0;
-                }, 'is empty'
+            function ($value) {
+                return strlen(trim($value)) > 0;
+            },
+            'is empty'
         );
     }
 
@@ -63,11 +67,13 @@ class Validator {
      *
      * @return \Dotenv\Validator
      */
-    public function isInteger() {
+    public function isInteger()
+    {
         return $this->assertCallback(
-                        function ($value) {
-                    return ctype_digit($value);
-                }, 'is not an integer'
+            function ($value) {
+                return ctype_digit($value);
+            },
+            'is not an integer'
         );
     }
 
@@ -78,11 +84,13 @@ class Validator {
      *
      * @return \Dotenv\Validator
      */
-    public function allowedValues(array $choices) {
+    public function allowedValues(array $choices)
+    {
         return $this->assertCallback(
-                        function ($value) use ($choices) {
-                    return in_array($value, $choices);
-                }, 'is not an allowed value'
+            function ($value) use ($choices) {
+                return in_array($value, $choices);
+            },
+            'is not an allowed value'
         );
     }
 
@@ -96,7 +104,8 @@ class Validator {
      *
      * @return \Dotenv\Validator
      */
-    protected function assertCallback($callback, $message = 'failed callback assertion') {
+    protected function assertCallback($callback, $message = 'failed callback assertion')
+    {
         if (!is_callable($callback)) {
             throw new InvalidCallbackException('The provided callback must be callable.');
         }
@@ -105,17 +114,17 @@ class Validator {
         foreach ($this->variables as $variableName) {
             $variableValue = $this->loader->getEnvironmentVariable($variableName);
             if (call_user_func($callback, $variableValue) === false) {
-                $variablesFailingAssertion[] = $variableName . " $message";
+                $variablesFailingAssertion[] = $variableName." $message";
             }
         }
 
         if (count($variablesFailingAssertion) > 0) {
             throw new ValidationException(sprintf(
-                    'One or more environment variables failed assertions: %s.', implode(', ', $variablesFailingAssertion)
+                'One or more environment variables failed assertions: %s.',
+                implode(', ', $variablesFailingAssertion)
             ));
         }
 
         return $this;
     }
-
 }

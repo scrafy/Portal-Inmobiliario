@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Logical AND.
  */
-class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
+{
     /**
      * @var PHPUnit_Framework_Constraint[]
      */
@@ -29,14 +28,15 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function setConstraints(array $constraints) {
+    public function setConstraints(array $constraints)
+    {
         $this->constraints = [];
 
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 throw new PHPUnit_Framework_Exception(
-                'All parameters to ' . __CLASS__ .
-                ' must be a constraint object.'
+                    'All parameters to ' . __CLASS__ .
+                    ' must be a constraint object.'
                 );
             }
 
@@ -62,8 +62,9 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = false) {
-        $success = true;
+    public function evaluate($other, $description = '', $returnResult = false)
+    {
+        $success    = true;
         $constraint = null;
 
         foreach ($this->constraints as $constraint) {
@@ -87,7 +88,8 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         $text = '';
 
         foreach ($this->constraints as $key => $constraint) {
@@ -106,7 +108,8 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         $count = 0;
 
         foreach ($this->constraints as $constraint) {
@@ -115,5 +118,4 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint {
 
         return $count;
     }
-
 }

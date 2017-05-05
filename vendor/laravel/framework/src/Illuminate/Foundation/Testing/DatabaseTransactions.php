@@ -2,14 +2,15 @@
 
 namespace Illuminate\Foundation\Testing;
 
-trait DatabaseTransactions {
-
+trait DatabaseTransactions
+{
     /**
      * Handle database transactions on the specified connections.
      *
      * @return void
      */
-    public function beginDatabaseTransaction() {
+    public function beginDatabaseTransaction()
+    {
         $database = $this->app->make('db');
 
         foreach ($this->connectionsToTransact() as $name) {
@@ -28,8 +29,9 @@ trait DatabaseTransactions {
      *
      * @return array
      */
-    protected function connectionsToTransact() {
-        return property_exists($this, 'connectionsToTransact') ? $this->connectionsToTransact : [null];
+    protected function connectionsToTransact()
+    {
+        return property_exists($this, 'connectionsToTransact')
+                            ? $this->connectionsToTransact : [null];
     }
-
 }

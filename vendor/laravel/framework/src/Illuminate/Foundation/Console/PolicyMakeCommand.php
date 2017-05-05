@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class PolicyMakeCommand extends GeneratorCommand {
-
+class PolicyMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -35,7 +35,8 @@ class PolicyMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function buildClass($name) {
+    protected function buildClass($name)
+    {
         $stub = parent::buildClass($name);
 
         $model = $this->option('model');
@@ -50,13 +51,14 @@ class PolicyMakeCommand extends GeneratorCommand {
      * @param  string  $model
      * @return string
      */
-    protected function replaceModel($stub, $model) {
+    protected function replaceModel($stub, $model)
+    {
         $model = str_replace('/', '\\', $model);
 
         if (Str::startsWith($model, '\\')) {
             $stub = str_replace('NamespacedDummyModel', trim($model, '\\'), $stub);
         } else {
-            $stub = str_replace('NamespacedDummyModel', $this->laravel->getNamespace() . $model, $stub);
+            $stub = str_replace('NamespacedDummyModel', $this->laravel->getNamespace().$model, $stub);
         }
 
         $model = class_basename(trim($model, '\\'));
@@ -73,8 +75,11 @@ class PolicyMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return $this->option('model') ? __DIR__ . '/stubs/policy.stub' : __DIR__ . '/stubs/policy.plain.stub';
+    protected function getStub()
+    {
+        return $this->option('model')
+                    ? __DIR__.'/stubs/policy.stub'
+                    : __DIR__.'/stubs/policy.plain.stub';
     }
 
     /**
@@ -83,8 +88,9 @@ class PolicyMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Policies';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Policies';
     }
 
     /**
@@ -92,10 +98,10 @@ class PolicyMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to.'],
         ];
     }
-
 }

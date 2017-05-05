@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -11,46 +10,53 @@
 
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
-class Project extends Node {
-
-    public function __construct($name) {
+class Project extends Node
+{
+    public function __construct($name)
+    {
         $this->init();
         $this->setProjectName($name);
     }
 
-    private function init() {
+    private function init()
+    {
         $dom = new \DOMDocument;
         $dom->loadXML('<?xml version="1.0" ?><phpunit xmlns="http://schema.phpunit.de/coverage/1.0"><project/></phpunit>');
 
         $this->setContextNode(
-                $dom->getElementsByTagNameNS(
-                        'http://schema.phpunit.de/coverage/1.0', 'project'
-                )->item(0)
+            $dom->getElementsByTagNameNS(
+                'http://schema.phpunit.de/coverage/1.0',
+                'project'
+            )->item(0)
         );
     }
 
-    private function setProjectName($name) {
+    private function setProjectName($name)
+    {
         $this->getContextNode()->setAttribute('name', $name);
     }
 
-    public function getTests() {
+    public function getTests()
+    {
         $testsNode = $this->getContextNode()->getElementsByTagNameNS(
-                        'http://schema.phpunit.de/coverage/1.0', 'tests'
-                )->item(0);
+            'http://schema.phpunit.de/coverage/1.0',
+            'tests'
+        )->item(0);
 
         if (!$testsNode) {
             $testsNode = $this->getContextNode()->appendChild(
-                    $this->getDom()->createElementNS(
-                            'http://schema.phpunit.de/coverage/1.0', 'tests'
-                    )
+                $this->getDom()->createElementNS(
+                    'http://schema.phpunit.de/coverage/1.0',
+                    'tests'
+                )
             );
         }
 
         return new Tests($testsNode);
     }
 
-    public function asDom() {
+    public function asDom()
+    {
         return $this->getDom();
     }
-
 }

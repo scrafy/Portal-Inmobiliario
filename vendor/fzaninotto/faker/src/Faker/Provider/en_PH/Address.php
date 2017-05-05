@@ -2,17 +2,20 @@
 
 namespace Faker\Provider\en_PH;
 
-class Address extends \Faker\Provider\en_US\Address {
-
+class Address extends \Faker\Provider\en_US\Address
+{
     protected static $streetNameFormats = array(
         '{{lastName}} {{streetSuffix}}'
     );
+
     //http://en.wikipedia.org/wiki/Postal_addresses_in_the_Philippines
     protected static $addressFormats = array(
         '{{streetAddress}}, {{barangay}}, {{city}} {{postcode}} {{province}}', '{{streetAddress}}, {{municipality}} {{postcode}} {{province}}'
     );
+
     protected static $buildingNumber = array('##A', '##', '##A/##', '##/##');
     protected static $postcode = array('####');
+
     //http://en.wikipedia.org/wiki/Provinces_of_the_Philippines
     protected static $province = array(
         'Abra', 'Agusan del Norte', 'Agusan del Sur', 'Aklan', 'Albay',
@@ -36,6 +39,7 @@ class Address extends \Faker\Provider\en_US\Address {
         'Tawi-Tawi', 'Zambales', 'Zamboanga del Norte',
         'Zamboanga del Sur', 'Zamboanga Sibugay', 'Metro Manila'
     );
+
     //http://en.wikipedia.org/wiki/List_of_cities_in_the_Philippines
     protected static $city = array(
         'Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong',
@@ -60,11 +64,12 @@ class Address extends \Faker\Provider\en_US\Address {
         'Tanjay', 'Cabanatuan', 'Gapan', 'Muñoz', 'Palayan', 'San Jose',
         'Calapan', 'Puerto Princesa', 'Angeles', 'Mabalacat',
         'San Fernando', 'Alaminos', 'Dagupan', 'San Carlos',
-        'Urdaneta', 'Lucena', 'Tayabas', 'Antipolo', 'Calbayog', 'Catbalogan',
+        'Urdaneta', 'Lucena', 'Tayabas', 'Antipolo','Calbayog', 'Catbalogan',
         'Sorsogon City', 'General Santos', 'Koronadal', 'Maasin', 'Tacurong',
-        'Surigao City', 'Bislig', 'Tandag', 'Tarlac City', 'Olongapo',
+        'Surigao City', 'Bislig', 'Tandag', 'Tarlac City','Olongapo',
         'Dapitan', 'Dipolog', 'Pagadian', 'Zamboanga City'
     );
+
     //http://en.wikipedia.org/wiki/List_of_Philippine_cities_and_municipalities_by_population
     protected static $municipality = array(
         'Bangued', 'Boliney', 'Bucay', 'Bucloc', 'Daguioman', 'Danglas',
@@ -385,24 +390,28 @@ class Address extends \Faker\Provider\en_US\Address {
         'Malangas', 'Naga', 'Olutanga', 'Payao', 'Roseller Lim', 'Siay',
         'Talusan', 'Titay', 'Tungawan'
     );
+
     protected static $barangay = array(
         'Poblacion'
     );
 
-    public function province() {
+    public function province()
+    {
         return static::randomElement(static::$province);
     }
 
-    public function city() {
+    public function city()
+    {
         return static::randomElement(static::$city);
     }
 
-    public function municipality() {
+    public function municipality()
+    {
         return static::randomElement(static::$municipality);
     }
 
-    public function barangay() {
+    public function barangay()
+    {
         return static::randomElement(static::$barangay);
     }
-
 }

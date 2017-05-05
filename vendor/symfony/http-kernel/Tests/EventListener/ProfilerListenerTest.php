@@ -20,37 +20,38 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Kernel;
 
-class ProfilerListenerTest extends TestCase {
-
+class ProfilerListenerTest extends TestCase
+{
     /**
      * Test a master and sub request with an exception and `onlyException` profiler option enabled.
      */
-    public function testKernelTerminate() {
+    public function testKernelTerminate()
+    {
         $profile = $this->getMockBuilder('Symfony\Component\HttpKernel\Profiler\Profile')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $profiler = $this->getMockBuilder('Symfony\Component\HttpKernel\Profiler\Profiler')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $profiler->expects($this->once())
-                ->method('collect')
-                ->will($this->returnValue($profile));
+            ->method('collect')
+            ->will($this->returnValue($profile));
 
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock();
 
         $masterRequest = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $subRequest = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $response = $this->getMockBuilder('Symfony\Component\HttpFoundation\Response')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $requestStack = new RequestStack();
         $requestStack->push($masterRequest);
@@ -67,5 +68,4 @@ class ProfilerListenerTest extends TestCase {
 
         $listener->onKernelTerminate(new PostResponseEvent($kernel, $masterRequest, $response));
     }
-
 }

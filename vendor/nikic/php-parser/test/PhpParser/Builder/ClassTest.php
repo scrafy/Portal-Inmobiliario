@@ -7,63 +7,67 @@ use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 
-class ClassTest extends \PHPUnit_Framework_TestCase {
-
+class ClassTest extends \PHPUnit_Framework_TestCase
+{
     protected function createClassBuilder($class) {
         return new Class_($class);
     }
 
     public function testExtendsImplements() {
         $node = $this->createClassBuilder('SomeLogger')
-                ->extend('BaseLogger')
-                ->implement('Namespaced\Logger', new Name('SomeInterface'))
-                ->implement('\Fully\Qualified', 'namespace\NamespaceRelative')
-                ->getNode()
+            ->extend('BaseLogger')
+            ->implement('Namespaced\Logger', new Name('SomeInterface'))
+            ->implement('\Fully\Qualified', 'namespace\NamespaceRelative')
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Class_('SomeLogger', array(
-            'extends' => new Name('BaseLogger'),
-            'implements' => array(
-                new Name('Namespaced\Logger'),
-                new Name('SomeInterface'),
-                new Name\FullyQualified('Fully\Qualified'),
-                new Name\Relative('NamespaceRelative'),
-            ),
-                )), $node
+            new Stmt\Class_('SomeLogger', array(
+                'extends' => new Name('BaseLogger'),
+                'implements' => array(
+                    new Name('Namespaced\Logger'),
+                    new Name('SomeInterface'),
+                    new Name\FullyQualified('Fully\Qualified'),
+                    new Name\Relative('NamespaceRelative'),
+                ),
+            )),
+            $node
         );
     }
 
     public function testAbstract() {
         $node = $this->createClassBuilder('Test')
-                ->makeAbstract()
-                ->getNode()
+            ->makeAbstract()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Class_('Test', array(
-            'flags' => Stmt\Class_::MODIFIER_ABSTRACT
-                )), $node
+            new Stmt\Class_('Test', array(
+                'flags' => Stmt\Class_::MODIFIER_ABSTRACT
+            )),
+            $node
         );
     }
 
     public function testFinal() {
         $node = $this->createClassBuilder('Test')
-                ->makeFinal()
-                ->getNode()
+            ->makeFinal()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Class_('Test', array(
-            'flags' => Stmt\Class_::MODIFIER_FINAL
-                )), $node
+            new Stmt\Class_('Test', array(
+                'flags' => Stmt\Class_::MODIFIER_FINAL
+            )),
+            $node
         );
     }
 
     public function testStatementOrder() {
         $method = new Stmt\ClassMethod('testMethod');
         $property = new Stmt\Property(
-                Stmt\Class_::MODIFIER_PUBLIC, array(new Stmt\PropertyProperty('testProperty'))
+            Stmt\Class_::MODIFIER_PUBLIC,
+            array(new Stmt\PropertyProperty('testProperty'))
         );
         $const = new Stmt\ClassConst(array(
             new Node\Const_('TEST_CONST', new Node\Scalar\String_('ABC'))
@@ -71,16 +75,17 @@ class ClassTest extends \PHPUnit_Framework_TestCase {
         $use = new Stmt\TraitUse(array(new Name('SomeTrait')));
 
         $node = $this->createClassBuilder('Test')
-                ->addStmt($method)
-                ->addStmt($property)
-                ->addStmts(array($const, $use))
-                ->getNode()
+            ->addStmt($method)
+            ->addStmt($property)
+            ->addStmts(array($const, $use))
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Class_('Test', array(
-            'stmts' => array($use, $const, $property, $method)
-                )), $node
+            new Stmt\Class_('Test', array(
+                'stmts' => array($use, $const, $property, $method)
+            )),
+            $node
         );
     }
 
@@ -91,27 +96,29 @@ class ClassTest extends \PHPUnit_Framework_TestCase {
  */
 DOC;
         $class = $this->createClassBuilder('Test')
-                ->setDocComment($docComment)
-                ->getNode();
+            ->setDocComment($docComment)
+            ->getNode();
 
         $this->assertEquals(
-                new Stmt\Class_('Test', array(), array(
-            'comments' => array(
-                new Comment\Doc($docComment)
-            )
-                )), $class
+            new Stmt\Class_('Test', array(), array(
+                'comments' => array(
+                    new Comment\Doc($docComment)
+                )
+            )),
+            $class
         );
 
         $class = $this->createClassBuilder('Test')
-                ->setDocComment(new Comment\Doc($docComment))
-                ->getNode();
+            ->setDocComment(new Comment\Doc($docComment))
+            ->getNode();
 
         $this->assertEquals(
-                new Stmt\Class_('Test', array(), array(
-            'comments' => array(
-                new Comment\Doc($docComment)
-            )
-                )), $class
+            new Stmt\Class_('Test', array(), array(
+                'comments' => array(
+                    new Comment\Doc($docComment)
+                )
+            )),
+            $class
         );
     }
 
@@ -121,7 +128,7 @@ DOC;
      */
     public function testInvalidStmtError() {
         $this->createClassBuilder('Test')
-                ->addStmt(new Stmt\Echo_(array()))
+            ->addStmt(new Stmt\Echo_(array()))
         ;
     }
 
@@ -131,7 +138,7 @@ DOC;
      */
     public function testInvalidDocComment() {
         $this->createClassBuilder('Test')
-                ->setDocComment(new Comment('Test'));
+            ->setDocComment(new Comment('Test'));
     }
 
     /**
@@ -140,7 +147,7 @@ DOC;
      */
     public function testEmptyName() {
         $this->createClassBuilder('Test')
-                ->extend('');
+            ->extend('');
     }
 
     /**
@@ -149,7 +156,6 @@ DOC;
      */
     public function testInvalidName() {
         $this->createClassBuilder('Test')
-                ->extend(array('Foo'));
+            ->extend(array('Foo'));
     }
-
 }

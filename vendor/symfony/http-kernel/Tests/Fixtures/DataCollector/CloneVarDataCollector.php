@@ -15,24 +15,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
-class CloneVarDataCollector extends DataCollector {
-
+class CloneVarDataCollector extends DataCollector
+{
     private $varToClone;
 
-    public function __construct($varToClone) {
+    public function __construct($varToClone)
+    {
         $this->varToClone = $varToClone;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         $this->data = $this->cloneVar($this->varToClone);
     }
 
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return 'clone_var';
     }
-
 }

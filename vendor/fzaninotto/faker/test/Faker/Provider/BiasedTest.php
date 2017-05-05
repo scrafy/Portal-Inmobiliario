@@ -1,32 +1,33 @@
 <?php
-
 namespace Faker\Test\Provider;
 
 use Faker\Provider\Biased;
 use Faker\Generator;
 
-class BiasedTest extends \PHPUnit_Framework_TestCase {
-
+class BiasedTest extends \PHPUnit_Framework_TestCase
+{
     const MAX = 10;
     const NUMBERS = 25000;
-
     protected $generator;
     protected $results = array();
-
-    protected function setUp() {
+    
+    protected function setUp()
+    {
         $this->generator = new Generator();
         $this->generator->addProvider(new Biased($this->generator));
 
         $this->results = array_fill(1, self::MAX, 0);
     }
-
-    public function performFake($function) {
-        for ($i = 0; $i < self::NUMBERS; $i++) {
-            $this->results[$this->generator->biasedNumberBetween(1, self::MAX, $function)] ++;
+    
+    public function performFake($function)
+    {
+        for($i = 0; $i < self::NUMBERS; $i++) {
+            $this->results[$this->generator->biasedNumberBetween(1, self::MAX, $function)]++;
         }
     }
-
-    public function testUnbiased() {
+    
+    public function testUnbiased()
+    {
         $this->performFake(array('\Faker\Provider\Biased', 'unbiased'));
 
         // assert that all numbers are near the expected unbiased value
@@ -39,8 +40,9 @@ class BiasedTest extends \PHPUnit_Framework_TestCase {
             $this->assertLessThan(self::NUMBERS * $assumed * 1.05, $amount, "Value was more than 5 percent over the expected value");
         }
     }
-
-    public function testLinearHigh() {
+    
+    public function testLinearHigh()
+    {
         $this->performFake(array('\Faker\Provider\Biased', 'linearHigh'));
 
         foreach ($this->results as $number => $amount) {
@@ -52,8 +54,9 @@ class BiasedTest extends \PHPUnit_Framework_TestCase {
             $this->assertLessThan(self::NUMBERS * $assumed * 1.1, $amount, "Value was more than 10 percent over the expected value");
         }
     }
-
-    public function testLinearLow() {
+    
+    public function testLinearLow()
+    {
         $this->performFake(array('\Faker\Provider\Biased', 'linearLow'));
 
         foreach ($this->results as $number => $amount) {
@@ -67,5 +70,4 @@ class BiasedTest extends \PHPUnit_Framework_TestCase {
             $this->assertLessThan(self::NUMBERS * $assumed * 1.1, $amount, "Value was more than 10 percent over the expected value");
         }
     }
-
 }

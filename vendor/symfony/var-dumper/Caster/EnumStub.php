@@ -18,13 +18,13 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class EnumStub extends Stub {
-
+class EnumStub extends Stub
+{
     public $dumpKeys = true;
 
-    public function __construct(array $values, $dumpKeys = true) {
+    public function __construct(array $values, $dumpKeys = true)
+    {
         $this->value = $values;
         $this->dumpKeys = $dumpKeys;
     }
-
 }

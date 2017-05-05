@@ -18,21 +18,20 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  *
  * @internal
  */
-abstract class AbstractPipes implements PipesInterface {
-
+abstract class AbstractPipes implements PipesInterface
+{
     /** @var array */
     public $pipes = array();
 
     /** @var string */
     private $inputBuffer = '';
-
     /** @var resource|scalar|\Iterator|null */
     private $input;
-
     /** @var bool */
     private $blocked = true;
 
-    public function __construct($input) {
+    public function __construct($input)
+    {
         if (is_resource($input) || $input instanceof \Iterator) {
             $this->input = $input;
         } elseif (is_string($input)) {
@@ -45,7 +44,8 @@ abstract class AbstractPipes implements PipesInterface {
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         foreach ($this->pipes as $pipe) {
             fclose($pipe);
         }
@@ -57,7 +57,8 @@ abstract class AbstractPipes implements PipesInterface {
      *
      * @return bool
      */
-    protected function hasSystemCallBeenInterrupted() {
+    protected function hasSystemCallBeenInterrupted()
+    {
         $lastError = error_get_last();
 
         // stream_select returns false when the `select` system call is interrupted by an incoming signal
@@ -67,7 +68,8 @@ abstract class AbstractPipes implements PipesInterface {
     /**
      * Unblocks streams.
      */
-    protected function unblock() {
+    protected function unblock()
+    {
         if (!$this->blocked) {
             return;
         }
@@ -87,7 +89,8 @@ abstract class AbstractPipes implements PipesInterface {
      *
      * @throws InvalidArgumentException When an input iterator yields a non supported value
      */
-    protected function write() {
+    protected function write()
+    {
         if (!isset($this->pipes[0])) {
             return;
         }
@@ -163,5 +166,4 @@ abstract class AbstractPipes implements PipesInterface {
             return array($this->pipes[0]);
         }
     }
-
 }

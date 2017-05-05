@@ -26,13 +26,14 @@ use Psy\Exception\FatalErrorException;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class FunctionReturnInWriteContextPass extends CodeCleanerPass {
-
+class FunctionReturnInWriteContextPass extends CodeCleanerPass
+{
     const EXCEPTION_MESSAGE = "Can't use function return value in write context";
 
     private $isPhp55;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->isPhp55 = version_compare(PHP_VERSION, '5.5', '>=');
     }
 
@@ -46,7 +47,8 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass {
      *
      * @param Node $node
      */
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         if ($node instanceof ArrayNode || $this->isCallNode($node)) {
             $items = $node instanceof ArrayNode ? $node->items : $node->args;
             foreach ($items as $item) {
@@ -73,8 +75,8 @@ class FunctionReturnInWriteContextPass extends CodeCleanerPass {
         }
     }
 
-    private function isCallNode(Node $node) {
+    private function isCallNode(Node $node)
+    {
         return $node instanceof FunctionCall || $node instanceof MethodCall || $node instanceof StaticCall;
     }
-
 }

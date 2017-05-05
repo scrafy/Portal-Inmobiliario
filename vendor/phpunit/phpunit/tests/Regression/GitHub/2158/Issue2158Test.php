@@ -1,11 +1,11 @@
 <?php
-
-class Issue2158Test extends PHPUnit_Framework_TestCase {
-
+class Issue2158Test extends PHPUnit_Framework_TestCase
+{
     /**
      * Set constant in main process
      */
-    public function testSomething() {
+    public function testSomething()
+    {
         include(__DIR__ . '/constant.inc');
         $this->assertTrue(true);
     }
@@ -16,8 +16,8 @@ class Issue2158Test extends PHPUnit_Framework_TestCase {
      *
      * @runInSeparateProcess
      */
-    public function testSomethingElse() {
+    public function testSomethingElse()
+    {
         $this->assertTrue(defined('TEST_CONSTANT'));
     }
-
 }

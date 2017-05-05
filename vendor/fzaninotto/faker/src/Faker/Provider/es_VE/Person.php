@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\es_VE;
 
-class Person extends \Faker\Provider\Person {
-
+class Person extends \Faker\Provider\Person
+{
     /**
      * CNE is the official national election registry org.
      * @link http://www.cne.gob.ve/web/registro_electoral/ciudadanos_111_129_2011.php
@@ -131,14 +131,18 @@ class Person extends \Faker\Provider\Person {
         'Villaseñor', 'Villegas', 'Vásquez', 'Vázquez', 'Vélez', 'Véliz', 'Ybarra', 'Yáñez', 'Zambrano', 'Zamora', 'Zamudio', 'Zapata',
         'Zaragoza', 'Zarate', 'Zavala', 'Zayas', 'Zelaya', 'Zepeda', 'Zúñiga', 'de Anda', 'de Jesús', 'Águilar', 'Álvarez', 'Ávalos', 'Ávila'
     );
+
     protected static $titleMale = array('Sr.', 'Dn.', 'Dr.', 'Lic.', 'Ing.');
+
     protected static $titleFemale = array('Sra.', 'Srita.', 'Dr.', 'Lic.', 'Ing.');
+
     private static $suffix = array('Hijo');
 
     /**
      * @example 'Hijo'
      */
-    public static function suffix() {
+    public static function suffix()
+    {
         return static::randomElement(static::$suffix);
     }
 
@@ -146,8 +150,8 @@ class Person extends \Faker\Provider\Person {
      * Generate random national identification number. Ex V-8756432
      * @return string
      */
-    public function nationalId() {
-        return 'V-' . $this->numberBetween(10000, 100000000);
+    public function nationalId()
+    {
+        return 'V-'.$this->numberBetween(10000, 100000000);
     }
-
 }

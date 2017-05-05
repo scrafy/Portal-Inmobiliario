@@ -16,23 +16,24 @@ use Symfony\Component\Debug\Exception\SilencedErrorContext;
 use Symfony\Component\HttpKernel\DataCollector\LoggerDataCollector;
 use Symfony\Component\VarDumper\Cloner\Data;
 
-class LoggerDataCollectorTest extends TestCase {
-
+class LoggerDataCollectorTest extends TestCase
+{
     private static $data;
 
     /**
      * @dataProvider getCollectTestData
      */
-    public function testCollect($nb, $logs, $expectedLogs, $expectedDeprecationCount, $expectedScreamCount, $expectedPriorities = null) {
+    public function testCollect($nb, $logs, $expectedLogs, $expectedDeprecationCount, $expectedScreamCount, $expectedPriorities = null)
+    {
         $logger = $this->getMockBuilder('Symfony\Component\HttpKernel\Log\DebugLoggerInterface')->getMock();
         $logger->expects($this->once())->method('countErrors')->will($this->returnValue($nb));
         $logger->expects($this->exactly(2))->method('getLogs')->will($this->returnValue($logs));
 
         // disable cloning the context, to ease fixtures creation.
         $c = $this->getMockBuilder(LoggerDataCollector::class)
-                ->setMethods(array('cloneVar'))
-                ->setConstructorArgs(array($logger))
-                ->getMock();
+            ->setMethods(array('cloneVar'))
+            ->setConstructorArgs(array($logger))
+            ->getMock();
         $c->expects($this->any())->method('cloneVar')->willReturn(self::$data);
         $c->lateCollect();
 
@@ -47,7 +48,8 @@ class LoggerDataCollectorTest extends TestCase {
         }
     }
 
-    public function getCollectTestData() {
+    public function getCollectTestData()
+    {
         if (null === self::$data) {
             self::$data = new Data(array());
         }
@@ -103,5 +105,4 @@ class LoggerDataCollectorTest extends TestCase {
             1,
         );
     }
-
 }

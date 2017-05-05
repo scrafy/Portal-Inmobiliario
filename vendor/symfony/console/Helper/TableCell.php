@@ -16,8 +16,8 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-class TableCell {
-
+class TableCell
+{
     /**
      * @var string
      */
@@ -35,7 +35,8 @@ class TableCell {
      * @param string $value
      * @param array  $options
      */
-    public function __construct($value = '', array $options = array()) {
+    public function __construct($value = '', array $options = array())
+    {
         if (is_numeric($value) && !is_string($value)) {
             $value = (string) $value;
         }
@@ -55,7 +56,8 @@ class TableCell {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->value;
     }
 
@@ -64,7 +66,8 @@ class TableCell {
      *
      * @return int
      */
-    public function getColspan() {
+    public function getColspan()
+    {
         return (int) $this->options['colspan'];
     }
 
@@ -73,8 +76,8 @@ class TableCell {
      *
      * @return int
      */
-    public function getRowspan() {
+    public function getRowspan()
+    {
         return (int) $this->options['rowspan'];
     }
-
 }

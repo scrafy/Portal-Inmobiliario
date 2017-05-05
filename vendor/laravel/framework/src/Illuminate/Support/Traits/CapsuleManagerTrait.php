@@ -5,8 +5,8 @@ namespace Illuminate\Support\Traits;
 use Illuminate\Support\Fluent;
 use Illuminate\Contracts\Container\Container;
 
-trait CapsuleManagerTrait {
-
+trait CapsuleManagerTrait
+{
     /**
      * The current globally used instance.
      *
@@ -27,10 +27,11 @@ trait CapsuleManagerTrait {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    protected function setupContainer(Container $container) {
+    protected function setupContainer(Container $container)
+    {
         $this->container = $container;
 
-        if (!$this->container->bound('config')) {
+        if (! $this->container->bound('config')) {
             $this->container->instance('config', new Fluent);
         }
     }
@@ -40,7 +41,8 @@ trait CapsuleManagerTrait {
      *
      * @return void
      */
-    public function setAsGlobal() {
+    public function setAsGlobal()
+    {
         static::$instance = $this;
     }
 
@@ -49,7 +51,8 @@ trait CapsuleManagerTrait {
      *
      * @return \Illuminate\Contracts\Container\Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container;
     }
 
@@ -59,8 +62,8 @@ trait CapsuleManagerTrait {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function setContainer(Container $container) {
+    public function setContainer(Container $container)
+    {
         $this->container = $container;
     }
-
 }

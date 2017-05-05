@@ -12,8 +12,8 @@
  *
  * @author  Xavier De Cock <xdecock@gmail.com>
  */
-class Swift_Validate {
-
+class Swift_Validate
+{
     /**
      * Grammar Object.
      *
@@ -28,15 +28,16 @@ class Swift_Validate {
      *
      * @return bool
      */
-    public static function email($email) {
+    public static function email($email)
+    {
         if (self::$grammar === null) {
             self::$grammar = Swift_DependencyContainer::getInstance()
-                    ->lookup('mime.grammar');
+                ->lookup('mime.grammar');
         }
 
         return (bool) preg_match(
-                        '/^' . self::$grammar->getDefinition('addr-spec') . '$/D', $email
-        );
+                '/^'.self::$grammar->getDefinition('addr-spec').'$/D',
+                $email
+            );
     }
-
 }

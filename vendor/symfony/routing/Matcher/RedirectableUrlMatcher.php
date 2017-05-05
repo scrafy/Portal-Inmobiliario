@@ -17,12 +17,13 @@ use Symfony\Component\Routing\Route;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class RedirectableUrlMatcher extends UrlMatcher implements RedirectableUrlMatcherInterface {
-
+abstract class RedirectableUrlMatcher extends UrlMatcher implements RedirectableUrlMatcherInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function match($pathinfo) {
+    public function match($pathinfo)
+    {
         try {
             $parameters = parent::match($pathinfo);
         } catch (ResourceNotFoundException $e) {
@@ -31,9 +32,9 @@ abstract class RedirectableUrlMatcher extends UrlMatcher implements Redirectable
             }
 
             try {
-                parent::match($pathinfo . '/');
+                parent::match($pathinfo.'/');
 
-                return $this->redirect($pathinfo . '/', null);
+                return $this->redirect($pathinfo.'/', null);
             } catch (ResourceNotFoundException $e2) {
                 throw $e;
             }
@@ -45,7 +46,8 @@ abstract class RedirectableUrlMatcher extends UrlMatcher implements Redirectable
     /**
      * {@inheritdoc}
      */
-    protected function handleRouteRequirements($pathinfo, $name, Route $route) {
+    protected function handleRouteRequirements($pathinfo, $name, Route $route)
+    {
         // expression condition
         if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), array('context' => $this->context, 'request' => $this->request))) {
             return array(self::REQUIREMENT_MISMATCH, null);
@@ -60,5 +62,4 @@ abstract class RedirectableUrlMatcher extends UrlMatcher implements Redirectable
 
         return array(self::REQUIREMENT_MATCH, null);
     }
-
 }

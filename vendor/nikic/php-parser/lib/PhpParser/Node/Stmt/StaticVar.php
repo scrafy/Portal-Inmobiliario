@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class StaticVar extends Node\Stmt {
-
+class StaticVar extends Node\Stmt
+{
     /** @var string Name */
     public $name;
-
     /** @var null|Node\Expr Default value */
     public $default;
 
@@ -28,5 +27,4 @@ class StaticVar extends Node\Stmt {
     public function getSubNodeNames() {
         return array('name', 'default');
     }
-
 }

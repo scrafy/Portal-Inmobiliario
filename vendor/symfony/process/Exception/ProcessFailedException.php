@@ -18,20 +18,27 @@ use Symfony\Component\Process\Process;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ProcessFailedException extends RuntimeException {
-
+class ProcessFailedException extends RuntimeException
+{
     private $process;
 
-    public function __construct(Process $process) {
+    public function __construct(Process $process)
+    {
         if ($process->isSuccessful()) {
             throw new InvalidArgumentException('Expected a failed process, but the given process was successful.');
         }
 
-        $error = sprintf('The command "%s" failed.' . "\n\nExit Code: %s(%s)\n\nWorking directory: %s", $process->getCommandLine(), $process->getExitCode(), $process->getExitCodeText(), $process->getWorkingDirectory()
+        $error = sprintf('The command "%s" failed.'."\n\nExit Code: %s(%s)\n\nWorking directory: %s",
+            $process->getCommandLine(),
+            $process->getExitCode(),
+            $process->getExitCodeText(),
+            $process->getWorkingDirectory()
         );
 
         if (!$process->isOutputDisabled()) {
-            $error .= sprintf("\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s", $process->getOutput(), $process->getErrorOutput()
+            $error .= sprintf("\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s",
+                $process->getOutput(),
+                $process->getErrorOutput()
             );
         }
 
@@ -40,8 +47,8 @@ class ProcessFailedException extends RuntimeException {
         $this->process = $process;
     }
 
-    public function getProcess() {
+    public function getProcess()
+    {
         return $this->process;
     }
-
 }

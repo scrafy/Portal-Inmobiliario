@@ -5,8 +5,8 @@ namespace Mockery\Test\Generator\StringManipulation\Pass;
 use Mockery as m;
 use Mockery\Generator\StringManipulation\Pass\CallTypeHintPass;
 
-class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase {
-
+class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase
+{
     const CODE = ' public function __call($method, array $args) {}
                    public static function __callStatic($method, array $args) {}
     ';
@@ -14,11 +14,12 @@ class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldRemoveCallTypeHintIfRequired() {
+    public function shouldRemoveCallTypeHintIfRequired()
+    {
         $pass = new CallTypeHintPass;
         $config = m::mock("Mockery\Generator\MockConfiguration", array(
-                    "requiresCallTypeHintRemoval" => true,
-                ))->shouldDeferMissing();
+            "requiresCallTypeHintRemoval" => true,
+        ))->shouldDeferMissing();
         $code = $pass->apply(static::CODE, $config);
         $this->assertContains('__call($method, $args)', $code);
     }
@@ -26,13 +27,13 @@ class CallTypeHintPassTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldRemoveCallStaticTypeHintIfRequired() {
+    public function shouldRemoveCallStaticTypeHintIfRequired()
+    {
         $pass = new CallTypeHintPass;
         $config = m::mock("Mockery\Generator\MockConfiguration", array(
-                    "requiresCallStaticTypeHintRemoval" => true,
-                ))->shouldDeferMissing();
+            "requiresCallStaticTypeHintRemoval" => true,
+        ))->shouldDeferMissing();
         $code = $pass->apply(static::CODE, $config);
         $this->assertContains('__callStatic($method, $args)', $code);
     }
-
 }

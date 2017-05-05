@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -11,28 +10,32 @@
 
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
-class Tests {
-
+class Tests
+{
     private $contextNode;
+
     private $codeMap = [
-        0 => 'PASSED', // PHPUnit_Runner_BaseTestRunner::STATUS_PASSED
-        1 => 'SKIPPED', // PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED
+        0 => 'PASSED',     // PHPUnit_Runner_BaseTestRunner::STATUS_PASSED
+        1 => 'SKIPPED',    // PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED
         2 => 'INCOMPLETE', // PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE
-        3 => 'FAILURE', // PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE
-        4 => 'ERROR', // PHPUnit_Runner_BaseTestRunner::STATUS_ERROR
-        5 => 'RISKY', // PHPUnit_Runner_BaseTestRunner::STATUS_RISKY
+        3 => 'FAILURE',    // PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE
+        4 => 'ERROR',      // PHPUnit_Runner_BaseTestRunner::STATUS_ERROR
+        5 => 'RISKY',      // PHPUnit_Runner_BaseTestRunner::STATUS_RISKY
         6 => 'WARNING'     // PHPUnit_Runner_BaseTestRunner::STATUS_WARNING
     ];
 
-    public function __construct(\DOMElement $context) {
+    public function __construct(\DOMElement $context)
+    {
         $this->contextNode = $context;
     }
 
-    public function addTest($test, array $result) {
+    public function addTest($test, array $result)
+    {
         $node = $this->contextNode->appendChild(
-                $this->contextNode->ownerDocument->createElementNS(
-                        'http://schema.phpunit.de/coverage/1.0', 'test'
-                )
+            $this->contextNode->ownerDocument->createElementNS(
+                'http://schema.phpunit.de/coverage/1.0',
+                'test'
+            )
         );
 
         $node->setAttribute('name', $test);
@@ -40,5 +43,4 @@ class Tests {
         $node->setAttribute('result', (int) $result['status']);
         $node->setAttribute('status', $this->codeMap[(int) $result['status']]);
     }
-
 }

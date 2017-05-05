@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 
-class RequestMatcherTest extends TestCase {
-
+class RequestMatcherTest extends TestCase
+{
     /**
      * @dataProvider testMethodFixtures
      */
-    public function testMethod($requestMethod, $matcherMethod, $isMatch) {
+    public function testMethod($requestMethod, $matcherMethod, $isMatch)
+    {
         $matcher = new RequestMatcher();
         $matcher->matchMethod($matcherMethod);
         $request = Request::create('', $requestMethod);
@@ -31,7 +32,8 @@ class RequestMatcherTest extends TestCase {
         $this->assertSame($isMatch, $matcher->matches($request));
     }
 
-    public function testMethodFixtures() {
+    public function testMethodFixtures()
+    {
         return array(
             array('get', 'get', true),
             array('get', array('get', 'post'), true),
@@ -42,7 +44,8 @@ class RequestMatcherTest extends TestCase {
         );
     }
 
-    public function testScheme() {
+    public function testScheme()
+    {
         $httpRequest = $request = $request = Request::create('');
         $httpsRequest = $request = $request = Request::create('', 'get', array(), array(), array(), array('HTTPS' => 'on'));
 
@@ -63,7 +66,8 @@ class RequestMatcherTest extends TestCase {
     /**
      * @dataProvider testHostFixture
      */
-    public function testHost($pattern, $isMatch) {
+    public function testHost($pattern, $isMatch)
+    {
         $matcher = new RequestMatcher();
         $request = Request::create('', 'get', array(), array(), array(), array('HTTP_HOST' => 'foo.example.com'));
 
@@ -74,7 +78,8 @@ class RequestMatcherTest extends TestCase {
         $this->assertSame($isMatch, $matcher->matches($request));
     }
 
-    public function testHostFixture() {
+    public function testHostFixture()
+    {
         return array(
             array('.*\.example\.com', true),
             array('\.example\.com$', true),
@@ -87,7 +92,8 @@ class RequestMatcherTest extends TestCase {
         );
     }
 
-    public function testPath() {
+    public function testPath()
+    {
         $matcher = new RequestMatcher();
 
         $request = Request::create('/admin/foo');
@@ -105,7 +111,8 @@ class RequestMatcherTest extends TestCase {
         $this->assertFalse($matcher->matches($request));
     }
 
-    public function testPathWithLocaleIsNotSupported() {
+    public function testPathWithLocaleIsNotSupported()
+    {
         $matcher = new RequestMatcher();
         $request = Request::create('/en/login');
         $request->setLocale('en');
@@ -114,14 +121,16 @@ class RequestMatcherTest extends TestCase {
         $this->assertFalse($matcher->matches($request));
     }
 
-    public function testPathWithEncodedCharacters() {
+    public function testPathWithEncodedCharacters()
+    {
         $matcher = new RequestMatcher();
         $request = Request::create('/admin/fo%20o');
         $matcher->matchPath('^/admin/fo o*$');
         $this->assertTrue($matcher->matches($request));
     }
 
-    public function testAttributes() {
+    public function testAttributes()
+    {
         $matcher = new RequestMatcher();
 
         $request = Request::create('/admin/foo');
@@ -139,5 +148,4 @@ class RequestMatcherTest extends TestCase {
         $matcher->matchAttribute('foo', 'babar');
         $this->assertFalse($matcher->matches($request));
     }
-
 }

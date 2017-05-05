@@ -4,8 +4,8 @@ namespace Illuminate\Auth;
 
 use Exception;
 
-class AuthenticationException extends Exception {
-
+class AuthenticationException extends Exception
+{
     /**
      * All of the guards that were checked.
      *
@@ -20,7 +20,8 @@ class AuthenticationException extends Exception {
      * @param  array  $guards
      * @return void
      */
-    public function __construct($message = 'Unauthenticated.', array $guards = []) {
+    public function __construct($message = 'Unauthenticated.', array $guards = [])
+    {
         parent::__construct($message);
 
         $this->guards = $guards;
@@ -31,8 +32,8 @@ class AuthenticationException extends Exception {
      *
      * @return array
      */
-    public function guards() {
+    public function guards()
+    {
         return $this->guards;
     }
-
 }

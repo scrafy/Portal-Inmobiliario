@@ -18,8 +18,8 @@ use Prophecy\Doubler\Generator\Node\ClassNode;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class HhvmExceptionPatch implements ClassPatchInterface {
-
+class HhvmExceptionPatch implements ClassPatchInterface
+{
     /**
      * Supports exceptions on HHVM.
      *
@@ -27,7 +27,8 @@ class HhvmExceptionPatch implements ClassPatchInterface {
      *
      * @return bool
      */
-    public function supports(ClassNode $node) {
+    public function supports(ClassNode $node)
+    {
         if (!defined('HHVM_VERSION')) {
             return false;
         }
@@ -42,7 +43,8 @@ class HhvmExceptionPatch implements ClassPatchInterface {
      *
      * @return void
      */
-    public function apply(ClassNode $node) {
+    public function apply(ClassNode $node)
+    {
         if ($node->hasMethod('setTraceOptions')) {
             $node->getMethod('setTraceOptions')->useParentCode();
         }
@@ -54,8 +56,8 @@ class HhvmExceptionPatch implements ClassPatchInterface {
     /**
      * {@inheritdoc}
      */
-    public function getPriority() {
+    public function getPriority()
+    {
         return -50;
     }
-
 }

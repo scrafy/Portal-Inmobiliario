@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Events;
 
 use Illuminate\Http\Request;
 
-class Lockout {
-
+class Lockout
+{
     /**
      * The throttled request.
      *
@@ -19,8 +19,8 @@ class Lockout {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->request = $request;
     }
-
 }

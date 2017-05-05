@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Diff package.
  *
@@ -13,10 +12,10 @@ namespace SebastianBergmann\Diff;
 
 /**
  */
-class Line {
-
-    const ADDED = 1;
-    const REMOVED = 2;
+class Line
+{
+    const ADDED     = 1;
+    const REMOVED   = 2;
     const UNCHANGED = 3;
 
     /**
@@ -33,23 +32,25 @@ class Line {
      * @param int    $type
      * @param string $content
      */
-    public function __construct($type = self::UNCHANGED, $content = '') {
-        $this->type = $type;
+    public function __construct($type = self::UNCHANGED, $content = '')
+    {
+        $this->type    = $type;
         $this->content = $content;
     }
 
     /**
      * @return string
      */
-    public function getContent() {
+    public function getContent()
+    {
         return $this->content;
     }
 
     /**
      * @return int
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -18,8 +17,8 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 /**
  * Reflection class for a {@}example tag in a Docblock.
  */
-final class Example extends BaseTag {
-
+final class Example extends BaseTag
+{
     /**
      * @var string Path to a file to use as an example. May also be an absolute URI.
      */
@@ -34,11 +33,14 @@ final class Example extends BaseTag {
     /**
      * {@inheritdoc}
      */
-    public function getContent() {
+    public function getContent()
+    {
         if (null === $this->description) {
             $filePath = '"' . $this->filePath . '"';
             if ($this->isURI) {
-                $filePath = $this->isUriRelative($this->filePath) ? str_replace('%2F', '/', rawurlencode($this->filePath)) : $this->filePath;
+                $filePath = $this->isUriRelative($this->filePath)
+                    ? str_replace('%2F', '/', rawurlencode($this->filePath))
+                    :$this->filePath;
             }
 
             $this->description = $filePath . ' ' . parent::getContent();
@@ -50,14 +52,15 @@ final class Example extends BaseTag {
     /**
      * {@inheritdoc}
      */
-    public static function create($body) {
+    public static function create($body)
+    {
         // File component: File path in quotes or File URI / Source information
-        if (!preg_match('/^(?:\"([^\"]+)\"|(\S+))(?:\s+(.*))?$/sux', $body, $matches)) {
+        if (! preg_match('/^(?:\"([^\"]+)\"|(\S+))(?:\s+(.*))?$/sux', $body, $matches)) {
             return null;
         }
 
         $filePath = null;
-        $fileUri = null;
+        $fileUri  = null;
         if ('' !== $matches[1]) {
             $filePath = $matches[1];
         } else {
@@ -65,14 +68,14 @@ final class Example extends BaseTag {
         }
 
         $startingLine = 1;
-        $lineCount = null;
-        $description = null;
+        $lineCount    = null;
+        $description  = null;
 
         // Starting line / Number of lines / Description
         if (preg_match('/^([1-9]\d*)\s*(?:((?1))\s+)?(.*)$/sux', $matches[3], $matches)) {
-            $startingLine = (int) $matches[1];
+            $startingLine = (int)$matches[1];
             if (isset($matches[2]) && $matches[2] !== '') {
-                $lineCount = (int) $matches[2];
+                $lineCount = (int)$matches[2];
             }
             $description = $matches[3];
         }
@@ -86,7 +89,8 @@ final class Example extends BaseTag {
      * @return string Path to a file to use as an example.
      *     May also be an absolute URI.
      */
-    public function getFilePath() {
+    public function getFilePath()
+    {
         return $this->filePath;
     }
 
@@ -97,7 +101,8 @@ final class Example extends BaseTag {
      *
      * @return $this
      */
-    public function setFilePath($filePath) {
+    public function setFilePath($filePath)
+    {
         $this->isURI = false;
         $this->filePath = trim($filePath);
 
@@ -117,11 +122,14 @@ final class Example extends BaseTag {
      *
      * @return $this
      */
-    public function setFileURI($uri) {
-        $this->isURI = true;
+    public function setFileURI($uri)
+    {
+        $this->isURI   = true;
         $this->description = null;
 
-        $this->filePath = $this->isUriRelative($uri) ? rawurldecode(str_replace(array('/', '\\'), '%2F', $uri)) : $this->filePath = $uri;
+        $this->filePath = $this->isUriRelative($uri)
+            ? rawurldecode(str_replace(array('/', '\\'), '%2F', $uri))
+            : $this->filePath = $uri;
 
         return $this;
     }
@@ -131,7 +139,8 @@ final class Example extends BaseTag {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->filePath . ($this->description ? ' ' . $this->description->render() : '');
     }
 
@@ -142,8 +151,8 @@ final class Example extends BaseTag {
      *
      * @return bool
      */
-    private function isUriRelative($uri) {
+    private function isUriRelative($uri)
+    {
         return false === strpos($uri, ':');
     }
-
 }

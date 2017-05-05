@@ -10,8 +10,8 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Routing\UrlRoutable;
 use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 
-class UrlGenerator implements UrlGeneratorContract {
-
+class UrlGenerator implements UrlGeneratorContract
+{
     use Macroable;
 
     /**
@@ -98,7 +98,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function __construct(RouteCollection $routes, Request $request) {
+    public function __construct(RouteCollection $routes, Request $request)
+    {
         $this->routes = $routes;
 
         $this->setRequest($request);
@@ -109,7 +110,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return string
      */
-    public function full() {
+    public function full()
+    {
         return $this->request->fullUrl();
     }
 
@@ -118,7 +120,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return string
      */
-    public function current() {
+    public function current()
+    {
         return $this->to($this->request->getPathInfo());
     }
 
@@ -128,7 +131,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  mixed  $fallback
      * @return string
      */
-    public function previous($fallback = false) {
+    public function previous($fallback = false)
+    {
         $referrer = $this->request->headers->get('referer');
 
         $url = $referrer ? $this->to($referrer) : $this->getPreviousUrlFromSession();
@@ -147,7 +151,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return string|null
      */
-    protected function getPreviousUrlFromSession() {
+    protected function getPreviousUrlFromSession()
+    {
         $session = $this->getSession();
 
         return $session ? $session->previousUrl() : null;
@@ -161,7 +166,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  bool|null  $secure
      * @return string
      */
-    public function to($path, $extra = [], $secure = null) {
+    public function to($path, $extra = [], $secure = null)
+    {
         // First we will check if the URL is already a valid URL. If it is we will not
         // try to generate a new one but will simply return the URL as is, which is
         // convenient since developers do not always have to check if it's valid.
@@ -170,7 +176,7 @@ class UrlGenerator implements UrlGeneratorContract {
         }
 
         $tail = implode('/', array_map(
-                        'rawurlencode', (array) $this->formatParameters($extra))
+            'rawurlencode', (array) $this->formatParameters($extra))
         );
 
         // Once we have the scheme we will compile the "tail" by collapsing the values
@@ -181,8 +187,8 @@ class UrlGenerator implements UrlGeneratorContract {
         list($path, $query) = $this->extractQueryString($path);
 
         return $this->format(
-                        $root, '/' . trim($path . '/' . $tail, '/')
-                ) . $query;
+            $root, '/'.trim($path.'/'.$tail, '/')
+        ).$query;
     }
 
     /**
@@ -192,7 +198,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  array   $parameters
      * @return string
      */
-    public function secure($path, $parameters = []) {
+    public function secure($path, $parameters = [])
+    {
         return $this->to($path, $parameters, true);
     }
 
@@ -203,7 +210,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  bool|null  $secure
      * @return string
      */
-    public function asset($path, $secure = null) {
+    public function asset($path, $secure = null)
+    {
         if ($this->isValidUrl($path)) {
             return $path;
         }
@@ -213,7 +221,7 @@ class UrlGenerator implements UrlGeneratorContract {
         // for asset paths, but only for routes to endpoints in the application.
         $root = $this->formatRoot($this->formatScheme($secure));
 
-        return $this->removeIndex($root) . '/' . trim($path, '/');
+        return $this->removeIndex($root).'/'.trim($path, '/');
     }
 
     /**
@@ -222,7 +230,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $path
      * @return string
      */
-    public function secureAsset($path) {
+    public function secureAsset($path)
+    {
         return $this->asset($path, true);
     }
 
@@ -234,13 +243,14 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  bool|null  $secure
      * @return string
      */
-    public function assetFrom($root, $path, $secure = null) {
+    public function assetFrom($root, $path, $secure = null)
+    {
         // Once we get the root URL, we will check to see if it contains an index.php
         // file in the paths. If it does, we will remove it since it is not needed
         // for asset paths, but only for routes to endpoints in the application.
         $root = $this->formatRoot($this->formatScheme($secure), $root);
 
-        return $this->removeIndex($root) . '/' . trim($path, '/');
+        return $this->removeIndex($root).'/'.trim($path, '/');
     }
 
     /**
@@ -249,10 +259,11 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $root
      * @return string
      */
-    protected function removeIndex($root) {
+    protected function removeIndex($root)
+    {
         $i = 'index.php';
 
-        return Str::contains($root, $i) ? str_replace('/' . $i, '', $root) : $root;
+        return Str::contains($root, $i) ? str_replace('/'.$i, '', $root) : $root;
     }
 
     /**
@@ -261,13 +272,14 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  bool|null  $secure
      * @return string
      */
-    public function formatScheme($secure) {
-        if (!is_null($secure)) {
+    public function formatScheme($secure)
+    {
+        if (! is_null($secure)) {
             return $secure ? 'https://' : 'http://';
         }
 
         if (is_null($this->cachedSchema)) {
-            $this->cachedSchema = $this->forceScheme ?: $this->request->getScheme() . '://';
+            $this->cachedSchema = $this->forceScheme ?: $this->request->getScheme().'://';
         }
 
         return $this->cachedSchema;
@@ -283,8 +295,9 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @throws \InvalidArgumentException
      */
-    public function route($name, $parameters = [], $absolute = true) {
-        if (!is_null($route = $this->routes->getByName($name))) {
+    public function route($name, $parameters = [], $absolute = true)
+    {
+        if (! is_null($route = $this->routes->getByName($name))) {
             return $this->toRoute($route, $parameters, $absolute);
         }
 
@@ -301,9 +314,10 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
      */
-    protected function toRoute($route, $parameters, $absolute) {
+    protected function toRoute($route, $parameters, $absolute)
+    {
         return $this->routeUrl()->to(
-                        $route, $this->formatParameters($parameters), $absolute
+            $route, $this->formatParameters($parameters), $absolute
         );
     }
 
@@ -317,7 +331,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @throws \InvalidArgumentException
      */
-    public function action($action, $parameters = [], $absolute = true) {
+    public function action($action, $parameters = [], $absolute = true)
+    {
         if (is_null($route = $this->routes->getByAction($action = $this->formatAction($action)))) {
             throw new InvalidArgumentException("Action {$action} not defined.");
         }
@@ -331,9 +346,10 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $action
      * @return string
      */
-    protected function formatAction($action) {
-        if ($this->rootNamespace && !(strpos($action, '\\') === 0)) {
-            return $this->rootNamespace . '\\' . $action;
+    protected function formatAction($action)
+    {
+        if ($this->rootNamespace && ! (strpos($action, '\\') === 0)) {
+            return $this->rootNamespace.'\\'.$action;
         } else {
             return trim($action, '\\');
         }
@@ -345,7 +361,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  mixed|array  $parameters
      * @return array
      */
-    public function formatParameters($parameters) {
+    public function formatParameters($parameters)
+    {
         $parameters = array_wrap($parameters);
 
         foreach ($parameters as $key => $parameter) {
@@ -363,7 +380,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $path
      * @return array
      */
-    protected function extractQueryString($path) {
+    protected function extractQueryString($path)
+    {
         if (($queryPosition = strpos($path, '?')) !== false) {
             return [
                 substr($path, 0, $queryPosition),
@@ -381,7 +399,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $root
      * @return string
      */
-    public function formatRoot($scheme, $root = null) {
+    public function formatRoot($scheme, $root = null)
+    {
         if (is_null($root)) {
             if (is_null($this->cachedRoot)) {
                 $this->cachedRoot = $this->forcedRoot ?: $this->request->root();
@@ -392,7 +411,7 @@ class UrlGenerator implements UrlGeneratorContract {
 
         $start = Str::startsWith($root, 'http://') ? 'http://' : 'https://';
 
-        return preg_replace('~' . $start . '~', $scheme, $root, 1);
+        return preg_replace('~'.$start.'~', $scheme, $root, 1);
     }
 
     /**
@@ -402,8 +421,9 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $path
      * @return string
      */
-    public function format($root, $path) {
-        $path = '/' . trim($path, '/');
+    public function format($root, $path)
+    {
+        $path = '/'.trim($path, '/');
 
         if ($this->formatHostUsing) {
             $root = call_user_func($this->formatHostUsing, $root);
@@ -413,7 +433,7 @@ class UrlGenerator implements UrlGeneratorContract {
             $path = call_user_func($this->formatPathUsing, $path);
         }
 
-        return trim($root . $path, '/');
+        return trim($root.$path, '/');
     }
 
     /**
@@ -422,8 +442,9 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $path
      * @return bool
      */
-    public function isValidUrl($path) {
-        if (!Str::startsWith($path, ['#', '//', 'mailto:', 'tel:', 'http://', 'https://'])) {
+    public function isValidUrl($path)
+    {
+        if (! Str::startsWith($path, ['#', '//', 'mailto:', 'tel:', 'http://', 'https://'])) {
             return filter_var($path, FILTER_VALIDATE_URL) !== false;
         }
 
@@ -435,8 +456,9 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return \Illuminate\Routing\RouteUrlGenerator
      */
-    protected function routeUrl() {
-        if (!$this->routeGenerator) {
+    protected function routeUrl()
+    {
+        if (! $this->routeGenerator) {
             $this->routeGenerator = new RouteUrlGenerator($this, $this->request);
         }
 
@@ -449,7 +471,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  array  $defaults
      * @return void
      */
-    public function defaults(array $defaults) {
+    public function defaults(array $defaults)
+    {
         $this->routeUrl()->defaults($defaults);
     }
 
@@ -459,10 +482,11 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $schema
      * @return void
      */
-    public function forceScheme($schema) {
+    public function forceScheme($schema)
+    {
         $this->cachedSchema = null;
 
-        $this->forceScheme = $schema . '://';
+        $this->forceScheme = $schema.'://';
     }
 
     /**
@@ -471,7 +495,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $root
      * @return void
      */
-    public function forceRootUrl($root) {
+    public function forceRootUrl($root)
+    {
         $this->forcedRoot = rtrim($root, '/');
 
         $this->cachedRoot = null;
@@ -483,7 +508,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function formatHostUsing(Closure $callback) {
+    public function formatHostUsing(Closure $callback)
+    {
         $this->formatHostUsing = $callback;
 
         return $this;
@@ -495,7 +521,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function formatPathUsing(Closure $callback) {
+    public function formatPathUsing(Closure $callback)
+    {
         $this->formatPathUsing = $callback;
 
         return $this;
@@ -506,7 +533,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return \Closure
      */
-    public function pathFormatter() {
+    public function pathFormatter()
+    {
         return $this->formatPathUsing ?: function ($path) {
             return $path;
         };
@@ -517,7 +545,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return \Illuminate\Http\Request
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -527,7 +556,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
 
         $this->cachedRoot = null;
@@ -541,7 +571,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  \Illuminate\Routing\RouteCollection  $routes
      * @return $this
      */
-    public function setRoutes(RouteCollection $routes) {
+    public function setRoutes(RouteCollection $routes)
+    {
         $this->routes = $routes;
 
         return $this;
@@ -552,7 +583,8 @@ class UrlGenerator implements UrlGeneratorContract {
      *
      * @return \Illuminate\Session\Store|null
      */
-    protected function getSession() {
+    protected function getSession()
+    {
         if ($this->sessionResolver) {
             return call_user_func($this->sessionResolver);
         }
@@ -564,7 +596,8 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  callable  $sessionResolver
      * @return $this
      */
-    public function setSessionResolver(callable $sessionResolver) {
+    public function setSessionResolver(callable $sessionResolver)
+    {
         $this->sessionResolver = $sessionResolver;
 
         return $this;
@@ -576,10 +609,10 @@ class UrlGenerator implements UrlGeneratorContract {
      * @param  string  $rootNamespace
      * @return $this
      */
-    public function setRootControllerNamespace($rootNamespace) {
+    public function setRootControllerNamespace($rootNamespace)
+    {
         $this->rootNamespace = $rootNamespace;
 
         return $this;
     }
-
 }

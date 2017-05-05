@@ -1,11 +1,9 @@
 <?php
-
 namespace Hamcrest\Core;
 
 /*
-  Copyright (c) 2010 hamcrest.org
+ Copyright (c) 2010 hamcrest.org
  */
-
 use Hamcrest\BaseMatcher;
 use Hamcrest\Description;
 
@@ -21,17 +19,20 @@ use Hamcrest\Description;
  *
  * @todo Replace $property with a matcher and iterate all property names.
  */
-class Set extends BaseMatcher {
+class Set extends BaseMatcher
+{
 
     private $_property;
     private $_not;
 
-    public function __construct($property, $not = false) {
+    public function __construct($property, $not = false)
+    {
         $this->_property = $property;
         $this->_not = $not;
     }
 
-    public function matches($item) {
+    public function matches($item)
+    {
         if ($item === null) {
             return false;
         }
@@ -49,11 +50,13 @@ class Set extends BaseMatcher {
         return $this->_not ? !$result : $result;
     }
 
-    public function describeTo(Description $description) {
+    public function describeTo(Description $description)
+    {
         $description->appendText($this->_not ? 'unset property ' : 'set property ')->appendText($this->_property);
     }
 
-    public function describeMismatch($item, Description $description) {
+    public function describeMismatch($item, Description $description)
+    {
         $value = '';
         if (!$this->_not) {
             $description->appendText('was not set');
@@ -75,7 +78,8 @@ class Set extends BaseMatcher {
      *
      * @factory
      */
-    public static function set($property) {
+    public static function set($property)
+    {
         return new self($property);
     }
 
@@ -84,8 +88,8 @@ class Set extends BaseMatcher {
      *
      * @factory
      */
-    public static function notSet($property) {
+    public static function notSet($property)
+    {
         return new self($property, true);
     }
-
 }

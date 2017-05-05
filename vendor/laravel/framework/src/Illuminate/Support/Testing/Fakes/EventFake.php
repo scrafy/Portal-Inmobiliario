@@ -5,8 +5,8 @@ namespace Illuminate\Support\Testing\Fakes;
 use PHPUnit_Framework_Assert as PHPUnit;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class EventFake implements Dispatcher {
-
+class EventFake implements Dispatcher
+{
     /**
      * All of the events that have been dispatched keyed by type.
      *
@@ -21,9 +21,11 @@ class EventFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertDispatched($event, $callback = null) {
+    public function assertDispatched($event, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->dispatched($event, $callback)->count() > 0, "The expected [{$event}] event was not dispatched."
+            $this->dispatched($event, $callback)->count() > 0,
+            "The expected [{$event}] event was not dispatched."
         );
     }
 
@@ -34,9 +36,11 @@ class EventFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertNotDispatched($event, $callback = null) {
+    public function assertNotDispatched($event, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->dispatched($event, $callback)->count() === 0, "The unexpected [{$event}] event was dispatched."
+            $this->dispatched($event, $callback)->count() === 0,
+            "The unexpected [{$event}] event was dispatched."
         );
     }
 
@@ -47,8 +51,9 @@ class EventFake implements Dispatcher {
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function dispatched($event, $callback = null) {
-        if (!$this->hasDispatched($event)) {
+    public function dispatched($event, $callback = null)
+    {
+        if (! $this->hasDispatched($event)) {
             return collect();
         }
 
@@ -57,8 +62,8 @@ class EventFake implements Dispatcher {
         };
 
         return collect($this->events[$event])->filter(function ($arguments) use ($callback) {
-                    return $callback(...$arguments);
-                });
+            return $callback(...$arguments);
+        });
     }
 
     /**
@@ -67,8 +72,9 @@ class EventFake implements Dispatcher {
      * @param  string  $event
      * @return bool
      */
-    public function hasDispatched($event) {
-        return isset($this->events[$event]) && !empty($this->events[$event]);
+    public function hasDispatched($event)
+    {
+        return isset($this->events[$event]) && ! empty($this->events[$event]);
     }
 
     /**
@@ -78,7 +84,8 @@ class EventFake implements Dispatcher {
      * @param  mixed  $listener
      * @return void
      */
-    public function listen($events, $listener) {
+    public function listen($events, $listener)
+    {
         //
     }
 
@@ -88,7 +95,8 @@ class EventFake implements Dispatcher {
      * @param  string  $eventName
      * @return bool
      */
-    public function hasListeners($eventName) {
+    public function hasListeners($eventName)
+    {
         //
     }
 
@@ -99,7 +107,8 @@ class EventFake implements Dispatcher {
      * @param  array  $payload
      * @return void
      */
-    public function push($event, $payload = []) {
+    public function push($event, $payload = [])
+    {
         //
     }
 
@@ -109,7 +118,8 @@ class EventFake implements Dispatcher {
      * @param  object|string  $subscriber
      * @return void
      */
-    public function subscribe($subscriber) {
+    public function subscribe($subscriber)
+    {
         //
     }
 
@@ -119,7 +129,8 @@ class EventFake implements Dispatcher {
      * @param  string  $event
      * @return void
      */
-    public function flush($event) {
+    public function flush($event)
+    {
         //
     }
 
@@ -131,7 +142,8 @@ class EventFake implements Dispatcher {
      * @param  bool  $halt
      * @return array|null
      */
-    public function fire($event, $payload = [], $halt = false) {
+    public function fire($event, $payload = [], $halt = false)
+    {
         return $this->dispatch($event, $payload, $halt);
     }
 
@@ -143,7 +155,8 @@ class EventFake implements Dispatcher {
      * @param  bool  $halt
      * @return array|null
      */
-    public function dispatch($event, $payload = [], $halt = false) {
+    public function dispatch($event, $payload = [], $halt = false)
+    {
         $name = is_object($event) ? get_class($event) : (string) $event;
 
         $this->events[$name][] = func_get_args();
@@ -155,7 +168,8 @@ class EventFake implements Dispatcher {
      * @param  string  $event
      * @return void
      */
-    public function forget($event) {
+    public function forget($event)
+    {
         //
     }
 
@@ -164,7 +178,8 @@ class EventFake implements Dispatcher {
      *
      * @return void
      */
-    public function forgetPushed() {
+    public function forgetPushed()
+    {
         //
     }
 
@@ -175,8 +190,8 @@ class EventFake implements Dispatcher {
      * @param  mixed $payload
      * @return void
      */
-    public function until($event, $payload = []) {
+    public function until($event, $payload = [])
+    {
         //
     }
-
 }

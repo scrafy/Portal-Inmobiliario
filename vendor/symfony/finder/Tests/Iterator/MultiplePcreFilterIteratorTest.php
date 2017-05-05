@@ -14,17 +14,19 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Iterator\MultiplePcreFilterIterator;
 
-class MultiplePcreFilterIteratorTest extends TestCase {
-
+class MultiplePcreFilterIteratorTest extends TestCase
+{
     /**
      * @dataProvider getIsRegexFixtures
      */
-    public function testIsRegex($string, $isRegex, $message) {
+    public function testIsRegex($string, $isRegex, $message)
+    {
         $testIterator = new TestMultiplePcreFilterIterator();
         $this->assertEquals($isRegex, $testIterator->isRegex($string), $message);
     }
 
-    public function getIsRegexFixtures() {
+    public function getIsRegexFixtures()
+    {
         return array(
             array('foo', false, 'string'),
             array(' foo ', false, '" " is not a valid delimiter'),
@@ -44,25 +46,26 @@ class MultiplePcreFilterIteratorTest extends TestCase {
             array('?foo.?', false, '"?" is not considered as a valid delimiter'),
         );
     }
-
 }
 
-class TestMultiplePcreFilterIterator extends MultiplePcreFilterIterator {
-
-    public function __construct() {
-        
+class TestMultiplePcreFilterIterator extends MultiplePcreFilterIterator
+{
+    public function __construct()
+    {
     }
 
-    public function accept() {
+    public function accept()
+    {
         throw new \BadFunctionCallException('Not implemented');
     }
 
-    public function isRegex($str) {
+    public function isRegex($str)
+    {
         return parent::isRegex($str);
     }
 
-    public function toRegex($str) {
+    public function toRegex($str)
+    {
         throw new \BadFunctionCallException('Not implemented');
     }
-
 }

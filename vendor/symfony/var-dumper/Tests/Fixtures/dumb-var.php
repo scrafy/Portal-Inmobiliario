@@ -3,13 +3,10 @@
 namespace Symfony\Component\VarDumper\Tests\Fixture;
 
 if (!class_exists('Symfony\Component\VarDumper\Tests\Fixture\DumbFoo')) {
-
-    class DumbFoo {
-
+    class DumbFoo
+    {
         public $foo = 'foo';
-
     }
-
 }
 
 $foo = new DumbFoo();
@@ -24,9 +21,7 @@ $var = array(
     '[]' => array(),
     'res' => $g,
     'obj' => $foo,
-    'closure' => function ($a, \PDO &$b = null) {
-        
-    },
+    'closure' => function ($a, \PDO &$b = null) {},
     'line' => __LINE__ - 1,
     'nobj' => array((object) array()),
 );

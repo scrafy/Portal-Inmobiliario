@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface RequestMatcherInterface {
-
+interface RequestMatcherInterface
+{
     /**
      * Decides whether the rule(s) implemented by the strategy matches the supplied request.
      *

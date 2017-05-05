@@ -1,9 +1,8 @@
 <?php
-
-class Foo {
-
-    public function doSomething(Bar $bar) {
+class Foo
+{
+    public function doSomething(Bar $bar)
+    {
         return $bar->doSomethingElse();
     }
-
 }

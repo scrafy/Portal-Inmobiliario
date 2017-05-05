@@ -6,8 +6,8 @@ use ReflectionMethod;
 use ReflectionFunction;
 use Illuminate\Support\Str;
 
-class RouteSignatureParameters {
-
+class RouteSignatureParameters
+{
     /**
      * Extract the route action's signature parameters.
      *
@@ -15,12 +15,15 @@ class RouteSignatureParameters {
      * @param  string  $subClass
      * @return array
      */
-    public static function fromAction(array $action, $subClass = null) {
-        $parameters = is_string($action['uses']) ? static::fromClassMethodString($action['uses']) : (new ReflectionFunction($action['uses']))->getParameters();
+    public static function fromAction(array $action, $subClass = null)
+    {
+        $parameters = is_string($action['uses'])
+                        ? static::fromClassMethodString($action['uses'])
+                        : (new ReflectionFunction($action['uses']))->getParameters();
 
         return is_null($subClass) ? $parameters : array_filter($parameters, function ($p) use ($subClass) {
-                    return $p->getClass() && $p->getClass()->isSubclassOf($subClass);
-                });
+            return $p->getClass() && $p->getClass()->isSubclassOf($subClass);
+        });
     }
 
     /**
@@ -29,10 +32,10 @@ class RouteSignatureParameters {
      * @param  string  $uses
      * @return array
      */
-    protected static function fromClassMethodString($uses) {
+    protected static function fromClassMethodString($uses)
+    {
         list($class, $method) = Str::parseCallback($uses);
 
         return (new ReflectionMethod($class, $method))->getParameters();
     }
-
 }

@@ -19,10 +19,11 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
 /**
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-abstract class AbstractHandlerTest extends TestCase {
-
+abstract class AbstractHandlerTest extends TestCase
+{
     /** @dataProvider getHandleValueTestData */
-    public function testHandleValue($value, Token $expectedToken, $remainingContent) {
+    public function testHandleValue($value, Token $expectedToken, $remainingContent)
+    {
         $reader = new Reader($value);
         $stream = new TokenStream();
 
@@ -32,7 +33,8 @@ abstract class AbstractHandlerTest extends TestCase {
     }
 
     /** @dataProvider getDontHandleValueTestData */
-    public function testDontHandleValue($value) {
+    public function testDontHandleValue($value)
+    {
         $reader = new Reader($value);
         $stream = new TokenStream();
 
@@ -47,14 +49,16 @@ abstract class AbstractHandlerTest extends TestCase {
 
     abstract protected function generateHandler();
 
-    protected function assertStreamEmpty(TokenStream $stream) {
+    protected function assertStreamEmpty(TokenStream $stream)
+    {
         $property = new \ReflectionProperty($stream, 'tokens');
         $property->setAccessible(true);
 
         $this->assertEquals(array(), $property->getValue($stream));
     }
 
-    protected function assertRemainingContent(Reader $reader, $remainingContent) {
+    protected function assertRemainingContent(Reader $reader, $remainingContent)
+    {
         if ('' === $remainingContent) {
             $this->assertEquals(0, $reader->getRemainingLength());
             $this->assertTrue($reader->isEOF());
@@ -63,5 +67,4 @@ abstract class AbstractHandlerTest extends TestCase {
             $this->assertEquals(0, $reader->getOffset($remainingContent));
         }
     }
-
 }

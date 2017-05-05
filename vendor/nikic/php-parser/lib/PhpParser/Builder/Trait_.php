@@ -5,8 +5,8 @@ namespace PhpParser\Builder;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
-class Trait_ extends Declaration {
-
+class Trait_ extends Declaration
+{
     protected $name;
     protected $properties = array();
     protected $methods = array();
@@ -48,10 +48,9 @@ class Trait_ extends Declaration {
      */
     public function getNode() {
         return new Stmt\Trait_(
-                $this->name, array(
-            'stmts' => array_merge($this->properties, $this->methods)
-                ), $this->attributes
+            $this->name, array(
+                'stmts' => array_merge($this->properties, $this->methods)
+            ), $this->attributes
         );
     }
-
 }

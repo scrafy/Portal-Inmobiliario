@@ -18,10 +18,11 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class HtmlDumperTest extends TestCase {
-
-    public function testGet() {
-        require __DIR__ . '/Fixtures/dumb-var.php';
+class HtmlDumperTest extends TestCase
+{
+    public function testGet()
+    {
+        require __DIR__.'/Fixtures/dumb-var.php';
 
         $dumper = new HtmlDumper('php://output');
         $dumper->setDumpHeader('<foo></foo>');
@@ -48,7 +49,7 @@ class HtmlDumperTest extends TestCase {
 
         $r = defined('HHVM_VERSION') ? '' : '<a class=sf-dump-ref>#%d</a>';
         $this->assertStringMatchesFormat(
-                <<<EOTXT
+            <<<EOTXT
 <foo></foo><bar><span class=sf-dump-note>array:24</span> [<samp>
   "<span class=sf-dump-key>number</span>" => <span class=sf-dump-num>1</span>
   <span class=sf-dump-key>0</span> => <a class=sf-dump-ref href=#{$dumpId}-ref01 title="2 occurrences">&amp;1</a> <span class=sf-dump-const>null</span>
@@ -106,11 +107,14 @@ class HtmlDumperTest extends TestCase {
 </bar>
 
 EOTXT
-                , $out
+            ,
+
+            $out
         );
     }
 
-    public function testCharset() {
+    public function testCharset()
+    {
         $var = mb_convert_encoding('Словарь', 'CP1251', 'UTF-8');
 
         $dumper = new HtmlDumper('php://output', 'CP1251');
@@ -122,16 +126,18 @@ EOTXT
         $out = $dumper->dump($data, true);
 
         $this->assertStringMatchesFormat(
-                <<<'EOTXT'
+            <<<'EOTXT'
 <foo></foo><bar>b"<span class=sf-dump-str title="7 binary or non-UTF-8 characters">&#1057;&#1083;&#1086;&#1074;&#1072;&#1088;&#1100;</span>"
 </bar>
 
 EOTXT
-                , $out
+            ,
+            $out
         );
     }
 
-    public function testAppend() {
+    public function testAppend()
+    {
         $out = fopen('php://memory', 'r+b');
 
         $dumper = new HtmlDumper();
@@ -151,8 +157,8 @@ EOTXT
 </bar>
 
 EOTXT
-                , $out
+            ,
+            $out
         );
     }
-
 }

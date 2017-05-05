@@ -17,6 +17,6 @@ namespace Prophecy\Doubler;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface DoubleInterface {
-    
+interface DoubleInterface
+{
 }

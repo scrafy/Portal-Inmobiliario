@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\CodeCoverage;
 /**
  * Utility methods.
  */
-class Util {
-
+class Util
+{
     /**
      * @param float $a
      * @param float $b
@@ -24,7 +23,8 @@ class Util {
      *
      * @return float|int|string
      */
-    public static function percent($a, $b, $asString = false, $fixedWidth = false) {
+    public static function percent($a, $b, $asString = false, $fixedWidth = false)
+    {
         if ($asString && $b == 0) {
             return '';
         }
@@ -45,5 +45,4 @@ class Util {
             return $percent;
         }
     }
-
 }

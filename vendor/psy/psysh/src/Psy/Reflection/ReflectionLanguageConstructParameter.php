@@ -16,13 +16,14 @@ namespace Psy\Reflection;
  *
  * It stubs out all the important bits and returns whatever was passed in $opts.
  */
-class ReflectionLanguageConstructParameter extends \ReflectionParameter {
-
+class ReflectionLanguageConstructParameter extends \ReflectionParameter
+{
     private $function;
     private $parameter;
     private $opts;
 
-    public function __construct($function, $parameter, array $opts) {
+    public function __construct($function, $parameter, array $opts)
+    {
         $this->function = $function;
         $this->parameter = $parameter;
         $this->opts = $opts;
@@ -31,7 +32,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
     /**
      * No class here.
      */
-    public function getClass() {
+    public function getClass()
+    {
         return;
     }
 
@@ -40,7 +42,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return bool
      */
-    public function isArray() {
+    public function isArray()
+    {
         return array_key_exists('isArray', $this->opts) && $this->opts['isArray'];
     }
 
@@ -49,7 +52,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return mixed
      */
-    public function getDefaultValue() {
+    public function getDefaultValue()
+    {
         if ($this->isDefaultValueAvailable()) {
             return $this->opts['defaultValue'];
         }
@@ -60,7 +64,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->parameter;
     }
 
@@ -69,7 +74,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return bool
      */
-    public function isOptional() {
+    public function isOptional()
+    {
         return array_key_exists('isOptional', $this->opts) && $this->opts['isOptional'];
     }
 
@@ -78,7 +84,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return bool
      */
-    public function isDefaultValueAvailable() {
+    public function isDefaultValueAvailable()
+    {
         return array_key_exists('defaultValue', $this->opts);
     }
 
@@ -89,8 +96,8 @@ class ReflectionLanguageConstructParameter extends \ReflectionParameter {
      *
      * @return bool
      */
-    public function isPassedByReference() {
+    public function isPassedByReference()
+    {
         return array_key_exists('isPassedByReference', $this->opts) && $this->opts['isPassedByReference'];
     }
-
 }

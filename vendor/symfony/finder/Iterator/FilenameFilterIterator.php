@@ -18,14 +18,15 @@ use Symfony\Component\Finder\Glob;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FilenameFilterIterator extends MultiplePcreFilterIterator {
-
+class FilenameFilterIterator extends MultiplePcreFilterIterator
+{
     /**
      * Filters the iterator values.
      *
      * @return bool true if the value should be kept, false otherwise
      */
-    public function accept() {
+    public function accept()
+    {
         return $this->isAccepted($this->current()->getFilename());
     }
 
@@ -39,8 +40,8 @@ class FilenameFilterIterator extends MultiplePcreFilterIterator {
      *
      * @return string regexp corresponding to a given glob or regexp
      */
-    protected function toRegex($str) {
+    protected function toRegex($str)
+    {
         return $this->isRegex($str) ? $str : Glob::toRegex($str);
     }
-
 }

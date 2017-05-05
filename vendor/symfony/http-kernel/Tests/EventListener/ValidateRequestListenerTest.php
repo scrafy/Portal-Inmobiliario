@@ -19,12 +19,13 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ValidateRequestListenerTest extends TestCase {
-
+class ValidateRequestListenerTest extends TestCase
+{
     /**
      * @expectedException \Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException
      */
-    public function testListenerThrowsWhenMasterRequestHasInconsistentClientIps() {
+    public function testListenerThrowsWhenMasterRequestHasInconsistentClientIps()
+    {
         $dispatcher = new EventDispatcher();
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock();
 
@@ -39,5 +40,4 @@ class ValidateRequestListenerTest extends TestCase {
 
         $dispatcher->dispatch(KernelEvents::REQUEST, $event);
     }
-
 }

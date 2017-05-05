@@ -7,8 +7,8 @@ use SessionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Cookie\QueueingFactory as CookieJar;
 
-class CookieSessionHandler implements SessionHandlerInterface {
-
+class CookieSessionHandler implements SessionHandlerInterface
+{
     /**
      * The cookie jar instance.
      *
@@ -37,7 +37,8 @@ class CookieSessionHandler implements SessionHandlerInterface {
      * @param  int  $minutes
      * @return void
      */
-    public function __construct(CookieJar $cookie, $minutes) {
+    public function __construct(CookieJar $cookie, $minutes)
+    {
         $this->cookie = $cookie;
         $this->minutes = $minutes;
     }
@@ -45,24 +46,27 @@ class CookieSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId) {
+    public function read($sessionId)
+    {
         $value = $this->request->cookies->get($sessionId) ?: '';
 
-        if (!is_null($decoded = json_decode($value, true)) && is_array($decoded)) {
+        if (! is_null($decoded = json_decode($value, true)) && is_array($decoded)) {
             if (isset($decoded['expires']) && Carbon::now()->getTimestamp() <= $decoded['expires']) {
                 return $decoded['data'];
             }
@@ -74,11 +78,12 @@ class CookieSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data) {
+    public function write($sessionId, $data)
+    {
         $this->cookie->queue($sessionId, json_encode([
             'data' => $data,
             'expires' => Carbon::now()->addMinutes($this->minutes)->getTimestamp(),
-                ]), $this->minutes);
+        ]), $this->minutes);
 
         return true;
     }
@@ -86,7 +91,8 @@ class CookieSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId) {
+    public function destroy($sessionId)
+    {
         $this->cookie->queue($this->cookie->forget($sessionId));
 
         return true;
@@ -95,7 +101,8 @@ class CookieSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function gc($lifetime) {
+    public function gc($lifetime)
+    {
         return true;
     }
 
@@ -105,8 +112,8 @@ class CookieSessionHandler implements SessionHandlerInterface {
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return void
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
     }
-
 }

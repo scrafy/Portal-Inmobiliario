@@ -1,5 +1,6 @@
 #!/usr/bin/env php -d phar.readonly=Off
 <?php
+
 /*
  * This file is part of Psy Shell.
  *

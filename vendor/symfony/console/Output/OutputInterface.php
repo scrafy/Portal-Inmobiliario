@@ -18,13 +18,14 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface OutputInterface {
-
+interface OutputInterface
+{
     const VERBOSITY_QUIET = 16;
     const VERBOSITY_NORMAL = 32;
     const VERBOSITY_VERBOSE = 64;
     const VERBOSITY_VERY_VERBOSE = 128;
     const VERBOSITY_DEBUG = 256;
+
     const OUTPUT_NORMAL = 1;
     const OUTPUT_RAW = 2;
     const OUTPUT_PLAIN = 4;

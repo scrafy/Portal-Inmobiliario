@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Base class for printers of TestDox documentation.
  */
-abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener {
-
+abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+{
     /**
      * @var PHPUnit_Util_TestDox_NamePrettifier
      */
@@ -89,10 +88,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param array    $groups
      * @param array    $excludeGroups
      */
-    public function __construct($out = null, array $groups = [], array $excludeGroups = []) {
+    public function __construct($out = null, array $groups = [], array $excludeGroups = [])
+    {
         parent::__construct($out);
 
-        $this->groups = $groups;
+        $this->groups        = $groups;
         $this->excludeGroups = $excludeGroups;
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
@@ -102,7 +102,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     /**
      * Flush buffer and close output.
      */
-    public function flush() {
+    public function flush()
+    {
         $this->doEndClass();
         $this->endRun();
 
@@ -116,7 +117,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -132,7 +134,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time) {
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -148,7 +151,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_AssertionFailedError $e
      * @param float                                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -164,7 +168,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -180,7 +185,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -196,7 +202,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -210,8 +217,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param PHPUnit_Framework_TestSuite $suite
      */
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {
-        
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
     }
 
     /**
@@ -219,8 +226,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param PHPUnit_Framework_TestSuite $suite
      */
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {
-        
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
     }
 
     /**
@@ -228,7 +235,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param PHPUnit_Framework_Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test) {
+    public function startTest(PHPUnit_Framework_Test $test)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -250,7 +258,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             $this->startClass($class);
 
             $this->testClass = $class;
-            $this->tests = [];
+            $this->tests     = [];
         }
 
         $annotations = $test->getAnnotations();
@@ -274,7 +282,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_Test $test
      * @param float                  $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time) {
+    public function endTest(PHPUnit_Framework_Test $test, $time)
+    {
         if (!$this->isOfInterest($test)) {
             return;
         }
@@ -289,17 +298,18 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             }
         } else {
             if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                $this->tests[$this->currentTestMethodPrettified]['success'] ++;
+                $this->tests[$this->currentTestMethodPrettified]['success']++;
             } else {
-                $this->tests[$this->currentTestMethodPrettified]['failure'] ++;
+                $this->tests[$this->currentTestMethodPrettified]['failure']++;
             }
         }
 
-        $this->currentTestClassPrettified = null;
+        $this->currentTestClassPrettified  = null;
         $this->currentTestMethodPrettified = null;
     }
 
-    protected function doEndClass() {
+    protected function doEndClass()
+    {
         foreach ($this->tests as $name => $data) {
             $this->onTest($name, $data['failure'] == 0);
         }
@@ -310,8 +320,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     /**
      * Handler for 'start run' event.
      */
-    protected function startRun() {
-        
+    protected function startRun()
+    {
     }
 
     /**
@@ -319,8 +329,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param string $name
      */
-    protected function startClass($name) {
-        
+    protected function startClass($name)
+    {
     }
 
     /**
@@ -329,8 +339,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true) {
-        
+    protected function onTest($name, $success = true)
+    {
     }
 
     /**
@@ -338,15 +348,15 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param string $name
      */
-    protected function endClass($name) {
-        
+    protected function endClass($name)
+    {
     }
 
     /**
      * Handler for 'end run' event.
      */
-    protected function endRun() {
-        
+    protected function endRun()
+    {
     }
 
     /**
@@ -354,7 +364,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @return bool
      */
-    private function isOfInterest(PHPUnit_Framework_Test $test) {
+    private function isOfInterest(PHPUnit_Framework_Test $test)
+    {
         if (!$test instanceof PHPUnit_Framework_TestCase) {
             return false;
         }
@@ -385,5 +396,4 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
         return true;
     }
-
 }

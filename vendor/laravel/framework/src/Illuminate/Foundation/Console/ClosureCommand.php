@@ -8,8 +8,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ClosureCommand extends Command {
-
+class ClosureCommand extends Command
+{
     /**
      * The command callback.
      *
@@ -24,7 +24,8 @@ class ClosureCommand extends Command {
      * @param  Closure  $callback
      * @return void
      */
-    public function __construct($signature, Closure $callback) {
+    public function __construct($signature, Closure $callback)
+    {
         $this->callback = $callback;
         $this->signature = $signature;
 
@@ -38,7 +39,8 @@ class ClosureCommand extends Command {
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return mixed
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $inputs = array_merge($input->getArguments(), $input->getOptions());
 
         $parameters = [];
@@ -50,7 +52,7 @@ class ClosureCommand extends Command {
         }
 
         return $this->laravel->call(
-                        $this->callback->bindTo($this, $this), $parameters
+            $this->callback->bindTo($this, $this), $parameters
         );
     }
 
@@ -60,10 +62,10 @@ class ClosureCommand extends Command {
      * @param  string  $description
      * @return $this
      */
-    public function describe($description) {
+    public function describe($description)
+    {
         $this->setDescription($description);
 
         return $this;
     }
-
 }

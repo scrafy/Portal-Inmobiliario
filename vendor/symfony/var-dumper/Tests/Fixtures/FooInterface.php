@@ -2,8 +2,8 @@
 
 namespace Symfony\Component\VarDumper\Tests\Fixtures;
 
-interface FooInterface {
-
+interface FooInterface
+{
     /**
      * Hello.
      */

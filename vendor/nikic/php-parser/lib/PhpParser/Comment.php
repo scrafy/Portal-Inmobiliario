@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-class Comment implements \JsonSerializable {
-
+class Comment implements \JsonSerializable
+{
     protected $text;
     protected $line;
     protected $filePos;
@@ -137,5 +137,4 @@ class Comment implements \JsonSerializable {
             'filePos' => $this->filePos,
         ];
     }
-
 }

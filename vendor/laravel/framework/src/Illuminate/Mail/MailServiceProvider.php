@@ -7,8 +7,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 
-class MailServiceProvider extends ServiceProvider {
-
+class MailServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -21,7 +21,8 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerSwiftMailer();
 
         $this->registerIlluminateMailer();
@@ -34,7 +35,8 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerIlluminateMailer() {
+    protected function registerIlluminateMailer()
+    {
         $this->app->singleton('mailer', function ($app) {
             $config = $app->make('config')->get('mail');
 
@@ -42,7 +44,7 @@ class MailServiceProvider extends ServiceProvider {
             // on the mailer. This allows us to resolve mailer classes via containers
             // for maximum testability on said classes instead of passing Closures.
             $mailer = new Mailer(
-                    $app['view'], $app['swift.mailer'], $app['events']
+                $app['view'], $app['swift.mailer'], $app['events']
             );
 
             if ($app->bound('queue')) {
@@ -68,11 +70,12 @@ class MailServiceProvider extends ServiceProvider {
      * @param  string  $type
      * @return void
      */
-    protected function setGlobalAddress($mailer, array $config, $type) {
+    protected function setGlobalAddress($mailer, array $config, $type)
+    {
         $address = Arr::get($config, $type);
 
         if (is_array($address) && isset($address['address'])) {
-            $mailer->{'always' . Str::studly($type)}($address['address'], $address['name']);
+            $mailer->{'always'.Str::studly($type)}($address['address'], $address['name']);
         }
     }
 
@@ -81,7 +84,8 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerSwiftMailer() {
+    public function registerSwiftMailer()
+    {
         $this->registerSwiftTransport();
 
         // Once we have the transporter registered, we will register the actual Swift
@@ -97,7 +101,8 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerSwiftTransport() {
+    protected function registerSwiftTransport()
+    {
         $this->app->singleton('swift.transport', function ($app) {
             return new TransportManager($app);
         });
@@ -108,11 +113,12 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerMarkdownRenderer() {
+    protected function registerMarkdownRenderer()
+    {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/resources/views' => resource_path('views/vendor/mail'),
-                    ], 'laravel-mail');
+                __DIR__.'/resources/views' => resource_path('views/vendor/mail'),
+            ], 'laravel-mail');
         }
 
         $this->app->singleton(Markdown::class, function () {
@@ -128,10 +134,10 @@ class MailServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'mailer', 'swift.mailer', 'swift.transport', Markdown::class,
         ];
     }
-
 }

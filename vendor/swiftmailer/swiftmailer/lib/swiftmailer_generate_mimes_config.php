@@ -4,7 +4,8 @@
 define('APACHE_MIME_TYPES_URL', 'http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types');
 define('FREEDESKTOP_XML_URL', 'https://raw2.github.com/minad/mimemagic/master/script/freedesktop.org.xml');
 
-function generateUpToDateMimeArray() {
+function generateUpToDateMimeArray()
+{
     $preamble = "<?php\n\n";
     $preamble .= "/*\n";
     $preamble .= " * This file is part of SwiftMailer.\n";
@@ -183,7 +184,7 @@ function generateUpToDateMimeArray() {
     ksort($valid_mime_types);
 
     // combine mime types and extensions array
-    $output = "$preamble\$swift_mime_types = array(\n    " . implode($valid_mime_types, ",\n    ") . "\n);";
+    $output = "$preamble\$swift_mime_types = array(\n    ".implode($valid_mime_types, ",\n    ")."\n);";
 
     // write mime_types.php config file
     @file_put_contents('./mime_types.php', $output);

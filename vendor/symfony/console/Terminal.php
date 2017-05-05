@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Console;
 
-class Terminal {
-
+class Terminal
+{
     private static $width;
     private static $height;
 
@@ -21,7 +21,8 @@ class Terminal {
      *
      * @return int
      */
-    public function getWidth() {
+    public function getWidth()
+    {
         if ($width = trim(getenv('COLUMNS'))) {
             return (int) $width;
         }
@@ -38,7 +39,8 @@ class Terminal {
      *
      * @return int
      */
-    public function getHeight() {
+    public function getHeight()
+    {
         if ($height = trim(getenv('LINES'))) {
             return (int) $height;
         }
@@ -50,7 +52,8 @@ class Terminal {
         return self::$height ?: 50;
     }
 
-    private static function initDimensions() {
+    private static function initDimensions()
+    {
         if ('\\' === DIRECTORY_SEPARATOR) {
             if (preg_match('/^(\d+)x(\d+)(?: \((\d+)x(\d+)\))?$/', trim(getenv('ANSICON')), $matches)) {
                 // extract [w, H] from "wxh (WxH)"
@@ -80,7 +83,8 @@ class Terminal {
      *
      * @return int[]|null An array composed of the width and the height or null if it could not be parsed
      */
-    private static function getConsoleMode() {
+    private static function getConsoleMode()
+    {
         if (!function_exists('proc_open')) {
             return;
         }
@@ -107,7 +111,8 @@ class Terminal {
      *
      * @return string|null
      */
-    private static function getSttyColumns() {
+    private static function getSttyColumns()
+    {
         if (!function_exists('proc_open')) {
             return;
         }
@@ -127,5 +132,4 @@ class Terminal {
             return $info;
         }
     }
-
 }

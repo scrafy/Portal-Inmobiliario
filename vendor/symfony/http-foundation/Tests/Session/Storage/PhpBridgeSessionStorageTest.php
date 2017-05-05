@@ -25,21 +25,23 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class PhpBridgeSessionStorageTest extends TestCase {
-
+class PhpBridgeSessionStorageTest extends TestCase
+{
     private $savePath;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->iniSet('session.save_handler', 'files');
-        $this->iniSet('session.save_path', $this->savePath = sys_get_temp_dir() . '/sf2test');
+        $this->iniSet('session.save_path', $this->savePath = sys_get_temp_dir().'/sf2test');
         if (!is_dir($this->savePath)) {
             mkdir($this->savePath);
         }
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         session_write_close();
-        array_map('unlink', glob($this->savePath . '/*'));
+        array_map('unlink', glob($this->savePath.'/*'));
         if (is_dir($this->savePath)) {
             rmdir($this->savePath);
         }
@@ -50,14 +52,16 @@ class PhpBridgeSessionStorageTest extends TestCase {
     /**
      * @return PhpBridgeSessionStorage
      */
-    protected function getStorage() {
+    protected function getStorage()
+    {
         $storage = new PhpBridgeSessionStorage();
         $storage->registerBag(new AttributeBag());
 
         return $storage;
     }
 
-    public function testPhpSession() {
+    public function testPhpSession()
+    {
         $storage = $this->getStorage();
 
         $this->assertFalse($storage->getSaveHandler()->isActive());
@@ -76,7 +80,8 @@ class PhpBridgeSessionStorageTest extends TestCase {
         $this->assertTrue(isset($_SESSION[$key]));
     }
 
-    public function testClear() {
+    public function testClear()
+    {
         $storage = $this->getStorage();
         session_start();
         $_SESSION['drak'] = 'loves symfony';
@@ -88,5 +93,4 @@ class PhpBridgeSessionStorageTest extends TestCase {
         $this->assertEquals($_SESSION[$key], array());
         $this->assertEquals($_SESSION['drak'], 'loves symfony');
     }
-
 }

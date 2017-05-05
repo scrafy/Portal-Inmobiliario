@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Console;
 
 use Illuminate\Console\Command;
 
-class ClearResetsCommand extends Command {
-
+class ClearResetsCommand extends Command
+{
     /**
      * The name and signature of the console command.
      *
@@ -25,10 +25,10 @@ class ClearResetsCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->laravel['auth.password']->broker($this->argument('name'))->getRepository()->deleteExpired();
 
         $this->info('Expired reset tokens cleared!');
     }
-
 }

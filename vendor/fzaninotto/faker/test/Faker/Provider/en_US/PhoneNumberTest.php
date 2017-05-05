@@ -5,20 +5,23 @@ namespace Faker\Test\Provider\en_US;
 use Faker\Generator;
 use Faker\Provider\en_US\PhoneNumber;
 
-class PhoneNumberTest extends \PHPUnit_Framework_TestCase {
+class PhoneNumberTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var Generator
      */
     private $faker;
 
-    public function setUp() {
+    public function setUp()
+    {
         $faker = new Generator();
         $faker->addProvider(new PhoneNumber($faker));
         $this->faker = $faker;
     }
 
-    public function testPhoneNumber() {
+    public function testPhoneNumber()
+    {
         for ($i = 0; $i < 100; $i++) {
             $number = $this->faker->phoneNumber;
             $baseNumber = preg_replace('/ *x.*$/', '', $number); // Remove possible extension
@@ -46,11 +49,13 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testTollFreeAreaCode() {
+    public function testTollFreeAreaCode()
+    {
         $this->assertContains($this->faker->tollFreeAreaCode, array(800, 822, 833, 844, 855, 866, 877, 888, 880, 887, 889));
     }
 
-    public function testTollFreePhoneNumber() {
+    public function testTollFreePhoneNumber()
+    {
         for ($i = 0; $i < 100; $i++) {
             $number = $this->faker->tollFreePhoneNumber;
             $digits = array_values(array_filter(str_split($number), 'ctype_digit'));
@@ -76,5 +81,4 @@ class PhoneNumberTest extends \PHPUnit_Framework_TestCase {
             $this->assertRegExp('/^(\+?1)?([ -.]*\d{3}[ -.]*| *\(\d{3}\) *)\d{3}[-.]?\d{4}$/', $number);
         }
     }
-
 }

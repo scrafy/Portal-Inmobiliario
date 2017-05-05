@@ -13,9 +13,10 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 
 use Symfony\Component\Finder\Iterator\SortableIterator;
 
-class SortableIteratorTest extends RealIteratorTestCase {
-
-    public function testConstructor() {
+class SortableIteratorTest extends RealIteratorTestCase
+{
+    public function testConstructor()
+    {
         try {
             new SortableIterator(new Iterator(array()), 'foobar');
             $this->fail('__construct() throws an \InvalidArgumentException exception if the mode is not valid');
@@ -27,7 +28,8 @@ class SortableIteratorTest extends RealIteratorTestCase {
     /**
      * @dataProvider getAcceptData
      */
-    public function testAccept($mode, $expected) {
+    public function testAccept($mode, $expected)
+    {
         if (!is_callable($mode)) {
             switch ($mode) {
                 case SortableIterator::SORT_BY_ACCESSED_TIME:
@@ -56,7 +58,9 @@ class SortableIteratorTest extends RealIteratorTestCase {
 
         $iterator = new SortableIterator($inner, $mode);
 
-        if ($mode === SortableIterator::SORT_BY_ACCESSED_TIME || $mode === SortableIterator::SORT_BY_CHANGED_TIME || $mode === SortableIterator::SORT_BY_MODIFIED_TIME
+        if ($mode === SortableIterator::SORT_BY_ACCESSED_TIME
+            || $mode === SortableIterator::SORT_BY_CHANGED_TIME
+            || $mode === SortableIterator::SORT_BY_MODIFIED_TIME
         ) {
             if ('\\' === DIRECTORY_SEPARATOR && SortableIterator::SORT_BY_MODIFIED_TIME !== $mode) {
                 $this->markTestSkipped('Sorting by atime or ctime is not supported on Windows');
@@ -67,7 +71,8 @@ class SortableIteratorTest extends RealIteratorTestCase {
         }
     }
 
-    public function getAcceptData() {
+    public function getAcceptData()
+    {
         $sortByName = array(
             '.bar',
             '.foo',
@@ -172,10 +177,7 @@ class SortableIteratorTest extends RealIteratorTestCase {
             array(SortableIterator::SORT_BY_ACCESSED_TIME, $this->toAbsolute($sortByAccessedTime)),
             array(SortableIterator::SORT_BY_CHANGED_TIME, $this->toAbsolute($sortByChangedTime)),
             array(SortableIterator::SORT_BY_MODIFIED_TIME, $this->toAbsolute($sortByModifiedTime)),
-            array(function (\SplFileInfo $a, \SplFileInfo $b) {
-                    return strcmp($a->getRealPath(), $b->getRealPath());
-                }, $this->toAbsolute($customComparison)),
+            array(function (\SplFileInfo $a, \SplFileInfo $b) { return strcmp($a->getRealPath(), $b->getRealPath()); }, $this->toAbsolute($customComparison)),
         );
     }
-
 }

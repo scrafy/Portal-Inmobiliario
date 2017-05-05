@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Contains extends MatcherAbstract {
+class Contains extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,7 +29,8 @@ class Contains extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         $values = array_values($actual);
         foreach ($this->_expected as $exp) {
             $match = false;
@@ -51,7 +52,8 @@ class Contains extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $return = '<Contains[';
         $elements = array();
         foreach ($this->_expected as $v) {
@@ -60,5 +62,4 @@ class Contains extends MatcherAbstract {
         $return .= implode(', ', $elements) . ']>';
         return $return;
     }
-
 }

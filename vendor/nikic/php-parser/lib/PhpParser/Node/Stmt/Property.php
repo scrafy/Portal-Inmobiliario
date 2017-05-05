@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Property extends Node\Stmt {
-
+class Property extends Node\Stmt
+{
     /** @var int Modifiers */
     public $flags;
-
     /** @var PropertyProperty[] Properties */
     public $props;
 
@@ -34,7 +33,8 @@ class Property extends Node\Stmt {
     }
 
     public function isPublic() {
-        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0 || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
+        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
+            || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
     }
 
     public function isProtected() {
@@ -48,5 +48,4 @@ class Property extends Node\Stmt {
     public function isStatic() {
         return (bool) ($this->flags & Class_::MODIFIER_STATIC);
     }
-
 }

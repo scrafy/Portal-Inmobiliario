@@ -6,23 +6,18 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\FunctionLike;
 
-class Closure extends Expr implements FunctionLike {
-
+class Closure extends Expr implements FunctionLike
+{
     /** @var bool Whether the closure is static */
     public $static;
-
     /** @var bool Whether to return by reference */
     public $byRef;
-
     /** @var Node\Param[] Parameters */
     public $params;
-
     /** @var ClosureUse[] use()s */
     public $uses;
-
     /** @var null|string|Node\Name|Node\NullableType Return type */
     public $returnType;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -67,5 +62,4 @@ class Closure extends Expr implements FunctionLike {
     public function getStmts() {
         return $this->stmts;
     }
-
 }

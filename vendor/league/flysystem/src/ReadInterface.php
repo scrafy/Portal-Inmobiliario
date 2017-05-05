@@ -2,8 +2,8 @@
 
 namespace League\Flysystem;
 
-interface ReadInterface {
-
+interface ReadInterface
+{
     /**
      * Check whether a file exists.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -17,8 +16,8 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Invokable extends PHPUnit_Framework_MockObject_Verifiable {
-
+interface PHPUnit_Framework_MockObject_Invokable extends PHPUnit_Framework_MockObject_Verifiable
+{
     /**
      * Invokes the invocation object $invocation so that it can be checked for
      * expectations or matched against stubs.

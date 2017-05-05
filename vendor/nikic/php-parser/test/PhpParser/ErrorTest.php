@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-class ErrorTest extends \PHPUnit_Framework_TestCase {
-
+class ErrorTest extends \PHPUnit_Framework_TestCase
+{
     public function testConstruct() {
         $attributes = array(
             'startLine' => 10,
@@ -50,6 +50,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame(true, $error->hasColumnInfo());
         $this->assertSame($startColumn, $error->getStartColumn($code));
         $this->assertSame($endColumn, $error->getEndColumn($code));
+
     }
 
     public function provideTestColumnInfo() {
@@ -102,5 +103,4 @@ class ErrorTest extends \PHPUnit_Framework_TestCase {
         ));
         $error->getStartColumn('code');
     }
-
 }

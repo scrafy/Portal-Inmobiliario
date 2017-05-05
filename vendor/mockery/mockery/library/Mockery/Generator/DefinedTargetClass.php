@@ -2,64 +2,77 @@
 
 namespace Mockery\Generator;
 
-class DefinedTargetClass {
-
+class DefinedTargetClass
+{
     private $rfc;
 
-    public function __construct(\ReflectionClass $rfc) {
+    public function __construct(\ReflectionClass $rfc)
+    {
         $this->rfc = $rfc;
     }
 
-    public static function factory($name) {
+    public static function factory($name)
+    {
         return new self(new \ReflectionClass($name));
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->rfc->getName();
     }
 
-    public function isAbstract() {
+    public function isAbstract()
+    {
         return $this->rfc->isAbstract();
     }
 
-    public function isFinal() {
+    public function isFinal()
+    {
         return $this->rfc->isFinal();
     }
 
-    public function getMethods() {
+    public function getMethods()
+    {
         return array_map(function ($method) {
             return new Method($method);
         }, $this->rfc->getMethods());
     }
 
-    public function getInterfaces() {
+    public function getInterfaces()
+    {
         $class = __CLASS__;
         return array_map(function ($interface) use ($class) {
             return new $class($interface);
         }, $this->rfc->getInterfaces());
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
     }
 
-    public function getNamespaceName() {
+    public function getNamespaceName()
+    {
         return $this->rfc->getNamespaceName();
     }
 
-    public function inNamespace() {
+    public function inNamespace()
+    {
         return $this->rfc->inNamespace();
     }
 
-    public function getShortName() {
+    public function getShortName()
+    {
         return $this->rfc->getShortName();
     }
 
-    public function implementsInterface($interface) {
+    public function implementsInterface($interface)
+    {
         return $this->rfc->implementsInterface($interface);
     }
 
-    public function hasInternalAncestor() {
+    public function hasInternalAncestor()
+    {
         if ($this->rfc->isInternal()) {
             return true;
         }
@@ -74,5 +87,4 @@ class DefinedTargetClass {
 
         return false;
     }
-
 }

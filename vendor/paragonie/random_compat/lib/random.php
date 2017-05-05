@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -29,11 +28,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 if (!defined('PHP_VERSION_ID')) {
     // This constant was introduced in PHP 5.2.7
     $RandomCompatversion = array_map('intval', explode('.', PHP_VERSION));
     define(
-            'PHP_VERSION_ID', $RandomCompatversion[0] * 10000 + $RandomCompatversion[1] * 100 + $RandomCompatversion[2]
+        'PHP_VERSION_ID',
+        $RandomCompatversion[0] * 10000
+        + $RandomCompatversion[1] * 100
+        + $RandomCompatversion[2]
     );
     $RandomCompatversion = null;
 }
@@ -90,24 +93,29 @@ if (!is_callable('random_bytes')) {
 
         if (!empty($RandomCompat_basedir)) {
             $RandomCompat_open_basedir = explode(
-                    PATH_SEPARATOR, strtolower($RandomCompat_basedir)
+                PATH_SEPARATOR,
+                strtolower($RandomCompat_basedir)
             );
             $RandomCompatUrandom = (array() !== array_intersect(
-                            array('/dev', '/dev/', '/dev/urandom'), $RandomCompat_open_basedir
+                array('/dev', '/dev/', '/dev/urandom'),
+                $RandomCompat_open_basedir
             ));
             $RandomCompat_open_basedir = null;
         }
 
         if (
-                !is_callable('random_bytes') &&
-                $RandomCompatUrandom &&
-                @is_readable('/dev/urandom')
+            !is_callable('random_bytes')
+            &&
+            $RandomCompatUrandom
+            &&
+            @is_readable('/dev/urandom')
         ) {
             // Error suppression on is_readable() in case of an open_basedir
             // or safe_mode failure. All we care about is whether or not we
             // can read it at this point. If the PHP environment is going to
             // panic over trying to see if the file can be read in the first
             // place, that is not helpful to us here.
+
             // See random_bytes_dev_urandom.php
             require_once $RandomCompatDIR . '/random_bytes_dev_urandom.php';
         }
@@ -136,16 +144,19 @@ if (!is_callable('random_bytes')) {
      *     we get insufficient entropy errors.
      */
     if (
-            !is_callable('random_bytes') &&
-            // Windows on PHP < 5.3.7 is broken, but non-Windows is not known to be.
-            (DIRECTORY_SEPARATOR === '/' || PHP_VERSION_ID >= 50307) &&
-            // Prevent this code from hanging indefinitely on non-Windows;
-            // see https://bugs.php.net/bug.php?id=69833
-            (
+        !is_callable('random_bytes')
+        &&
+        // Windows on PHP < 5.3.7 is broken, but non-Windows is not known to be.
+        (DIRECTORY_SEPARATOR === '/' || PHP_VERSION_ID >= 50307)
+        &&
+        // Prevent this code from hanging indefinitely on non-Windows;
+        // see https://bugs.php.net/bug.php?id=69833
+        (
             DIRECTORY_SEPARATOR !== '/' ||
             (PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613)
-            ) &&
-            extension_loaded('mcrypt')
+        )
+        &&
+        extension_loaded('mcrypt')
     ) {
         // See random_bytes_mcrypt.php
         require_once $RandomCompatDIR . '/random_bytes_mcrypt.php';
@@ -157,12 +168,15 @@ if (!is_callable('random_bytes')) {
      * isn't loaded.
      */
     if (
-            !is_callable('random_bytes') &&
-            extension_loaded('com_dotnet') &&
-            class_exists('COM')
+        !is_callable('random_bytes')
+        &&
+        extension_loaded('com_dotnet')
+        &&
+        class_exists('COM')
     ) {
         $RandomCompat_disabled_classes = preg_split(
-                '#\s*,\s*#', strtolower(ini_get('disable_classes'))
+            '#\s*,\s*#',
+            strtolower(ini_get('disable_classes'))
         );
 
         if (!in_array('com', $RandomCompat_disabled_classes)) {
@@ -184,7 +198,6 @@ if (!is_callable('random_bytes')) {
      * throw new Exception
      */
     if (!is_callable('random_bytes')) {
-
         /**
          * We don't have any more options, so let's throw an exception right now
          * and hope the developer won't let it fail silently.
@@ -193,13 +206,13 @@ if (!is_callable('random_bytes')) {
          * @return void
          * @throws Exception
          */
-        function random_bytes($length) {
+        function random_bytes($length)
+        {
             unset($length); // Suppress "variable not used" warnings.
             throw new Exception(
-            'There is no suitable CSPRNG installed on your system'
+                'There is no suitable CSPRNG installed on your system'
             );
         }
-
     }
 }
 

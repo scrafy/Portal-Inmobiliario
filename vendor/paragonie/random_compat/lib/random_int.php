@@ -38,7 +38,8 @@ if (!is_callable('random_int')) {
      *
      * @return int
      */
-    function random_int($min, $max) {
+    function random_int($min, $max)
+    {
         /**
          * Type and input logic checks
          *
@@ -48,11 +49,12 @@ if (!is_callable('random_int')) {
          * lose precision, so the <= and => operators might accidentally let a float
          * through.
          */
+
         try {
             $min = RandomCompat_intval($min);
         } catch (TypeError $ex) {
             throw new TypeError(
-            'random_int(): $min must be an integer'
+                'random_int(): $min must be an integer'
             );
         }
 
@@ -60,7 +62,7 @@ if (!is_callable('random_int')) {
             $max = RandomCompat_intval($max);
         } catch (TypeError $ex) {
             throw new TypeError(
-            'random_int(): $max must be an integer'
+                'random_int(): $max must be an integer'
             );
         }
 
@@ -71,7 +73,7 @@ if (!is_callable('random_int')) {
          */
         if ($min > $max) {
             throw new Error(
-            'Minimum value must be less than or equal to the maximum value'
+                'Minimum value must be less than or equal to the maximum value'
             );
         }
 
@@ -114,6 +116,7 @@ if (!is_callable('random_int')) {
              */
             $bytes = PHP_INT_SIZE;
             $mask = ~0;
+
         } else {
 
             /**
@@ -143,7 +146,7 @@ if (!is_callable('random_int')) {
              */
             if ($attempts > 128) {
                 throw new Exception(
-                'random_int: RNG is broken - too many rejections'
+                    'random_int: RNG is broken - too many rejections'
                 );
             }
 
@@ -182,7 +185,6 @@ if (!is_callable('random_int')) {
              */
         } while (!is_int($val) || $val > $max || $val < $min);
 
-        return (int) $val;
+        return (int)$val;
     }
-
 }

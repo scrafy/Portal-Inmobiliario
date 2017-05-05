@@ -19,8 +19,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-interface ArgumentValueResolverInterface {
-
+interface ArgumentValueResolverInterface
+{
     /**
      * Whether this resolver can resolve the value for the given ArgumentMetadata.
      *

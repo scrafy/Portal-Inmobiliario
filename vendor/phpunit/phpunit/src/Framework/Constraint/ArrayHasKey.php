@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -17,8 +16,8 @@
  *
  * The array key is passed in the constructor.
  */
-class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint
+{
     /**
      * @var int|string
      */
@@ -27,7 +26,8 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
     /**
      * @param int|string $key
      */
-    public function __construct($key) {
+    public function __construct($key)
+    {
         parent::__construct();
         $this->key = $key;
     }
@@ -40,7 +40,8 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         if (is_array($other)) {
             return array_key_exists($this->key, $other);
         }
@@ -57,7 +58,8 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'has the key ' . $this->exporter->export($this->key);
     }
 
@@ -71,8 +73,8 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return 'an array ' . $this->toString();
     }
-
 }

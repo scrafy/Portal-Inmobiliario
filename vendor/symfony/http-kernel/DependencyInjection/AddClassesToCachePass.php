@@ -22,18 +22,20 @@ use Symfony\Component\HttpKernel\Kernel;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class AddClassesToCachePass implements CompilerPassInterface {
-
+class AddClassesToCachePass implements CompilerPassInterface
+{
     private $kernel;
 
-    public function __construct(Kernel $kernel) {
+    public function __construct(Kernel $kernel)
+    {
         $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container) {
+    public function process(ContainerBuilder $container)
+    {
         $classes = array();
         $annotatedClasses = array();
         foreach ($container->getExtensions() as $extension) {
@@ -59,7 +61,8 @@ class AddClassesToCachePass implements CompilerPassInterface {
      *
      * @return array A list of classes derivated from the patterns
      */
-    private function expandClasses(array $patterns, array $classes) {
+    private function expandClasses(array $patterns, array $classes)
+    {
         $expanded = array();
 
         // Explicit classes declared in the patterns are returned directly
@@ -84,7 +87,8 @@ class AddClassesToCachePass implements CompilerPassInterface {
         return array_unique($expanded);
     }
 
-    private function getClassesInComposerClassMaps() {
+    private function getClassesInComposerClassMaps()
+    {
         $classes = array();
 
         foreach (spl_autoload_functions() as $function) {
@@ -104,7 +108,8 @@ class AddClassesToCachePass implements CompilerPassInterface {
         return array_keys($classes);
     }
 
-    private function patternsToRegexps($patterns) {
+    private function patternsToRegexps($patterns)
+    {
         $regexps = array();
 
         foreach ($patterns as $pattern) {
@@ -119,13 +124,14 @@ class AddClassesToCachePass implements CompilerPassInterface {
                 $regex .= '$';
             }
 
-            $regexps[] = '{^\\\\' . $regex . '}';
+            $regexps[] = '{^\\\\'.$regex.'}';
         }
 
         return $regexps;
     }
 
-    private function matchAnyRegexps($class, $regexps) {
+    private function matchAnyRegexps($class, $regexps)
+    {
         $blacklisted = false !== strpos($class, 'Test');
 
         foreach ($regexps as $regex) {
@@ -133,12 +139,11 @@ class AddClassesToCachePass implements CompilerPassInterface {
                 continue;
             }
 
-            if (preg_match($regex, '\\' . $class)) {
+            if (preg_match($regex, '\\'.$class)) {
                 return true;
             }
         }
 
         return false;
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Validation;
 
-interface PresenceVerifierInterface {
-
+interface PresenceVerifierInterface
+{
     /**
      * Count the number of objects in a collection having the given value.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,8 +20,8 @@ use Webmozart\Assert\Assert;
 /**
  * Reflection class for a {@}source tag in a Docblock.
  */
-final class Source extends BaseTag implements Factory\StaticMethod {
-
+final class Source extends BaseTag implements Factory\StaticMethod
+{
     /** @var string */
     protected $name = 'source';
 
@@ -32,31 +31,33 @@ final class Source extends BaseTag implements Factory\StaticMethod {
     /** @var int|null The number of lines, relative to the starting line. NULL means "to the end". */
     private $lineCount = null;
 
-    public function __construct($startingLine, $lineCount = null, Description $description = null) {
+    public function __construct($startingLine, $lineCount = null, Description $description = null)
+    {
         Assert::integerish($startingLine);
         Assert::nullOrIntegerish($lineCount);
 
-        $this->startingLine = (int) $startingLine;
-        $this->lineCount = $lineCount !== null ? (int) $lineCount : null;
-        $this->description = $description;
+        $this->startingLine = (int)$startingLine;
+        $this->lineCount    = $lineCount !== null ? (int)$lineCount : null;
+        $this->description  = $description;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null) {
+    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null)
+    {
         Assert::stringNotEmpty($body);
         Assert::notNull($descriptionFactory);
 
         $startingLine = 1;
-        $lineCount = null;
-        $description = null;
+        $lineCount    = null;
+        $description  = null;
 
         // Starting line / Number of lines / Description
         if (preg_match('/^([1-9]\d*)\s*(?:((?1))\s+)?(.*)$/sux', $body, $matches)) {
-            $startingLine = (int) $matches[1];
+            $startingLine = (int)$matches[1];
             if (isset($matches[2]) && $matches[2] !== '') {
-                $lineCount = (int) $matches[2];
+                $lineCount = (int)$matches[2];
             }
             $description = $matches[3];
         }
@@ -70,7 +71,8 @@ final class Source extends BaseTag implements Factory\StaticMethod {
      * @return int The starting line, relative to the structural element's
      *     location.
      */
-    public function getStartingLine() {
+    public function getStartingLine()
+    {
         return $this->startingLine;
     }
 
@@ -80,14 +82,15 @@ final class Source extends BaseTag implements Factory\StaticMethod {
      * @return int|null The number of lines, relative to the starting line. NULL
      *     means "to the end".
      */
-    public function getLineCount() {
+    public function getLineCount()
+    {
         return $this->lineCount;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->startingLine
-                . ($this->lineCount !== null ? ' ' . $this->lineCount : '')
-                . ($this->description ? ' ' . $this->description->render() : '');
+        . ($this->lineCount !== null ? ' ' . $this->lineCount : '')
+        . ($this->description ? ' ' . $this->description->render() : '');
     }
-
 }

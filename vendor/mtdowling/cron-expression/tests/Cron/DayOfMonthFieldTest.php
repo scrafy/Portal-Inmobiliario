@@ -9,12 +9,13 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Michael Dowling <mtdowling@gmail.com>
  */
-class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase {
-
+class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @covers Cron\DayOfMonthField::validate
      */
-    public function testValidatesField() {
+    public function testValidatesField()
+    {
         $f = new DayOfMonthField();
         $this->assertTrue($f->validate('1'));
         $this->assertTrue($f->validate('*'));
@@ -25,7 +26,8 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Cron\DayOfMonthField::isSatisfiedBy
      */
-    public function testChecksIfSatisfied() {
+    public function testChecksIfSatisfied()
+    {
         $f = new DayOfMonthField();
         $this->assertTrue($f->isSatisfiedBy(new DateTime(), '?'));
     }
@@ -33,7 +35,8 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Cron\DayOfMonthField::increment
      */
-    public function testIncrementsDate() {
+    public function testIncrementsDate()
+    {
         $d = new DateTime('2011-03-15 11:15:00');
         $f = new DayOfMonthField();
         $f->increment($d);
@@ -50,9 +53,9 @@ class DayOfMonthFieldTest extends PHPUnit_Framework_TestCase {
      *
      * @since 2017-01-22
      */
-    public function testDoesNotAccept0Date() {
+    public function testDoesNotAccept0Date()
+    {
         $f = new DayOfMonthField();
         $this->assertFalse($f->validate(0));
     }
-
 }

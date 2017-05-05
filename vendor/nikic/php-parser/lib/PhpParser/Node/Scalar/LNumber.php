@@ -5,9 +5,9 @@ namespace PhpParser\Node\Scalar;
 use PhpParser\Error;
 use PhpParser\Node\Scalar;
 
-class LNumber extends Scalar {
+class LNumber extends Scalar
+{
     /* For use in "kind" attribute */
-
     const KIND_BIN = 2;
     const KIND_OCT = 8;
     const KIND_DEC = 10;
@@ -64,5 +64,4 @@ class LNumber extends Scalar {
         $attributes['kind'] = LNumber::KIND_OCT;
         return new LNumber(intval($str, 8), $attributes);
     }
-
 }

@@ -4,8 +4,8 @@ namespace Symfony\Component\HttpKernel\Tests\Exception;
 
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class UnprocessableEntityHttpExceptionTest extends HttpExceptionTest {
-
+class UnprocessableEntityHttpExceptionTest extends HttpExceptionTest
+{
     /**
      * Test that setting the headers using the setter function
      * is working as expected.
@@ -14,14 +14,15 @@ class UnprocessableEntityHttpExceptionTest extends HttpExceptionTest {
      *
      * @dataProvider headerDataProvider
      */
-    public function testHeadersSetter($headers) {
+    public function testHeadersSetter($headers)
+    {
         $exception = new UnprocessableEntityHttpException(10);
         $exception->setHeaders($headers);
         $this->assertSame($headers, $exception->getHeaders());
     }
 
-    protected function createException() {
+    protected function createException()
+    {
         return new UnprocessableEntityHttpException();
     }
-
 }

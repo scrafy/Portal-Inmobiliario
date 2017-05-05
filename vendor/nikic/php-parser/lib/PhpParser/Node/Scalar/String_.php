@@ -5,9 +5,9 @@ namespace PhpParser\Node\Scalar;
 use PhpParser\Error;
 use PhpParser\Node\Scalar;
 
-class String_ extends Scalar {
+class String_ extends Scalar
+{
     /* For use in "kind" attribute */
-
     const KIND_SINGLE_QUOTED = 1;
     const KIND_DOUBLE_QUOTED = 2;
     const KIND_HEREDOC = 3;
@@ -15,15 +15,16 @@ class String_ extends Scalar {
 
     /** @var string String value */
     public $value;
+
     protected static $replacements = array(
         '\\' => '\\',
-        '$' => '$',
-        'n' => "\n",
-        'r' => "\r",
-        't' => "\t",
-        'f' => "\f",
-        'v' => "\v",
-        'e' => "\x1B",
+        '$'  =>  '$',
+        'n'  => "\n",
+        'r'  => "\r",
+        't'  => "\t",
+        'f'  => "\f",
+        'v'  => "\v",
+        'e'  => "\x1B",
     );
 
     /**
@@ -59,11 +60,13 @@ class String_ extends Scalar {
 
         if ('\'' === $str[$bLength]) {
             return str_replace(
-                    array('\\\\', '\\\''), array('\\', '\''), substr($str, $bLength + 1, -1)
+                array('\\\\', '\\\''),
+                array(  '\\',   '\''),
+                substr($str, $bLength + 1, -1)
             );
         } else {
             return self::parseEscapeSequences(
-                            substr($str, $bLength + 1, -1), '"', $parseUnicodeEscape
+                substr($str, $bLength + 1, -1), '"', $parseUnicodeEscape
             );
         }
     }
@@ -90,19 +93,21 @@ class String_ extends Scalar {
         }
 
         return preg_replace_callback(
-                '~\\\\([\\\\$nrtfve]|[xX][0-9a-fA-F]{1,2}|[0-7]{1,3}' . $extra . ')~', function($matches) {
-            $str = $matches[1];
+            '~\\\\([\\\\$nrtfve]|[xX][0-9a-fA-F]{1,2}|[0-7]{1,3}' . $extra . ')~',
+            function($matches) {
+                $str = $matches[1];
 
-            if (isset(self::$replacements[$str])) {
-                return self::$replacements[$str];
-            } elseif ('x' === $str[0] || 'X' === $str[0]) {
-                return chr(hexdec($str));
-            } elseif ('u' === $str[0]) {
-                return self::codePointToUtf8(hexdec($matches[2]));
-            } else {
-                return chr(octdec($str));
-            }
-        }, $str
+                if (isset(self::$replacements[$str])) {
+                    return self::$replacements[$str];
+                } elseif ('x' === $str[0] || 'X' === $str[0]) {
+                    return chr(hexdec($str));
+                } elseif ('u' === $str[0]) {
+                    return self::codePointToUtf8(hexdec($matches[2]));
+                } else {
+                    return chr(octdec($str));
+                }
+            },
+            $str
         );
     }
 
@@ -111,14 +116,14 @@ class String_ extends Scalar {
             return chr($num);
         }
         if ($num <= 0x7FF) {
-            return chr(($num >> 6) + 0xC0) . chr(($num & 0x3F) + 0x80);
+            return chr(($num>>6) + 0xC0) . chr(($num&0x3F) + 0x80);
         }
         if ($num <= 0xFFFF) {
-            return chr(($num >> 12) + 0xE0) . chr((($num >> 6) & 0x3F) + 0x80) . chr(($num & 0x3F) + 0x80);
+            return chr(($num>>12) + 0xE0) . chr((($num>>6)&0x3F) + 0x80) . chr(($num&0x3F) + 0x80);
         }
         if ($num <= 0x1FFFFF) {
-            return chr(($num >> 18) + 0xF0) . chr((($num >> 12) & 0x3F) + 0x80)
-                    . chr((($num >> 6) & 0x3F) + 0x80) . chr(($num & 0x3F) + 0x80);
+            return chr(($num>>18) + 0xF0) . chr((($num>>12)&0x3F) + 0x80)
+                 . chr((($num>>6)&0x3F) + 0x80) . chr(($num&0x3F) + 0x80);
         }
         throw new Error('Invalid UTF-8 codepoint escape sequence: Codepoint too large');
     }
@@ -145,5 +150,4 @@ class String_ extends Scalar {
 
         return self::parseEscapeSequences($str, null, $parseUnicodeEscape);
     }
-
 }

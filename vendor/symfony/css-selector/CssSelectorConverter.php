@@ -24,14 +24,15 @@ use Symfony\Component\CssSelector\XPath\Translator;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class CssSelectorConverter {
-
+class CssSelectorConverter
+{
     private $translator;
 
     /**
      * @param bool $html Whether HTML support should be enabled. Disable it for XML documents
      */
-    public function __construct($html = true) {
+    public function __construct($html = true)
+    {
         $this->translator = new Translator();
 
         if ($html) {
@@ -39,10 +40,10 @@ class CssSelectorConverter {
         }
 
         $this->translator
-                ->registerParserShortcut(new EmptyStringParser())
-                ->registerParserShortcut(new ElementParser())
-                ->registerParserShortcut(new ClassParser())
-                ->registerParserShortcut(new HashParser())
+            ->registerParserShortcut(new EmptyStringParser())
+            ->registerParserShortcut(new ElementParser())
+            ->registerParserShortcut(new ClassParser())
+            ->registerParserShortcut(new HashParser())
         ;
     }
 
@@ -57,8 +58,8 @@ class CssSelectorConverter {
      *
      * @return string
      */
-    public function toXPath($cssExpr, $prefix = 'descendant-or-self::') {
+    public function toXPath($cssExpr, $prefix = 'descendant-or-self::')
+    {
         return $this->translator->cssToXPath($cssExpr, $prefix);
     }
-
 }

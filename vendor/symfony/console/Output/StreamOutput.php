@@ -28,8 +28,8 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class StreamOutput extends Output {
-
+class StreamOutput extends Output
+{
     private $stream;
 
     /**
@@ -42,7 +42,8 @@ class StreamOutput extends Output {
      *
      * @throws InvalidArgumentException When first argument is not a real stream
      */
-    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null) {
+    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
+    {
         if (!is_resource($stream) || 'stream' !== get_resource_type($stream)) {
             throw new InvalidArgumentException('The StreamOutput class needs a stream as its first argument.');
         }
@@ -61,14 +62,16 @@ class StreamOutput extends Output {
      *
      * @return resource A stream resource
      */
-    public function getStream() {
+    public function getStream()
+    {
         return $this->stream;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doWrite($message, $newline) {
+    protected function doWrite($message, $newline)
+    {
         if (false === @fwrite($this->stream, $message) || ($newline && (false === @fwrite($this->stream, PHP_EOL)))) {
             // should never happen
             throw new RuntimeException('Unable to write output.');
@@ -87,13 +90,16 @@ class StreamOutput extends Output {
      *
      * @return bool true if the stream supports colorization, false otherwise
      */
-    protected function hasColorSupport() {
+    protected function hasColorSupport()
+    {
         if (DIRECTORY_SEPARATOR === '\\') {
             return
-                    '10.0.10586' === PHP_WINDOWS_VERSION_MAJOR . '.' . PHP_WINDOWS_VERSION_MINOR . '.' . PHP_WINDOWS_VERSION_BUILD || false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI') || 'xterm' === getenv('TERM');
+                '10.0.10586' === PHP_WINDOWS_VERSION_MAJOR.'.'.PHP_WINDOWS_VERSION_MINOR.'.'.PHP_WINDOWS_VERSION_BUILD
+                || false !== getenv('ANSICON')
+                || 'ON' === getenv('ConEmuANSI')
+                || 'xterm' === getenv('TERM');
         }
 
         return function_exists('posix_isatty') && @posix_isatty($this->stream);
     }
-
 }

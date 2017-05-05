@@ -11,8 +11,8 @@
 
 namespace Psy\VersionUpdater;
 
-interface Checker {
-
+interface Checker
+{
     const ALWAYS = 'always';
     const DAILY = 'daily';
     const WEEKLY = 'weekly';

@@ -13,8 +13,8 @@ namespace Psy\VersionUpdater;
 
 use Psy\Shell;
 
-class GitHubChecker implements Checker {
-
+class GitHubChecker implements Checker
+{
     const URL = 'https://api.github.com/repos/bobthecow/psysh/releases/latest';
 
     private $latest;
@@ -22,14 +22,16 @@ class GitHubChecker implements Checker {
     /**
      * @return bool
      */
-    public function isLatest() {
+    public function isLatest()
+    {
         return version_compare(Shell::VERSION, $this->getLatest(), '>=');
     }
 
     /**
      * @return string
      */
-    public function getLatest() {
+    public function getLatest()
+    {
         if (!isset($this->latest)) {
             $this->setLatest($this->getVersionFromTag());
         }
@@ -40,14 +42,16 @@ class GitHubChecker implements Checker {
     /**
      * @param string $version
      */
-    public function setLatest($version) {
+    public function setLatest($version)
+    {
         $this->latest = $version;
     }
 
     /**
      * @return string|null
      */
-    private function getVersionFromTag() {
+    private function getVersionFromTag()
+    {
         $contents = $this->fetchLatestRelease();
         if (!$contents || !isset($contents->tag_name)) {
             throw new \InvalidArgumentException('Unable to check for updates');
@@ -62,10 +66,10 @@ class GitHubChecker implements Checker {
      *
      * @return mixed
      */
-    public function fetchLatestRelease() {
+    public function fetchLatestRelease()
+    {
         $context = stream_context_create(array('http' => array('user_agent' => 'PsySH/' . Shell::VERSION)));
 
         return json_decode(@file_get_contents(self::URL, false, $context));
     }
-
 }

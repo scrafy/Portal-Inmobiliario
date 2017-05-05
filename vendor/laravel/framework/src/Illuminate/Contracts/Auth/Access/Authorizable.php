@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Auth\Access;
 
-interface Authorizable {
-
+interface Authorizable
+{
     /**
      * Determine if the entity has a given ability.
      *

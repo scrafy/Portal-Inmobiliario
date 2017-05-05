@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Exporter package.
  *
@@ -14,22 +13,24 @@ namespace SebastianBergmann\Exporter;
 /**
  * @covers SebastianBergmann\Exporter\Exporter
  */
-class ExporterTest extends \PHPUnit_Framework_TestCase {
-
+class ExporterTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var Exporter
      */
     private $exporter;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->exporter = new Exporter;
     }
 
-    public function exportProvider() {
+    public function exportProvider()
+    {
         $obj2 = new \stdClass;
         $obj2->foo = 'bar';
 
-        $obj3 = (object) array(1, 2, "Test\r\n", 4, 5, 6, 7, 8);
+        $obj3 = (object)array(1,2,"Test\r\n",4,5,6,7,8);
 
         $obj = new \stdClass;
         //@codingStandardsIgnoreStart
@@ -58,8 +59,8 @@ class ExporterTest extends \PHPUnit_Framework_TestCase {
             array(1.2, '1.2'),
             array(fopen('php://memory', 'r'), 'resource(%d) of type (stream)'),
             array('1', "'1'"),
-            array(array(array(1, 2, 3), array(3, 4, 5)),
-                <<<EOF
+            array(array(array(1,2,3), array(3,4,5)),
+        <<<EOF
 Array &0 (
     0 => Array &1 (
         0 => 1
@@ -76,7 +77,7 @@ EOF
             ),
             // \n\r and \r is converted to \n
             array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
-                <<<EOF
+            <<<EOF
 'this
 is
 a
@@ -92,7 +93,7 @@ EOF
             ),
             array(new \stdClass, 'stdClass Object &%x ()'),
             array($obj,
-                <<<EOF
+            <<<EOF
 stdClass Object &%x (
     'null' => null
     'boolean' => true
@@ -123,7 +124,7 @@ EOF
             ),
             array(array(), 'Array &%d ()'),
             array($storage,
-                <<<EOF
+            <<<EOF
 SplObjectStorage Object &%x (
     'foo' => stdClass Object &%x (
         'foo' => 'bar'
@@ -136,7 +137,7 @@ SplObjectStorage Object &%x (
 EOF
             ),
             array($obj3,
-                <<<EOF
+            <<<EOF
 stdClass Object &%x (
     0 => 1
     1 => 2
@@ -171,13 +172,16 @@ EOF
     /**
      * @dataProvider exportProvider
      */
-    public function testExport($value, $expected) {
+    public function testExport($value, $expected)
+    {
         $this->assertStringMatchesFormat(
-                $expected, $this->trimNewline($this->exporter->export($value))
+            $expected,
+            $this->trimNewline($this->exporter->export($value))
         );
     }
 
-    public function testExport2() {
+    public function testExport2()
+    {
         if (PHP_VERSION === '5.3.3') {
             $this->markTestSkipped('Skipped due to "Nesting level too deep - recursive dependency?" fatal error');
         }
@@ -255,11 +259,13 @@ text'
 EOF;
 
         $this->assertStringMatchesFormat(
-                $expected, $this->trimNewline($this->exporter->export($array))
+            $expected,
+            $this->trimNewline($this->exporter->export($array))
         );
     }
 
-    public function shortenedExportProvider() {
+    public function shortenedExportProvider()
+    {
         $obj = new \stdClass;
         $obj->foo = 'bar';
 
@@ -286,16 +292,19 @@ EOF;
     /**
      * @dataProvider shortenedExportProvider
      */
-    public function testShortenedExport($value, $expected) {
+    public function testShortenedExport($value, $expected)
+    {
         $this->assertSame(
-                $expected, $this->trimNewline($this->exporter->shortenedExport($value))
+            $expected,
+            $this->trimNewline($this->exporter->shortenedExport($value))
         );
     }
 
     /**
      * @requires extension mbstring
      */
-    public function testShortenedExportForMultibyteCharacters() {
+    public function testShortenedExportForMultibyteCharacters()
+    {
         $oldMbLanguage = mb_language();
         mb_language('Japanese');
         $oldMbInternalEncoding = mb_internal_encoding();
@@ -303,7 +312,8 @@ EOF;
 
         try {
             $this->assertSame(
-                    "'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくや...しゑひもせす'", $this->trimNewline($this->exporter->shortenedExport('いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす'))
+              "'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくや...しゑひもせす'",
+              $this->trimNewline($this->exporter->shortenedExport('いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせす'))
             );
         } catch (\Exception $e) {
             mb_internal_encoding($oldMbInternalEncoding);
@@ -315,7 +325,8 @@ EOF;
         mb_language($oldMbLanguage);
     }
 
-    public function provideNonBinaryMultibyteStrings() {
+    public function provideNonBinaryMultibyteStrings()
+    {
         return array(
             array(implode('', array_map('chr', range(0x09, 0x0d))), 5),
             array(implode('', array_map('chr', range(0x20, 0x7f))), 96),
@@ -323,21 +334,25 @@ EOF;
         );
     }
 
+
     /**
      * @dataProvider provideNonBinaryMultibyteStrings
      */
-    public function testNonBinaryStringExport($value, $expectedLength) {
+    public function testNonBinaryStringExport($value, $expectedLength)
+    {
         $this->assertRegExp(
-                "~'.{{$expectedLength}}'\$~s", $this->exporter->export($value)
+            "~'.{{$expectedLength}}'\$~s",
+            $this->exporter->export($value)
         );
     }
 
-    public function testNonObjectCanBeReturnedAsArray() {
+    public function testNonObjectCanBeReturnedAsArray()
+    {
         $this->assertEquals(array(true), $this->exporter->toArray(true));
     }
 
-    private function trimNewline($string) {
+    private function trimNewline($string)
+    {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }
-
 }

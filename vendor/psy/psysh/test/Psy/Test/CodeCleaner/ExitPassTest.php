@@ -13,21 +13,23 @@ namespace Psy\Test\CodeCleaner;
 
 use Psy\CodeCleaner\ExitPass;
 
-class ExitPassTest extends CodeCleanerTestCase {
-
+class ExitPassTest extends CodeCleanerTestCase
+{
     /**
      * @var string
      */
     private $expectedExceptionString = "throw new Psy\\Exception\\BreakException('Goodbye.');";
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->setPass(new ExitPass());
     }
 
     /**
      * @dataProvider dataProviderExitStatement
      */
-    public function testExitStatement($from, $to) {
+    public function testExitStatement($from, $to)
+    {
         $this->assertProcessesAs($from, $to);
     }
 
@@ -36,7 +38,8 @@ class ExitPassTest extends CodeCleanerTestCase {
      *
      * @return array
      */
-    public function dataProviderExitStatement() {
+    public function dataProviderExitStatement()
+    {
         return array(
             array('exit;', $this->expectedExceptionString),
             array('exit();', $this->expectedExceptionString),
@@ -45,5 +48,4 @@ class ExitPassTest extends CodeCleanerTestCase {
             array('if (false) { exit; }', "if (false) {\n    $this->expectedExceptionString\n}"),
         );
     }
-
 }

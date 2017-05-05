@@ -4,8 +4,8 @@ namespace Illuminate\Database\Connectors;
 
 use PDO;
 
-class PostgresConnector extends Connector implements ConnectorInterface {
-
+class PostgresConnector extends Connector implements ConnectorInterface
+{
     /**
      * The default PDO connection options.
      *
@@ -24,12 +24,13 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return \PDO
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         // First we'll create the basic DSN and connection instance connecting to the
         // using the configuration option specified by the developer. We will also
         // set the default character set on the connections to UTF-8 by default.
         $connection = $this->createConnection(
-                $this->getDsn($config), $config, $this->getOptions($config)
+            $this->getDsn($config), $config, $this->getOptions($config)
         );
 
         $this->configureEncoding($connection, $config);
@@ -56,7 +57,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureEncoding($connection, $config) {
+    protected function configureEncoding($connection, $config)
+    {
         $charset = $config['charset'];
 
         $connection->prepare("set names '$charset'")->execute();
@@ -69,7 +71,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureTimezone($connection, array $config) {
+    protected function configureTimezone($connection, array $config)
+    {
         if (isset($config['timezone'])) {
             $timezone = $config['timezone'];
 
@@ -84,7 +87,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureSchema($connection, $config) {
+    protected function configureSchema($connection, $config)
+    {
         if (isset($config['schema'])) {
             $schema = $this->formatSchema($config['schema']);
 
@@ -98,11 +102,12 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array|string  $schema
      * @return string
      */
-    protected function formatSchema($schema) {
+    protected function formatSchema($schema)
+    {
         if (is_array($schema)) {
-            return '"' . implode('", "', $schema) . '"';
+            return '"'.implode('", "', $schema).'"';
         } else {
-            return '"' . $schema . '"';
+            return '"'.$schema.'"';
         }
     }
 
@@ -113,7 +118,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureApplicationName($connection, $config) {
+    protected function configureApplicationName($connection, $config)
+    {
         if (isset($config['application_name'])) {
             $applicationName = $config['application_name'];
 
@@ -127,7 +133,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array   $config
      * @return string
      */
-    protected function getDsn(array $config) {
+    protected function getDsn(array $config)
+    {
         // First we will create the basic DSN setup as well as the port if it is in
         // in the configuration options. This will give us the basic DSN we will
         // need to establish the PDO connections and return them back for use.
@@ -154,7 +161,8 @@ class PostgresConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return string
      */
-    protected function addSslOptions($dsn, array $config) {
+    protected function addSslOptions($dsn, array $config)
+    {
         foreach (['sslmode', 'sslcert', 'sslkey', 'sslrootcert'] as $option) {
             if (isset($config[$option])) {
                 $dsn .= ";{$option}={$config[$option]}";
@@ -163,5 +171,4 @@ class PostgresConnector extends Connector implements ConnectorInterface {
 
         return $dsn;
     }
-
 }

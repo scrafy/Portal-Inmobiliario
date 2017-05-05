@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Testing\Concerns;
 
 use Illuminate\Contracts\Console\Kernel;
 
-trait InteractsWithConsole {
-
+trait InteractsWithConsole
+{
     /**
      * Call artisan command and return code.
      *
@@ -13,8 +13,8 @@ trait InteractsWithConsole {
      * @param  array  $parameters
      * @return int
      */
-    public function artisan($command, $parameters = []) {
+    public function artisan($command, $parameters = [])
+    {
         return $this->app[Kernel::class]->call($command, $parameters);
     }
-
 }

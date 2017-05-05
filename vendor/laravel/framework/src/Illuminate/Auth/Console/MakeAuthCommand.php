@@ -5,8 +5,8 @@ namespace Illuminate\Auth\Console;
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
 
-class MakeAuthCommand extends Command {
-
+class MakeAuthCommand extends Command
+{
     use DetectsApplicationNamespace;
 
     /**
@@ -42,18 +42,22 @@ class MakeAuthCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->createDirectories();
 
         $this->exportViews();
 
-        if (!$this->option('views')) {
+        if (! $this->option('views')) {
             file_put_contents(
-                    app_path('Http/Controllers/HomeController.php'), $this->compileControllerStub()
+                app_path('Http/Controllers/HomeController.php'),
+                $this->compileControllerStub()
             );
 
             file_put_contents(
-                    base_path('routes/web.php'), file_get_contents(__DIR__ . '/stubs/make/routes.stub'), FILE_APPEND
+                base_path('routes/web.php'),
+                file_get_contents(__DIR__.'/stubs/make/routes.stub'),
+                FILE_APPEND
             );
         }
 
@@ -65,12 +69,13 @@ class MakeAuthCommand extends Command {
      *
      * @return void
      */
-    protected function createDirectories() {
-        if (!is_dir(base_path('resources/views/layouts'))) {
+    protected function createDirectories()
+    {
+        if (! is_dir(base_path('resources/views/layouts'))) {
             mkdir(base_path('resources/views/layouts'), 0755, true);
         }
 
-        if (!is_dir(base_path('resources/views/auth/passwords'))) {
+        if (! is_dir(base_path('resources/views/auth/passwords'))) {
             mkdir(base_path('resources/views/auth/passwords'), 0755, true);
         }
     }
@@ -80,10 +85,12 @@ class MakeAuthCommand extends Command {
      *
      * @return void
      */
-    protected function exportViews() {
+    protected function exportViews()
+    {
         foreach ($this->views as $key => $value) {
             copy(
-                    __DIR__ . '/stubs/make/views/' . $key, base_path('resources/views/' . $value)
+                __DIR__.'/stubs/make/views/'.$key,
+                base_path('resources/views/'.$value)
             );
         }
     }
@@ -93,10 +100,12 @@ class MakeAuthCommand extends Command {
      *
      * @return string
      */
-    protected function compileControllerStub() {
+    protected function compileControllerStub()
+    {
         return str_replace(
-                '{{namespace}}', $this->getAppNamespace(), file_get_contents(__DIR__ . '/stubs/make/controllers/HomeController.stub')
+            '{{namespace}}',
+            $this->getAppNamespace(),
+            file_get_contents(__DIR__.'/stubs/make/controllers/HomeController.stub')
         );
     }
-
 }

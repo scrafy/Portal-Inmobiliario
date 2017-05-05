@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * String helpers.
  */
-class PHPUnit_Util_String {
-
+class PHPUnit_Util_String
+{
     /**
      * Converts a string to UTF-8 encoding.
      *
@@ -21,7 +20,8 @@ class PHPUnit_Util_String {
      *
      * @return string
      */
-    public static function convertToUtf8($string) {
+    public static function convertToUtf8($string)
+    {
         return mb_convert_encoding($string, 'UTF-8');
     }
 
@@ -32,7 +32,8 @@ class PHPUnit_Util_String {
      *
      * @return bool
      */
-    protected static function isUtf8($string) {
+    protected static function isUtf8($string)
+    {
         $length = strlen($string);
 
         for ($i = 0; $i < $length; $i++) {
@@ -49,7 +50,7 @@ class PHPUnit_Util_String {
             }
 
             for ($j = 0; $j < $n; $j++) {
-                if (( ++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
+                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
                     return false;
                 }
             }
@@ -57,5 +58,4 @@ class PHPUnit_Util_String {
 
         return true;
     }
-
 }

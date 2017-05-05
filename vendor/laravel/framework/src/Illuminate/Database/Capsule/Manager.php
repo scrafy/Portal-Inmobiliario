@@ -10,8 +10,8 @@ use Illuminate\Support\Traits\CapsuleManagerTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
-class Manager {
-
+class Manager
+{
     use CapsuleManagerTrait;
 
     /**
@@ -27,7 +27,8 @@ class Manager {
      * @param  \Illuminate\Container\Container|null  $container
      * @return void
      */
-    public function __construct(Container $container = null) {
+    public function __construct(Container $container = null)
+    {
         $this->setupContainer($container ?: new Container);
 
         // Once we have the container setup, we will setup the default configuration
@@ -43,7 +44,8 @@ class Manager {
      *
      * @return void
      */
-    protected function setupDefaultConfiguration() {
+    protected function setupDefaultConfiguration()
+    {
         $this->container['config']['database.fetch'] = PDO::FETCH_OBJ;
 
         $this->container['config']['database.default'] = 'default';
@@ -54,7 +56,8 @@ class Manager {
      *
      * @return void
      */
-    protected function setupManager() {
+    protected function setupManager()
+    {
         $factory = new ConnectionFactory($this->container);
 
         $this->manager = new DatabaseManager($this->container, $factory);
@@ -66,7 +69,8 @@ class Manager {
      * @param  string  $connection
      * @return \Illuminate\Database\Connection
      */
-    public static function connection($connection = null) {
+    public static function connection($connection = null)
+    {
         return static::$instance->getConnection($connection);
     }
 
@@ -77,7 +81,8 @@ class Manager {
      * @param  string  $connection
      * @return \Illuminate\Database\Query\Builder
      */
-    public static function table($table, $connection = null) {
+    public static function table($table, $connection = null)
+    {
         return static::$instance->connection($connection)->table($table);
     }
 
@@ -87,7 +92,8 @@ class Manager {
      * @param  string  $connection
      * @return \Illuminate\Database\Schema\Builder
      */
-    public static function schema($connection = null) {
+    public static function schema($connection = null)
+    {
         return static::$instance->connection($connection)->getSchemaBuilder();
     }
 
@@ -97,7 +103,8 @@ class Manager {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    public function getConnection($name = null) {
+    public function getConnection($name = null)
+    {
         return $this->manager->connection($name);
     }
 
@@ -108,7 +115,8 @@ class Manager {
      * @param  string  $name
      * @return void
      */
-    public function addConnection(array $config, $name = 'default') {
+    public function addConnection(array $config, $name = 'default')
+    {
         $connections = $this->container['config']['database.connections'];
 
         $connections[$name] = $config;
@@ -121,7 +129,8 @@ class Manager {
      *
      * @return void
      */
-    public function bootEloquent() {
+    public function bootEloquent()
+    {
         Eloquent::setConnectionResolver($this->manager);
 
         // If we have an event dispatcher instance, we will go ahead and register it
@@ -138,7 +147,8 @@ class Manager {
      * @param  int  $fetchMode
      * @return $this
      */
-    public function setFetchMode($fetchMode) {
+    public function setFetchMode($fetchMode)
+    {
         $this->container['config']['database.fetch'] = $fetchMode;
 
         return $this;
@@ -149,7 +159,8 @@ class Manager {
      *
      * @return \Illuminate\Database\DatabaseManager
      */
-    public function getDatabaseManager() {
+    public function getDatabaseManager()
+    {
         return $this->manager;
     }
 
@@ -158,7 +169,8 @@ class Manager {
      *
      * @return \Illuminate\Contracts\Events\Dispatcher|null
      */
-    public function getEventDispatcher() {
+    public function getEventDispatcher()
+    {
         if ($this->container->bound('events')) {
             return $this->container['events'];
         }
@@ -170,7 +182,8 @@ class Manager {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
      * @return void
      */
-    public function setEventDispatcher(Dispatcher $dispatcher) {
+    public function setEventDispatcher(Dispatcher $dispatcher)
+    {
         $this->container->instance('events', $dispatcher);
     }
 
@@ -181,8 +194,8 @@ class Manager {
      * @param  array   $parameters
      * @return mixed
      */
-    public static function __callStatic($method, $parameters) {
+    public static function __callStatic($method, $parameters)
+    {
         return static::connection()->$method(...$parameters);
     }
-
 }

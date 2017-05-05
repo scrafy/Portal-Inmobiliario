@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -15,8 +14,8 @@
  *
  * The attribute name is passed in the constructor.
  */
-class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Framework_Constraint_ClassHasAttribute {
-
+class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Framework_Constraint_ClassHasAttribute
+{
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -25,7 +24,8 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         $class = new ReflectionClass($other);
 
         if ($class->hasProperty($this->attributeName)) {
@@ -42,10 +42,11 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return sprintf(
-                'has static attribute "%s"', $this->attributeName
+            'has static attribute "%s"',
+            $this->attributeName
         );
     }
-
 }

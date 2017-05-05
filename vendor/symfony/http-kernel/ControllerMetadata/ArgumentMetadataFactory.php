@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface {
-
+final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface
+{
     /**
      * If the ...$arg functionality is available.
      *
@@ -36,7 +36,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
      */
     private $supportsParameterType;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->supportsVariadic = method_exists('ReflectionParameter', 'isVariadic');
         $this->supportsParameterType = method_exists('ReflectionParameter', 'getType');
     }
@@ -44,7 +45,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
     /**
      * {@inheritdoc}
      */
-    public function createArgumentMetadata($controller) {
+    public function createArgumentMetadata($controller)
+    {
         $arguments = array();
 
         if (is_array($controller)) {
@@ -69,7 +71,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
      *
      * @return bool
      */
-    private function isVariadic(\ReflectionParameter $parameter) {
+    private function isVariadic(\ReflectionParameter $parameter)
+    {
         return $this->supportsVariadic && $parameter->isVariadic();
     }
 
@@ -80,7 +83,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
      *
      * @return bool
      */
-    private function hasDefaultValue(\ReflectionParameter $parameter) {
+    private function hasDefaultValue(\ReflectionParameter $parameter)
+    {
         return $parameter->isDefaultValueAvailable();
     }
 
@@ -91,7 +95,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
      *
      * @return mixed|null
      */
-    private function getDefaultValue(\ReflectionParameter $parameter) {
+    private function getDefaultValue(\ReflectionParameter $parameter)
+    {
         return $this->hasDefaultValue($parameter) ? $parameter->getDefaultValue() : null;
     }
 
@@ -102,7 +107,8 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
      *
      * @return null|string
      */
-    private function getType(\ReflectionParameter $parameter) {
+    private function getType(\ReflectionParameter $parameter)
+    {
         if ($this->supportsParameterType) {
             if (!$type = $parameter->getType()) {
                 return;
@@ -120,5 +126,4 @@ final class ArgumentMetadataFactory implements ArgumentMetadataFactoryInterface 
             return $info[1];
         }
     }
-
 }

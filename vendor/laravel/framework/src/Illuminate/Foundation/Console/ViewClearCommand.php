@@ -6,8 +6,8 @@ use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class ViewClearCommand extends Command {
-
+class ViewClearCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -35,7 +35,8 @@ class ViewClearCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files) {
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -46,10 +47,11 @@ class ViewClearCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $path = $this->laravel['config']['view.compiled'];
 
-        if (!$path) {
+        if (! $path) {
             throw new RuntimeException('View path not found.');
         }
 
@@ -59,5 +61,4 @@ class ViewClearCommand extends Command {
 
         $this->info('Compiled views cleared!');
     }
-
 }

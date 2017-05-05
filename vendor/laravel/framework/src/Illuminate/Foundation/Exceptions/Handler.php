@@ -21,8 +21,8 @@ use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
-class Handler implements ExceptionHandlerContract {
-
+class Handler implements ExceptionHandlerContract
+{
     /**
      * The container implementation.
      *
@@ -43,7 +43,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function __construct(Container $container) {
+    public function __construct(Container $container)
+    {
         $this->container = $container;
     }
 
@@ -55,7 +56,8 @@ class Handler implements ExceptionHandlerContract {
      *
      * @throws \Exception
      */
-    public function report(Exception $e) {
+    public function report(Exception $e)
+    {
         if ($this->shouldntReport($e)) {
             return;
         }
@@ -75,8 +77,9 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return bool
      */
-    public function shouldReport(Exception $e) {
-        return !$this->shouldntReport($e);
+    public function shouldReport(Exception $e)
+    {
+        return ! $this->shouldntReport($e);
     }
 
     /**
@@ -85,12 +88,13 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return bool
      */
-    protected function shouldntReport(Exception $e) {
+    protected function shouldntReport(Exception $e)
+    {
         $dontReport = array_merge($this->dontReport, [HttpResponseException::class]);
 
-        return !is_null(collect($dontReport)->first(function ($type) use ($e) {
-                            return $e instanceof $type;
-                        }));
+        return ! is_null(collect($dontReport)->first(function ($type) use ($e) {
+            return $e instanceof $type;
+        }));
     }
 
     /**
@@ -100,7 +104,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e) {
+    public function render($request, Exception $e)
+    {
         $e = $this->prepareException($e);
 
         if ($e instanceof HttpResponseException) {
@@ -120,7 +125,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return \Exception
      */
-    protected function prepareException(Exception $e) {
+    protected function prepareException(Exception $e)
+    {
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         } elseif ($e instanceof AuthorizationException) {
@@ -137,7 +143,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function convertValidationExceptionToResponse(ValidationException $e, $request) {
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
+    {
         if ($e->response) {
             return $e->response;
         }
@@ -149,8 +156,8 @@ class Handler implements ExceptionHandlerContract {
         }
 
         return redirect()->back()->withInput(
-                        $request->input()
-                )->withErrors($errors);
+            $request->input()
+        )->withErrors($errors);
     }
 
     /**
@@ -160,7 +167,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function prepareResponse($request, Exception $e) {
+    protected function prepareResponse($request, Exception $e)
+    {
         if ($this->isHttpException($e)) {
             return $this->toIlluminateResponse($this->renderHttpException($e), $e);
         } else {
@@ -174,12 +182,13 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Symfony\Component\HttpKernel\Exception\HttpException  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderHttpException(HttpException $e) {
+    protected function renderHttpException(HttpException $e)
+    {
         $status = $e->getStatusCode();
 
         view()->replaceNamespace('errors', [
             resource_path('views/errors'),
-            __DIR__ . '/views',
+            __DIR__.'/views',
         ]);
 
         if (view()->exists("errors::{$status}")) {
@@ -195,7 +204,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function convertExceptionToResponse(Exception $e) {
+    protected function convertExceptionToResponse(Exception $e)
+    {
         $e = FlattenException::create($e);
 
         $handler = new SymfonyExceptionHandler(config('app.debug'));
@@ -210,7 +220,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    protected function toIlluminateResponse($response, Exception $e) {
+    protected function toIlluminateResponse($response, Exception $e)
+    {
         if ($response instanceof SymfonyRedirectResponse) {
             $response = new RedirectResponse($response->getTargetUrl(), $response->getStatusCode(), $response->headers->all());
         } else {
@@ -227,7 +238,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return void
      */
-    public function renderForConsole($output, Exception $e) {
+    public function renderForConsole($output, Exception $e)
+    {
         (new ConsoleApplication)->renderException($e, $output);
     }
 
@@ -237,8 +249,8 @@ class Handler implements ExceptionHandlerContract {
      * @param  \Exception  $e
      * @return bool
      */
-    protected function isHttpException(Exception $e) {
+    protected function isHttpException(Exception $e)
+    {
         return $e instanceof HttpException;
     }
-
 }

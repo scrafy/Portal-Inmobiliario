@@ -5,8 +5,8 @@ namespace PhpParser;
 /**
  * @deprecated
  */
-interface Serializer {
-
+interface Serializer
+{
     /**
      * Serializes statements into some string format.
      *

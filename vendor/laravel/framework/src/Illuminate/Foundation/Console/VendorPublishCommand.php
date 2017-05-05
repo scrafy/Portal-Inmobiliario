@@ -9,8 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 
-class VendorPublishCommand extends Command {
-
+class VendorPublishCommand extends Command
+{
     /**
      * The filesystem instance.
      *
@@ -40,7 +40,8 @@ class VendorPublishCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files) {
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -51,7 +52,8 @@ class VendorPublishCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $tags = $this->option('tag') ?: [null];
 
         foreach ((array) $tags as $tag) {
@@ -65,7 +67,8 @@ class VendorPublishCommand extends Command {
      * @param  string  $tag
      * @return mixed
      */
-    protected function publishTag($tag) {
+    protected function publishTag($tag)
+    {
         foreach ($this->pathsToPublish($tag) as $from => $to) {
             $this->publishItem($from, $to);
         }
@@ -79,9 +82,10 @@ class VendorPublishCommand extends Command {
      * @param  string  $tag
      * @return array
      */
-    protected function pathsToPublish($tag) {
+    protected function pathsToPublish($tag)
+    {
         return ServiceProvider::pathsToPublish(
-                        $this->option('provider'), $tag
+            $this->option('provider'), $tag
         );
     }
 
@@ -92,7 +96,8 @@ class VendorPublishCommand extends Command {
      * @param  string  $to
      * @return void
      */
-    protected function publishItem($from, $to) {
+    protected function publishItem($from, $to)
+    {
         if ($this->files->isFile($from)) {
             return $this->publishFile($from, $to);
         } elseif ($this->files->isDirectory($from)) {
@@ -109,8 +114,9 @@ class VendorPublishCommand extends Command {
      * @param  string  $to
      * @return void
      */
-    protected function publishFile($from, $to) {
-        if (!$this->files->exists($to) || $this->option('force')) {
+    protected function publishFile($from, $to)
+    {
+        if (! $this->files->exists($to) || $this->option('force')) {
             $this->createParentDirectory(dirname($to));
 
             $this->files->copy($from, $to);
@@ -126,7 +132,8 @@ class VendorPublishCommand extends Command {
      * @param  string  $to
      * @return void
      */
-    protected function publishDirectory($from, $to) {
+    protected function publishDirectory($from, $to)
+    {
         $this->moveManagedFiles(new MountManager([
             'from' => new Flysystem(new LocalAdapter($from)),
             'to' => new Flysystem(new LocalAdapter($to)),
@@ -141,10 +148,11 @@ class VendorPublishCommand extends Command {
      * @param  \League\Flysystem\MountManager  $manager
      * @return void
      */
-    protected function moveManagedFiles($manager) {
+    protected function moveManagedFiles($manager)
+    {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (!$manager->has('to://' . $file['path']) || $this->option('force'))) {
-                $manager->put('to://' . $file['path'], $manager->read('from://' . $file['path']));
+            if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']) || $this->option('force'))) {
+                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
             }
         }
     }
@@ -155,8 +163,9 @@ class VendorPublishCommand extends Command {
      * @param  string  $directory
      * @return void
      */
-    protected function createParentDirectory($directory) {
-        if (!$this->files->isDirectory($directory)) {
+    protected function createParentDirectory($directory)
+    {
+        if (! $this->files->isDirectory($directory)) {
             $this->files->makeDirectory($directory, 0755, true);
         }
     }
@@ -169,12 +178,12 @@ class VendorPublishCommand extends Command {
      * @param  string  $type
      * @return void
      */
-    protected function status($from, $to, $type) {
+    protected function status($from, $to, $type)
+    {
         $from = str_replace(base_path(), '', realpath($from));
 
         $to = str_replace(base_path(), '', realpath($to));
 
-        $this->line('<info>Copied ' . $type . '</info> <comment>[' . $from . ']</comment> <info>To</info> <comment>[' . $to . ']</comment>');
+        $this->line('<info>Copied '.$type.'</info> <comment>['.$from.']</comment> <info>To</info> <comment>['.$to.']</comment>');
     }
-
 }

@@ -13,8 +13,8 @@ use Illuminate\Queue\Failed\NullFailedJobProvider;
 use Illuminate\Queue\Connectors\BeanstalkdConnector;
 use Illuminate\Queue\Failed\DatabaseFailedJobProvider;
 
-class QueueServiceProvider extends ServiceProvider {
-
+class QueueServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -27,7 +27,8 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerManager();
 
         $this->registerConnection();
@@ -44,7 +45,8 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerManager() {
+    protected function registerManager()
+    {
         $this->app->singleton('queue', function ($app) {
             // Once we have an instance of the queue manager, we will register the various
             // resolvers for the queue connectors. These connectors are responsible for
@@ -60,7 +62,8 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerConnection() {
+    protected function registerConnection()
+    {
         $this->app->singleton('queue.connection', function ($app) {
             return $app['queue']->connection();
         });
@@ -72,7 +75,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    public function registerConnectors($manager) {
+    public function registerConnectors($manager)
+    {
         foreach (['Null', 'Sync', 'Database', 'Redis', 'Beanstalkd', 'Sqs'] as $connector) {
             $this->{"register{$connector}Connector"}($manager);
         }
@@ -84,7 +88,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerNullConnector($manager) {
+    protected function registerNullConnector($manager)
+    {
         $manager->addConnector('null', function () {
             return new NullConnector;
         });
@@ -96,7 +101,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerSyncConnector($manager) {
+    protected function registerSyncConnector($manager)
+    {
         $manager->addConnector('sync', function () {
             return new SyncConnector;
         });
@@ -108,7 +114,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerDatabaseConnector($manager) {
+    protected function registerDatabaseConnector($manager)
+    {
         $manager->addConnector('database', function () {
             return new DatabaseConnector($this->app['db']);
         });
@@ -120,7 +127,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerRedisConnector($manager) {
+    protected function registerRedisConnector($manager)
+    {
         $manager->addConnector('redis', function () {
             return new RedisConnector($this->app['redis']);
         });
@@ -132,7 +140,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerBeanstalkdConnector($manager) {
+    protected function registerBeanstalkdConnector($manager)
+    {
         $manager->addConnector('beanstalkd', function () {
             return new BeanstalkdConnector;
         });
@@ -144,7 +153,8 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Queue\QueueManager  $manager
      * @return void
      */
-    protected function registerSqsConnector($manager) {
+    protected function registerSqsConnector($manager)
+    {
         $manager->addConnector('sqs', function () {
             return new SqsConnector;
         });
@@ -155,10 +165,11 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerWorker() {
+    protected function registerWorker()
+    {
         $this->app->singleton('queue.worker', function () {
             return new Worker(
-                    $this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class]
+                $this->app['queue'], $this->app['events'], $this->app[ExceptionHandler::class]
             );
         });
     }
@@ -168,7 +179,8 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerListener() {
+    protected function registerListener()
+    {
         $this->app->singleton('queue.listener', function () {
             return new Listener($this->app->basePath());
         });
@@ -179,11 +191,14 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerFailedJobServices() {
+    protected function registerFailedJobServices()
+    {
         $this->app->singleton('queue.failer', function () {
             $config = $this->app['config']['queue.failed'];
 
-            return isset($config['table']) ? $this->databaseFailedJobProvider($config) : new NullFailedJobProvider;
+            return isset($config['table'])
+                        ? $this->databaseFailedJobProvider($config)
+                        : new NullFailedJobProvider;
         });
     }
 
@@ -193,9 +208,10 @@ class QueueServiceProvider extends ServiceProvider {
      * @param  array  $config
      * @return \Illuminate\Queue\Failed\DatabaseFailedJobProvider
      */
-    protected function databaseFailedJobProvider($config) {
+    protected function databaseFailedJobProvider($config)
+    {
         return new DatabaseFailedJobProvider(
-                $this->app['db'], $config['database'], $config['table']
+            $this->app['db'], $config['database'], $config['table']
         );
     }
 
@@ -204,11 +220,11 @@ class QueueServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'queue', 'queue.worker', 'queue.listener',
             'queue.failer', 'queue.connection',
         ];
     }
-
 }

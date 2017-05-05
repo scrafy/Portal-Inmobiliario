@@ -2,12 +2,13 @@
 
 namespace Mockery\Generator;
 
-class MockDefinition {
-
+class MockDefinition
+{
     protected $config;
     protected $code;
 
-    public function __construct(MockConfiguration $config, $code) {
+    public function __construct(MockConfiguration $config, $code)
+    {
         if (!$config->getName()) {
             throw new \InvalidArgumentException("MockConfiguration must contain a name");
         }
@@ -15,16 +16,18 @@ class MockDefinition {
         $this->code = $code;
     }
 
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->config->getName();
     }
 
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
-
 }

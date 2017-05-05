@@ -5,8 +5,8 @@ namespace Illuminate\Notifications\Channels;
 use RuntimeException;
 use Illuminate\Notifications\Notification;
 
-class DatabaseChannel {
-
+class DatabaseChannel
+{
     /**
      * Send the given notification.
      *
@@ -14,12 +14,13 @@ class DatabaseChannel {
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function send($notifiable, Notification $notification) {
+    public function send($notifiable, Notification $notification)
+    {
         return $notifiable->routeNotificationFor('database')->create([
-                    'id' => $notification->id,
-                    'type' => get_class($notification),
-                    'data' => $this->getData($notifiable, $notification),
-                    'read_at' => null,
+            'id' => $notification->id,
+            'type' => get_class($notification),
+            'data' => $this->getData($notifiable, $notification),
+            'read_at' => null,
         ]);
     }
 
@@ -32,9 +33,11 @@ class DatabaseChannel {
      *
      * @throws \RuntimeException
      */
-    protected function getData($notifiable, Notification $notification) {
+    protected function getData($notifiable, Notification $notification)
+    {
         if (method_exists($notification, 'toDatabase')) {
-            return is_array($data = $notification->toDatabase($notifiable)) ? $data : $data->data;
+            return is_array($data = $notification->toDatabase($notifiable))
+                                ? $data : $data->data;
         }
 
         if (method_exists($notification, 'toArray')) {
@@ -42,8 +45,7 @@ class DatabaseChannel {
         }
 
         throw new RuntimeException(
-        'Notification is missing toDatabase / toArray method.'
+            'Notification is missing toDatabase / toArray method.'
         );
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * A TestFailure collects a failed test together with the caught exception.
  */
-class PHPUnit_Framework_TestFailure {
-
+class PHPUnit_Framework_TestFailure
+{
     /**
      * @var string
      */
@@ -35,7 +34,8 @@ class PHPUnit_Framework_TestFailure {
      * @param PHPUnit_Framework_Test $failedTest
      * @param Throwable              $t
      */
-    public function __construct(PHPUnit_Framework_Test $failedTest, $t) {
+    public function __construct(PHPUnit_Framework_Test $failedTest, $t)
+    {
         if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
             $this->testName = $failedTest->toString();
         } else {
@@ -54,9 +54,12 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return sprintf(
-                '%s: %s', $this->testName, $this->thrownException->getMessage()
+            '%s: %s',
+            $this->testName,
+            $this->thrownException->getMessage()
         );
     }
 
@@ -65,7 +68,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return string
      */
-    public function getExceptionAsString() {
+    public function getExceptionAsString()
+    {
         return self::exceptionToString($this->thrownException);
     }
 
@@ -76,7 +80,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return string
      */
-    public static function exceptionToString(Exception $e) {
+    public static function exceptionToString(Exception $e)
+    {
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $buffer = $e->toString();
 
@@ -103,7 +108,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return string
      */
-    public function getTestName() {
+    public function getTestName()
+    {
         return $this->testName;
     }
 
@@ -117,7 +123,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return PHPUnit_Framework_Test|null
      */
-    public function failedTest() {
+    public function failedTest()
+    {
         return $this->failedTest;
     }
 
@@ -126,7 +133,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return Exception
      */
-    public function thrownException() {
+    public function thrownException()
+    {
         return $this->thrownException;
     }
 
@@ -135,7 +143,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return string
      */
-    public function exceptionMessage() {
+    public function exceptionMessage()
+    {
         return $this->thrownException()->getMessage();
     }
 
@@ -145,8 +154,8 @@ class PHPUnit_Framework_TestFailure {
      *
      * @return bool
      */
-    public function isFailure() {
+    public function isFailure()
+    {
         return ($this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError);
     }
-
 }

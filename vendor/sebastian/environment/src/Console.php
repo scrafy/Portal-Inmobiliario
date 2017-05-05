@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Environment package.
  *
@@ -13,9 +12,9 @@ namespace SebastianBergmann\Environment;
 
 /**
  */
-class Console {
-
-    const STDIN = 0;
+class Console
+{
+    const STDIN  = 0;
     const STDOUT = 1;
     const STDERR = 2;
 
@@ -27,7 +26,8 @@ class Console {
      *
      * @return bool
      */
-    public function hasColorSupport() {
+    public function hasColorSupport()
+    {
         if (DIRECTORY_SEPARATOR == '\\') {
             return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI') || 'xterm' === getenv('TERM');
         }
@@ -44,7 +44,8 @@ class Console {
      *
      * @return int
      */
-    public function getNumberOfColumns() {
+    public function getNumberOfColumns()
+    {
         if (DIRECTORY_SEPARATOR == '\\') {
             $columns = 80;
 
@@ -52,10 +53,15 @@ class Console {
                 $columns = $matches[1];
             } elseif (function_exists('proc_open')) {
                 $process = proc_open(
-                        'mode CON', [
-                    1 => ['pipe', 'w'],
-                    2 => ['pipe', 'w']
-                        ], $pipes, null, null, ['suppress_errors' => true]
+                    'mode CON',
+                    [
+                        1 => ['pipe', 'w'],
+                        2 => ['pipe', 'w']
+                    ],
+                    $pipes,
+                    null,
+                    null,
+                    ['suppress_errors' => true]
                 );
 
                 if (is_resource($process)) {
@@ -100,8 +106,8 @@ class Console {
      *
      * @return bool
      */
-    public function isInteractive($fileDescriptor = self::STDOUT) {
+    public function isInteractive($fileDescriptor = self::STDOUT)
+    {
         return function_exists('posix_isatty') && @posix_isatty($fileDescriptor);
     }
-
 }

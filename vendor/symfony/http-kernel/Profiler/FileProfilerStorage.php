@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\Profiler;
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class FileProfilerStorage implements ProfilerStorageInterface {
-
+class FileProfilerStorage implements ProfilerStorageInterface
+{
     /**
      * Folder where profiler data are stored.
      *
@@ -34,7 +34,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
      *
      * @throws \RuntimeException
      */
-    public function __construct($dsn) {
+    public function __construct($dsn)
+    {
         if (0 !== strpos($dsn, 'file:')) {
             throw new \RuntimeException(sprintf('Please check your configuration. You are trying to use FileStorage with an invalid dsn "%s". The expected format is "file:/path/to/the/storage/folder".', $dsn));
         }
@@ -48,7 +49,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
     /**
      * {@inheritdoc}
      */
-    public function find($ip, $url, $limit, $method, $start = null, $end = null, $statusCode = null) {
+    public function find($ip, $url, $limit, $method, $start = null, $end = null, $statusCode = null)
+    {
         $file = $this->getIndexFilename();
 
         if (!file_exists($file)) {
@@ -95,7 +97,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
     /**
      * {@inheritdoc}
      */
-    public function purge() {
+    public function purge()
+    {
         $flags = \FilesystemIterator::SKIP_DOTS;
         $iterator = new \RecursiveDirectoryIterator($this->folder, $flags);
         $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
@@ -112,7 +115,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
     /**
      * {@inheritdoc}
      */
-    public function read($token) {
+    public function read($token)
+    {
         if (!$token || !file_exists($file = $this->getFilename($token))) {
             return;
         }
@@ -125,7 +129,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
      *
      * @throws \RuntimeException
      */
-    public function write(Profile $profile) {
+    public function write(Profile $profile)
+    {
         $file = $this->getFilename($profile->getToken());
 
         $profileIndexed = is_file($file);
@@ -141,9 +146,7 @@ class FileProfilerStorage implements ProfilerStorageInterface {
         $data = array(
             'token' => $profile->getToken(),
             'parent' => $profile->getParentToken(),
-            'children' => array_map(function ($p) {
-                        return $p->getToken();
-                    }, $profile->getChildren()),
+            'children' => array_map(function ($p) { return $p->getToken(); }, $profile->getChildren()),
             'data' => $profile->getCollectors(),
             'ip' => $profile->getIp(),
             'method' => $profile->getMethod(),
@@ -184,12 +187,13 @@ class FileProfilerStorage implements ProfilerStorageInterface {
      *
      * @return string The profile filename
      */
-    protected function getFilename($token) {
+    protected function getFilename($token)
+    {
         // Uses 4 last characters, because first are mostly the same.
         $folderA = substr($token, -2, 2);
         $folderB = substr($token, -4, 2);
 
-        return $this->folder . '/' . $folderA . '/' . $folderB . '/' . $token;
+        return $this->folder.'/'.$folderA.'/'.$folderB.'/'.$token;
     }
 
     /**
@@ -197,8 +201,9 @@ class FileProfilerStorage implements ProfilerStorageInterface {
      *
      * @return string The index filename
      */
-    protected function getIndexFilename() {
-        return $this->folder . '/index.csv';
+    protected function getIndexFilename()
+    {
+        return $this->folder.'/index.csv';
     }
 
     /**
@@ -210,7 +215,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
      *
      * @return mixed A string representing the line or null if beginning of file is reached
      */
-    protected function readLineFromFile($file) {
+    protected function readLineFromFile($file)
+    {
         $line = '';
         $position = ftell($file);
 
@@ -231,12 +237,12 @@ class FileProfilerStorage implements ProfilerStorageInterface {
             $buffer = fread($file, $chunkSize);
 
             if (false === ($upTo = strrpos($buffer, "\n"))) {
-                $line = $buffer . $line;
+                $line = $buffer.$line;
                 continue;
             }
 
             $position += $upTo;
-            $line = substr($buffer, $upTo + 1) . $line;
+            $line = substr($buffer, $upTo + 1).$line;
             fseek($file, max(0, $position), SEEK_SET);
 
             if ('' !== $line) {
@@ -247,7 +253,8 @@ class FileProfilerStorage implements ProfilerStorageInterface {
         return '' === $line ? null : $line;
     }
 
-    protected function createProfileFromData($token, $data, $parent = null) {
+    protected function createProfileFromData($token, $data, $parent = null)
+    {
         $profile = new Profile($token);
         $profile->setIp($data['ip']);
         $profile->setMethod($data['method']);
@@ -274,5 +281,4 @@ class FileProfilerStorage implements ProfilerStorageInterface {
 
         return $profile;
     }
-
 }

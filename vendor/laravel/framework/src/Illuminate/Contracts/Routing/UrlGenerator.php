@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Routing;
 
-interface UrlGenerator {
-
+interface UrlGenerator
+{
     /**
      * Get the current URL for the request.
      *

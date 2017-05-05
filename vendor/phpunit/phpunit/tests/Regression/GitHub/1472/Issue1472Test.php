@@ -1,8 +1,8 @@
 <?php
-
-class Issue1472Test extends PHPUnit_Framework_TestCase {
-
-    public function testAssertEqualXMLStructure() {
+class Issue1472Test extends PHPUnit_Framework_TestCase
+{
+    public function testAssertEqualXMLStructure()
+    {
         $doc = new DOMDocument;
         $doc->loadXML('<root><label>text content</label></root>');
 
@@ -18,5 +18,4 @@ class Issue1472Test extends PHPUnit_Framework_TestCase {
         // the following assertion fails, even though it passed before - which is due to the assertEqualXMLStructure() has modified the $labelElement
         $this->assertEquals(1, $xpath->evaluate('count(//label[text() = "text content"])'));
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Type extends MatcherAbstract {
+class Type extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,11 +29,13 @@ class Type extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         $function = 'is_' . strtolower($this->_expected);
         if (function_exists($function)) {
             return $function($actual);
-        } elseif (is_string($this->_expected) && (class_exists($this->_expected) || interface_exists($this->_expected))) {
+        } elseif (is_string($this->_expected)
+        && (class_exists($this->_expected) || interface_exists($this->_expected))) {
             return $actual instanceof $this->_expected;
         }
         return false;
@@ -44,8 +46,8 @@ class Type extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<' . ucfirst($this->_expected) . '>';
     }
-
 }

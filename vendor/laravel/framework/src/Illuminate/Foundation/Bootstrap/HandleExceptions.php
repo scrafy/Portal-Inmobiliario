@@ -10,8 +10,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
-class HandleExceptions {
-
+class HandleExceptions
+{
     /**
      * The application instance.
      *
@@ -25,7 +25,8 @@ class HandleExceptions {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function bootstrap(Application $app) {
+    public function bootstrap(Application $app)
+    {
         $this->app = $app;
 
         error_reporting(-1);
@@ -36,7 +37,7 @@ class HandleExceptions {
 
         register_shutdown_function([$this, 'handleShutdown']);
 
-        if (!$app->environment('testing')) {
+        if (! $app->environment('testing')) {
             ini_set('display_errors', 'Off');
         }
     }
@@ -53,7 +54,8 @@ class HandleExceptions {
      *
      * @throws \ErrorException
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) {
+    public function handleError($level, $message, $file = '', $line = 0, $context = [])
+    {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
         }
@@ -69,8 +71,9 @@ class HandleExceptions {
      * @param  \Throwable  $e
      * @return void
      */
-    public function handleException($e) {
-        if (!$e instanceof Exception) {
+    public function handleException($e)
+    {
+        if (! $e instanceof Exception) {
             $e = new FatalThrowableError($e);
         }
 
@@ -89,7 +92,8 @@ class HandleExceptions {
      * @param  \Exception  $e
      * @return void
      */
-    protected function renderForConsole(Exception $e) {
+    protected function renderForConsole(Exception $e)
+    {
         $this->getExceptionHandler()->renderForConsole(new ConsoleOutput, $e);
     }
 
@@ -99,7 +103,8 @@ class HandleExceptions {
      * @param  \Exception  $e
      * @return void
      */
-    protected function renderHttpResponse(Exception $e) {
+    protected function renderHttpResponse(Exception $e)
+    {
         $this->getExceptionHandler()->render($this->app['request'], $e)->send();
     }
 
@@ -108,8 +113,9 @@ class HandleExceptions {
      *
      * @return void
      */
-    public function handleShutdown() {
-        if (!is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
+    public function handleShutdown()
+    {
+        if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
             $this->handleException($this->fatalExceptionFromError($error, 0));
         }
     }
@@ -121,9 +127,10 @@ class HandleExceptions {
      * @param  int|null  $traceOffset
      * @return \Symfony\Component\Debug\Exception\FatalErrorException
      */
-    protected function fatalExceptionFromError(array $error, $traceOffset = null) {
+    protected function fatalExceptionFromError(array $error, $traceOffset = null)
+    {
         return new FatalErrorException(
-                $error['message'], $error['type'], 0, $error['file'], $error['line'], $traceOffset
+            $error['message'], $error['type'], 0, $error['file'], $error['line'], $traceOffset
         );
     }
 
@@ -133,7 +140,8 @@ class HandleExceptions {
      * @param  int  $type
      * @return bool
      */
-    protected function isFatal($type) {
+    protected function isFatal($type)
+    {
         return in_array($type, [E_COMPILE_ERROR, E_CORE_ERROR, E_ERROR, E_PARSE]);
     }
 
@@ -142,8 +150,8 @@ class HandleExceptions {
      *
      * @return \Illuminate\Contracts\Debug\ExceptionHandler
      */
-    protected function getExceptionHandler() {
+    protected function getExceptionHandler()
+    {
         return $this->app->make(ExceptionHandler::class);
     }
-
 }

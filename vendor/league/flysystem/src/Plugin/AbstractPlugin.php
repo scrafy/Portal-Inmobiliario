@@ -5,8 +5,8 @@ namespace League\Flysystem\Plugin;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 
-abstract class AbstractPlugin implements PluginInterface {
-
+abstract class AbstractPlugin implements PluginInterface
+{
     /**
      * @var FilesystemInterface
      */
@@ -17,8 +17,8 @@ abstract class AbstractPlugin implements PluginInterface {
      *
      * @param FilesystemInterface $filesystem
      */
-    public function setFilesystem(FilesystemInterface $filesystem) {
+    public function setFilesystem(FilesystemInterface $filesystem)
+    {
         $this->filesystem = $filesystem;
     }
-
 }

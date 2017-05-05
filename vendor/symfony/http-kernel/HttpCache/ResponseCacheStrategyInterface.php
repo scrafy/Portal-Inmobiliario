@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ResponseCacheStrategyInterface {
-
+interface ResponseCacheStrategyInterface
+{
     /**
      * Adds a Response.
      *

@@ -4,15 +4,16 @@ namespace Illuminate\Console\Scheduling;
 
 use Carbon\Carbon;
 
-trait ManagesFrequencies {
-
+trait ManagesFrequencies
+{
     /**
      * The Cron expression representing the event's frequency.
      *
      * @param  string  $expression
      * @return $this
      */
-    public function cron($expression) {
+    public function cron($expression)
+    {
         $this->expression = $expression;
 
         return $this;
@@ -25,7 +26,8 @@ trait ManagesFrequencies {
      * @param  string  $endTime
      * @return $this
      */
-    public function between($startTime, $endTime) {
+    public function between($startTime, $endTime)
+    {
         return $this->when($this->inTimeInterval($startTime, $endTime));
     }
 
@@ -36,7 +38,8 @@ trait ManagesFrequencies {
      * @param  string  $endTime
      * @return $this
      */
-    public function unlessBetween($startTime, $endTime) {
+    public function unlessBetween($startTime, $endTime)
+    {
         return $this->skip($this->inTimeInterval($startTime, $endTime));
     }
 
@@ -47,7 +50,8 @@ trait ManagesFrequencies {
      * @param  string  $endTime
      * @return \Closure
      */
-    private function inTimeInterval($startTime, $endTime) {
+    private function inTimeInterval($startTime, $endTime)
+    {
         return function () use ($startTime, $endTime) {
             $now = Carbon::now()->getTimestamp();
 
@@ -60,7 +64,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function hourly() {
+    public function hourly()
+    {
         return $this->spliceIntoPosition(1, 0);
     }
 
@@ -70,7 +75,8 @@ trait ManagesFrequencies {
      * @param  int  $offset
      * @return $this
      */
-    public function hourlyAt($offset) {
+    public function hourlyAt($offset)
+    {
         return $this->spliceIntoPosition(1, $offset);
     }
 
@@ -79,9 +85,10 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function daily() {
+    public function daily()
+    {
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, 0);
+                    ->spliceIntoPosition(2, 0);
     }
 
     /**
@@ -90,7 +97,8 @@ trait ManagesFrequencies {
      * @param  string  $time
      * @return $this
      */
-    public function at($time) {
+    public function at($time)
+    {
         return $this->dailyAt($time);
     }
 
@@ -100,11 +108,12 @@ trait ManagesFrequencies {
      * @param  string  $time
      * @return $this
      */
-    public function dailyAt($time) {
+    public function dailyAt($time)
+    {
         $segments = explode(':', $time);
 
         return $this->spliceIntoPosition(2, (int) $segments[0])
-                        ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
+                    ->spliceIntoPosition(1, count($segments) == 2 ? (int) $segments[1] : '0');
     }
 
     /**
@@ -114,11 +123,12 @@ trait ManagesFrequencies {
      * @param  int  $second
      * @return $this
      */
-    public function twiceDaily($first = 1, $second = 13) {
-        $hours = $first . ',' . $second;
+    public function twiceDaily($first = 1, $second = 13)
+    {
+        $hours = $first.','.$second;
 
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, $hours);
+                    ->spliceIntoPosition(2, $hours);
     }
 
     /**
@@ -126,7 +136,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function weekdays() {
+    public function weekdays()
+    {
         return $this->spliceIntoPosition(5, '1-5');
     }
 
@@ -135,7 +146,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function weekends() {
+    public function weekends()
+    {
         return $this->spliceIntoPosition(5, '0,6');
     }
 
@@ -144,7 +156,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function mondays() {
+    public function mondays()
+    {
         return $this->days(1);
     }
 
@@ -153,7 +166,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function tuesdays() {
+    public function tuesdays()
+    {
         return $this->days(2);
     }
 
@@ -162,7 +176,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function wednesdays() {
+    public function wednesdays()
+    {
         return $this->days(3);
     }
 
@@ -171,7 +186,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function thursdays() {
+    public function thursdays()
+    {
         return $this->days(4);
     }
 
@@ -180,7 +196,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function fridays() {
+    public function fridays()
+    {
         return $this->days(5);
     }
 
@@ -189,7 +206,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function saturdays() {
+    public function saturdays()
+    {
         return $this->days(6);
     }
 
@@ -198,7 +216,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function sundays() {
+    public function sundays()
+    {
         return $this->days(0);
     }
 
@@ -207,10 +226,11 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function weekly() {
+    public function weekly()
+    {
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, 0)
-                        ->spliceIntoPosition(5, 0);
+                    ->spliceIntoPosition(2, 0)
+                    ->spliceIntoPosition(5, 0);
     }
 
     /**
@@ -220,7 +240,8 @@ trait ManagesFrequencies {
      * @param  string  $time
      * @return $this
      */
-    public function weeklyOn($day, $time = '0:0') {
+    public function weeklyOn($day, $time = '0:0')
+    {
         $this->dailyAt($time);
 
         return $this->spliceIntoPosition(5, $day);
@@ -231,10 +252,11 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function monthly() {
+    public function monthly()
+    {
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, 0)
-                        ->spliceIntoPosition(3, 1);
+                    ->spliceIntoPosition(2, 0)
+                    ->spliceIntoPosition(3, 1);
     }
 
     /**
@@ -244,7 +266,8 @@ trait ManagesFrequencies {
      * @param  string  $time
      * @return $this
      */
-    public function monthlyOn($day = 1, $time = '0:0') {
+    public function monthlyOn($day = 1, $time = '0:0')
+    {
         $this->dailyAt($time);
 
         return $this->spliceIntoPosition(3, $day);
@@ -255,11 +278,12 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function quarterly() {
+    public function quarterly()
+    {
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, 0)
-                        ->spliceIntoPosition(3, 1)
-                        ->spliceIntoPosition(4, '*/3');
+                    ->spliceIntoPosition(2, 0)
+                    ->spliceIntoPosition(3, 1)
+                    ->spliceIntoPosition(4, '*/3');
     }
 
     /**
@@ -267,11 +291,12 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function yearly() {
+    public function yearly()
+    {
         return $this->spliceIntoPosition(1, 0)
-                        ->spliceIntoPosition(2, 0)
-                        ->spliceIntoPosition(3, 1)
-                        ->spliceIntoPosition(4, 1);
+                    ->spliceIntoPosition(2, 0)
+                    ->spliceIntoPosition(3, 1)
+                    ->spliceIntoPosition(4, 1);
     }
 
     /**
@@ -279,7 +304,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function everyMinute() {
+    public function everyMinute()
+    {
         return $this->spliceIntoPosition(1, '*');
     }
 
@@ -288,7 +314,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function everyFiveMinutes() {
+    public function everyFiveMinutes()
+    {
         return $this->spliceIntoPosition(1, '*/5');
     }
 
@@ -297,7 +324,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function everyTenMinutes() {
+    public function everyTenMinutes()
+    {
         return $this->spliceIntoPosition(1, '*/10');
     }
 
@@ -306,7 +334,8 @@ trait ManagesFrequencies {
      *
      * @return $this
      */
-    public function everyThirtyMinutes() {
+    public function everyThirtyMinutes()
+    {
         return $this->spliceIntoPosition(1, '0,30');
     }
 
@@ -316,7 +345,8 @@ trait ManagesFrequencies {
      * @param  array|mixed  $days
      * @return $this
      */
-    public function days($days) {
+    public function days($days)
+    {
         $days = is_array($days) ? $days : func_get_args();
 
         return $this->spliceIntoPosition(5, implode(',', $days));
@@ -328,7 +358,8 @@ trait ManagesFrequencies {
      * @param  \DateTimeZone|string  $timezone
      * @return $this
      */
-    public function timezone($timezone) {
+    public function timezone($timezone)
+    {
         $this->timezone = $timezone;
 
         return $this;
@@ -341,12 +372,12 @@ trait ManagesFrequencies {
      * @param  string  $value
      * @return $this
      */
-    protected function spliceIntoPosition($position, $value) {
+    protected function spliceIntoPosition($position, $value)
+    {
         $segments = explode(' ', $this->expression);
 
         $segments[$position - 1] = $value;
 
         return $this->cron(implode(' ', $segments));
     }
-
 }

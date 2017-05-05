@@ -19,8 +19,8 @@ use ReflectionClass;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class NameGenerator {
-
+class NameGenerator
+{
     private static $counter = 1;
 
     /**
@@ -31,7 +31,8 @@ class NameGenerator {
      *
      * @return string
      */
-    public function name(ReflectionClass $class = null, array $interfaces) {
+    public function name(ReflectionClass $class = null, array $interfaces)
+    {
         $parts = array();
 
         if (null !== $class) {
@@ -48,5 +49,4 @@ class NameGenerator {
 
         return sprintf('Double\%s\P%d', implode('\\', $parts), self::$counter++);
     }
-
 }

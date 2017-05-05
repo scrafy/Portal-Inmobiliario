@@ -2,14 +2,15 @@
 
 namespace Illuminate\Foundation\Events;
 
-trait Dispatchable {
-
+trait Dispatchable
+{
     /**
      * Dispatch the event with the given arguments.
      *
      * @return void
      */
-    public static function dispatch() {
+    public static function dispatch()
+    {
         return event(new static(...func_get_args()));
     }
 
@@ -18,8 +19,8 @@ trait Dispatchable {
      *
      * @return \Illuminate\Broadcasting\PendingBroadcast
      */
-    public static function broadcast() {
+    public static function broadcast()
+    {
         return broadcast(new static(...func_get_args()));
     }
-
 }

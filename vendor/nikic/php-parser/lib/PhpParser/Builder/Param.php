@@ -5,13 +5,15 @@ namespace PhpParser\Builder;
 use PhpParser;
 use PhpParser\Node;
 
-class Param extends PhpParser\BuilderAbstract {
-
+class Param extends PhpParser\BuilderAbstract
+{
     protected $name;
+
     protected $default = null;
 
     /** @var string|Node\Name|Node\NullableType|null */
     protected $type = null;
+
     protected $byRef = false;
 
     /**
@@ -70,8 +72,7 @@ class Param extends PhpParser\BuilderAbstract {
      */
     public function getNode() {
         return new Node\Param(
-                $this->name, $this->default, $this->type, $this->byRef
+            $this->name, $this->default, $this->type, $this->byRef
         );
     }
-
 }

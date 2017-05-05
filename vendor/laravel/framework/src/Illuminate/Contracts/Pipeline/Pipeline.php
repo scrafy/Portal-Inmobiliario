@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Pipeline;
 
 use Closure;
 
-interface Pipeline {
-
+interface Pipeline
+{
     /**
      * Set the traveler object being sent on the pipeline.
      *

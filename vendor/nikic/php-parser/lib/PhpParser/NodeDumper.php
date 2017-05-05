@@ -8,8 +8,8 @@ use PhpParser\Node\Stmt\GroupUse;
 use PhpParser\Node\Stmt\Use_;
 use PhpParser\Node\Stmt\UseUse;
 
-class NodeDumper {
-
+class NodeDumper
+{
     private $dumpComments;
     private $dumpPositions;
     private $code;
@@ -67,7 +67,8 @@ class NodeDumper {
                         $r .= $this->dumpFlags($value);
                     } else if ('type' === $key && $node instanceof Include_) {
                         $r .= $this->dumpIncludeType($value);
-                    } else if ('type' === $key && ($node instanceof Use_ || $node instanceof UseUse || $node instanceof GroupUse)) {
+                    } else if ('type' === $key
+                            && ($node instanceof Use_ || $node instanceof UseUse || $node instanceof GroupUse)) {
                         $r .= $this->dumpUseType($value);
                     } else {
                         $r .= $value;
@@ -137,9 +138,9 @@ class NodeDumper {
 
     protected function dumpIncludeType($type) {
         $map = [
-            Include_::TYPE_INCLUDE => 'TYPE_INCLUDE',
+            Include_::TYPE_INCLUDE      => 'TYPE_INCLUDE',
             Include_::TYPE_INCLUDE_ONCE => 'TYPE_INCLUDE_ONCE',
-            Include_::TYPE_REQUIRE => 'TYPE_REQUIRE',
+            Include_::TYPE_REQUIRE      => 'TYPE_REQUIRE',
             Include_::TYPE_REQUIRE_ONCE => 'TYPE_REQURE_ONCE',
         ];
 
@@ -151,8 +152,8 @@ class NodeDumper {
 
     protected function dumpUseType($type) {
         $map = [
-            Use_::TYPE_UNKNOWN => 'TYPE_UNKNOWN',
-            Use_::TYPE_NORMAL => 'TYPE_NORMAL',
+            Use_::TYPE_UNKNOWN  => 'TYPE_UNKNOWN',
+            Use_::TYPE_NORMAL   => 'TYPE_NORMAL',
             Use_::TYPE_FUNCTION => 'TYPE_FUNCTION',
             Use_::TYPE_CONSTANT => 'TYPE_CONSTANT',
         ];
@@ -170,7 +171,8 @@ class NodeDumper {
 
         $start = $node->getAttribute('startLine');
         $end = $node->getAttribute('endLine');
-        if ($node->hasAttribute('startFilePos') && $node->hasAttribute('endFilePos') && null !== $this->code
+        if ($node->hasAttribute('startFilePos') && $node->hasAttribute('endFilePos')
+            && null !== $this->code
         ) {
             $start .= ':' . $this->toColumn($this->code, $node->getAttribute('startFilePos'));
             $end .= ':' . $this->toColumn($this->code, $node->getAttribute('endFilePos'));
@@ -191,5 +193,4 @@ class NodeDumper {
 
         return $pos - $lineStartPos;
     }
-
 }

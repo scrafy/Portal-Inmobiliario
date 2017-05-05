@@ -5,8 +5,8 @@ namespace Illuminate\Mail;
 use Swift_Image;
 use Swift_Attachment;
 
-class Message {
-
+class Message
+{
     /**
      * The Swift Message instance.
      *
@@ -27,7 +27,8 @@ class Message {
      * @param  \Swift_Message  $swift
      * @return void
      */
-    public function __construct($swift) {
+    public function __construct($swift)
+    {
         $this->swift = $swift;
     }
 
@@ -38,7 +39,8 @@ class Message {
      * @param  string|null  $name
      * @return $this
      */
-    public function from($address, $name = null) {
+    public function from($address, $name = null)
+    {
         $this->swift->setFrom($address, $name);
 
         return $this;
@@ -51,7 +53,8 @@ class Message {
      * @param  string|null  $name
      * @return $this
      */
-    public function sender($address, $name = null) {
+    public function sender($address, $name = null)
+    {
         $this->swift->setSender($address, $name);
 
         return $this;
@@ -63,7 +66,8 @@ class Message {
      * @param  string  $address
      * @return $this
      */
-    public function returnPath($address) {
+    public function returnPath($address)
+    {
         $this->swift->setReturnPath($address);
 
         return $this;
@@ -77,7 +81,8 @@ class Message {
      * @param  bool  $override
      * @return $this
      */
-    public function to($address, $name = null, $override = false) {
+    public function to($address, $name = null, $override = false)
+    {
         if ($override) {
             $this->swift->setTo($address, $name);
 
@@ -95,7 +100,8 @@ class Message {
      * @param  bool  $override
      * @return $this
      */
-    public function cc($address, $name = null, $override = false) {
+    public function cc($address, $name = null, $override = false)
+    {
         if ($override) {
             $this->swift->setCc($address, $name);
 
@@ -113,7 +119,8 @@ class Message {
      * @param  bool  $override
      * @return $this
      */
-    public function bcc($address, $name = null, $override = false) {
+    public function bcc($address, $name = null, $override = false)
+    {
         if ($override) {
             $this->swift->setBcc($address, $name);
 
@@ -130,7 +137,8 @@ class Message {
      * @param  string|null  $name
      * @return $this
      */
-    public function replyTo($address, $name = null) {
+    public function replyTo($address, $name = null)
+    {
         return $this->addAddresses($address, $name, 'ReplyTo');
     }
 
@@ -142,7 +150,8 @@ class Message {
      * @param  string  $type
      * @return $this
      */
-    protected function addAddresses($address, $name, $type) {
+    protected function addAddresses($address, $name, $type)
+    {
         if (is_array($address)) {
             $this->swift->{"set{$type}"}($address, $name);
         } else {
@@ -158,7 +167,8 @@ class Message {
      * @param  string  $subject
      * @return $this
      */
-    public function subject($subject) {
+    public function subject($subject)
+    {
         $this->swift->setSubject($subject);
 
         return $this;
@@ -170,7 +180,8 @@ class Message {
      * @param  int  $level
      * @return $this
      */
-    public function priority($level) {
+    public function priority($level)
+    {
         $this->swift->setPriority($level);
 
         return $this;
@@ -183,7 +194,8 @@ class Message {
      * @param  array  $options
      * @return $this
      */
-    public function attach($file, array $options = []) {
+    public function attach($file, array $options = [])
+    {
         $attachment = $this->createAttachmentFromPath($file);
 
         return $this->prepAttachment($attachment, $options);
@@ -195,7 +207,8 @@ class Message {
      * @param  string  $file
      * @return \Swift_Attachment
      */
-    protected function createAttachmentFromPath($file) {
+    protected function createAttachmentFromPath($file)
+    {
         return Swift_Attachment::fromPath($file);
     }
 
@@ -207,7 +220,8 @@ class Message {
      * @param  array  $options
      * @return $this
      */
-    public function attachData($data, $name, array $options = []) {
+    public function attachData($data, $name, array $options = [])
+    {
         $attachment = $this->createAttachmentFromData($data, $name);
 
         return $this->prepAttachment($attachment, $options);
@@ -220,7 +234,8 @@ class Message {
      * @param  string  $name
      * @return \Swift_Attachment
      */
-    protected function createAttachmentFromData($data, $name) {
+    protected function createAttachmentFromData($data, $name)
+    {
         return Swift_Attachment::newInstance($data, $name);
     }
 
@@ -230,13 +245,14 @@ class Message {
      * @param  string  $file
      * @return string
      */
-    public function embed($file) {
+    public function embed($file)
+    {
         if (isset($this->embeddedFiles[$file])) {
             return $this->embeddedFiles[$file];
         }
 
         return $this->embeddedFiles[$file] = $this->swift->embed(
-                Swift_Image::fromPath($file)
+            Swift_Image::fromPath($file)
         );
     }
 
@@ -248,7 +264,8 @@ class Message {
      * @param  string|null  $contentType
      * @return string
      */
-    public function embedData($data, $name, $contentType = null) {
+    public function embedData($data, $name, $contentType = null)
+    {
         $image = Swift_Image::newInstance($data, $name, $contentType);
 
         return $this->swift->embed($image);
@@ -261,7 +278,8 @@ class Message {
      * @param  array  $options
      * @return $this
      */
-    protected function prepAttachment($attachment, $options = []) {
+    protected function prepAttachment($attachment, $options = [])
+    {
         // First we will check for a MIME type on the message, which instructs the
         // mail client on what type of attachment the file is so that it may be
         // downloaded correctly by the user. The MIME option is not required.
@@ -286,7 +304,8 @@ class Message {
      *
      * @return \Swift_Message
      */
-    public function getSwiftMessage() {
+    public function getSwiftMessage()
+    {
         return $this->swift;
     }
 
@@ -297,10 +316,10 @@ class Message {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         $callable = [$this->swift, $method];
 
         return call_user_func_array($callable, $parameters);
     }
-
 }

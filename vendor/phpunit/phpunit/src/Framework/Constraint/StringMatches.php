@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -14,8 +13,8 @@ use SebastianBergmann\Diff\Differ;
 /**
  * ...
  */
-class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Constraint_PCREMatch {
-
+class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Constraint_PCREMatch
+{
     /**
      * @var string
      */
@@ -24,23 +23,26 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
     /**
      * @param string $string
      */
-    public function __construct($string) {
+    public function __construct($string)
+    {
         parent::__construct($string);
 
         $this->pattern = $this->createPatternFromFormat(
-                preg_replace('/\r\n/', "\n", $string)
+            preg_replace('/\r\n/', "\n", $string)
         );
 
         $this->string = $string;
     }
 
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return 'format description matches text';
     }
 
-    protected function additionalFailureDescription($other) {
+    protected function additionalFailureDescription($other)
+    {
         $from = preg_split('(\r\n|\r|\n)', $this->string);
-        $to = preg_split('(\r\n|\r|\n)', $other);
+        $to   = preg_split('(\r\n|\r|\n)', $other);
 
         foreach ($from as $index => $line) {
             if (isset($to[$index]) && $line !== $to[$index]) {
@@ -53,16 +55,17 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
         }
 
         $this->string = implode("\n", $from);
-        $other = implode("\n", $to);
+        $other        = implode("\n", $to);
 
         $differ = new Differ("--- Expected\n+++ Actual\n");
 
         return $differ->diff($this->string, $other);
     }
 
-    protected function createPatternFromFormat($string) {
+    protected function createPatternFromFormat($string)
+    {
         $string = str_replace(
-                [
+            [
             '%e',
             '%s',
             '%S',
@@ -74,7 +77,8 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
             '%x',
             '%f',
             '%c'
-                ], [
+            ],
+            [
             '\\' . DIRECTORY_SEPARATOR,
             '[^\r\n]+',
             '[^\r\n]*',
@@ -86,10 +90,10 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
             '[0-9a-fA-F]+',
             '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
             '.'
-                ], preg_quote($string, '/')
+            ],
+            preg_quote($string, '/')
         );
 
         return '/^' . $string . '$/s';
     }
-
 }

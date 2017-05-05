@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node\Stmt;
 
-class Static_ extends Stmt {
-
+class Static_ extends Stmt
+{
     /** @var StaticVar[] Variable definitions */
     public $vars;
 
@@ -23,5 +23,4 @@ class Static_ extends Stmt {
     public function getSubNodeNames() {
         return array('vars');
     }
-
 }

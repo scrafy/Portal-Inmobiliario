@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Iterator for test suites.
  */
-class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
-
+class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
+{
     /**
      * @var int
      */
@@ -27,14 +26,16 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
     /**
      * @param PHPUnit_Framework_TestSuite $testSuite
      */
-    public function __construct(PHPUnit_Framework_TestSuite $testSuite) {
+    public function __construct(PHPUnit_Framework_TestSuite $testSuite)
+    {
         $this->tests = $testSuite->tests();
     }
 
     /**
      * Rewinds the Iterator to the first element.
      */
-    public function rewind() {
+    public function rewind()
+    {
         $this->position = 0;
     }
 
@@ -43,7 +44,8 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
      *
      * @return bool
      */
-    public function valid() {
+    public function valid()
+    {
         return $this->position < count($this->tests);
     }
 
@@ -52,7 +54,8 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
      *
      * @return int
      */
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
@@ -61,14 +64,16 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
      *
      * @return PHPUnit_Framework_Test
      */
-    public function current() {
+    public function current()
+    {
         return $this->valid() ? $this->tests[$this->position] : null;
     }
 
     /**
      * Moves forward to next element.
      */
-    public function next() {
+    public function next()
+    {
         $this->position++;
     }
 
@@ -77,9 +82,10 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
      *
      * @return PHPUnit_Util_TestSuiteIterator
      */
-    public function getChildren() {
+    public function getChildren()
+    {
         return new self(
-                $this->tests[$this->position]
+            $this->tests[$this->position]
         );
     }
 
@@ -88,8 +94,8 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator {
      *
      * @return bool
      */
-    public function hasChildren() {
+    public function hasChildren()
+    {
         return $this->tests[$this->position] instanceof PHPUnit_Framework_TestSuite;
     }
-
 }

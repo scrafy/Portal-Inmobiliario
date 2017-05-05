@@ -4,8 +4,8 @@ namespace Illuminate\Http\Testing;
 
 use Illuminate\Http\UploadedFile;
 
-class File extends UploadedFile {
-
+class File extends UploadedFile
+{
     /**
      * The name of the file.
      *
@@ -34,12 +34,14 @@ class File extends UploadedFile {
      * @param  resource  $tempFile
      * @return void
      */
-    public function __construct($name, $tempFile) {
+    public function __construct($name, $tempFile)
+    {
         $this->name = $name;
         $this->tempFile = $tempFile;
 
         parent::__construct(
-                $this->tempFilePath(), $name, $this->getMimeType(), filesize($this->tempFilePath()), $error = null, $test = true
+            $this->tempFilePath(), $name, $this->getMimeType(),
+            filesize($this->tempFilePath()), $error = null, $test = true
         );
     }
 
@@ -50,7 +52,8 @@ class File extends UploadedFile {
      * @param  int  $kilobytes
      * @return \Illuminate\Http\Testing\File
      */
-    public static function create($name, $kilobytes = 0) {
+    public static function create($name, $kilobytes = 0)
+    {
         return (new FileFactory)->create($name, $kilobytes);
     }
 
@@ -62,7 +65,8 @@ class File extends UploadedFile {
      * @param  int  $height
      * @return \Illuminate\Http\Testing\File
      */
-    public static function image($name, $width = 10, $height = 10) {
+    public static function image($name, $width = 10, $height = 10)
+    {
         return (new FileFactory)->image($name, $width, $height);
     }
 
@@ -72,7 +76,8 @@ class File extends UploadedFile {
      * @param  int  $kilobytes
      * @return $this
      */
-    public function size($kilobytes) {
+    public function size($kilobytes)
+    {
         $this->sizeToReport = $kilobytes * 1024;
 
         return $this;
@@ -83,7 +88,8 @@ class File extends UploadedFile {
      *
      * @return int
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->sizeToReport ?: parent::getSize();
     }
 
@@ -92,7 +98,8 @@ class File extends UploadedFile {
      *
      * @return string
      */
-    public function getMimeType() {
+    public function getMimeType()
+    {
         return MimeType::from($this->name);
     }
 
@@ -101,8 +108,8 @@ class File extends UploadedFile {
      *
      * @return string
      */
-    protected function tempFilePath() {
+    protected function tempFilePath()
+    {
         return stream_get_meta_data($this->tempFile)['uri'];
     }
-
 }

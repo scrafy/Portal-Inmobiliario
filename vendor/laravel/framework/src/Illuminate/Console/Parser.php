@@ -7,8 +7,8 @@ use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Parser {
-
+class Parser
+{
     /**
      * Parse the given console command definition into an array.
      *
@@ -17,7 +17,8 @@ class Parser {
      *
      * @throws \InvalidArgumentException
      */
-    public static function parse($expression) {
+    public static function parse($expression)
+    {
         $name = static::name($expression);
 
         if (preg_match_all('/\{\s*(.*?)\s*\}/', $expression, $matches)) {
@@ -35,12 +36,13 @@ class Parser {
      * @param  string  $expression
      * @return string
      */
-    protected static function name($expression) {
+    protected static function name($expression)
+    {
         if (trim($expression) === '') {
             throw new InvalidArgumentException('Console command definition is empty.');
         }
 
-        if (!preg_match('/[^\s]+/', $expression, $matches)) {
+        if (! preg_match('/[^\s]+/', $expression, $matches)) {
             throw new InvalidArgumentException('Unable to determine command name from signature.');
         }
 
@@ -53,7 +55,8 @@ class Parser {
      * @param  array  $tokens
      * @return array
      */
-    protected static function parameters(array $tokens) {
+    protected static function parameters(array $tokens)
+    {
         $arguments = [];
 
         $options = [];
@@ -75,7 +78,8 @@ class Parser {
      * @param  string  $token
      * @return \Symfony\Component\Console\Input\InputArgument
      */
-    protected static function parseArgument($token) {
+    protected static function parseArgument($token)
+    {
         list($token, $description) = static::extractDescription($token);
 
         switch (true) {
@@ -98,7 +102,8 @@ class Parser {
      * @param  string  $token
      * @return \Symfony\Component\Console\Input\InputOption
      */
-    protected static function parseOption($token) {
+    protected static function parseOption($token)
+    {
         list($token, $description) = static::extractDescription($token);
 
         $matches = preg_split('/\s*\|\s*/', $token, 2);
@@ -128,10 +133,10 @@ class Parser {
      * @param  string  $token
      * @return array
      */
-    protected static function extractDescription($token) {
+    protected static function extractDescription($token)
+    {
         $parts = preg_split('/\s+:\s+/', trim($token), 2);
 
         return count($parts) === 2 ? $parts : [$token, null];
     }
-
 }

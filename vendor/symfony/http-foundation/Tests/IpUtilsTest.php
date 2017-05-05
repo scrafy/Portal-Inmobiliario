@@ -14,16 +14,18 @@ namespace Symfony\Component\HttpFoundation\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\IpUtils;
 
-class IpUtilsTest extends TestCase {
-
+class IpUtilsTest extends TestCase
+{
     /**
      * @dataProvider testIpv4Provider
      */
-    public function testIpv4($matches, $remoteAddr, $cidr) {
+    public function testIpv4($matches, $remoteAddr, $cidr)
+    {
         $this->assertSame($matches, IpUtils::checkIp($remoteAddr, $cidr));
     }
 
-    public function testIpv4Provider() {
+    public function testIpv4Provider()
+    {
         return array(
             array(true, '192.168.1.1', '192.168.1.1'),
             array(true, '192.168.1.1', '192.168.1.1/1'),
@@ -43,7 +45,8 @@ class IpUtilsTest extends TestCase {
     /**
      * @dataProvider testIpv6Provider
      */
-    public function testIpv6($matches, $remoteAddr, $cidr) {
+    public function testIpv6($matches, $remoteAddr, $cidr)
+    {
         if (!defined('AF_INET6')) {
             $this->markTestSkipped('Only works when PHP is compiled without the option "disable-ipv6".');
         }
@@ -51,7 +54,8 @@ class IpUtilsTest extends TestCase {
         $this->assertSame($matches, IpUtils::checkIp($remoteAddr, $cidr));
     }
 
-    public function testIpv6Provider() {
+    public function testIpv6Provider()
+    {
         return array(
             array(true, '2a01:198:603:0:396e:4789:8e99:890f', '2a01:198:603:0::/65'),
             array(false, '2a00:198:603:0:396e:4789:8e99:890f', '2a01:198:603:0::/65'),
@@ -70,12 +74,12 @@ class IpUtilsTest extends TestCase {
      * @expectedException \RuntimeException
      * @requires extension sockets
      */
-    public function testAnIpv6WithOptionDisabledIpv6() {
+    public function testAnIpv6WithOptionDisabledIpv6()
+    {
         if (defined('AF_INET6')) {
             $this->markTestSkipped('Only works when PHP is compiled with the option "disable-ipv6".');
         }
 
         IpUtils::checkIp('2a01:198:603:0:396e:4789:8e99:890f', '2a01:198:603:0::/65');
     }
-
 }

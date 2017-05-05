@@ -7,8 +7,8 @@ use ReflectionParameter;
 use Illuminate\Support\Arr;
 use ReflectionFunctionAbstract;
 
-trait RouteDependencyResolverTrait {
-
+trait RouteDependencyResolverTrait
+{
     /**
      * Resolve the object method's type-hinted dependencies.
      *
@@ -17,13 +17,14 @@ trait RouteDependencyResolverTrait {
      * @param  string  $method
      * @return array
      */
-    protected function resolveClassMethodDependencies(array $parameters, $instance, $method) {
-        if (!method_exists($instance, $method)) {
+    protected function resolveClassMethodDependencies(array $parameters, $instance, $method)
+    {
+        if (! method_exists($instance, $method)) {
             return $parameters;
         }
 
         return $this->resolveMethodDependencies(
-                        $parameters, new ReflectionMethod($instance, $method)
+            $parameters, new ReflectionMethod($instance, $method)
         );
     }
 
@@ -34,7 +35,8 @@ trait RouteDependencyResolverTrait {
      * @param  \ReflectionFunctionAbstract  $reflector
      * @return array
      */
-    public function resolveMethodDependencies(array $parameters, ReflectionFunctionAbstract $reflector) {
+    public function resolveMethodDependencies(array $parameters, ReflectionFunctionAbstract $reflector)
+    {
         $results = [];
 
         $instanceCount = 0;
@@ -43,15 +45,16 @@ trait RouteDependencyResolverTrait {
 
         foreach ($reflector->getParameters() as $key => $parameter) {
             $instance = $this->transformDependency(
-                    $parameter, $parameters
+                $parameter, $parameters
             );
 
-            if (!is_null($instance)) {
+            if (! is_null($instance)) {
                 $instanceCount++;
 
                 $results[] = $instance;
             } else {
-                $results[] = isset($values[$key - $instanceCount]) ? $values[$key - $instanceCount] : $parameter->getDefaultValue();
+                $results[] = isset($values[$key - $instanceCount])
+                    ? $values[$key - $instanceCount] : $parameter->getDefaultValue();
             }
         }
 
@@ -65,13 +68,14 @@ trait RouteDependencyResolverTrait {
      * @param  array  $parameters
      * @return mixed
      */
-    protected function transformDependency(ReflectionParameter $parameter, $parameters) {
+    protected function transformDependency(ReflectionParameter $parameter, $parameters)
+    {
         $class = $parameter->getClass();
 
         // If the parameter has a type-hinted class, we will check to see if it is already in
         // the list of parameters. If it is we will just skip it as it is probably a model
         // binding and we do not want to mess with those; otherwise, we resolve it here.
-        if ($class && !$this->alreadyInParameters($class->name, $parameters)) {
+        if ($class && ! $this->alreadyInParameters($class->name, $parameters)) {
             return $this->container->make($class->name);
         }
     }
@@ -83,10 +87,10 @@ trait RouteDependencyResolverTrait {
      * @param  array  $parameters
      * @return bool
      */
-    protected function alreadyInParameters($class, array $parameters) {
-        return !is_null(Arr::first($parameters, function ($value) use ($class) {
-                            return $value instanceof $class;
-                        }));
+    protected function alreadyInParameters($class, array $parameters)
+    {
+        return ! is_null(Arr::first($parameters, function ($value) use ($class) {
+            return $value instanceof $class;
+        }));
     }
-
 }

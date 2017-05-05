@@ -19,9 +19,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\ResponseCacheStrategy;
 
-class ResponseCacheStrategyTest extends TestCase {
-
-    public function testMinimumSharedMaxAgeWins() {
+class ResponseCacheStrategyTest extends TestCase
+{
+    public function testMinimumSharedMaxAgeWins()
+    {
         $cacheStrategy = new ResponseCacheStrategy();
 
         $response1 = new Response();
@@ -39,7 +40,8 @@ class ResponseCacheStrategyTest extends TestCase {
         $this->assertSame('60', $response->headers->getCacheControlDirective('s-maxage'));
     }
 
-    public function testSharedMaxAgeNotSetIfNotSetInAnyEmbeddedRequest() {
+    public function testSharedMaxAgeNotSetIfNotSetInAnyEmbeddedRequest()
+    {
         $cacheStrategy = new ResponseCacheStrategy();
 
         $response1 = new Response();
@@ -56,7 +58,8 @@ class ResponseCacheStrategyTest extends TestCase {
         $this->assertFalse($response->headers->hasCacheControlDirective('s-maxage'));
     }
 
-    public function testSharedMaxAgeNotSetIfNotSetInMasterRequest() {
+    public function testSharedMaxAgeNotSetIfNotSetInMasterRequest()
+    {
         $cacheStrategy = new ResponseCacheStrategy();
 
         $response1 = new Response();
@@ -72,5 +75,4 @@ class ResponseCacheStrategyTest extends TestCase {
 
         $this->assertFalse($response->headers->hasCacheControlDirective('s-maxage'));
     }
-
 }

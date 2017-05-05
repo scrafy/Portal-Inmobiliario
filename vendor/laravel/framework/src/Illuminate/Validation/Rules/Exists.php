@@ -4,8 +4,8 @@ namespace Illuminate\Validation\Rules;
 
 use Closure;
 
-class Exists {
-
+class Exists
+{
     /**
      * The table to run the query against.
      *
@@ -41,7 +41,8 @@ class Exists {
      * @param  string  $column
      * @return void
      */
-    public function __construct($table, $column = 'NULL') {
+    public function __construct($table, $column = 'NULL')
+    {
         $this->table = $table;
         $this->column = $column;
     }
@@ -53,7 +54,8 @@ class Exists {
      * @param  string  $value
      * @return $this
      */
-    public function where($column, $value = null) {
+    public function where($column, $value = null)
+    {
         if ($column instanceof Closure) {
             return $this->using($column);
         }
@@ -70,8 +72,9 @@ class Exists {
      * @param  string  $value
      * @return $this
      */
-    public function whereNot($column, $value) {
-        return $this->where($column, '!' . $value);
+    public function whereNot($column, $value)
+    {
+        return $this->where($column, '!'.$value);
     }
 
     /**
@@ -80,7 +83,8 @@ class Exists {
      * @param  string  $column
      * @return $this
      */
-    public function whereNull($column) {
+    public function whereNull($column)
+    {
         return $this->where($column, 'NULL');
     }
 
@@ -90,7 +94,8 @@ class Exists {
      * @param  string  $column
      * @return $this
      */
-    public function whereNotNull($column) {
+    public function whereNotNull($column)
+    {
         return $this->where($column, 'NOT_NULL');
     }
 
@@ -100,7 +105,8 @@ class Exists {
      * @param  \Closure $callback
      * @return $this
      */
-    public function using(Closure $callback) {
+    public function using(Closure $callback)
+    {
         $this->using = $callback;
 
         return $this;
@@ -111,10 +117,11 @@ class Exists {
      *
      * @return string
      */
-    protected function formatWheres() {
+    protected function formatWheres()
+    {
         return collect($this->wheres)->map(function ($where) {
-                    return $where['column'] . ',' . $where['value'];
-                })->implode(',');
+            return $where['column'].','.$where['value'];
+        })->implode(',');
     }
 
     /**
@@ -122,7 +129,8 @@ class Exists {
      *
      * @return array
      */
-    public function queryCallbacks() {
+    public function queryCallbacks()
+    {
         return $this->using ? [$this->using] : [];
     }
 
@@ -131,9 +139,12 @@ class Exists {
      *
      * @return string
      */
-    public function __toString() {
-        return rtrim(sprintf('exists:%s,%s,%s', $this->table, $this->column, $this->formatWheres()
-                ), ',');
+    public function __toString()
+    {
+        return rtrim(sprintf('exists:%s,%s,%s',
+            $this->table,
+            $this->column,
+            $this->formatWheres()
+        ), ',');
     }
-
 }

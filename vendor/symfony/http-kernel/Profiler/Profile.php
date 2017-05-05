@@ -18,14 +18,15 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Profile {
-
+class Profile
+{
     private $token;
 
     /**
      * @var DataCollectorInterface[]
      */
     private $collectors = array();
+
     private $ip;
     private $method;
     private $url;
@@ -47,7 +48,8 @@ class Profile {
      *
      * @param string $token The token
      */
-    public function __construct($token) {
+    public function __construct($token)
+    {
         $this->token = $token;
     }
 
@@ -56,7 +58,8 @@ class Profile {
      *
      * @param string $token The token
      */
-    public function setToken($token) {
+    public function setToken($token)
+    {
         $this->token = $token;
     }
 
@@ -65,7 +68,8 @@ class Profile {
      *
      * @return string The token
      */
-    public function getToken() {
+    public function getToken()
+    {
         return $this->token;
     }
 
@@ -74,7 +78,8 @@ class Profile {
      *
      * @param Profile $parent
      */
-    public function setParent(Profile $parent) {
+    public function setParent(Profile $parent)
+    {
         $this->parent = $parent;
     }
 
@@ -83,7 +88,8 @@ class Profile {
      *
      * @return self
      */
-    public function getParent() {
+    public function getParent()
+    {
         return $this->parent;
     }
 
@@ -92,7 +98,8 @@ class Profile {
      *
      * @return null|string The parent token
      */
-    public function getParentToken() {
+    public function getParentToken()
+    {
         return $this->parent ? $this->parent->getToken() : null;
     }
 
@@ -101,7 +108,8 @@ class Profile {
      *
      * @return string The IP
      */
-    public function getIp() {
+    public function getIp()
+    {
         return $this->ip;
     }
 
@@ -110,7 +118,8 @@ class Profile {
      *
      * @param string $ip
      */
-    public function setIp($ip) {
+    public function setIp($ip)
+    {
         $this->ip = $ip;
     }
 
@@ -119,11 +128,13 @@ class Profile {
      *
      * @return string The request method
      */
-    public function getMethod() {
+    public function getMethod()
+    {
         return $this->method;
     }
 
-    public function setMethod($method) {
+    public function setMethod($method)
+    {
         $this->method = $method;
     }
 
@@ -132,11 +143,13 @@ class Profile {
      *
      * @return string The URL
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->url;
     }
 
-    public function setUrl($url) {
+    public function setUrl($url)
+    {
         $this->url = $url;
     }
 
@@ -145,7 +158,8 @@ class Profile {
      *
      * @return string The time
      */
-    public function getTime() {
+    public function getTime()
+    {
         if (null === $this->time) {
             return 0;
         }
@@ -153,21 +167,24 @@ class Profile {
         return $this->time;
     }
 
-    public function setTime($time) {
+    public function setTime($time)
+    {
         $this->time = $time;
     }
 
     /**
      * @param int $statusCode
      */
-    public function setStatusCode($statusCode) {
+    public function setStatusCode($statusCode)
+    {
         $this->statusCode = $statusCode;
     }
 
     /**
      * @return int
      */
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
 
@@ -176,7 +193,8 @@ class Profile {
      *
      * @return self[]
      */
-    public function getChildren() {
+    public function getChildren()
+    {
         return $this->children;
     }
 
@@ -185,7 +203,8 @@ class Profile {
      *
      * @param Profile[] $children
      */
-    public function setChildren(array $children) {
+    public function setChildren(array $children)
+    {
         $this->children = array();
         foreach ($children as $child) {
             $this->addChild($child);
@@ -197,7 +216,8 @@ class Profile {
      *
      * @param Profile $child
      */
-    public function addChild(Profile $child) {
+    public function addChild(Profile $child)
+    {
         $this->children[] = $child;
         $child->setParent($this);
     }
@@ -211,7 +231,8 @@ class Profile {
      *
      * @throws \InvalidArgumentException if the collector does not exist
      */
-    public function getCollector($name) {
+    public function getCollector($name)
+    {
         if (!isset($this->collectors[$name])) {
             throw new \InvalidArgumentException(sprintf('Collector "%s" does not exist.', $name));
         }
@@ -224,7 +245,8 @@ class Profile {
      *
      * @return DataCollectorInterface[]
      */
-    public function getCollectors() {
+    public function getCollectors()
+    {
         return $this->collectors;
     }
 
@@ -233,7 +255,8 @@ class Profile {
      *
      * @param DataCollectorInterface[] $collectors
      */
-    public function setCollectors(array $collectors) {
+    public function setCollectors(array $collectors)
+    {
         $this->collectors = array();
         foreach ($collectors as $collector) {
             $this->addCollector($collector);
@@ -245,7 +268,8 @@ class Profile {
      *
      * @param DataCollectorInterface $collector A DataCollectorInterface instance
      */
-    public function addCollector(DataCollectorInterface $collector) {
+    public function addCollector(DataCollectorInterface $collector)
+    {
         $this->collectors[$collector->getName()] = $collector;
     }
 
@@ -256,12 +280,13 @@ class Profile {
      *
      * @return bool
      */
-    public function hasCollector($name) {
+    public function hasCollector($name)
+    {
         return isset($this->collectors[$name]);
     }
 
-    public function __sleep() {
+    public function __sleep()
+    {
         return array('token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time', 'statusCode');
     }
-
 }

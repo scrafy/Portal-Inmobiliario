@@ -4,14 +4,13 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class Array_ extends Expr {
-
+class Array_ extends Expr
+{
     // For use in "kind" attribute
     const KIND_LONG = 1;  // array() syntax
     const KIND_SHORT = 2; // [] syntax
 
     /** @var ArrayItem[] Items */
-
     public $items;
 
     /**
@@ -28,5 +27,4 @@ class Array_ extends Expr {
     public function getSubNodeNames() {
         return array('items');
     }
-
 }

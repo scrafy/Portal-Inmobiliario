@@ -5,21 +5,22 @@ namespace Illuminate\Validation;
 /**
  * Provides default implementation of ValidatesWhenResolved contract.
  */
-trait ValidatesWhenResolvedTrait {
-
+trait ValidatesWhenResolvedTrait
+{
     /**
      * Validate the class instance.
      *
      * @return void
      */
-    public function validate() {
+    public function validate()
+    {
         $this->prepareForValidation();
 
         $instance = $this->getValidatorInstance();
 
-        if (!$this->passesAuthorization()) {
+        if (! $this->passesAuthorization()) {
             $this->failedAuthorization();
-        } elseif (!$instance->passes()) {
+        } elseif (! $instance->passes()) {
             $this->failedValidation($instance);
         }
     }
@@ -29,7 +30,8 @@ trait ValidatesWhenResolvedTrait {
      *
      * @return void
      */
-    protected function prepareForValidation() {
+    protected function prepareForValidation()
+    {
         // no default action
     }
 
@@ -38,7 +40,8 @@ trait ValidatesWhenResolvedTrait {
      *
      * @return \Illuminate\Validation\Validator
      */
-    protected function getValidatorInstance() {
+    protected function getValidatorInstance()
+    {
         return $this->validator();
     }
 
@@ -50,7 +53,8 @@ trait ValidatesWhenResolvedTrait {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function failedValidation(Validator $validator) {
+    protected function failedValidation(Validator $validator)
+    {
         throw new ValidationException($validator);
     }
 
@@ -59,7 +63,8 @@ trait ValidatesWhenResolvedTrait {
      *
      * @return bool
      */
-    protected function passesAuthorization() {
+    protected function passesAuthorization()
+    {
         if (method_exists($this, 'authorize')) {
             return $this->authorize();
         }
@@ -74,8 +79,8 @@ trait ValidatesWhenResolvedTrait {
      *
      * @throws \Illuminate\Validation\UnauthorizedException
      */
-    protected function failedAuthorization() {
+    protected function failedAuthorization()
+    {
         throw new UnauthorizedException;
     }
-
 }

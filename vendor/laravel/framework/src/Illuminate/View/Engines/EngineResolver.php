@@ -5,8 +5,8 @@ namespace Illuminate\View\Engines;
 use Closure;
 use InvalidArgumentException;
 
-class EngineResolver {
-
+class EngineResolver
+{
     /**
      * The array of engine resolvers.
      *
@@ -30,7 +30,8 @@ class EngineResolver {
      * @param  \Closure  $resolver
      * @return void
      */
-    public function register($engine, Closure $resolver) {
+    public function register($engine, Closure $resolver)
+    {
         unset($this->resolved[$engine]);
 
         $this->resolvers[$engine] = $resolver;
@@ -43,7 +44,8 @@ class EngineResolver {
      * @return \Illuminate\View\Engines\EngineInterface
      * @throws \InvalidArgumentException
      */
-    public function resolve($engine) {
+    public function resolve($engine)
+    {
         if (isset($this->resolved[$engine])) {
             return $this->resolved[$engine];
         }
@@ -54,5 +56,4 @@ class EngineResolver {
 
         throw new InvalidArgumentException("Engine $engine not found.");
     }
-
 }

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class MorphTo extends BelongsTo {
-
+class MorphTo extends BelongsTo
+{
     /**
      * The type of the polymorphic relation.
      *
@@ -48,7 +48,8 @@ class MorphTo extends BelongsTo {
      * @param  string  $relation
      * @return void
      */
-    public function __construct(Builder $query, Model $parent, $foreignKey, $ownerKey, $type, $relation) {
+    public function __construct(Builder $query, Model $parent, $foreignKey, $ownerKey, $type, $relation)
+    {
         $this->morphType = $type;
 
         parent::__construct($query, $parent, $foreignKey, $ownerKey, $relation);
@@ -60,7 +61,8 @@ class MorphTo extends BelongsTo {
      * @param  array  $models
      * @return void
      */
-    public function addEagerConstraints(array $models) {
+    public function addEagerConstraints(array $models)
+    {
         $this->buildDictionary($this->models = Collection::make($models));
     }
 
@@ -70,7 +72,8 @@ class MorphTo extends BelongsTo {
      * @param  \Illuminate\Database\Eloquent\Collection  $models
      * @return void
      */
-    protected function buildDictionary(Collection $models) {
+    protected function buildDictionary(Collection $models)
+    {
         foreach ($models as $model) {
             if ($model->{$this->morphType}) {
                 $this->dictionary[$model->{$this->morphType}][$model->{$this->foreignKey}][] = $model;
@@ -83,7 +86,8 @@ class MorphTo extends BelongsTo {
      *
      * @return mixed
      */
-    public function getResults() {
+    public function getResults()
+    {
         return $this->ownerKey ? $this->query->first() : null;
     }
 
@@ -94,7 +98,8 @@ class MorphTo extends BelongsTo {
      *
      * @return mixed
      */
-    public function getEager() {
+    public function getEager()
+    {
         foreach (array_keys($this->dictionary) as $type) {
             $this->matchToMorphParents($type, $this->getResultsByType($type));
         }
@@ -108,16 +113,17 @@ class MorphTo extends BelongsTo {
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function getResultsByType($type) {
+    protected function getResultsByType($type)
+    {
         $instance = $this->createModelByType($type);
 
         $query = $this->replayMacros($instance->newQuery())
-                ->mergeConstraintsFrom($this->getQuery())
-                ->with($this->getQuery()->getEagerLoads());
+                            ->mergeConstraintsFrom($this->getQuery())
+                            ->with($this->getQuery()->getEagerLoads());
 
         return $query->whereIn(
-                        $instance->getTable() . '.' . $instance->getKeyName(), $this->gatherKeysByType($type)
-                )->get();
+            $instance->getTable().'.'.$instance->getKeyName(), $this->gatherKeysByType($type)
+        )->get();
     }
 
     /**
@@ -126,10 +132,11 @@ class MorphTo extends BelongsTo {
      * @param  string  $type
      * @return array
      */
-    protected function gatherKeysByType($type) {
+    protected function gatherKeysByType($type)
+    {
         return collect($this->dictionary[$type])->map(function ($models) {
-                    return head($models)->{$this->foreignKey};
-                })->values()->unique()->all();
+            return head($models)->{$this->foreignKey};
+        })->values()->unique()->all();
     }
 
     /**
@@ -138,7 +145,8 @@ class MorphTo extends BelongsTo {
      * @param  string  $type
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function createModelByType($type) {
+    public function createModelByType($type)
+    {
         $class = Model::getActualClassNameForMorph($type);
 
         return new $class;
@@ -152,7 +160,8 @@ class MorphTo extends BelongsTo {
      * @param  string  $relation
      * @return array
      */
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         return $models;
     }
 
@@ -163,7 +172,8 @@ class MorphTo extends BelongsTo {
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return void
      */
-    protected function matchToMorphParents($type, Collection $results) {
+    protected function matchToMorphParents($type, Collection $results)
+    {
         foreach ($results as $result) {
             if (isset($this->dictionary[$type][$result->getKey()])) {
                 foreach ($this->dictionary[$type][$result->getKey()] as $model) {
@@ -179,7 +189,8 @@ class MorphTo extends BelongsTo {
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function associate($model) {
+    public function associate($model)
+    {
         $this->parent->setAttribute($this->foreignKey, $model->getKey());
 
         $this->parent->setAttribute($this->morphType, $model->getMorphClass());
@@ -192,7 +203,8 @@ class MorphTo extends BelongsTo {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function dissociate() {
+    public function dissociate()
+    {
         $this->parent->setAttribute($this->foreignKey, null);
 
         $this->parent->setAttribute($this->morphType, null);
@@ -205,7 +217,8 @@ class MorphTo extends BelongsTo {
      *
      * @return string
      */
-    public function getMorphType() {
+    public function getMorphType()
+    {
         return $this->morphType;
     }
 
@@ -214,7 +227,8 @@ class MorphTo extends BelongsTo {
      *
      * @return array
      */
-    public function getDictionary() {
+    public function getDictionary()
+    {
         return $this->dictionary;
     }
 
@@ -224,7 +238,8 @@ class MorphTo extends BelongsTo {
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function replayMacros(Builder $query) {
+    protected function replayMacros(Builder $query)
+    {
         foreach ($this->macroBuffer as $macro) {
             $query->{$macro['method']}(...$macro['parameters']);
         }
@@ -239,7 +254,8 @@ class MorphTo extends BelongsTo {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         try {
             return parent::__call($method, $parameters);
         }
@@ -253,5 +269,4 @@ class MorphTo extends BelongsTo {
             return $this;
         }
     }
-
 }

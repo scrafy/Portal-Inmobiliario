@@ -29,8 +29,8 @@ use Symfony\Component\Routing\RequestContextAwareInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-interface UrlGeneratorInterface extends RequestContextAwareInterface {
-
+interface UrlGeneratorInterface extends RequestContextAwareInterface
+{
     /**
      * Generates an absolute URL, e.g. "http://example.com/dir/file".
      */

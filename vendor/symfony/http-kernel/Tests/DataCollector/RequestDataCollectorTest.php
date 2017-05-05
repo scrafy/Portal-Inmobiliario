@@ -28,9 +28,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
-class RequestDataCollectorTest extends TestCase {
-
-    public function testCollect() {
+class RequestDataCollectorTest extends TestCase
+{
+    public function testCollect()
+    {
         $c = new RequestDataCollector();
 
         $c->collect($request = $this->createRequest(), $this->createResponse());
@@ -59,7 +60,8 @@ class RequestDataCollectorTest extends TestCase {
         $this->assertSame('application/json', $c->getContentType());
     }
 
-    public function testCollectWithoutRouteParams() {
+    public function testCollectWithoutRouteParams()
+    {
         $request = $this->createRequest(array());
 
         $c = new RequestDataCollector();
@@ -68,7 +70,8 @@ class RequestDataCollectorTest extends TestCase {
         $this->assertEquals(array(), $c->getRouteParams());
     }
 
-    public function testKernelResponseDoesNotStartSession() {
+    public function testKernelResponseDoesNotStartSession()
+    {
         $kernel = $this->getMockBuilder(HttpKernelInterface::class)->getMock();
         $request = new Request();
         $session = new Session(new MockArraySessionStorage());
@@ -84,7 +87,8 @@ class RequestDataCollectorTest extends TestCase {
     /**
      * @dataProvider provideControllerCallables
      */
-    public function testControllerInspection($name, $callable, $expected) {
+    public function testControllerInspection($name, $callable, $expected)
+    {
         $c = new RequestDataCollector();
         $request = $this->createRequest();
         $response = $this->createResponse();
@@ -94,7 +98,8 @@ class RequestDataCollectorTest extends TestCase {
         $this->assertSame($expected, $c->getController(), sprintf('Testing: %s', $name));
     }
 
-    public function provideControllerCallables() {
+    public function provideControllerCallables()
+    {
         // make sure we always match the line number
         $r1 = new \ReflectionMethod($this, 'testControllerInspection');
         $r2 = new \ReflectionMethod($this, 'staticControllerMethod');
@@ -106,27 +111,27 @@ class RequestDataCollectorTest extends TestCase {
                 '"Regular" callable',
                 array($this, 'testControllerInspection'),
                 array(
-                    'class' => __NAMESPACE__ . '\RequestDataCollectorTest',
+                    'class' => __NAMESPACE__.'\RequestDataCollectorTest',
                     'method' => 'testControllerInspection',
                     'file' => __FILE__,
                     'line' => $r1->getStartLine(),
                 ),
             ),
+
             array(
                 'Closure',
-                function () {
-                    return 'foo';
-                },
+                function () { return 'foo'; },
                 array(
-                    'class' => __NAMESPACE__ . '\{closure}',
+                    'class' => __NAMESPACE__.'\{closure}',
                     'method' => null,
                     'file' => __FILE__,
                     'line' => __LINE__ - 5,
                 ),
             ),
+
             array(
                 'Static callback as string',
-                __NAMESPACE__ . '\RequestDataCollectorTest::staticControllerMethod',
+                __NAMESPACE__.'\RequestDataCollectorTest::staticControllerMethod',
                 array(
                     'class' => 'Symfony\Component\HttpKernel\Tests\DataCollector\RequestDataCollectorTest',
                     'method' => 'staticControllerMethod',
@@ -134,6 +139,7 @@ class RequestDataCollectorTest extends TestCase {
                     'line' => $r2->getStartLine(),
                 ),
             ),
+
             array(
                 'Static callable with instance',
                 array($this, 'staticControllerMethod'),
@@ -144,6 +150,7 @@ class RequestDataCollectorTest extends TestCase {
                     'line' => $r2->getStartLine(),
                 ),
             ),
+
             array(
                 'Static callable with class name',
                 array('Symfony\Component\HttpKernel\Tests\DataCollector\RequestDataCollectorTest', 'staticControllerMethod'),
@@ -154,6 +161,7 @@ class RequestDataCollectorTest extends TestCase {
                     'line' => $r2->getStartLine(),
                 ),
             ),
+
             array(
                 'Callable with instance depending on __call()',
                 array($this, 'magicMethod'),
@@ -164,6 +172,7 @@ class RequestDataCollectorTest extends TestCase {
                     'line' => 'n/a',
                 ),
             ),
+
             array(
                 'Callable with class name depending on __callStatic()',
                 array('Symfony\Component\HttpKernel\Tests\DataCollector\RequestDataCollectorTest', 'magicMethod'),
@@ -174,6 +183,7 @@ class RequestDataCollectorTest extends TestCase {
                     'line' => 'n/a',
                 ),
             ),
+
             array(
                 'Invokable controller',
                 $this,
@@ -187,7 +197,8 @@ class RequestDataCollectorTest extends TestCase {
         );
     }
 
-    public function testItIgnoresInvalidCallables() {
+    public function testItIgnoresInvalidCallables()
+    {
         $request = $this->createRequestWithSession();
         $response = new RedirectResponse('/');
 
@@ -197,7 +208,8 @@ class RequestDataCollectorTest extends TestCase {
         $this->assertSame('n/a', $c->getController());
     }
 
-    protected function createRequest($routeParams = array('name' => 'foo')) {
+    protected function createRequest($routeParams = array('name' => 'foo'))
+    {
         $request = Request::create('http://test.com/foo?bar=baz');
         $request->attributes->set('foo', 'bar');
         $request->attributes->set('_route', 'foobar');
@@ -208,7 +220,8 @@ class RequestDataCollectorTest extends TestCase {
         return $request;
     }
 
-    private function createRequestWithSession() {
+    private function createRequestWithSession()
+    {
         $request = $this->createRequest();
         $request->attributes->set('_controller', 'Foo::bar');
         $request->setSession(new Session(new MockArraySessionStorage()));
@@ -217,7 +230,8 @@ class RequestDataCollectorTest extends TestCase {
         return $request;
     }
 
-    protected function createResponse() {
+    protected function createResponse()
+    {
         $response = new Response();
         $response->setStatusCode(200);
         $response->headers->set('Content-Type', 'application/json');
@@ -232,7 +246,8 @@ class RequestDataCollectorTest extends TestCase {
     /**
      * Inject the given controller callable into the data collector.
      */
-    protected function injectController($collector, $controller, $request) {
+    protected function injectController($collector, $controller, $request)
+    {
         $resolver = $this->getMockBuilder('Symfony\\Component\\HttpKernel\\Controller\\ControllerResolverInterface')->getMock();
         $httpKernel = new HttpKernel(new EventDispatcher(), $resolver, null, $this->getMockBuilder(ArgumentResolverInterface::class)->getMock());
         $event = new FilterControllerEvent($httpKernel, $controller, $request, HttpKernelInterface::MASTER_REQUEST);
@@ -242,26 +257,29 @@ class RequestDataCollectorTest extends TestCase {
     /**
      * Dummy method used as controller callable.
      */
-    public static function staticControllerMethod() {
+    public static function staticControllerMethod()
+    {
         throw new \LogicException('Unexpected method call');
     }
 
     /**
      * Magic method to allow non existing methods to be called and delegated.
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         throw new \LogicException('Unexpected method call');
     }
 
     /**
      * Magic method to allow non existing methods to be called and delegated.
      */
-    public static function __callStatic($method, $args) {
+    public static function __callStatic($method, $args)
+    {
         throw new \LogicException('Unexpected method call');
     }
 
-    public function __invoke() {
+    public function __invoke()
+    {
         throw new \LogicException('Unexpected method call');
     }
-
 }

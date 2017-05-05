@@ -7,8 +7,8 @@ use RuntimeException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 
-class Pipeline implements PipelineContract {
-
+class Pipeline implements PipelineContract
+{
     /**
      * The container implementation.
      *
@@ -43,7 +43,8 @@ class Pipeline implements PipelineContract {
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
      */
-    public function __construct(Container $container = null) {
+    public function __construct(Container $container = null)
+    {
         $this->container = $container;
     }
 
@@ -53,7 +54,8 @@ class Pipeline implements PipelineContract {
      * @param  mixed  $passable
      * @return $this
      */
-    public function send($passable) {
+    public function send($passable)
+    {
         $this->passable = $passable;
 
         return $this;
@@ -65,7 +67,8 @@ class Pipeline implements PipelineContract {
      * @param  array|mixed  $pipes
      * @return $this
      */
-    public function through($pipes) {
+    public function through($pipes)
+    {
         $this->pipes = is_array($pipes) ? $pipes : func_get_args();
 
         return $this;
@@ -77,7 +80,8 @@ class Pipeline implements PipelineContract {
      * @param  string  $method
      * @return $this
      */
-    public function via($method) {
+    public function via($method)
+    {
         $this->method = $method;
 
         return $this;
@@ -89,9 +93,10 @@ class Pipeline implements PipelineContract {
      * @param  \Closure  $destination
      * @return mixed
      */
-    public function then(Closure $destination) {
+    public function then(Closure $destination)
+    {
         $pipeline = array_reduce(
-                array_reverse($this->pipes), $this->carry(), $this->prepareDestination($destination)
+            array_reverse($this->pipes), $this->carry(), $this->prepareDestination($destination)
         );
 
         return $pipeline($this->passable);
@@ -103,7 +108,8 @@ class Pipeline implements PipelineContract {
      * @param  \Closure  $destination
      * @return \Closure
      */
-    protected function prepareDestination(Closure $destination) {
+    protected function prepareDestination(Closure $destination)
+    {
         return function ($passable) use ($destination) {
             return $destination($passable);
         };
@@ -114,7 +120,8 @@ class Pipeline implements PipelineContract {
      *
      * @return \Closure
      */
-    protected function carry() {
+    protected function carry()
+    {
         return function ($stack, $pipe) {
             return function ($passable) use ($stack, $pipe) {
                 if ($pipe instanceof Closure) {
@@ -122,7 +129,7 @@ class Pipeline implements PipelineContract {
                     // otherwise we'll resolve the pipes out of the container and call it with
                     // the appropriate method and arguments, returning the results back out.
                     return $pipe($passable, $stack);
-                } elseif (!is_object($pipe)) {
+                } elseif (! is_object($pipe)) {
                     list($name, $parameters) = $this->parsePipeString($pipe);
 
                     // If the pipe is a string we will parse the string and resolve the class out
@@ -149,7 +156,8 @@ class Pipeline implements PipelineContract {
      * @param  string $pipe
      * @return array
      */
-    protected function parsePipeString($pipe) {
+    protected function parsePipeString($pipe)
+    {
         list($name, $parameters) = array_pad(explode(':', $pipe, 2), 2, []);
 
         if (is_string($parameters)) {
@@ -165,12 +173,12 @@ class Pipeline implements PipelineContract {
      * @return \Illuminate\Contracts\Container\Container
      * @throws \RuntimeException
      */
-    protected function getContainer() {
-        if (!$this->container) {
+    protected function getContainer()
+    {
+        if (! $this->container) {
             throw new RuntimeException('A container instance has not been passed to the Pipeline.');
         }
 
         return $this->container;
     }
-
 }

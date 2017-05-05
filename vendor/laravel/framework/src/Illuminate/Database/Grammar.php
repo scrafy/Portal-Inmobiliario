@@ -4,8 +4,8 @@ namespace Illuminate\Database;
 
 use Illuminate\Database\Query\Expression;
 
-abstract class Grammar {
-
+abstract class Grammar
+{
     /**
      * The grammar table prefix.
      *
@@ -19,7 +19,8 @@ abstract class Grammar {
      * @param  array  $values
      * @return array
      */
-    public function wrapArray(array $values) {
+    public function wrapArray(array $values)
+    {
         return array_map([$this, 'wrap'], $values);
     }
 
@@ -29,9 +30,10 @@ abstract class Grammar {
      * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string
      */
-    public function wrapTable($table) {
-        if (!$this->isExpression($table)) {
-            return $this->wrap($this->tablePrefix . $table, true);
+    public function wrapTable($table)
+    {
+        if (! $this->isExpression($table)) {
+            return $this->wrap($this->tablePrefix.$table, true);
         }
 
         return $this->getValue($table);
@@ -44,7 +46,8 @@ abstract class Grammar {
      * @param  bool    $prefixAlias
      * @return string
      */
-    public function wrap($value, $prefixAlias = false) {
+    public function wrap($value, $prefixAlias = false)
+    {
         if ($this->isExpression($value)) {
             return $this->getValue($value);
         }
@@ -66,18 +69,19 @@ abstract class Grammar {
      * @param  bool  $prefixAlias
      * @return string
      */
-    protected function wrapAliasedValue($value, $prefixAlias = false) {
+    protected function wrapAliasedValue($value, $prefixAlias = false)
+    {
         $segments = preg_split('/\s+as\s+/i', $value);
 
         // If we are wrapping a table we need to prefix the alias with the table prefix
         // as well in order to generate proper syntax. If this is a column of course
         // no prefix is necessary. The condition will be true when from wrapTable.
         if ($prefixAlias) {
-            $segments[1] = $this->tablePrefix . $segments[1];
+            $segments[1] = $this->tablePrefix.$segments[1];
         }
 
         return $this->wrap(
-                        $segments[0]) . ' as ' . $this->wrapValue($segments[1]
+            $segments[0]).' as '.$this->wrapValue($segments[1]
         );
     }
 
@@ -87,10 +91,13 @@ abstract class Grammar {
      * @param  array  $segments
      * @return string
      */
-    protected function wrapSegments($segments) {
+    protected function wrapSegments($segments)
+    {
         return collect($segments)->map(function ($segment, $key) use ($segments) {
-                    return $key == 0 && count($segments) > 1 ? $this->wrapTable($segment) : $this->wrapValue($segment);
-                })->implode('.');
+            return $key == 0 && count($segments) > 1
+                            ? $this->wrapTable($segment)
+                            : $this->wrapValue($segment);
+        })->implode('.');
     }
 
     /**
@@ -99,9 +106,10 @@ abstract class Grammar {
      * @param  string  $value
      * @return string
      */
-    protected function wrapValue($value) {
+    protected function wrapValue($value)
+    {
         if ($value !== '*') {
-            return '"' . str_replace('"', '""', $value) . '"';
+            return '"'.str_replace('"', '""', $value).'"';
         }
 
         return $value;
@@ -113,7 +121,8 @@ abstract class Grammar {
      * @param  array   $columns
      * @return string
      */
-    public function columnize(array $columns) {
+    public function columnize(array $columns)
+    {
         return implode(', ', array_map([$this, 'wrap'], $columns));
     }
 
@@ -123,7 +132,8 @@ abstract class Grammar {
      * @param  array   $values
      * @return string
      */
-    public function parameterize(array $values) {
+    public function parameterize(array $values)
+    {
         return implode(', ', array_map([$this, 'parameter'], $values));
     }
 
@@ -133,7 +143,8 @@ abstract class Grammar {
      * @param  mixed   $value
      * @return string
      */
-    public function parameter($value) {
+    public function parameter($value)
+    {
         return $this->isExpression($value) ? $this->getValue($value) : '?';
     }
 
@@ -143,7 +154,8 @@ abstract class Grammar {
      * @param  mixed  $value
      * @return bool
      */
-    public function isExpression($value) {
+    public function isExpression($value)
+    {
         return $value instanceof Expression;
     }
 
@@ -153,7 +165,8 @@ abstract class Grammar {
      * @param  \Illuminate\Database\Query\Expression  $expression
      * @return string
      */
-    public function getValue($expression) {
+    public function getValue($expression)
+    {
         return $expression->getValue();
     }
 
@@ -162,7 +175,8 @@ abstract class Grammar {
      *
      * @return string
      */
-    public function getDateFormat() {
+    public function getDateFormat()
+    {
         return 'Y-m-d H:i:s';
     }
 
@@ -171,7 +185,8 @@ abstract class Grammar {
      *
      * @return string
      */
-    public function getTablePrefix() {
+    public function getTablePrefix()
+    {
         return $this->tablePrefix;
     }
 
@@ -181,10 +196,10 @@ abstract class Grammar {
      * @param  string  $prefix
      * @return $this
      */
-    public function setTablePrefix($prefix) {
+    public function setTablePrefix($prefix)
+    {
         $this->tablePrefix = $prefix;
 
         return $this;
     }
-
 }

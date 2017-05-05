@@ -9,10 +9,9 @@ use Symfony\Component\Console\Command\Command;
  *
  * @see Bundle::registerCommands()
  */
-class BarCommand extends Command {
-
-    public function __construct($example, $name = 'bar') {
-        
+class BarCommand extends Command
+{
+    public function __construct($example, $name = 'bar')
+    {
     }
-
 }

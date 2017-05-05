@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class ProviderMakeCommand extends GeneratorCommand {
-
+class ProviderMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -32,8 +32,9 @@ class ProviderMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/provider.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/provider.stub';
     }
 
     /**
@@ -42,8 +43,8 @@ class ProviderMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Providers';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Providers';
     }
-
 }

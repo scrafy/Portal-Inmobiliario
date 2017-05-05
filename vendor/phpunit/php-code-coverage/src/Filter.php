@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\CodeCoverage;
 /**
  * Filter for whitelisting of code coverage information.
  */
-class Filter {
-
+class Filter
+{
     /**
      * Source files that are whitelisted.
      *
@@ -30,9 +29,10 @@ class Filter {
      * @param string $suffix
      * @param string $prefix
      */
-    public function addDirectoryToWhitelist($directory, $suffix = '.php', $prefix = '') {
+    public function addDirectoryToWhitelist($directory, $suffix = '.php', $prefix = '')
+    {
         $facade = new \File_Iterator_Facade;
-        $files = $facade->getFilesAsArray($directory, $suffix, $prefix);
+        $files  = $facade->getFilesAsArray($directory, $suffix, $prefix);
 
         foreach ($files as $file) {
             $this->addFileToWhitelist($file);
@@ -44,7 +44,8 @@ class Filter {
      *
      * @param string $filename
      */
-    public function addFileToWhitelist($filename) {
+    public function addFileToWhitelist($filename)
+    {
         $this->whitelistedFiles[realpath($filename)] = true;
     }
 
@@ -53,7 +54,8 @@ class Filter {
      *
      * @param array $files
      */
-    public function addFilesToWhitelist(array $files) {
+    public function addFilesToWhitelist(array $files)
+    {
         foreach ($files as $file) {
             $this->addFileToWhitelist($file);
         }
@@ -66,9 +68,10 @@ class Filter {
      * @param string $suffix
      * @param string $prefix
      */
-    public function removeDirectoryFromWhitelist($directory, $suffix = '.php', $prefix = '') {
+    public function removeDirectoryFromWhitelist($directory, $suffix = '.php', $prefix = '')
+    {
         $facade = new \File_Iterator_Facade;
-        $files = $facade->getFilesAsArray($directory, $suffix, $prefix);
+        $files  = $facade->getFilesAsArray($directory, $suffix, $prefix);
 
         foreach ($files as $file) {
             $this->removeFileFromWhitelist($file);
@@ -80,7 +83,8 @@ class Filter {
      *
      * @param string $filename
      */
-    public function removeFileFromWhitelist($filename) {
+    public function removeFileFromWhitelist($filename)
+    {
         $filename = realpath($filename);
 
         unset($this->whitelistedFiles[$filename]);
@@ -93,15 +97,16 @@ class Filter {
      *
      * @return bool
      */
-    public function isFile($filename) {
+    public function isFile($filename)
+    {
         if ($filename == '-' ||
-                strpos($filename, 'vfs://') === 0 ||
-                strpos($filename, 'xdebug://debug-eval') !== false ||
-                strpos($filename, 'eval()\'d code') !== false ||
-                strpos($filename, 'runtime-created function') !== false ||
-                strpos($filename, 'runkit created function') !== false ||
-                strpos($filename, 'assert code') !== false ||
-                strpos($filename, 'regexp code') !== false) {
+            strpos($filename, 'vfs://') === 0 ||
+            strpos($filename, 'xdebug://debug-eval') !== false ||
+            strpos($filename, 'eval()\'d code') !== false ||
+            strpos($filename, 'runtime-created function') !== false ||
+            strpos($filename, 'runkit created function') !== false ||
+            strpos($filename, 'assert code') !== false ||
+            strpos($filename, 'regexp code') !== false) {
             return false;
         }
 
@@ -115,7 +120,8 @@ class Filter {
      *
      * @return bool
      */
-    public function isFiltered($filename) {
+    public function isFiltered($filename)
+    {
         if (!$this->isFile($filename)) {
             return true;
         }
@@ -130,7 +136,8 @@ class Filter {
      *
      * @return array
      */
-    public function getWhitelist() {
+    public function getWhitelist()
+    {
         return array_keys($this->whitelistedFiles);
     }
 
@@ -139,7 +146,8 @@ class Filter {
      *
      * @return bool
      */
-    public function hasWhitelist() {
+    public function hasWhitelist()
+    {
         return !empty($this->whitelistedFiles);
     }
 
@@ -148,7 +156,8 @@ class Filter {
      *
      * @return array
      */
-    public function getWhitelistedFiles() {
+    public function getWhitelistedFiles()
+    {
         return $this->whitelistedFiles;
     }
 
@@ -157,8 +166,8 @@ class Filter {
      *
      * @param array $whitelistedFiles
      */
-    public function setWhitelistedFiles($whitelistedFiles) {
+    public function setWhitelistedFiles($whitelistedFiles)
+    {
         $this->whitelistedFiles = $whitelistedFiles;
     }
-
 }

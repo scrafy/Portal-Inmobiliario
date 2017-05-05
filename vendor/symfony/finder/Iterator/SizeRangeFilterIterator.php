@@ -18,8 +18,8 @@ use Symfony\Component\Finder\Comparator\NumberComparator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SizeRangeFilterIterator extends FilterIterator {
-
+class SizeRangeFilterIterator extends FilterIterator
+{
     private $comparators = array();
 
     /**
@@ -28,7 +28,8 @@ class SizeRangeFilterIterator extends FilterIterator {
      * @param \Iterator          $iterator    The Iterator to filter
      * @param NumberComparator[] $comparators An array of NumberComparator instances
      */
-    public function __construct(\Iterator $iterator, array $comparators) {
+    public function __construct(\Iterator $iterator, array $comparators)
+    {
         $this->comparators = $comparators;
 
         parent::__construct($iterator);
@@ -39,7 +40,8 @@ class SizeRangeFilterIterator extends FilterIterator {
      *
      * @return bool true if the value should be kept, false otherwise
      */
-    public function accept() {
+    public function accept()
+    {
         $fileinfo = $this->current();
         if (!$fileinfo->isFile()) {
             return true;
@@ -54,5 +56,4 @@ class SizeRangeFilterIterator extends FilterIterator {
 
         return true;
     }
-
 }

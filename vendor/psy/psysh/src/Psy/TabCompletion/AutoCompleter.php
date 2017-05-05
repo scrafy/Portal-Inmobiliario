@@ -18,8 +18,8 @@ use Psy\TabCompletion\Matcher\AbstractMatcher;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class AutoCompleter {
-
+class AutoCompleter
+{
     /** @var Matcher\AbstractMatcher[] */
     protected $matchers;
 
@@ -28,14 +28,16 @@ class AutoCompleter {
      *
      * @param AbstractMatcher $matcher
      */
-    public function addMatcher(AbstractMatcher $matcher) {
+    public function addMatcher(AbstractMatcher $matcher)
+    {
         $this->matchers[] = $matcher;
     }
 
     /**
      * Activate readline tab completion.
      */
-    public function activate() {
+    public function activate()
+    {
         readline_completion_function(array(&$this, 'callback'));
     }
 
@@ -48,7 +50,8 @@ class AutoCompleter {
      *
      * @return array
      */
-    public function processCallback($input, $index, $info = array()) {
+    public function processCallback($input, $index, $info = array())
+    {
         $line = substr($info['line_buffer'], 0, $info['end']);
         $tokens = token_get_all('<?php ' . $line);
         // remove whitespaces
@@ -78,14 +81,16 @@ class AutoCompleter {
      *
      * @return array
      */
-    public function callback($input, $index) {
+    public function callback($input, $index)
+    {
         return $this->processCallback($input, $index, readline_info());
     }
 
     /**
      * Remove readline callback handler on destruct.
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // PHP didn't implement the whole readline API when they first switched
         // to libedit. And they still haven't.
         //
@@ -94,5 +99,4 @@ class AutoCompleter {
             readline_callback_handler_remove();
         }
     }
-
 }

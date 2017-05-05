@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class Configuration {
+class Configuration
+{
 
     /**
      * Boolean assertion of whether we can mock methods which do not actually
@@ -53,7 +53,8 @@ class Configuration {
      *
      * @param bool
      */
-    public function allowMockingNonExistentMethods($flag = true) {
+    public function allowMockingNonExistentMethods($flag = true)
+    {
         $this->_allowMockingNonExistentMethod = (bool) $flag;
     }
 
@@ -62,7 +63,8 @@ class Configuration {
      *
      * @return bool
      */
-    public function mockingNonExistentMethodsAllowed() {
+    public function mockingNonExistentMethodsAllowed()
+    {
         return $this->_allowMockingNonExistentMethod;
     }
 
@@ -71,7 +73,8 @@ class Configuration {
      *
      * @param bool
      */
-    public function allowMockingMethodsUnnecessarily($flag = true) {
+    public function allowMockingMethodsUnnecessarily($flag = true)
+    {
         $this->_allowMockingMethodsUnnecessarily = (bool) $flag;
     }
 
@@ -80,7 +83,8 @@ class Configuration {
      *
      * @return bool
      */
-    public function mockingMethodsUnnecessarilyAllowed() {
+    public function mockingMethodsUnnecessarilyAllowed()
+    {
         return $this->_allowMockingMethodsUnnecessarily;
     }
 
@@ -92,7 +96,8 @@ class Configuration {
      * @param string $method
      * @param array $map
      */
-    public function setInternalClassMethodParamMap($class, $method, array $map) {
+    public function setInternalClassMethodParamMap($class, $method, array $map)
+    {
         if (!isset($this->_internalClassParamMap[strtolower($class)])) {
             $this->_internalClassParamMap[strtolower($class)] = array();
         }
@@ -102,7 +107,8 @@ class Configuration {
     /**
      * Remove all overriden parameter maps from internal PHP classes.
      */
-    public function resetInternalClassMethodParamMaps() {
+    public function resetInternalClassMethodParamMaps()
+    {
         $this->_internalClassParamMap = array();
     }
 
@@ -111,14 +117,15 @@ class Configuration {
      *
      * @return array
      */
-    public function getInternalClassMethodParamMap($class, $method) {
+    public function getInternalClassMethodParamMap($class, $method)
+    {
         if (isset($this->_internalClassParamMap[strtolower($class)][strtolower($method)])) {
             return $this->_internalClassParamMap[strtolower($class)][strtolower($method)];
         }
     }
 
-    public function getInternalClassMethodParamMaps() {
+    public function getInternalClassMethodParamMaps()
+    {
         return $this->_internalClassParamMap;
     }
-
 }

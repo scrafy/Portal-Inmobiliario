@@ -4,8 +4,8 @@ namespace Illuminate\Database\Query;
 
 use InvalidArgumentException;
 
-class JsonExpression extends Expression {
-
+class JsonExpression extends Expression
+{
     /**
      * The value of the expression.
      *
@@ -19,7 +19,8 @@ class JsonExpression extends Expression {
      * @param  mixed  $value
      * @return void
      */
-    public function __construct($value) {
+    public function __construct($value)
+    {
         $this->value = $this->getJsonBindingParameter($value);
     }
 
@@ -29,7 +30,8 @@ class JsonExpression extends Expression {
      * @param  mixed  $value
      * @return string
      */
-    protected function getJsonBindingParameter($value) {
+    protected function getJsonBindingParameter($value)
+    {
         switch ($type = gettype($value)) {
             case 'boolean':
                 return $value ? 'true' : 'false';
@@ -43,7 +45,7 @@ class JsonExpression extends Expression {
                 return '?';
         }
 
-        throw new InvalidArgumentException('JSON value is of illegal type: ' . $type);
+        throw new InvalidArgumentException('JSON value is of illegal type: '.$type);
     }
 
     /**
@@ -51,7 +53,8 @@ class JsonExpression extends Expression {
      *
      * @return mixed
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
@@ -60,8 +63,8 @@ class JsonExpression extends Expression {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return (string) $this->getValue();
     }
-
 }

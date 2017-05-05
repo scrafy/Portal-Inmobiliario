@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -19,8 +18,8 @@ namespace Ramsey\Uuid\Provider;
  * TimeProviderInterface provides functionality to get the time from a specific
  * type of time provider
  */
-interface TimeProviderInterface {
-
+interface TimeProviderInterface
+{
     /**
      * Returns a timestamp array
      *

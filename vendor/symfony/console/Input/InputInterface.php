@@ -19,8 +19,8 @@ use Symfony\Component\Console\Exception\RuntimeException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface InputInterface {
-
+interface InputInterface
+{
     /**
      * Returns the first argument from the raw parameters (not parsed).
      *

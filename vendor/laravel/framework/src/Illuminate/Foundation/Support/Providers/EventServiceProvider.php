@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Support\Providers;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
-class EventServiceProvider extends ServiceProvider {
-
+class EventServiceProvider extends ServiceProvider
+{
     /**
      * The event handler mappings for the application.
      *
@@ -26,7 +26,8 @@ class EventServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         foreach ($this->listens() as $event => $listeners) {
             foreach ($listeners as $listener) {
                 Event::listen($event, $listener);
@@ -41,7 +42,8 @@ class EventServiceProvider extends ServiceProvider {
     /**
      * {@inheritdoc}
      */
-    public function register() {
+    public function register()
+    {
         //
     }
 
@@ -50,8 +52,8 @@ class EventServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function listens() {
+    public function listens()
+    {
         return $this->listen;
     }
-
 }

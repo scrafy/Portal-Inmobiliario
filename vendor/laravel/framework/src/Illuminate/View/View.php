@@ -14,8 +14,8 @@ use Illuminate\View\Engines\EngineInterface;
 use Illuminate\Contracts\Support\MessageProvider;
 use Illuminate\Contracts\View\View as ViewContract;
 
-class View implements ArrayAccess, ViewContract {
-
+class View implements ArrayAccess, ViewContract
+{
     /**
      * The view factory instance.
      *
@@ -61,7 +61,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  mixed  $data
      * @return void
      */
-    public function __construct(Factory $factory, EngineInterface $engine, $view, $path, $data = []) {
+    public function __construct(Factory $factory, EngineInterface $engine, $view, $path, $data = [])
+    {
         $this->view = $view;
         $this->path = $path;
         $this->engine = $engine;
@@ -78,7 +79,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @throws \Throwable
      */
-    public function render(callable $callback = null) {
+    public function render(callable $callback = null)
+    {
         try {
             $contents = $this->renderContents();
 
@@ -89,7 +91,7 @@ class View implements ArrayAccess, ViewContract {
             // another view gets rendered in the future by the application developer.
             $this->factory->flushStateIfDoneRendering();
 
-            return !is_null($response) ? $response : $contents;
+            return ! is_null($response) ? $response : $contents;
         } catch (Exception $e) {
             $this->factory->flushState();
 
@@ -106,7 +108,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    protected function renderContents() {
+    protected function renderContents()
+    {
         // We will keep track of the amount of views being rendered so we can flush
         // the section after the complete rendering operation is done. This will
         // clear out the sections for any separate views that may be rendered.
@@ -129,7 +132,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    protected function getContents() {
+    protected function getContents()
+    {
         return $this->engine->get($this->path, $this->gatherData());
     }
 
@@ -138,7 +142,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return array
      */
-    protected function gatherData() {
+    protected function gatherData()
+    {
         $data = array_merge($this->factory->getShared(), $this->data);
 
         foreach ($data as $key => $value) {
@@ -155,10 +160,11 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return array
      */
-    public function renderSections() {
+    public function renderSections()
+    {
         return $this->render(function () {
-                    return $this->factory->getSections();
-                });
+            return $this->factory->getSections();
+        });
     }
 
     /**
@@ -168,7 +174,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  mixed   $value
      * @return $this
      */
-    public function with($key, $value = null) {
+    public function with($key, $value = null)
+    {
         if (is_array($key)) {
             $this->data = array_merge($this->data, $key);
         } else {
@@ -186,7 +193,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  array   $data
      * @return $this
      */
-    public function nest($key, $view, array $data = []) {
+    public function nest($key, $view, array $data = [])
+    {
         return $this->with($key, $this->factory->make($view, $data));
     }
 
@@ -196,7 +204,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return $this
      */
-    public function withErrors($provider) {
+    public function withErrors($provider)
+    {
         $this->with('errors', $this->formatErrors($provider));
 
         return $this;
@@ -208,8 +217,10 @@ class View implements ArrayAccess, ViewContract {
      * @param  \Illuminate\Contracts\Support\MessageProvider|array  $provider
      * @return \Illuminate\Support\MessageBag
      */
-    protected function formatErrors($provider) {
-        return $provider instanceof MessageProvider ? $provider->getMessageBag() : new MessageBag((array) $provider);
+    protected function formatErrors($provider)
+    {
+        return $provider instanceof MessageProvider
+                        ? $provider->getMessageBag() : new MessageBag((array) $provider);
     }
 
     /**
@@ -217,7 +228,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    public function name() {
+    public function name()
+    {
         return $this->getName();
     }
 
@@ -226,7 +238,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->view;
     }
 
@@ -235,7 +248,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
@@ -244,7 +258,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
@@ -254,7 +269,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $path
      * @return void
      */
-    public function setPath($path) {
+    public function setPath($path)
+    {
         $this->path = $path;
     }
 
@@ -263,7 +279,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return \Illuminate\View\Factory
      */
-    public function getFactory() {
+    public function getFactory()
+    {
         return $this->factory;
     }
 
@@ -272,7 +289,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return \Illuminate\View\Engines\EngineInterface
      */
-    public function getEngine() {
+    public function getEngine()
+    {
         return $this->engine;
     }
 
@@ -282,7 +300,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return bool
      */
-    public function offsetExists($key) {
+    public function offsetExists($key)
+    {
         return array_key_exists($key, $this->data);
     }
 
@@ -292,7 +311,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return mixed
      */
-    public function offsetGet($key) {
+    public function offsetGet($key)
+    {
         return $this->data[$key];
     }
 
@@ -303,7 +323,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  mixed   $value
      * @return void
      */
-    public function offsetSet($key, $value) {
+    public function offsetSet($key, $value)
+    {
         $this->with($key, $value);
     }
 
@@ -313,7 +334,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key) {
+    public function offsetUnset($key)
+    {
         unset($this->data[$key]);
     }
 
@@ -323,7 +345,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return mixed
      */
-    public function &__get($key) {
+    public function &__get($key)
+    {
         return $this->data[$key];
     }
 
@@ -334,7 +357,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  mixed   $value
      * @return void
      */
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         $this->with($key, $value);
     }
 
@@ -344,7 +368,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return bool
      */
-    public function __isset($key) {
+    public function __isset($key)
+    {
         return isset($this->data[$key]);
     }
 
@@ -354,7 +379,8 @@ class View implements ArrayAccess, ViewContract {
      * @param  string  $key
      * @return bool
      */
-    public function __unset($key) {
+    public function __unset($key)
+    {
         unset($this->data[$key]);
     }
 
@@ -367,8 +393,9 @@ class View implements ArrayAccess, ViewContract {
      *
      * @throws \BadMethodCallException
      */
-    public function __call($method, $parameters) {
-        if (!Str::startsWith($method, 'with')) {
+    public function __call($method, $parameters)
+    {
+        if (! Str::startsWith($method, 'with')) {
             throw new BadMethodCallException("Method [$method] does not exist on view.");
         }
 
@@ -380,8 +407,8 @@ class View implements ArrayAccess, ViewContract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->render();
     }
-
 }

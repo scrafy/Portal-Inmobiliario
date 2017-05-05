@@ -14,9 +14,10 @@ namespace Symfony\Component\HttpKernel\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\DependencyInjection\AddClassesToCachePass;
 
-class AddClassesToCachePassTest extends TestCase {
-
-    public function testExpandClasses() {
+class AddClassesToCachePassTest extends TestCase
+{
+    public function testExpandClasses()
+    {
         $r = new \ReflectionClass(AddClassesToCachePass::class);
         $pass = $r->newInstanceWithoutConstructor();
         $r = new \ReflectionMethod(AddClassesToCachePass::class, 'expandClasses');
@@ -68,27 +69,31 @@ class AddClassesToCachePassTest extends TestCase {
         $this->assertSame(array('Foo\\Bar', 'Foo\\BarTest'), $expand(array('Foo\\*', 'Foo\\*Test'), array('Foo\\Bar', 'Foo\\BarTest')));
 
         $this->assertSame(
-                'Acme\\FooBundle\\Controller\\DefaultController', $expand(array('**Bundle\\Controller\\'), array('\\Acme\\FooBundle\\Controller\\DefaultController'))[0]
+            'Acme\\FooBundle\\Controller\\DefaultController',
+            $expand(array('**Bundle\\Controller\\'), array('\\Acme\\FooBundle\\Controller\\DefaultController'))[0]
         );
 
         $this->assertSame(
-                'FooBundle\\Controller\\DefaultController', $expand(array('**Bundle\\Controller\\'), array('\\FooBundle\\Controller\\DefaultController'))[0]
+            'FooBundle\\Controller\\DefaultController',
+            $expand(array('**Bundle\\Controller\\'), array('\\FooBundle\\Controller\\DefaultController'))[0]
         );
 
         $this->assertSame(
-                'Acme\\FooBundle\\Controller\\Bar\\DefaultController', $expand(array('**Bundle\\Controller\\'), array('\\Acme\\FooBundle\\Controller\\Bar\\DefaultController'))[0]
+            'Acme\\FooBundle\\Controller\\Bar\\DefaultController',
+            $expand(array('**Bundle\\Controller\\'), array('\\Acme\\FooBundle\\Controller\\Bar\\DefaultController'))[0]
         );
 
         $this->assertSame(
-                'Bundle\\Controller\\Bar\\DefaultController', $expand(array('**Bundle\\Controller\\'), array('\\Bundle\\Controller\\Bar\\DefaultController'))[0]
+            'Bundle\\Controller\\Bar\\DefaultController',
+            $expand(array('**Bundle\\Controller\\'), array('\\Bundle\\Controller\\Bar\\DefaultController'))[0]
         );
 
         $this->assertSame(
-                'Acme\\Bundle\\Controller\\Bar\\DefaultController', $expand(array('**Bundle\\Controller\\'), array('\\Acme\\Bundle\\Controller\\Bar\\DefaultController'))[0]
+            'Acme\\Bundle\\Controller\\Bar\\DefaultController',
+            $expand(array('**Bundle\\Controller\\'), array('\\Acme\\Bundle\\Controller\\Bar\\DefaultController'))[0]
         );
 
         $this->assertSame('Foo\\Bar', $expand(array('Foo\\Bar'), array())[0]);
         $this->assertSame('Foo\\Acme\\Bar', $expand(array('Foo\\**'), array('\\Foo\\Acme\\Bar'))[0]);
     }
-
 }

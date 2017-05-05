@@ -29,8 +29,8 @@ use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerPatterns;
  *
  * @internal
  */
-class StringHandler implements HandlerInterface {
-
+class StringHandler implements HandlerInterface
+{
     /**
      * @var TokenizerPatterns
      */
@@ -45,7 +45,8 @@ class StringHandler implements HandlerInterface {
      * @param TokenizerPatterns $patterns
      * @param TokenizerEscaping $escaping
      */
-    public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping) {
+    public function __construct(TokenizerPatterns $patterns, TokenizerEscaping $escaping)
+    {
         $this->patterns = $patterns;
         $this->escaping = $escaping;
     }
@@ -53,7 +54,8 @@ class StringHandler implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function handle(Reader $reader, TokenStream $stream) {
+    public function handle(Reader $reader, TokenStream $stream)
+    {
         $quote = $reader->getSubstring(1);
 
         if (!in_array($quote, array("'", '"'))) {
@@ -83,5 +85,4 @@ class StringHandler implements HandlerInterface {
 
         return true;
     }
-
 }

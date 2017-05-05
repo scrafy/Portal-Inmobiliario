@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Events;
 
-class NotificationSending {
-
+class NotificationSending
+{
     /**
      * The notifiable entity who received the notification.
      *
@@ -33,10 +33,10 @@ class NotificationSending {
      * @param  string  $channel
      * @return void
      */
-    public function __construct($notifiable, $notification, $channel) {
+    public function __construct($notifiable, $notification, $channel)
+    {
         $this->channel = $channel;
         $this->notifiable = $notifiable;
         $this->notification = $notification;
     }
-
 }

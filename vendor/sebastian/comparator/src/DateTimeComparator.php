@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Comparator;
 /**
  * Compares DateTimeInterface instances for equality.
  */
-class DateTimeComparator extends ObjectComparator {
-
+class DateTimeComparator extends ObjectComparator
+{
     /**
      * Returns whether the comparator can compare two values.
      *
@@ -23,9 +22,10 @@ class DateTimeComparator extends ObjectComparator {
      * @param  mixed $actual   The second value to compare
      * @return bool
      */
-    public function accepts($expected, $actual) {
+    public function accepts($expected, $actual)
+    {
         return ($expected instanceof \DateTime || $expected instanceof \DateTimeInterface) &&
-                ($actual instanceof \DateTime || $actual instanceof \DateTimeInterface);
+            ($actual instanceof \DateTime || $actual instanceof \DateTimeInterface);
     }
 
     /**
@@ -40,16 +40,22 @@ class DateTimeComparator extends ObjectComparator {
      *
      * @throws ComparisonFailure
      */
-    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array()) {
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
+    {
         $delta = new \DateInterval(sprintf('PT%sS', abs($delta)));
 
         $expectedLower = clone $expected;
         $expectedUpper = clone $expected;
 
         if ($actual < $expectedLower->sub($delta) ||
-                $actual > $expectedUpper->add($delta)) {
+            $actual > $expectedUpper->add($delta)) {
             throw new ComparisonFailure(
-            $expected, $actual, $this->dateTimeToString($expected), $this->dateTimeToString($actual), false, 'Failed asserting that two DateTime objects are equal.'
+                $expected,
+                $actual,
+                $this->dateTimeToString($expected),
+                $this->dateTimeToString($actual),
+                false,
+                'Failed asserting that two DateTime objects are equal.'
             );
         }
     }
@@ -62,10 +68,10 @@ class DateTimeComparator extends ObjectComparator {
      * @param  \DateTimeInterface $datetime
      * @return string
      */
-    private function dateTimeToString($datetime) {
+    private function dateTimeToString($datetime)
+    {
         $string = $datetime->format('Y-m-d\TH:i:s.uO');
 
         return $string ? $string : 'Invalid DateTimeInterface object';
     }
-
 }

@@ -14,7 +14,7 @@
  *
  * @author Xavier De Cock <xdecock@gmail.com>
  */
-interface Swift_Signer {
-
+interface Swift_Signer
+{
     public function reset();
 }

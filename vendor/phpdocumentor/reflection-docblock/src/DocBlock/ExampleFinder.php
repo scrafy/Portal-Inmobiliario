@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -18,8 +17,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Example;
 /**
  * Class used to find an example file's location based on a given ExampleDescriptor.
  */
-class ExampleFinder {
-
+class ExampleFinder
+{
     /** @var string */
     private $sourceDirectory = '';
 
@@ -33,7 +32,8 @@ class ExampleFinder {
      *
      * @return string
      */
-    public function find(Example $example) {
+    public function find(Example $example)
+    {
         $filename = $example->getFilePath();
 
         $file = $this->getExampleFileContents($filename);
@@ -51,7 +51,8 @@ class ExampleFinder {
      *
      * @return void
      */
-    public function setSourceDirectory($directory = '') {
+    public function setSourceDirectory($directory = '')
+    {
         $this->sourceDirectory = $directory;
     }
 
@@ -60,7 +61,8 @@ class ExampleFinder {
      *
      * @return string
      */
-    public function getSourceDirectory() {
+    public function getSourceDirectory()
+    {
         return $this->sourceDirectory;
     }
 
@@ -69,7 +71,8 @@ class ExampleFinder {
      *
      * @param string[] $directories
      */
-    public function setExampleDirectories(array $directories) {
+    public function setExampleDirectories(array $directories)
+    {
         $this->exampleDirectories = $directories;
     }
 
@@ -78,7 +81,8 @@ class ExampleFinder {
      *
      * @return string[]
      */
-    public function getExampleDirectories() {
+    public function getExampleDirectories()
+    {
         return $this->exampleDirectories;
     }
 
@@ -97,7 +101,8 @@ class ExampleFinder {
      *
      * @return string|null
      */
-    private function getExampleFileContents($filename) {
+    private function getExampleFileContents($filename)
+    {
         $normalizedPath = null;
 
         foreach ($this->exampleDirectories as $directory) {
@@ -128,7 +133,8 @@ class ExampleFinder {
      *
      * @return string
      */
-    private function getExamplePathFromExampleDirectory($file) {
+    private function getExamplePathFromExampleDirectory($file)
+    {
         return getcwd() . DIRECTORY_SEPARATOR . 'examples' . DIRECTORY_SEPARATOR . $file;
     }
 
@@ -140,7 +146,8 @@ class ExampleFinder {
      *
      * @return string
      */
-    private function constructExamplePath($directory, $file) {
+    private function constructExamplePath($directory, $file)
+    {
         return rtrim($directory, '\\/') . DIRECTORY_SEPARATOR . $file;
     }
 
@@ -151,10 +158,13 @@ class ExampleFinder {
      *
      * @return string
      */
-    private function getExamplePathFromSource($file) {
+    private function getExamplePathFromSource($file)
+    {
         return sprintf(
-                '%s%s%s', trim($this->getSourceDirectory(), '\\/'), DIRECTORY_SEPARATOR, trim($file, '"')
+            '%s%s%s',
+            trim($this->getSourceDirectory(), '\\/'),
+            DIRECTORY_SEPARATOR,
+            trim($file, '"')
         );
     }
-
 }

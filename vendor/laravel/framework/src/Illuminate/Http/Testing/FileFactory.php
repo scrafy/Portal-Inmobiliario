@@ -2,8 +2,8 @@
 
 namespace Illuminate\Http\Testing;
 
-class FileFactory {
-
+class FileFactory
+{
     /**
      * Create a new fake file.
      *
@@ -11,7 +11,8 @@ class FileFactory {
      * @param  int  $kilobytes
      * @return \Illuminate\Http\Testing\File
      */
-    public function create($name, $kilobytes = 0) {
+    public function create($name, $kilobytes = 0)
+    {
         return tap(new File($name, tmpfile()), function ($file) use ($kilobytes) {
             $file->sizeToReport = $kilobytes * 1024;
         });
@@ -25,7 +26,8 @@ class FileFactory {
      * @param  int  $height
      * @return \Illuminate\Http\Testing\File
      */
-    public function image($name, $width = 10, $height = 10) {
+    public function image($name, $width = 10, $height = 10)
+    {
         return new File($name, $this->generateImage($width, $height));
     }
 
@@ -36,10 +38,10 @@ class FileFactory {
      * @param  int  $height
      * @return resource
      */
-    protected function generateImage($width, $height) {
+    protected function generateImage($width, $height)
+    {
         return tap(tmpfile(), function ($temp) use ($width, $height) {
             imagepng(imagecreatetruecolor($width, $height), $temp);
         });
     }
-
 }

@@ -8,8 +8,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Filesystem\Filesystem;
 
-class FileStore implements Store {
-
+class FileStore implements Store
+{
     use RetrievesMultipleKeys;
 
     /**
@@ -33,7 +33,8 @@ class FileStore implements Store {
      * @param  string  $directory
      * @return void
      */
-    public function __construct(Filesystem $files, $directory) {
+    public function __construct(Filesystem $files, $directory)
+    {
         $this->files = $files;
         $this->directory = $directory;
     }
@@ -44,7 +45,8 @@ class FileStore implements Store {
      * @param  string|array  $key
      * @return mixed
      */
-    public function get($key) {
+    public function get($key)
+    {
         return Arr::get($this->getPayload($key), 'data');
     }
 
@@ -56,11 +58,12 @@ class FileStore implements Store {
      * @param  float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes) {
+    public function put($key, $value, $minutes)
+    {
         $this->ensureCacheDirectoryExists($path = $this->path($key));
 
         $this->files->put(
-                $path, $this->expiration($minutes) . serialize($value), true
+            $path, $this->expiration($minutes).serialize($value), true
         );
     }
 
@@ -70,8 +73,9 @@ class FileStore implements Store {
      * @param  string  $path
      * @return void
      */
-    protected function ensureCacheDirectoryExists($path) {
-        if (!$this->files->exists(dirname($path))) {
+    protected function ensureCacheDirectoryExists($path)
+    {
+        if (! $this->files->exists(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0777, true, true);
         }
     }
@@ -83,7 +87,8 @@ class FileStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         $raw = $this->getPayload($key);
 
         return tap(((int) $raw['data']) + $value, function ($newValue) use ($key, $raw) {
@@ -98,7 +103,8 @@ class FileStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         return $this->increment($key, $value * -1);
     }
 
@@ -109,7 +115,8 @@ class FileStore implements Store {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         $this->put($key, $value, 0);
     }
 
@@ -119,7 +126,8 @@ class FileStore implements Store {
      * @param  string  $key
      * @return bool
      */
-    public function forget($key) {
+    public function forget($key)
+    {
         if ($this->files->exists($file = $this->path($key))) {
             return $this->files->delete($file);
         }
@@ -132,13 +140,14 @@ class FileStore implements Store {
      *
      * @return bool
      */
-    public function flush() {
-        if (!$this->files->isDirectory($this->directory)) {
+    public function flush()
+    {
+        if (! $this->files->isDirectory($this->directory)) {
             return false;
         }
 
         foreach ($this->files->directories($this->directory) as $directory) {
-            if (!$this->files->deleteDirectory($directory)) {
+            if (! $this->files->deleteDirectory($directory)) {
                 return false;
             }
         }
@@ -152,7 +161,8 @@ class FileStore implements Store {
      * @param  string  $key
      * @return array
      */
-    protected function getPayload($key) {
+    protected function getPayload($key)
+    {
         $path = $this->path($key);
 
         // If the file doesn't exists, we obviously can't return the cache so we will
@@ -160,7 +170,7 @@ class FileStore implements Store {
         // the expiration UNIX timestamps from the start of the file's contents.
         try {
             $expire = substr(
-                    $contents = $this->files->get($path, true), 0, 10
+                $contents = $this->files->get($path, true), 0, 10
             );
         } catch (Exception $e) {
             return $this->emptyPayload();
@@ -190,7 +200,8 @@ class FileStore implements Store {
      *
      * @return array
      */
-    protected function emptyPayload() {
+    protected function emptyPayload()
+    {
         return ['data' => null, 'time' => null];
     }
 
@@ -200,10 +211,11 @@ class FileStore implements Store {
      * @param  string  $key
      * @return string
      */
-    protected function path($key) {
+    protected function path($key)
+    {
         $parts = array_slice(str_split($hash = sha1($key), 2), 0, 2);
 
-        return $this->directory . '/' . implode('/', $parts) . '/' . $hash;
+        return $this->directory.'/'.implode('/', $parts).'/'.$hash;
     }
 
     /**
@@ -212,7 +224,8 @@ class FileStore implements Store {
      * @param  float|int  $minutes
      * @return int
      */
-    protected function expiration($minutes) {
+    protected function expiration($minutes)
+    {
         $time = Carbon::now()->getTimestamp() + (int) ($minutes * 60);
 
         return $minutes === 0 || $time > 9999999999 ? 9999999999 : (int) $time;
@@ -223,7 +236,8 @@ class FileStore implements Store {
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
-    public function getFilesystem() {
+    public function getFilesystem()
+    {
         return $this->files;
     }
 
@@ -232,7 +246,8 @@ class FileStore implements Store {
      *
      * @return string
      */
-    public function getDirectory() {
+    public function getDirectory()
+    {
         return $this->directory;
     }
 
@@ -241,8 +256,8 @@ class FileStore implements Store {
      *
      * @return string
      */
-    public function getPrefix() {
+    public function getPrefix()
+    {
         return '';
     }
-
 }

@@ -13,14 +13,14 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Preferences {
-
+class Swift_Preferences
+{
     /** Singleton instance */
     private static $_instance = null;
 
     /** Constructor not to be used */
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
     /**
@@ -28,7 +28,8 @@ class Swift_Preferences {
      *
      * @return Swift_Preferences
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!isset(self::$_instance)) {
             self::$_instance = new self();
         }
@@ -43,9 +44,10 @@ class Swift_Preferences {
      *
      * @return Swift_Preferences
      */
-    public function setCharset($charset) {
+    public function setCharset($charset)
+    {
         Swift_DependencyContainer::getInstance()
-                ->register('properties.charset')->asValue($charset);
+            ->register('properties.charset')->asValue($charset);
 
         return $this;
     }
@@ -57,9 +59,10 @@ class Swift_Preferences {
      *
      * @return Swift_Preferences
      */
-    public function setTempDir($dir) {
+    public function setTempDir($dir)
+    {
         Swift_DependencyContainer::getInstance()
-                ->register('tempdir')->asValue($dir);
+            ->register('tempdir')->asValue($dir);
 
         return $this;
     }
@@ -71,9 +74,10 @@ class Swift_Preferences {
      *
      * @return Swift_Preferences
      */
-    public function setCacheType($type) {
+    public function setCacheType($type)
+    {
         Swift_DependencyContainer::getInstance()
-                ->register('cache')->asAliasOf(sprintf('cache.%s', $type));
+            ->register('cache')->asAliasOf(sprintf('cache.%s', $type));
 
         return $this;
     }
@@ -85,15 +89,15 @@ class Swift_Preferences {
      *
      * @return Swift_Preferences
      */
-    public function setQPDotEscape($dotEscape) {
+    public function setQPDotEscape($dotEscape)
+    {
         $dotEscape = !empty($dotEscape);
         Swift_DependencyContainer::getInstance()
-                ->register('mime.qpcontentencoder')
-                ->asNewInstanceOf('Swift_Mime_ContentEncoder_QpContentEncoder')
-                ->withDependencies(array('mime.charstream', 'mime.bytecanonicalizer'))
-                ->addConstructorValue($dotEscape);
+            ->register('mime.qpcontentencoder')
+            ->asNewInstanceOf('Swift_Mime_ContentEncoder_QpContentEncoder')
+            ->withDependencies(array('mime.charstream', 'mime.bytecanonicalizer'))
+            ->addConstructorValue($dotEscape);
 
         return $this;
     }
-
 }

@@ -16,8 +16,8 @@ namespace Symfony\Component\Console\Question;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ConfirmationQuestion extends Question {
-
+class ConfirmationQuestion extends Question
+{
     private $trueAnswerRegex;
 
     /**
@@ -27,7 +27,8 @@ class ConfirmationQuestion extends Question {
      * @param bool   $default         The default answer to return, true or false
      * @param string $trueAnswerRegex A regex to match the "yes" answer
      */
-    public function __construct($question, $default = true, $trueAnswerRegex = '/^y/i') {
+    public function __construct($question, $default = true, $trueAnswerRegex = '/^y/i')
+    {
         parent::__construct($question, (bool) $default);
 
         $this->trueAnswerRegex = $trueAnswerRegex;
@@ -39,7 +40,8 @@ class ConfirmationQuestion extends Question {
      *
      * @return callable
      */
-    private function getDefaultNormalizer() {
+    private function getDefaultNormalizer()
+    {
         $default = $this->getDefault();
         $regex = $this->trueAnswerRegex;
 
@@ -56,5 +58,4 @@ class ConfirmationQuestion extends Question {
             return !$answer || $answerIsTrue;
         };
     }
-
 }

@@ -4,15 +4,15 @@ namespace Illuminate\Console;
 
 use Illuminate\Container\Container;
 
-trait DetectsApplicationNamespace {
-
+trait DetectsApplicationNamespace
+{
     /**
      * Get the application namespace.
      *
      * @return string
      */
-    protected function getAppNamespace() {
+    protected function getAppNamespace()
+    {
         return Container::getInstance()->getNamespace();
     }
-
 }

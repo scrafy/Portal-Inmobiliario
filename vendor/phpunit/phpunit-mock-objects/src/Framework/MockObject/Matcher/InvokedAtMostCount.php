@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -15,8 +14,8 @@
  *
  * @since Class available since Release 2.2.0
  */
-class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder {
-
+class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
+{
     /**
      * @var int
      */
@@ -25,14 +24,16 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
     /**
      * @param int $allowedInvocations
      */
-    public function __construct($allowedInvocations) {
+    public function __construct($allowedInvocations)
+    {
         $this->allowedInvocations = $allowedInvocations;
     }
 
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'invoked at most ' . $this->allowedInvocations . ' times';
     }
 
@@ -42,15 +43,15 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function verify() {
+    public function verify()
+    {
         $count = $this->getInvocationCount();
 
         if ($count > $this->allowedInvocations) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-            'Expected invocation at most ' . $this->allowedInvocations .
-            ' times but it occurred ' . $count . ' time(s).'
+                'Expected invocation at most ' . $this->allowedInvocations .
+                ' times but it occurred ' . $count . ' time(s).'
             );
         }
     }
-
 }

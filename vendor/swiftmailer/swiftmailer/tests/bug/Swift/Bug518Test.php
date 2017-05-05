@@ -2,9 +2,10 @@
 
 use Mockery as m;
 
-class Swift_Bug518Test extends \PHPUnit_Framework_TestCase {
-
-    public function testIfEmailChangesAfterQueued() {
+class Swift_Bug518Test extends \PHPUnit_Framework_TestCase
+{
+    public function testIfEmailChangesAfterQueued()
+    {
         $failedRecipients = 'value';
         $message = new Swift_Message();
         $message->setTo('foo@bar.com');
@@ -20,8 +21,8 @@ class Swift_Bug518Test extends \PHPUnit_Framework_TestCase {
         $transport = m::mock('Swift_Transport');
         $transport->shouldReceive('isStarted')->andReturn(true);
         $transport->shouldReceive('send')
-                ->with(m::on($messageValidation), $failedRecipients)
-                ->andReturn(1);
+            ->with(m::on($messageValidation), $failedRecipients)
+            ->andReturn(1);
 
         $memorySpool = new Swift_MemorySpool();
         $memorySpool->queueMessage($message);
@@ -34,5 +35,4 @@ class Swift_Bug518Test extends \PHPUnit_Framework_TestCase {
 
         $memorySpool->flushQueue($transport, $failedRecipients);
     }
-
 }

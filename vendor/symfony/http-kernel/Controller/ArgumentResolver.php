@@ -24,8 +24,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactoryInter
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class ArgumentResolver implements ArgumentResolverInterface {
-
+final class ArgumentResolver implements ArgumentResolverInterface
+{
     private $argumentMetadataFactory;
 
     /**
@@ -33,7 +33,8 @@ final class ArgumentResolver implements ArgumentResolverInterface {
      */
     private $argumentValueResolvers;
 
-    public function __construct(ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, array $argumentValueResolvers = array()) {
+    public function __construct(ArgumentMetadataFactoryInterface $argumentMetadataFactory = null, array $argumentValueResolvers = array())
+    {
         $this->argumentMetadataFactory = $argumentMetadataFactory ?: new ArgumentMetadataFactory();
         $this->argumentValueResolvers = $argumentValueResolvers ?: self::getDefaultArgumentValueResolvers();
     }
@@ -41,7 +42,8 @@ final class ArgumentResolver implements ArgumentResolverInterface {
     /**
      * {@inheritdoc}
      */
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         $arguments = array();
 
         foreach ($this->argumentMetadataFactory->createArgumentMetadata($controller) as $metadata) {
@@ -78,7 +80,8 @@ final class ArgumentResolver implements ArgumentResolverInterface {
         return $arguments;
     }
 
-    public static function getDefaultArgumentValueResolvers() {
+    public static function getDefaultArgumentValueResolvers()
+    {
         return array(
             new RequestAttributeValueResolver(),
             new RequestValueResolver(),
@@ -86,5 +89,4 @@ final class ArgumentResolver implements ArgumentResolverInterface {
             new VariadicValueResolver(),
         );
     }
-
 }

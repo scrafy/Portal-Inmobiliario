@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Events;
 
-class JobFailed {
-
+class JobFailed
+{
     /**
      * The connection name.
      *
@@ -33,10 +33,10 @@ class JobFailed {
      * @param  \Exception  $exception
      * @return void
      */
-    public function __construct($connectionName, $job, $exception) {
+    public function __construct($connectionName, $job, $exception)
+    {
         $this->job = $job;
         $this->exception = $exception;
         $this->connectionName = $connectionName;
     }
-
 }

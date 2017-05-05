@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Any extends MatcherAbstract {
+class Any extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,7 +29,8 @@ class Any extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         return true;
     }
 
@@ -38,8 +39,8 @@ class Any extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<Any>';
     }
-
 }

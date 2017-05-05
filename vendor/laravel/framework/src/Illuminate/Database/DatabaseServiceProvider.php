@@ -11,14 +11,15 @@ use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Database\Eloquent\QueueEntityResolver;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
-class DatabaseServiceProvider extends ServiceProvider {
-
+class DatabaseServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap the application events.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         Model::setConnectionResolver($this->app['db']);
 
         Model::setEventDispatcher($this->app['events']);
@@ -29,7 +30,8 @@ class DatabaseServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         Model::clearBootedModels();
 
         $this->registerConnectionServices();
@@ -44,7 +46,8 @@ class DatabaseServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerConnectionServices() {
+    protected function registerConnectionServices()
+    {
         // The connection factory is used to create the actual connection instances on
         // the database. We will inject the factory into the manager so that it may
         // make the connections while they are actually needed and not of before.
@@ -69,14 +72,15 @@ class DatabaseServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerEloquentFactory() {
+    protected function registerEloquentFactory()
+    {
         $this->app->singleton(FakerGenerator::class, function ($app) {
             return FakerFactory::create($app['config']->get('app.faker_locale', 'en_US'));
         });
 
         $this->app->singleton(EloquentFactory::class, function ($app) {
             return EloquentFactory::construct(
-                            $app->make(FakerGenerator::class), database_path('factories')
+                $app->make(FakerGenerator::class), database_path('factories')
             );
         });
     }
@@ -86,10 +90,10 @@ class DatabaseServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerQueueableEntityResolver() {
+    protected function registerQueueableEntityResolver()
+    {
         $this->app->singleton(EntityResolver::class, function () {
             return new QueueEntityResolver;
         });
     }
-
 }

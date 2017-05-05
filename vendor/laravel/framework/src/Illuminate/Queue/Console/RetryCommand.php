@@ -6,8 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class RetryCommand extends Command {
-
+class RetryCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -27,7 +27,8 @@ class RetryCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         foreach ($this->getJobIds() as $id) {
             $this->retryJob($id);
 
@@ -42,7 +43,8 @@ class RetryCommand extends Command {
      *
      * @return array
      */
-    protected function getJobIds() {
+    protected function getJobIds()
+    {
         $ids = $this->argument('id');
 
         if (count($ids) === 1 && $ids[0] === 'all') {
@@ -58,7 +60,8 @@ class RetryCommand extends Command {
      * @param  string  $id
      * @return void
      */
-    protected function retryJob($id) {
+    protected function retryJob($id)
+    {
         if (is_null($failed = $this->laravel['queue.failer']->find($id))) {
             return $this->error("No failed job matches the given ID [{$id}].");
         }
@@ -66,7 +69,7 @@ class RetryCommand extends Command {
         $failed = (object) $failed;
 
         $this->laravel['queue']->connection($failed->connection)->pushRaw(
-                $this->resetAttempts($failed->payload), $failed->queue
+            $this->resetAttempts($failed->payload), $failed->queue
         );
     }
 
@@ -78,7 +81,8 @@ class RetryCommand extends Command {
      * @param  string  $payload
      * @return string
      */
-    protected function resetAttempts($payload) {
+    protected function resetAttempts($payload)
+    {
         $payload = json_decode($payload, true);
 
         if (isset($payload['attempts'])) {
@@ -93,10 +97,10 @@ class RetryCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['id', InputArgument::IS_ARRAY, 'The ID of the failed job'],
         ];
     }
-
 }

@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
  *
  * @author Drak <drak@zikula.org>
  */
-interface FlashBagInterface extends SessionBagInterface {
-
+interface FlashBagInterface extends SessionBagInterface
+{
     /**
      * Adds a flash message for type.
      *

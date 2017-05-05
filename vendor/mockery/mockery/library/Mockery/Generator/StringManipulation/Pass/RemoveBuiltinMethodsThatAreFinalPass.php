@@ -10,13 +10,14 @@ use Mockery\Generator\MockConfiguration;
  * mocked. This pass removes the builtin methods where they are final on the
  * target
  */
-class RemoveBuiltinMethodsThatAreFinalPass {
-
+class RemoveBuiltinMethodsThatAreFinalPass
+{
     protected $methods = array(
         '__wakeup' => '/public function __wakeup\(\)\s+\{.*?\}/sm',
     );
 
-    public function apply($code, MockConfiguration $config) {
+    public function apply($code, MockConfiguration $config)
+    {
         $target = $config->getTargetClass();
 
         if (!$target) {
@@ -31,5 +32,4 @@ class RemoveBuiltinMethodsThatAreFinalPass {
 
         return $code;
     }
-
 }

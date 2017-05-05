@@ -5,8 +5,8 @@ namespace Illuminate\Mail\Transport;
 use Swift_Mime_Message;
 use GuzzleHttp\ClientInterface;
 
-class MandrillTransport extends Transport {
-
+class MandrillTransport extends Transport
+{
     /**
      * Guzzle client instance.
      *
@@ -28,7 +28,8 @@ class MandrillTransport extends Transport {
      * @param  string  $key
      * @return void
      */
-    public function __construct(ClientInterface $client, $key) {
+    public function __construct(ClientInterface $client, $key)
+    {
         $this->key = $key;
         $this->client = $client;
     }
@@ -36,7 +37,8 @@ class MandrillTransport extends Transport {
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $this->beforeSendPerformed($message);
 
         $this->client->post('https://mandrillapp.com/api/1.0/messages/send-raw.json', [
@@ -61,7 +63,8 @@ class MandrillTransport extends Transport {
      * @param  \Swift_Mime_Message $message
      * @return array
      */
-    protected function getTo(Swift_Mime_Message $message) {
+    protected function getTo(Swift_Mime_Message $message)
+    {
         $to = [];
 
         if ($message->getTo()) {
@@ -84,7 +87,8 @@ class MandrillTransport extends Transport {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
@@ -94,8 +98,8 @@ class MandrillTransport extends Transport {
      * @param  string  $key
      * @return string
      */
-    public function setKey($key) {
+    public function setKey($key)
+    {
         return $this->key = $key;
     }
-
 }

@@ -7,8 +7,8 @@ namespace Faker\Provider\at_AT;
  *
  * @package Faker\Provider\at_AT
  */
-class Payment extends \Faker\Provider\Payment {
-
+class Payment extends \Faker\Provider\Payment
+{
     /**
      * Value Added Tax (VAT)
      *
@@ -22,10 +22,10 @@ class Payment extends \Faker\Provider\Payment {
      *
      * @return string VAT Number
      */
-    public static function vat($spacedNationalPrefix = true) {
+    public static function vat($spacedNationalPrefix = true)
+    {
         $prefix = ($spacedNationalPrefix) ? "AT U" : "ATU";
 
         return sprintf("%s%d", $prefix, self::randomNumber(8, true));
     }
-
 }

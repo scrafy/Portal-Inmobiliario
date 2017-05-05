@@ -18,8 +18,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  *
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-interface TranslatorBagInterface {
-
+interface TranslatorBagInterface
+{
     /**
      * Gets the catalogue by locale.
      *

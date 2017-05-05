@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -14,8 +13,8 @@ use SebastianBergmann\Version;
 /**
  * This class defines the current version of PHPUnit.
  */
-class PHPUnit_Runner_Version {
-
+class PHPUnit_Runner_Version
+{
     private static $pharVersion;
     private static $version;
 
@@ -24,13 +23,14 @@ class PHPUnit_Runner_Version {
      *
      * @return string
      */
-    public static function id() {
+    public static function id()
+    {
         if (self::$pharVersion !== null) {
             return self::$pharVersion;
         }
 
         if (self::$version === null) {
-            $version = new Version('5.7.16', dirname(dirname(__DIR__)));
+            $version       = new Version('5.7.16', dirname(dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 
@@ -40,7 +40,8 @@ class PHPUnit_Runner_Version {
     /**
      * @return string
      */
-    public static function series() {
+    public static function series()
+    {
         if (strpos(self::id(), '-')) {
             $version = explode('-', self::id())[0];
         } else {
@@ -53,19 +54,20 @@ class PHPUnit_Runner_Version {
     /**
      * @return string
      */
-    public static function getVersionString() {
+    public static function getVersionString()
+    {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
     }
 
     /**
      * @return string
      */
-    public static function getReleaseChannel() {
+    public static function getReleaseChannel()
+    {
         if (strpos(self::$pharVersion, '-') !== false) {
             return '-nightly';
         }
 
         return '';
     }
-
 }

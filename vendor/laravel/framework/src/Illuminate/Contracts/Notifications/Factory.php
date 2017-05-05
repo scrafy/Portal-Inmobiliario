@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Notifications;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Get a channel instance by name.
      *

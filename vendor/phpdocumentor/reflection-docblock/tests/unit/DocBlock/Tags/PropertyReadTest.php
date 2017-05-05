@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -24,14 +23,15 @@ use phpDocumentor\Reflection\Types\String_;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\PropertyRead
  * @covers ::<private>
  */
-class PropertyReadTest extends \PHPUnit_Framework_TestCase {
-
+class PropertyReadTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\PropertyRead::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new PropertyRead('myProperty', null, new Description('Description'));
 
         $this->assertSame('property-read', $fixture->getName());
@@ -45,7 +45,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new PropertyRead('myProperty', new String_(), new Description('Description'));
         $this->assertSame('@property-read string $myProperty Description', $fixture->render());
 
@@ -60,7 +61,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\PropertyRead::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new PropertyRead('myProperty');
 
         $formatter = m::mock(Formatter::class);
@@ -73,7 +75,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getVariableName
      */
-    public function testHasVariableName() {
+    public function testHasVariableName()
+    {
         $expected = 'myProperty';
 
         $fixture = new PropertyRead($expected);
@@ -85,7 +88,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getType
      */
-    public function testHasType() {
+    public function testHasType()
+    {
         $expected = new String_();
 
         $fixture = new PropertyRead('myProperty', $expected);
@@ -98,7 +102,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new PropertyRead('1.0', null, $expected);
@@ -112,10 +117,11 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\Types\String_
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new PropertyRead('myProperty', new String_(), new Description('Description'));
 
-        $this->assertSame('string $myProperty Description', (string) $fixture);
+        $this->assertSame('string $myProperty Description', (string)$fixture);
     }
 
     /**
@@ -125,7 +131,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $typeResolver = new TypeResolver();
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
@@ -133,9 +140,10 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
         $description = new Description('My Description');
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
-        $fixture = PropertyRead::create('string $myProperty My Description', $typeResolver, $descriptionFactory, $context);
+        $fixture = PropertyRead::create('string $myProperty My Description', $typeResolver, $descriptionFactory,
+            $context);
 
-        $this->assertSame('string $myProperty My Description', (string) $fixture);
+        $this->assertSame('string $myProperty My Description', (string)$fixture);
         $this->assertSame('myProperty', $fixture->getVariableName());
         $this->assertInstanceOf(String_::class, $fixture->getType());
         $this->assertSame($description, $fixture->getDescription());
@@ -148,7 +156,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfEmptyBodyIsGiven() {
+    public function testFactoryMethodFailsIfEmptyBodyIsGiven()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         PropertyRead::create('', new TypeResolver(), $descriptionFactory);
     }
@@ -157,7 +166,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString() {
+    public function testFactoryMethodFailsIfBodyIsNotString()
+    {
         PropertyRead::create([]);
     }
 
@@ -165,7 +175,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull() {
+    public function testFactoryMethodFailsIfResolverIsNull()
+    {
         PropertyRead::create('body');
     }
 
@@ -174,7 +185,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\TypeResolver
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull() {
+    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    {
         PropertyRead::create('body', new TypeResolver());
     }
 
@@ -182,8 +194,8 @@ class PropertyReadTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfVariableNameIsNotString() {
+    public function testExceptionIsThrownIfVariableNameIsNotString()
+    {
         new PropertyRead([]);
     }
-
 }

@@ -21,46 +21,46 @@ namespace Mockery\Tests;
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
+
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class GeneratorTest extends MockeryTestCase {
-
+class GeneratorTest extends MockeryTestCase
+{
     /** @test */
-    public function shouldNotDuplicateDoublyInheritedMethods() {
+    public function shouldNotDuplicateDoublyInheritedMethods()
+    {
         $container = new \Mockery\Container;
         $mock = $container->mock('Mockery\Tests\Evenement_EventEmitter', 'Mockery\Tests\Chatroulette_ConnectionInterface');
     }
-
 }
 
-interface Evenement_EventEmitterInterface {
-
+interface Evenement_EventEmitterInterface
+{
     public function on($name, $callback);
 }
 
-class Evenement_EventEmitter implements Evenement_EventEmitterInterface {
-
-    public function on($name, $callback) {
-        
+class Evenement_EventEmitter implements Evenement_EventEmitterInterface
+{
+    public function on($name, $callback)
+    {
     }
-
 }
 
-interface React_StreamInterface extends Evenement_EventEmitterInterface {
-
+interface React_StreamInterface extends Evenement_EventEmitterInterface
+{
     public function close();
 }
 
-interface React_ReadableStreamInterface extends React_StreamInterface {
-
+interface React_ReadableStreamInterface extends React_StreamInterface
+{
     public function pause();
 }
 
-interface React_WritableStreamInterface extends React_StreamInterface {
-
+interface React_WritableStreamInterface extends React_StreamInterface
+{
     public function write($data);
 }
 
-interface Chatroulette_ConnectionInterface extends React_ReadableStreamInterface, React_WritableStreamInterface {
-    
+interface Chatroulette_ConnectionInterface extends React_ReadableStreamInterface, React_WritableStreamInterface
+{
 }

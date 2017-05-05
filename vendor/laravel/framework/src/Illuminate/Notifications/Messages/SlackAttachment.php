@@ -4,8 +4,8 @@ namespace Illuminate\Notifications\Messages;
 
 use Carbon\Carbon;
 
-class SlackAttachment {
-
+class SlackAttachment
+{
     /**
      * The attachment's title.
      *
@@ -83,7 +83,8 @@ class SlackAttachment {
      * @param  string  $url
      * @return $this
      */
-    public function title($title, $url = null) {
+    public function title($title, $url = null)
+    {
         $this->title = $title;
         $this->url = $url;
 
@@ -96,7 +97,8 @@ class SlackAttachment {
      * @param  string  $content
      * @return $this
      */
-    public function content($content) {
+    public function content($content)
+    {
         $this->content = $content;
 
         return $this;
@@ -108,7 +110,8 @@ class SlackAttachment {
      * @param  string  $fallback
      * @return $this
      */
-    public function fallback($fallback) {
+    public function fallback($fallback)
+    {
         $this->fallback = $fallback;
 
         return $this;
@@ -120,7 +123,8 @@ class SlackAttachment {
      * @param  string  $color
      * @return $this
      */
-    public function color($color) {
+    public function color($color)
+    {
         $this->color = $color;
 
         return $this;
@@ -133,7 +137,8 @@ class SlackAttachment {
      * @param  string $content
      * @return $this
      */
-    public function field($title, $content = '') {
+    public function field($title, $content = '')
+    {
         if (is_callable($title)) {
             $callback = $title;
 
@@ -155,7 +160,8 @@ class SlackAttachment {
      * @param  array  $fields
      * @return $this
      */
-    public function fields(array $fields) {
+    public function fields(array $fields)
+    {
         $this->fields = $fields;
 
         return $this;
@@ -167,7 +173,8 @@ class SlackAttachment {
      * @param  array  $fields
      * @return $this
      */
-    public function markdown(array $fields) {
+    public function markdown(array $fields)
+    {
         $this->markdown = $fields;
 
         return $this;
@@ -179,7 +186,8 @@ class SlackAttachment {
      * @param  string  $footer
      * @return $this
      */
-    public function footer($footer) {
+    public function footer($footer)
+    {
         $this->footer = $footer;
 
         return $this;
@@ -191,7 +199,8 @@ class SlackAttachment {
      * @param  string $icon
      * @return $this
      */
-    public function footerIcon($icon) {
+    public function footerIcon($icon)
+    {
         $this->footerIcon = $icon;
 
         return $this;
@@ -203,10 +212,10 @@ class SlackAttachment {
      * @param  Carbon  $timestamp
      * @return $this
      */
-    public function timestamp(Carbon $timestamp) {
+    public function timestamp(Carbon $timestamp)
+    {
         $this->timestamp = $timestamp->getTimestamp();
 
         return $this;
     }
-
 }

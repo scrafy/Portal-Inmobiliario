@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\fr_CA;
 
-class Address extends \Faker\Provider\fr_FR\Address {
-
+class Address extends \Faker\Provider\fr_FR\Address
+{
     protected static $cityPrefix = array('Saint-', 'Sainte-', 'St-', 'Ste-');
 
     /**
@@ -47,10 +47,13 @@ class Address extends \Faker\Provider\fr_FR\Address {
         '{{cityPrefix}}{{firstName}}{{citySuffix}}',
         '{{cityPrefix}}{{firstName}}',
     );
+
     protected static $buildingNumber = array('#####', '####', '###', '##', '#');
+
     protected static $streetSuffix = array(
         'Autoroute', 'Avenue', 'Boulevard', 'Chemin', 'Route', 'Rue', 'Pont'
     );
+
     protected static $postcode = array('?#? #?#', '?#?#?#');
 
     /**
@@ -60,17 +63,22 @@ class Address extends \Faker\Provider\fr_FR\Address {
         '{{streetSuffix}} {{firstName}}',
         '{{streetSuffix}} {{lastName}}'
     );
+
     protected static $streetAddressFormats = array(
         '{{buildingNumber}} {{streetName}}',
         '{{buildingNumber}} {{streetName}} {{secondaryAddress}}',
     );
+
     protected static $addressFormats = array(
         "{{streetAddress}}, {{city}}, {{stateAbbr}} {{postcode}}",
     );
+
     protected static $secondaryAddressFormats = array('Apt. ###', 'Suite ###', 'Bureau ###');
+
     protected static $state = array(
         'Alberta', 'Colombie-Brittanique', 'Manitoba', 'Nouveau-Brunswick', 'Terre-Neuve-et-Labrador', 'Nouvelle-Écosse', 'Ontario', 'Île-du-Prince-Édouard', 'Québec', 'Saskatchewan'
     );
+
     protected static $stateAbbr = array(
         'AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'ON', 'PE', 'QC', 'SK'
     );
@@ -78,36 +86,40 @@ class Address extends \Faker\Provider\fr_FR\Address {
     /**
      * @example 'Saint-'
      */
-    public static function cityPrefix() {
+    public static function cityPrefix()
+    {
         return static::randomElement(static::$cityPrefix);
     }
 
     /**
      * @example '-des-Sables'
      */
-    public static function citySuffix() {
+    public static function citySuffix()
+    {
         return static::randomElement(static::$citySuffix);
     }
 
     /**
      * @example 'Bureau 500'
      */
-    public static function secondaryAddress() {
+    public static function secondaryAddress()
+    {
         return static::numerify(static::randomElement(static::$secondaryAddressFormats));
     }
 
     /**
      * @example 'Québec'
      */
-    public static function state() {
+    public static function state()
+    {
         return static::randomElement(static::$state);
     }
 
     /**
      * @example 'QC'
      */
-    public static function stateAbbr() {
+    public static function stateAbbr()
+    {
         return static::randomElement(static::$stateAbbr);
     }
-
 }

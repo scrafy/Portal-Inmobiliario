@@ -18,22 +18,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface {
-
-    public function __construct() {
+class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface
+{
+    public function __construct()
+    {
         parent::__construct(new EventDispatcher(), $this, null, $this);
     }
 
-    public function getController(Request $request) {
+    public function getController(Request $request)
+    {
         return array($this, 'callController');
     }
 
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         return array($request);
     }
 
-    public function callController(Request $request) {
-        return new Response('Request: ' . $request->getRequestUri());
+    public function callController(Request $request)
+    {
+        return new Response('Request: '.$request->getRequestUri());
     }
-
 }

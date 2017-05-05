@@ -18,14 +18,15 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  *
  * @author Marcos D. Sánchez <marcosdsanchez@gmail.com>
  */
-abstract class AbstractFileExtractor {
-
+abstract class AbstractFileExtractor
+{
     /**
      * @param string|array $resource files, a file or a directory
      *
      * @return array
      */
-    protected function extractFiles($resource) {
+    protected function extractFiles($resource)
+    {
         if (is_array($resource) || $resource instanceof \Traversable) {
             $files = array();
             foreach ($resource as $file) {
@@ -47,7 +48,8 @@ abstract class AbstractFileExtractor {
      *
      * @return \SplFileInfo
      */
-    private function toSplFileInfo($file) {
+    private function toSplFileInfo($file)
+    {
         return ($file instanceof \SplFileInfo) ? $file : new \SplFileInfo($file);
     }
 
@@ -58,7 +60,8 @@ abstract class AbstractFileExtractor {
      *
      * @throws InvalidArgumentException
      */
-    protected function isFile($file) {
+    protected function isFile($file)
+    {
         if (!is_file($file)) {
             throw new InvalidArgumentException(sprintf('The "%s" file does not exist.', $file));
         }

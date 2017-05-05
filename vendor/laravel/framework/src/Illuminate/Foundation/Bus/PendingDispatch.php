@@ -2,15 +2,16 @@
 
 namespace Illuminate\Foundation\Bus;
 
-class PendingDispatch {
-
+class PendingDispatch
+{
     /**
      * Create a new pending job dispatch.
      *
      * @param  mixed  $job
      * @return void
      */
-    public function __construct($job) {
+    public function __construct($job)
+    {
         $this->job = $job;
     }
 
@@ -20,7 +21,8 @@ class PendingDispatch {
      * @param  string|null  $connection
      * @return $this
      */
-    public function onConnection($connection) {
+    public function onConnection($connection)
+    {
         $this->job->onConnection($connection);
 
         return $this;
@@ -32,7 +34,8 @@ class PendingDispatch {
      * @param  string|null  $queue
      * @return $this
      */
-    public function onQueue($queue) {
+    public function onQueue($queue)
+    {
         $this->job->onQueue($queue);
 
         return $this;
@@ -44,7 +47,8 @@ class PendingDispatch {
      * @param  \DateTime|int|null  $delay
      * @return $this
      */
-    public function delay($delay) {
+    public function delay($delay)
+    {
         $this->job->delay($delay);
 
         return $this;
@@ -55,8 +59,8 @@ class PendingDispatch {
      *
      * @return void
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         dispatch($this->job);
     }
-
 }

@@ -2,17 +2,22 @@
 
 namespace Faker\Provider\nl_BE;
 
-class Address extends \Faker\Provider\Address {
-
+class Address extends \Faker\Provider\Address
+{
     protected static $postcode = array('####');
+
     protected static $streetAddressFormats = array(
         '{{streetName}} {{buildingNumber}}'
     );
+
     protected static $streetNameFormats = array('{{lastName}}{{streetSuffix}}');
+
     protected static $cityFormats = array('{{cityName}}');
+
     protected static $addressFormats = array(
         "{{streetAddress}}\n {{postcode}} {{city}}",
     );
+
     protected static $streetSuffix = array(
         'baan', 'boulevard', 'dreef', 'hof', 'laan', 'pad', 'ring', 'singel', 'steeg', 'straat', 'weg',
     );
@@ -41,10 +46,12 @@ class Address extends \Faker\Provider\Address {
         'Turnhout', 'Verviers', 'Veurne', 'Vilvoorde', 'Virton', 'Walcourt', 'Waregem', 'Waver', 'Wervik', 'Wezet',
         'Zinnik', 'Zottegem', 'Zoutleeuw'
     );
+
     protected static $state = array(
         'Antwerpen', 'Limburg', 'Oost-Vlaanderen', 'Vlaams-Brabant', 'West-Vlaanderen',
         'Henegouwen', 'Luik', 'Luxemburg', 'Namen', 'Waals-Brabant'
     );
+
     protected static $country = array(
         'Afghanistan', 'Albanië', 'Algerije', 'Amerikaans-Samoa', 'Andorra', 'Angola', 'Amerikaanse Virgineilanden',
         'Anguilla', 'Antartica', 'Antigua en Barbuda', 'Argentinië', 'Armenië', 'Aruba', 'Australië', 'Azerbeidzjan',
@@ -84,15 +91,16 @@ class Address extends \Faker\Provider\Address {
     /**
      * @example 'Gelderland'
      */
-    public static function state() {
+    public static function state()
+    {
         return static::randomElement(static::$state);
     }
 
     /**
      * @see parent
      */
-    public function cityName() {
+    public function cityName()
+    {
         return static::randomElement(static::$cityNames);
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Auth\Access;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 
-trait AuthorizesRequests {
-
+trait AuthorizesRequests
+{
     /**
      * Authorize a given action for the current user.
      *
@@ -15,7 +15,8 @@ trait AuthorizesRequests {
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function authorize($ability, $arguments = []) {
+    public function authorize($ability, $arguments = [])
+    {
         list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
         return app(Gate::class)->authorize($ability, $arguments);
@@ -31,7 +32,8 @@ trait AuthorizesRequests {
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function authorizeForUser($user, $ability, $arguments = []) {
+    public function authorizeForUser($user, $ability, $arguments = [])
+    {
         list($ability, $arguments) = $this->parseAbilityAndArguments($ability, $arguments);
 
         return app(Gate::class)->forUser($user)->authorize($ability, $arguments);
@@ -44,7 +46,8 @@ trait AuthorizesRequests {
      * @param  mixed|array  $arguments
      * @return array
      */
-    protected function parseAbilityAndArguments($ability, $arguments) {
+    protected function parseAbilityAndArguments($ability, $arguments)
+    {
         if (is_string($ability) && strpos($ability, '\\') === false) {
             return [$ability, $arguments];
         }
@@ -60,7 +63,8 @@ trait AuthorizesRequests {
      * @param  string  $ability
      * @return string
      */
-    protected function normalizeGuessedAbilityName($ability) {
+    protected function normalizeGuessedAbilityName($ability)
+    {
         $map = $this->resourceAbilityMap();
 
         return isset($map[$ability]) ? $map[$ability] : $ability;
@@ -75,7 +79,8 @@ trait AuthorizesRequests {
      * @param  \Illuminate\Http\Request|null  $request
      * @return void
      */
-    public function authorizeResource($model, $parameter = null, array $options = [], $request = null) {
+    public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
+    {
         $parameter = $parameter ?: strtolower(class_basename($model));
 
         $middleware = [];
@@ -96,7 +101,8 @@ trait AuthorizesRequests {
      *
      * @return array
      */
-    protected function resourceAbilityMap() {
+    protected function resourceAbilityMap()
+    {
         return [
             'show' => 'view',
             'create' => 'create',
@@ -106,5 +112,4 @@ trait AuthorizesRequests {
             'destroy' => 'delete',
         ];
     }
-
 }

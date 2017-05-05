@@ -1,173 +1,188 @@
 <?php
 
-class Swift_Plugins_LoggerPluginTest extends \SwiftMailerTestCase {
-
-    public function testLoggerDelegatesAddingEntries() {
+class Swift_Plugins_LoggerPluginTest extends \SwiftMailerTestCase
+{
+    public function testLoggerDelegatesAddingEntries()
+    {
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with('foo');
+               ->method('add')
+               ->with('foo');
 
         $plugin = $this->_createPlugin($logger);
         $plugin->add('foo');
     }
 
-    public function testLoggerDelegatesDumpingEntries() {
+    public function testLoggerDelegatesDumpingEntries()
+    {
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('dump')
-                ->will($this->returnValue('foobar'));
+               ->method('dump')
+               ->will($this->returnValue('foobar'));
 
         $plugin = $this->_createPlugin($logger);
         $this->assertEquals('foobar', $plugin->dump());
     }
 
-    public function testLoggerDelegatesClearingEntries() {
+    public function testLoggerDelegatesClearingEntries()
+    {
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('clear');
+               ->method('clear');
 
         $plugin = $this->_createPlugin($logger);
         $plugin->clear();
     }
 
-    public function testCommandIsSentToLogger() {
+    public function testCommandIsSentToLogger()
+    {
         $evt = $this->_createCommandEvent("foo\r\n");
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->regExp('~foo\r\n~'));
+               ->method('add')
+               ->with($this->regExp('~foo\r\n~'));
 
         $plugin = $this->_createPlugin($logger);
         $plugin->commandSent($evt);
     }
 
-    public function testResponseIsSentToLogger() {
+    public function testResponseIsSentToLogger()
+    {
         $evt = $this->_createResponseEvent("354 Go ahead\r\n");
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->regExp('~354 Go ahead\r\n~'));
+               ->method('add')
+               ->with($this->regExp('~354 Go ahead\r\n~'));
 
         $plugin = $this->_createPlugin($logger);
         $plugin->responseReceived($evt);
     }
 
-    public function testTransportBeforeStartChangeIsSentToLogger() {
+    public function testTransportBeforeStartChangeIsSentToLogger()
+    {
         $evt = $this->_createTransportChangeEvent();
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->anything());
+               ->method('add')
+               ->with($this->anything());
 
         $plugin = $this->_createPlugin($logger);
         $plugin->beforeTransportStarted($evt);
     }
 
-    public function testTransportStartChangeIsSentToLogger() {
+    public function testTransportStartChangeIsSentToLogger()
+    {
         $evt = $this->_createTransportChangeEvent();
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->anything());
+               ->method('add')
+               ->with($this->anything());
 
         $plugin = $this->_createPlugin($logger);
         $plugin->transportStarted($evt);
     }
 
-    public function testTransportStopChangeIsSentToLogger() {
+    public function testTransportStopChangeIsSentToLogger()
+    {
         $evt = $this->_createTransportChangeEvent();
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->anything());
+               ->method('add')
+               ->with($this->anything());
 
         $plugin = $this->_createPlugin($logger);
         $plugin->transportStopped($evt);
     }
 
-    public function testTransportBeforeStopChangeIsSentToLogger() {
+    public function testTransportBeforeStopChangeIsSentToLogger()
+    {
         $evt = $this->_createTransportChangeEvent();
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->anything());
+               ->method('add')
+               ->with($this->anything());
 
         $plugin = $this->_createPlugin($logger);
         $plugin->beforeTransportStopped($evt);
     }
 
-    public function testExceptionsArePassedToDelegateAndLeftToBubbleUp() {
+    public function testExceptionsArePassedToDelegateAndLeftToBubbleUp()
+    {
         $transport = $this->_createTransport();
         $evt = $this->_createTransportExceptionEvent();
         $logger = $this->_createLogger();
         $logger->expects($this->once())
-                ->method('add')
-                ->with($this->anything());
+               ->method('add')
+               ->with($this->anything());
 
         $plugin = $this->_createPlugin($logger);
         try {
             $plugin->exceptionThrown($evt);
             $this->fail('Exception should bubble up.');
         } catch (Swift_TransportException $ex) {
-            
         }
     }
 
-    private function _createLogger() {
+    private function _createLogger()
+    {
         return $this->getMockBuilder('Swift_Plugins_Logger')->getMock();
     }
 
-    private function _createPlugin($logger) {
+    private function _createPlugin($logger)
+    {
         return new Swift_Plugins_LoggerPlugin($logger);
     }
 
-    private function _createCommandEvent($command) {
+    private function _createCommandEvent($command)
+    {
         $evt = $this->getMockBuilder('Swift_Events_CommandEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
         $evt->expects($this->any())
-                ->method('getCommand')
-                ->will($this->returnValue($command));
+            ->method('getCommand')
+            ->will($this->returnValue($command));
 
         return $evt;
     }
 
-    private function _createResponseEvent($response) {
+    private function _createResponseEvent($response)
+    {
         $evt = $this->getMockBuilder('Swift_Events_ResponseEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
         $evt->expects($this->any())
-                ->method('getResponse')
-                ->will($this->returnValue($response));
+            ->method('getResponse')
+            ->will($this->returnValue($response));
 
         return $evt;
     }
 
-    private function _createTransport() {
+    private function _createTransport()
+    {
         return $this->getMockBuilder('Swift_Transport')->getMock();
     }
 
-    private function _createTransportChangeEvent() {
+    private function _createTransportChangeEvent()
+    {
         $evt = $this->getMockBuilder('Swift_Events_TransportChangeEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
         $evt->expects($this->any())
-                ->method('getSource')
-                ->will($this->returnValue($this->_createTransport()));
+            ->method('getSource')
+            ->will($this->returnValue($this->_createTransport()));
 
         return $evt;
     }
 
-    public function _createTransportExceptionEvent() {
+    public function _createTransportExceptionEvent()
+    {
         $evt = $this->getMockBuilder('Swift_Events_TransportExceptionEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
         $evt->expects($this->any())
-                ->method('getException')
-                ->will($this->returnValue(new Swift_TransportException('')));
+            ->method('getException')
+            ->will($this->returnValue(new Swift_TransportException('')));
 
         return $evt;
     }
-
 }

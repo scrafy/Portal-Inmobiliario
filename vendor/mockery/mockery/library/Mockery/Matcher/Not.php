@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Not extends MatcherAbstract {
+class Not extends MatcherAbstract
+{
 
     /**
      * Check if the actual value does not match the expected (in this
@@ -30,7 +30,8 @@ class Not extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         return $actual !== $this->_expected;
     }
 
@@ -39,8 +40,8 @@ class Not extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<Not>';
     }
-
 }

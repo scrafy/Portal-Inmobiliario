@@ -1,9 +1,8 @@
 <?php
-
 namespace Hamcrest;
 
 /*
-  Copyright (c) 2012 hamcrest.org
+ Copyright (c) 2012 hamcrest.org
  */
 
 /**
@@ -11,7 +10,8 @@ namespace Hamcrest;
  *
  * @see Hamcrest\Matcher
  */
-class Util {
+class Util
+{
 
     /**
      * Wraps the item with an IsEqual matcher if it isn't a matcher already.
@@ -19,9 +19,12 @@ class Util {
      * @param mixed $item matcher or any value
      * @return \Hamcrest\Matcher
      */
-    public static function wrapValueWithIsEqual($item) {
-        return ($item instanceof Matcher) ? $item : Core\IsEqual::equalTo($item)
-        ;
+    public static function wrapValueWithIsEqual($item)
+    {
+        return ($item instanceof Matcher)
+            ? $item
+            : Core\IsEqual::equalTo($item)
+            ;
     }
 
     /**
@@ -30,11 +33,12 @@ class Util {
      * @param array $matchers expected to contain only matchers
      * @throws \InvalidArgumentException if any item is not a matcher
      */
-    public static function checkAllAreMatchers(array $matchers) {
+    public static function checkAllAreMatchers(array $matchers)
+    {
         foreach ($matchers as $m) {
             if (!($m instanceof Matcher)) {
                 throw new \InvalidArgumentException(
-                'Each argument or element must be a Hamcrest matcher'
+                    'Each argument or element must be a Hamcrest matcher'
                 );
             }
         }
@@ -49,7 +53,8 @@ class Util {
      * @param array $items contains items and matchers
      * @return array<Matchers> all items are
      */
-    public static function createMatcherArray(array $items) {
+    public static function createMatcherArray(array $items)
+    {
         //Extract single array item
         if (count($items) == 1 && is_array($items[0])) {
             $items = $items[0];
@@ -64,5 +69,4 @@ class Util {
 
         return $items;
     }
-
 }

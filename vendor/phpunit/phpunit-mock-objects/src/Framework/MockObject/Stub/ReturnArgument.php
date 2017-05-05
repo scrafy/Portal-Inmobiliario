@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,15 +13,17 @@
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework_MockObject_Stub_Return {
-
+class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework_MockObject_Stub_Return
+{
     protected $argumentIndex;
 
-    public function __construct($argumentIndex) {
+    public function __construct($argumentIndex)
+    {
         $this->argumentIndex = $argumentIndex;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation) {
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
         if (isset($invocation->parameters[$this->argumentIndex])) {
             return $invocation->parameters[$this->argumentIndex];
         } else {
@@ -30,8 +31,8 @@ class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework
         }
     }
 
-    public function toString() {
+    public function toString()
+    {
         return sprintf('return argument #%d', $this->argumentIndex);
     }
-
 }

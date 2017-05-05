@@ -19,8 +19,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Method;
  *
  * @internal
  */
-interface MethodTagRetrieverInterface {
-
+interface MethodTagRetrieverInterface
+{
     /**
      * @param \ReflectionClass $reflectionClass
      *

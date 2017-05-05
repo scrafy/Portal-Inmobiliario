@@ -4,8 +4,8 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class YieldFrom extends Expr {
-
+class YieldFrom extends Expr
+{
     /** @var Expr Expression to yield from */
     public $expr;
 
@@ -23,5 +23,4 @@ class YieldFrom extends Expr {
     public function getSubNodeNames() {
         return array('expr');
     }
-
 }

@@ -5,9 +5,10 @@ namespace Symfony\Component\HttpKernel\Tests\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class HttpExceptionTest extends TestCase {
-
-    public function headerDataProvider() {
+class HttpExceptionTest extends TestCase
+{
+    public function headerDataProvider()
+    {
         return array(
             array(array('X-Test' => 'Test')),
             array(array('X-Test' => 1)),
@@ -20,7 +21,8 @@ class HttpExceptionTest extends TestCase {
         );
     }
 
-    public function testHeadersDefault() {
+    public function testHeadersDefault()
+    {
         $exception = $this->createException();
         $this->assertSame(array(), $exception->getHeaders());
     }
@@ -28,7 +30,8 @@ class HttpExceptionTest extends TestCase {
     /**
      * @dataProvider headerDataProvider
      */
-    public function testHeadersConstructor($headers) {
+    public function testHeadersConstructor($headers)
+    {
         $exception = new HttpException(200, null, null, $headers);
         $this->assertSame($headers, $exception->getHeaders());
     }
@@ -36,14 +39,15 @@ class HttpExceptionTest extends TestCase {
     /**
      * @dataProvider headerDataProvider
      */
-    public function testHeadersSetter($headers) {
+    public function testHeadersSetter($headers)
+    {
         $exception = $this->createException();
         $exception->setHeaders($headers);
         $this->assertSame($headers, $exception->getHeaders());
     }
 
-    protected function createException() {
+    protected function createException()
+    {
         return new HttpException(200);
     }
-
 }

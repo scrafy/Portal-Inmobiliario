@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_KeyCache_KeyCacheInputStream extends Swift_InputByteStream {
-
+interface Swift_KeyCache_KeyCacheInputStream extends Swift_InputByteStream
+{
     /**
      * Set the KeyCache to wrap.
      *

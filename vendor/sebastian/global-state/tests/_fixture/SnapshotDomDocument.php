@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -15,6 +14,6 @@ use DomDocument;
 
 /**
  */
-class SnapshotDomDocument extends DomDocument {
-    
+class SnapshotDomDocument extends DomDocument
+{
 }

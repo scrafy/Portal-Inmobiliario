@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Mail;
 
 use Illuminate\Contracts\Queue\Factory as Queue;
 
-interface Mailable {
-
+interface Mailable
+{
     /**
      * Send the message using the given mailer.
      *

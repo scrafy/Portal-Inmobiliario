@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Console;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class DownCommand extends Command {
-
+class DownCommand extends Command
+{
     /**
      * The console command signature.
      *
@@ -27,9 +27,11 @@ class DownCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         file_put_contents(
-                $this->laravel->storagePath() . '/framework/down', json_encode($this->getDownFilePayload(), JSON_PRETTY_PRINT)
+            $this->laravel->storagePath().'/framework/down',
+            json_encode($this->getDownFilePayload(), JSON_PRETTY_PRINT)
         );
 
         $this->comment('Application is now in maintenance mode.');
@@ -40,7 +42,8 @@ class DownCommand extends Command {
      *
      * @return array
      */
-    protected function getDownFilePayload() {
+    protected function getDownFilePayload()
+    {
         return [
             'time' => Carbon::now()->getTimestamp(),
             'message' => $this->option('message'),
@@ -53,10 +56,10 @@ class DownCommand extends Command {
      *
      * @return int|null
      */
-    protected function getRetryTime() {
+    protected function getRetryTime()
+    {
         $retry = $this->option('retry');
 
         return is_numeric($retry) && $retry > 0 ? (int) $retry : null;
     }
-
 }

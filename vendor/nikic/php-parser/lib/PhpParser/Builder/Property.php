@@ -5,9 +5,10 @@ namespace PhpParser\Builder;
 use PhpParser;
 use PhpParser\Node\Stmt;
 
-class Property extends PhpParser\BuilderAbstract {
-
+class Property extends PhpParser\BuilderAbstract
+{
     protected $name;
+
     protected $flags = 0;
     protected $default = null;
     protected $attributes = array();
@@ -100,10 +101,11 @@ class Property extends PhpParser\BuilderAbstract {
      */
     public function getNode() {
         return new Stmt\Property(
-                $this->flags !== 0 ? $this->flags : Stmt\Class_::MODIFIER_PUBLIC, array(
-            new Stmt\PropertyProperty($this->name, $this->default)
-                ), $this->attributes
+            $this->flags !== 0 ? $this->flags : Stmt\Class_::MODIFIER_PUBLIC,
+            array(
+                new Stmt\PropertyProperty($this->name, $this->default)
+            ),
+            $this->attributes
         );
     }
-
 }

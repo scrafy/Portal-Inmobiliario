@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-class NodeTraverser implements NodeTraverserInterface {
-
+class NodeTraverser implements NodeTraverserInterface
+{
     /**
      * If NodeVisitor::enterNode() returns DONT_TRAVERSE_CHILDREN, child nodes
      * of the current node will not be traversed for any visitors.
@@ -95,7 +95,7 @@ class NodeTraverser implements NodeTraverserInterface {
 
     protected function traverseNode(Node $node) {
         foreach ($node->getSubNodeNames() as $name) {
-            $subNode = & $node->$name;
+            $subNode =& $node->$name;
 
             if (is_array($subNode)) {
                 $subNode = $this->traverseArray($subNode);
@@ -131,8 +131,8 @@ class NodeTraverser implements NodeTraverserInterface {
                     } else if (null !== $return) {
                         if (is_array($return)) {
                             throw new \LogicException(
-                            'leaveNode() may only return an array ' .
-                            'if the parent structure is an array'
+                                'leaveNode() may only return an array ' .
+                                'if the parent structure is an array'
                             );
                         }
                         $subNode = $return;
@@ -201,5 +201,4 @@ class NodeTraverser implements NodeTraverserInterface {
 
         return $nodes;
     }
-
 }

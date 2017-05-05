@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Database;
 
-class ModelIdentifier {
-
+class ModelIdentifier
+{
     /**
      * The class name of the model.
      *
@@ -27,9 +27,9 @@ class ModelIdentifier {
      * @param  mixed  $id
      * @return void
      */
-    public function __construct($class, $id) {
+    public function __construct($class, $id)
+    {
         $this->id = $id;
         $this->class = $class;
     }
-
 }

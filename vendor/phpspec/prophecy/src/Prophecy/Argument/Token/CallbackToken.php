@@ -18,8 +18,8 @@ use Prophecy\Exception\InvalidArgumentException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class CallbackToken implements TokenInterface {
-
+class CallbackToken implements TokenInterface
+{
     private $callback;
 
     /**
@@ -29,10 +29,12 @@ class CallbackToken implements TokenInterface {
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
-    public function __construct($callback) {
+    public function __construct($callback)
+    {
         if (!is_callable($callback)) {
             throw new InvalidArgumentException(sprintf(
-                    'Callable expected as an argument to CallbackToken, but got %s.', gettype($callback)
+                'Callable expected as an argument to CallbackToken, but got %s.',
+                gettype($callback)
             ));
         }
 
@@ -46,7 +48,8 @@ class CallbackToken implements TokenInterface {
      *
      * @return bool|int
      */
-    public function scoreArgument($argument) {
+    public function scoreArgument($argument)
+    {
         return call_user_func($this->callback, $argument) ? 7 : false;
     }
 
@@ -55,7 +58,8 @@ class CallbackToken implements TokenInterface {
      *
      * @return bool
      */
-    public function isLast() {
+    public function isLast()
+    {
         return false;
     }
 
@@ -64,8 +68,8 @@ class CallbackToken implements TokenInterface {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return 'callback()';
     }
-
 }

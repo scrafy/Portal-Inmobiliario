@@ -2,16 +2,17 @@
 
 use Mockery as m;
 
-class Swift_Bug534Test extends \PHPUnit_Framework_TestCase {
-
-    public function testEmbeddedImagesAreEmbedded() {
+class Swift_Bug534Test extends \PHPUnit_Framework_TestCase
+{
+    public function testEmbeddedImagesAreEmbedded()
+    {
         $message = Swift_Message::newInstance()
-                ->setFrom('from@example.com')
-                ->setTo('to@example.com')
-                ->setSubject('test')
+            ->setFrom('from@example.com')
+            ->setTo('to@example.com')
+            ->setSubject('test')
         ;
-        $cid = $message->embed(Swift_Image::fromPath(__DIR__ . '/../../_samples/files/swiftmailer.png'));
-        $message->setBody('<img src="' . $cid . '" />', 'text/html');
+        $cid = $message->embed(Swift_Image::fromPath(__DIR__.'/../../_samples/files/swiftmailer.png'));
+        $message->setBody('<img src="'.$cid.'" />', 'text/html');
 
         $that = $this;
         $messageValidation = function (Swift_Mime_Message $message) use ($that) {
@@ -34,5 +35,4 @@ class Swift_Bug534Test extends \PHPUnit_Framework_TestCase {
         $memorySpool->queueMessage($message);
         $memorySpool->flushQueue($transport, $failedRecipients);
     }
-
 }

@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-class ChainCacheClearer implements CacheClearerInterface {
-
+class ChainCacheClearer implements CacheClearerInterface
+{
     /**
      * @var array
      */
@@ -28,14 +28,16 @@ class ChainCacheClearer implements CacheClearerInterface {
      *
      * @param array $clearers The initial clearers
      */
-    public function __construct(array $clearers = array()) {
+    public function __construct(array $clearers = array())
+    {
         $this->clearers = $clearers;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function clear($cacheDir) {
+    public function clear($cacheDir)
+    {
         foreach ($this->clearers as $clearer) {
             $clearer->clear($cacheDir);
         }
@@ -46,8 +48,8 @@ class ChainCacheClearer implements CacheClearerInterface {
      *
      * @param CacheClearerInterface $clearer
      */
-    public function add(CacheClearerInterface $clearer) {
+    public function add(CacheClearerInterface $clearer)
+    {
         $this->clearers[] = $clearer;
     }
-
 }

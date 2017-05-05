@@ -4,14 +4,12 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class Ternary extends Expr {
-
+class Ternary extends Expr
+{
     /** @var Expr Condition */
     public $cond;
-
     /** @var null|Expr Expression for true */
     public $if;
-
     /** @var Expr Expression for false */
     public $else;
 
@@ -33,5 +31,4 @@ class Ternary extends Expr {
     public function getSubNodeNames() {
         return array('cond', 'if', 'else');
     }
-
 }

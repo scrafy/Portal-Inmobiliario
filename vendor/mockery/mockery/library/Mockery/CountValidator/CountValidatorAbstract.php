@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\CountValidator;
 
-abstract class CountValidatorAbstract {
+abstract class CountValidatorAbstract
+{
 
     /**
      * Expectation for which this validator is assigned
@@ -43,7 +43,8 @@ abstract class CountValidatorAbstract {
      * @param \Mockery\Expectation $expectation
      * @param int $limit
      */
-    public function __construct(\Mockery\Expectation $expectation, $limit) {
+    public function __construct(\Mockery\Expectation $expectation, $limit)
+    {
         $this->_expectation = $expectation;
         $this->_limit = $limit;
     }
@@ -54,7 +55,8 @@ abstract class CountValidatorAbstract {
      * @param int $n
      * @return bool
      */
-    public function isEligible($n) {
+    public function isEligible($n)
+    {
         return ($n < $this->_limit);
     }
 

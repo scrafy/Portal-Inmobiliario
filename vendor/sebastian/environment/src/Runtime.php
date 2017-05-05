@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Environment package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Environment;
 /**
  * Utility class for HHVM/PHP environment handling.
  */
-class Runtime {
-
+class Runtime
+{
     /**
      * @var string
      */
@@ -27,7 +26,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function canCollectCodeCoverage() {
+    public function canCollectCodeCoverage()
+    {
         return $this->hasXdebug() || $this->hasPHPDBGCodeCoverage();
     }
 
@@ -37,7 +37,8 @@ class Runtime {
      *
      * @return string
      */
-    public function getBinary() {
+    public function getBinary()
+    {
         // HHVM
         if (self::$binary === null && $this->isHHVM()) {
             if ((self::$binary = getenv('PHP_BINARY')) === false) {
@@ -61,7 +62,7 @@ class Runtime {
                     $file = file($_SERVER['_']);
 
                     if (strpos($file[0], ' ') !== false) {
-                        $tmp = explode(' ', $file[0]);
+                        $tmp          = explode(' ', $file[0]);
                         self::$binary = escapeshellarg(trim($tmp[1]));
                     } else {
                         self::$binary = escapeshellarg(ltrim(trim($file[0]), '#!'));
@@ -97,14 +98,16 @@ class Runtime {
     /**
      * @return string
      */
-    public function getNameWithVersion() {
+    public function getNameWithVersion()
+    {
         return $this->getName() . ' ' . $this->getVersion();
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         if ($this->isHHVM()) {
             return 'HHVM';
         } elseif ($this->isPHPDBG()) {
@@ -117,7 +120,8 @@ class Runtime {
     /**
      * @return string
      */
-    public function getVendorUrl() {
+    public function getVendorUrl()
+    {
         if ($this->isHHVM()) {
             return 'http://hhvm.com/';
         } else {
@@ -128,7 +132,8 @@ class Runtime {
     /**
      * @return string
      */
-    public function getVersion() {
+    public function getVersion()
+    {
         if ($this->isHHVM()) {
             return HHVM_VERSION;
         } else {
@@ -141,7 +146,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function hasXdebug() {
+    public function hasXdebug()
+    {
         return ($this->isPHP() || $this->isHHVM()) && extension_loaded('xdebug');
     }
 
@@ -150,7 +156,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function isHHVM() {
+    public function isHHVM()
+    {
         return defined('HHVM_VERSION');
     }
 
@@ -159,7 +166,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function isPHP() {
+    public function isPHP()
+    {
         return !$this->isHHVM() && !$this->isPHPDBG();
     }
 
@@ -168,7 +176,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function isPHPDBG() {
+    public function isPHPDBG()
+    {
         return PHP_SAPI === 'phpdbg' && !$this->isHHVM();
     }
 
@@ -178,8 +187,8 @@ class Runtime {
      *
      * @return bool
      */
-    public function hasPHPDBGCodeCoverage() {
+    public function hasPHPDBGCodeCoverage()
+    {
         return $this->isPHPDBG() && function_exists('phpdbg_start_oplog');
     }
-
 }

@@ -18,10 +18,11 @@ use Symfony\Component\CssSelector\Parser\Shortcut\HashParser;
 /**
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
  */
-class HashParserTest extends TestCase {
-
+class HashParserTest extends TestCase
+{
     /** @dataProvider getParseTestData */
-    public function testParse($source, $representation) {
+    public function testParse($source, $representation)
+    {
         $parser = new HashParser();
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
@@ -31,7 +32,8 @@ class HashParserTest extends TestCase {
         $this->assertEquals($representation, (string) $selector->getTree());
     }
 
-    public function getParseTestData() {
+    public function getParseTestData()
+    {
         return array(
             array('#testid', 'Hash[Element[*]#testid]'),
             array('testel#testid', 'Hash[Element[testel]#testid]'),
@@ -40,5 +42,4 @@ class HashParserTest extends TestCase {
             array('testns|testel#testid', 'Hash[Element[testns|testel]#testid]'),
         );
     }
-
 }

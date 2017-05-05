@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  */
-class PHPUnit_Util_Regex {
-
+class PHPUnit_Util_Regex
+{
     /**
      * @param string $pattern
      * @param string $subject
@@ -23,12 +22,12 @@ class PHPUnit_Util_Regex {
      *
      * @return int
      */
-    public static function pregMatchSafe($pattern, $subject, $matches = null, $flags = 0, $offset = 0) {
+    public static function pregMatchSafe($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
+    {
         $handler_terminator = PHPUnit_Util_ErrorHandler::handleErrorOnce(E_WARNING);
-        $match = preg_match($pattern, $subject, $matches, $flags, $offset);
+        $match              = preg_match($pattern, $subject, $matches, $flags, $offset);
         $handler_terminator(); // cleaning
 
         return $match;
     }
-
 }

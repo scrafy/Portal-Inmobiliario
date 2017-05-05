@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Cache;
 
-interface Store {
-
+interface Store
+{
     /**
      * Retrieve an item from the cache by key.
      *

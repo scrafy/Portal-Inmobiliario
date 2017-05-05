@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -16,8 +15,8 @@ use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 /**
  * Represents a file in the code coverage information tree.
  */
-class File extends AbstractNode {
-
+class File extends AbstractNode
+{
     /**
      * @var array
      */
@@ -119,18 +118,20 @@ class File extends AbstractNode {
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($name, AbstractNode $parent, array $coverageData, array $testData, $cacheTokens) {
+    public function __construct($name, AbstractNode $parent, array $coverageData, array $testData, $cacheTokens)
+    {
         if (!is_bool($cacheTokens)) {
             throw InvalidArgumentException::create(
-                    1, 'boolean'
+                1,
+                'boolean'
             );
         }
 
         parent::__construct($name, $parent);
 
         $this->coverageData = $coverageData;
-        $this->testData = $testData;
-        $this->cacheTokens = $cacheTokens;
+        $this->testData     = $testData;
+        $this->cacheTokens  = $cacheTokens;
 
         $this->calculateStatistics();
     }
@@ -140,7 +141,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return 1;
     }
 
@@ -149,7 +151,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getCoverageData() {
+    public function getCoverageData()
+    {
         return $this->coverageData;
     }
 
@@ -158,7 +161,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getTestData() {
+    public function getTestData()
+    {
         return $this->testData;
     }
 
@@ -167,7 +171,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getClasses() {
+    public function getClasses()
+    {
         return $this->classes;
     }
 
@@ -176,7 +181,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getTraits() {
+    public function getTraits()
+    {
         return $this->traits;
     }
 
@@ -185,7 +191,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getFunctions() {
+    public function getFunctions()
+    {
         return $this->functions;
     }
 
@@ -194,7 +201,8 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    public function getLinesOfCode() {
+    public function getLinesOfCode()
+    {
         return $this->linesOfCode;
     }
 
@@ -203,7 +211,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumExecutableLines() {
+    public function getNumExecutableLines()
+    {
         return $this->numExecutableLines;
     }
 
@@ -212,7 +221,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumExecutedLines() {
+    public function getNumExecutedLines()
+    {
         return $this->numExecutedLines;
     }
 
@@ -221,7 +231,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumClasses() {
+    public function getNumClasses()
+    {
         if ($this->numClasses === null) {
             $this->numClasses = 0;
 
@@ -244,7 +255,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumTestedClasses() {
+    public function getNumTestedClasses()
+    {
         return $this->numTestedClasses;
     }
 
@@ -253,7 +265,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumTraits() {
+    public function getNumTraits()
+    {
         if ($this->numTraits === null) {
             $this->numTraits = 0;
 
@@ -276,7 +289,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumTestedTraits() {
+    public function getNumTestedTraits()
+    {
         return $this->numTestedTraits;
     }
 
@@ -285,7 +299,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumMethods() {
+    public function getNumMethods()
+    {
         if ($this->numMethods === null) {
             $this->numMethods = 0;
 
@@ -314,14 +329,15 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumTestedMethods() {
+    public function getNumTestedMethods()
+    {
         if ($this->numTestedMethods === null) {
             $this->numTestedMethods = 0;
 
             foreach ($this->classes as $class) {
                 foreach ($class['methods'] as $method) {
                     if ($method['executableLines'] > 0 &&
-                            $method['coverage'] == 100) {
+                        $method['coverage'] == 100) {
                         $this->numTestedMethods++;
                     }
                 }
@@ -330,7 +346,7 @@ class File extends AbstractNode {
             foreach ($this->traits as $trait) {
                 foreach ($trait['methods'] as $method) {
                     if ($method['executableLines'] > 0 &&
-                            $method['coverage'] == 100) {
+                        $method['coverage'] == 100) {
                         $this->numTestedMethods++;
                     }
                 }
@@ -345,7 +361,8 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumFunctions() {
+    public function getNumFunctions()
+    {
         return count($this->functions);
     }
 
@@ -354,13 +371,14 @@ class File extends AbstractNode {
      *
      * @return int
      */
-    public function getNumTestedFunctions() {
+    public function getNumTestedFunctions()
+    {
         if ($this->numTestedFunctions === null) {
             $this->numTestedFunctions = 0;
 
             foreach ($this->functions as $function) {
                 if ($function['executableLines'] > 0 &&
-                        $function['coverage'] == 100) {
+                    $function['coverage'] == 100) {
                     $this->numTestedFunctions++;
                 }
             }
@@ -372,7 +390,8 @@ class File extends AbstractNode {
     /**
      * Calculates coverage statistics for the file.
      */
-    protected function calculateStatistics() {
+    protected function calculateStatistics()
+    {
         $classStack = $functionStack = [];
 
         if ($this->cacheTokens) {
@@ -414,38 +433,38 @@ class File extends AbstractNode {
 
             if (isset($this->coverageData[$lineNumber])) {
                 if (isset($currentClass)) {
-                    $currentClass['executableLines'] ++;
+                    $currentClass['executableLines']++;
                 }
 
                 if (isset($currentTrait)) {
-                    $currentTrait['executableLines'] ++;
+                    $currentTrait['executableLines']++;
                 }
 
                 if (isset($currentMethod)) {
-                    $currentMethod['executableLines'] ++;
+                    $currentMethod['executableLines']++;
                 }
 
                 if (isset($currentFunction)) {
-                    $currentFunction['executableLines'] ++;
+                    $currentFunction['executableLines']++;
                 }
 
                 $this->numExecutableLines++;
 
                 if (count($this->coverageData[$lineNumber]) > 0) {
                     if (isset($currentClass)) {
-                        $currentClass['executedLines'] ++;
+                        $currentClass['executedLines']++;
                     }
 
                     if (isset($currentTrait)) {
-                        $currentTrait['executedLines'] ++;
+                        $currentTrait['executedLines']++;
                     }
 
                     if (isset($currentMethod)) {
-                        $currentMethod['executedLines'] ++;
+                        $currentMethod['executedLines']++;
                     }
 
                     if (isset($currentFunction)) {
-                        $currentFunction['executedLines'] ++;
+                        $currentFunction['executedLines']++;
                     }
 
                     $this->numExecutedLines++;
@@ -459,7 +478,7 @@ class File extends AbstractNode {
 
                     if ($classStack) {
                         end($classStack);
-                        $key = key($classStack);
+                        $key          = key($classStack);
                         $currentClass = &$classStack[$key];
                         unset($classStack[$key]);
                     }
@@ -475,7 +494,7 @@ class File extends AbstractNode {
 
                     if ($functionStack) {
                         end($functionStack);
-                        $key = key($functionStack);
+                        $key             = key($functionStack);
                         $currentFunction = &$functionStack[$key];
                         unset($functionStack[$key]);
                     }
@@ -493,7 +512,8 @@ class File extends AbstractNode {
                 }
 
                 $method['crap'] = $this->crap(
-                        $method['ccn'], $method['coverage']
+                    $method['ccn'],
+                    $method['coverage']
                 );
 
                 $trait['ccn'] += $method['ccn'];
@@ -511,7 +531,8 @@ class File extends AbstractNode {
             }
 
             $trait['crap'] = $this->crap(
-                    $trait['ccn'], $trait['coverage']
+                $trait['ccn'],
+                $trait['coverage']
             );
         }
 
@@ -525,7 +546,8 @@ class File extends AbstractNode {
                 }
 
                 $method['crap'] = $this->crap(
-                        $method['ccn'], $method['coverage']
+                    $method['ccn'],
+                    $method['coverage']
                 );
 
                 $class['ccn'] += $method['ccn'];
@@ -543,7 +565,8 @@ class File extends AbstractNode {
             }
 
             $class['crap'] = $this->crap(
-                    $class['ccn'], $class['coverage']
+                $class['ccn'],
+                $class['coverage']
             );
         }
     }
@@ -551,7 +574,8 @@ class File extends AbstractNode {
     /**
      * @param \PHP_Token_Stream $tokens
      */
-    protected function processClasses(\PHP_Token_Stream $tokens) {
+    protected function processClasses(\PHP_Token_Stream $tokens)
+    {
         $classes = $tokens->getClasses();
         unset($tokens);
 
@@ -559,26 +583,26 @@ class File extends AbstractNode {
 
         foreach ($classes as $className => $class) {
             $this->classes[$className] = [
-                'className' => $className,
-                'methods' => [],
-                'startLine' => $class['startLine'],
+                'className'       => $className,
+                'methods'         => [],
+                'startLine'       => $class['startLine'],
                 'executableLines' => 0,
-                'executedLines' => 0,
-                'ccn' => 0,
-                'coverage' => 0,
-                'crap' => 0,
-                'package' => $class['package'],
-                'link' => $link . $class['startLine']
+                'executedLines'   => 0,
+                'ccn'             => 0,
+                'coverage'        => 0,
+                'crap'            => 0,
+                'package'         => $class['package'],
+                'link'            => $link . $class['startLine']
             ];
 
             $this->startLines[$class['startLine']] = &$this->classes[$className];
-            $this->endLines[$class['endLine']] = &$this->classes[$className];
+            $this->endLines[$class['endLine']]     = &$this->classes[$className];
 
             foreach ($class['methods'] as $methodName => $method) {
                 $this->classes[$className]['methods'][$methodName] = $this->newMethod($methodName, $method, $link);
 
                 $this->startLines[$method['startLine']] = &$this->classes[$className]['methods'][$methodName];
-                $this->endLines[$method['endLine']] = &$this->classes[$className]['methods'][$methodName];
+                $this->endLines[$method['endLine']]     = &$this->classes[$className]['methods'][$methodName];
             }
         }
     }
@@ -586,7 +610,8 @@ class File extends AbstractNode {
     /**
      * @param \PHP_Token_Stream $tokens
      */
-    protected function processTraits(\PHP_Token_Stream $tokens) {
+    protected function processTraits(\PHP_Token_Stream $tokens)
+    {
         $traits = $tokens->getTraits();
         unset($tokens);
 
@@ -594,26 +619,26 @@ class File extends AbstractNode {
 
         foreach ($traits as $traitName => $trait) {
             $this->traits[$traitName] = [
-                'traitName' => $traitName,
-                'methods' => [],
-                'startLine' => $trait['startLine'],
+                'traitName'       => $traitName,
+                'methods'         => [],
+                'startLine'       => $trait['startLine'],
                 'executableLines' => 0,
-                'executedLines' => 0,
-                'ccn' => 0,
-                'coverage' => 0,
-                'crap' => 0,
-                'package' => $trait['package'],
-                'link' => $link . $trait['startLine']
+                'executedLines'   => 0,
+                'ccn'             => 0,
+                'coverage'        => 0,
+                'crap'            => 0,
+                'package'         => $trait['package'],
+                'link'            => $link . $trait['startLine']
             ];
 
             $this->startLines[$trait['startLine']] = &$this->traits[$traitName];
-            $this->endLines[$trait['endLine']] = &$this->traits[$traitName];
+            $this->endLines[$trait['endLine']]     = &$this->traits[$traitName];
 
             foreach ($trait['methods'] as $methodName => $method) {
                 $this->traits[$traitName]['methods'][$methodName] = $this->newMethod($methodName, $method, $link);
 
                 $this->startLines[$method['startLine']] = &$this->traits[$traitName]['methods'][$methodName];
-                $this->endLines[$method['endLine']] = &$this->traits[$traitName]['methods'][$methodName];
+                $this->endLines[$method['endLine']]     = &$this->traits[$traitName]['methods'][$methodName];
             }
         }
     }
@@ -621,7 +646,8 @@ class File extends AbstractNode {
     /**
      * @param \PHP_Token_Stream $tokens
      */
-    protected function processFunctions(\PHP_Token_Stream $tokens) {
+    protected function processFunctions(\PHP_Token_Stream $tokens)
+    {
         $functions = $tokens->getFunctions();
         unset($tokens);
 
@@ -629,19 +655,19 @@ class File extends AbstractNode {
 
         foreach ($functions as $functionName => $function) {
             $this->functions[$functionName] = [
-                'functionName' => $functionName,
-                'signature' => $function['signature'],
-                'startLine' => $function['startLine'],
+                'functionName'    => $functionName,
+                'signature'       => $function['signature'],
+                'startLine'       => $function['startLine'],
                 'executableLines' => 0,
-                'executedLines' => 0,
-                'ccn' => $function['ccn'],
-                'coverage' => 0,
-                'crap' => 0,
-                'link' => $link . $function['startLine']
+                'executedLines'   => 0,
+                'ccn'             => $function['ccn'],
+                'coverage'        => 0,
+                'crap'            => 0,
+                'link'            => $link . $function['startLine']
             ];
 
             $this->startLines[$function['startLine']] = &$this->functions[$functionName];
-            $this->endLines[$function['endLine']] = &$this->functions[$functionName];
+            $this->endLines[$function['endLine']]     = &$this->functions[$functionName];
         }
     }
 
@@ -654,7 +680,8 @@ class File extends AbstractNode {
      *
      * @return string
      */
-    protected function crap($ccn, $coverage) {
+    protected function crap($ccn, $coverage)
+    {
         if ($coverage == 0) {
             return (string) (pow($ccn, 2) + $ccn);
         }
@@ -664,7 +691,8 @@ class File extends AbstractNode {
         }
 
         return sprintf(
-                '%01.2F', pow($ccn, 2) * pow(1 - $coverage / 100, 3) + $ccn
+            '%01.2F',
+            pow($ccn, 2) * pow(1 - $coverage/100, 3) + $ccn
         );
     }
 
@@ -675,20 +703,20 @@ class File extends AbstractNode {
      *
      * @return array
      */
-    private function newMethod($methodName, array $method, $link) {
+    private function newMethod($methodName, array $method, $link)
+    {
         return [
-            'methodName' => $methodName,
-            'visibility' => $method['visibility'],
-            'signature' => $method['signature'],
-            'startLine' => $method['startLine'],
-            'endLine' => $method['endLine'],
+            'methodName'      => $methodName,
+            'visibility'      => $method['visibility'],
+            'signature'       => $method['signature'],
+            'startLine'       => $method['startLine'],
+            'endLine'         => $method['endLine'],
             'executableLines' => 0,
-            'executedLines' => 0,
-            'ccn' => $method['ccn'],
-            'coverage' => 0,
-            'crap' => 0,
-            'link' => $link . $method['startLine'],
+            'executedLines'   => 0,
+            'ccn'             => $method['ccn'],
+            'coverage'        => 0,
+            'crap'            => 0,
+            'link'            => $link . $method['startLine'],
         ];
     }
-
 }

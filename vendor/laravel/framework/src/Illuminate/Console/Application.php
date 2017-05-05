@@ -14,8 +14,8 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Illuminate\Contracts\Console\Application as ApplicationContract;
 
-class Application extends SymfonyApplication implements ApplicationContract {
-
+class Application extends SymfonyApplication implements ApplicationContract
+{
     /**
      * The Laravel application instance.
      *
@@ -45,7 +45,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  string  $version
      * @return void
      */
-    public function __construct(Container $laravel, Dispatcher $events, $version) {
+    public function __construct(Container $laravel, Dispatcher $events, $version)
+    {
         parent::__construct('Laravel Framework', $version);
 
         $this->laravel = $laravel;
@@ -62,7 +63,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return string
      */
-    public static function phpBinary() {
+    public static function phpBinary()
+    {
         return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false));
     }
 
@@ -71,7 +73,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return string
      */
-    public static function artisanBinary() {
+    public static function artisanBinary()
+    {
         return defined('ARTISAN_BINARY') ? ProcessUtils::escapeArgument(ARTISAN_BINARY) : 'artisan';
     }
 
@@ -81,7 +84,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  string  $string
      * @return string
      */
-    public static function formatCommandString($string) {
+    public static function formatCommandString($string)
+    {
         return sprintf('%s %s %s', static::phpBinary(), static::artisanBinary(), $string);
     }
 
@@ -91,7 +95,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  \Closure  $callback
      * @return void
      */
-    public static function starting(Closure $callback) {
+    public static function starting(Closure $callback)
+    {
         static::$bootstrappers[] = $callback;
     }
 
@@ -100,7 +105,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return void
      */
-    protected function bootstrap() {
+    protected function bootstrap()
+    {
         foreach (static::$bootstrappers as $bootstrapper) {
             $bootstrapper($this);
         }
@@ -111,8 +117,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return void
      */
-
-    public static function forgetBootstrappers() {
+    public static function forgetBootstrappers()
+    {
         static::$bootstrappers = [];
     }
 
@@ -124,7 +130,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  \Symfony\Component\Console\Output\OutputInterface  $outputBuffer
      * @return int
      */
-    public function call($command, array $parameters = [], $outputBuffer = null) {
+    public function call($command, array $parameters = [], $outputBuffer = null)
+    {
         $parameters = collect($parameters)->prepend($command);
 
         $this->lastOutput = $outputBuffer ?: new BufferedOutput;
@@ -143,7 +150,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return string
      */
-    public function output() {
+    public function output()
+    {
         return $this->lastOutput ? $this->lastOutput->fetch() : '';
     }
 
@@ -153,7 +161,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  \Symfony\Component\Console\Command\Command  $command
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function add(SymfonyCommand $command) {
+    public function add(SymfonyCommand $command)
+    {
         if ($command instanceof Command) {
             $command->setLaravel($this->laravel);
         }
@@ -167,7 +176,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  \Symfony\Component\Console\Command\Command  $command
      * @return \Symfony\Component\Console\Command\Command
      */
-    protected function addToParent(SymfonyCommand $command) {
+    protected function addToParent(SymfonyCommand $command)
+    {
         return parent::add($command);
     }
 
@@ -177,7 +187,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  string  $command
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function resolve($command) {
+    public function resolve($command)
+    {
         return $this->add($this->laravel->make($command));
     }
 
@@ -187,7 +198,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      * @param  array|mixed  $commands
      * @return $this
      */
-    public function resolveCommands($commands) {
+    public function resolveCommands($commands)
+    {
         $commands = is_array($commands) ? $commands : func_get_args();
 
         foreach ($commands as $command) {
@@ -204,7 +216,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return \Symfony\Component\Console\Input\InputDefinition
      */
-    protected function getDefaultInputDefinition() {
+    protected function getDefaultInputDefinition()
+    {
         return tap(parent::getDefaultInputDefinition(), function ($definition) {
             $definition->addOption($this->getEnvironmentOption());
         });
@@ -215,7 +228,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return \Symfony\Component\Console\Input\InputOption
      */
-    protected function getEnvironmentOption() {
+    protected function getEnvironmentOption()
+    {
         $message = 'The environment the command should run under';
 
         return new InputOption('--env', null, InputOption::VALUE_OPTIONAL, $message);
@@ -226,8 +240,8 @@ class Application extends SymfonyApplication implements ApplicationContract {
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
-    public function getLaravel() {
+    public function getLaravel()
+    {
         return $this->laravel;
     }
-
 }

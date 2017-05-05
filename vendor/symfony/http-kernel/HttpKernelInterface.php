@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface HttpKernelInterface {
-
+interface HttpKernelInterface
+{
     const MASTER_REQUEST = 1;
     const SUB_REQUEST = 2;
 

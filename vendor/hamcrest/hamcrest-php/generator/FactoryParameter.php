@@ -1,11 +1,11 @@
 <?php
 
 /*
-  Copyright (c) 2009 hamcrest.org
+ Copyright (c) 2009 hamcrest.org
  */
 
-class FactoryParameter {
-
+class FactoryParameter
+{
     /**
      * @var FactoryMethod
      */
@@ -16,12 +16,14 @@ class FactoryParameter {
      */
     private $reflector;
 
-    public function __construct(FactoryMethod $method, ReflectionParameter $reflector) {
+    public function __construct(FactoryMethod $method, ReflectionParameter $reflector)
+    {
         $this->method = $method;
         $this->reflector = $reflector;
     }
 
-    public function getDeclaration() {
+    public function getDeclaration()
+    {
         if ($this->reflector->isArray()) {
             $code = 'array ';
         } else {
@@ -55,12 +57,13 @@ class FactoryParameter {
         return $code;
     }
 
-    public function getInvocation() {
+    public function getInvocation()
+    {
         return '$' . $this->reflector->name;
     }
 
-    public function getMethod() {
+    public function getMethod()
+    {
         return $this->method;
     }
-
 }

@@ -7,8 +7,8 @@ use Illuminate\Container\Container;
 use Pheanstalk\Job as PheanstalkJob;
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-class BeanstalkdJob extends Job implements JobContract {
-
+class BeanstalkdJob extends Job implements JobContract
+{
     /**
      * The Pheanstalk instance.
      *
@@ -33,7 +33,8 @@ class BeanstalkdJob extends Job implements JobContract {
      * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, Pheanstalk $pheanstalk, PheanstalkJob $job, $connectionName, $queue) {
+    public function __construct(Container $container, Pheanstalk $pheanstalk, PheanstalkJob $job, $connectionName, $queue)
+    {
         $this->job = $job;
         $this->queue = $queue;
         $this->container = $container;
@@ -47,7 +48,8 @@ class BeanstalkdJob extends Job implements JobContract {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         parent::release($delay);
 
         $priority = Pheanstalk::DEFAULT_PRIORITY;
@@ -60,7 +62,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return void
      */
-    public function bury() {
+    public function bury()
+    {
         parent::release();
 
         $this->pheanstalk->bury($this->job);
@@ -71,7 +74,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         parent::delete();
 
         $this->pheanstalk->delete($this->job);
@@ -82,7 +86,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         $stats = $this->pheanstalk->statsJob($this->job);
 
         return (int) $stats->reserves;
@@ -93,7 +98,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getJobId() {
+    public function getJobId()
+    {
         return $this->job->getId();
     }
 
@@ -102,7 +108,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getRawBody() {
+    public function getRawBody()
+    {
         return $this->job->getData();
     }
 
@@ -111,7 +118,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return \Pheanstalk\Pheanstalk
      */
-    public function getPheanstalk() {
+    public function getPheanstalk()
+    {
         return $this->pheanstalk;
     }
 
@@ -120,8 +128,8 @@ class BeanstalkdJob extends Job implements JobContract {
      *
      * @return \Pheanstalk\Job
      */
-    public function getPheanstalkJob() {
+    public function getPheanstalkJob()
+    {
         return $this->job;
     }
-
 }

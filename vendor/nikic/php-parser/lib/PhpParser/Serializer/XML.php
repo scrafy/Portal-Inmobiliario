@@ -10,8 +10,8 @@ use XMLWriter;
 /**
  * @deprecated
  */
-class XML implements Serializer {
-
+class XML implements Serializer
+{
     protected $writer;
 
     /**
@@ -28,10 +28,10 @@ class XML implements Serializer {
         $this->writer->startDocument('1.0', 'UTF-8');
 
         $this->writer->startElement('AST');
-        $this->writer->writeAttribute('xmlns:node', 'http://nikic.github.com/PHPParser/XML/node');
-        $this->writer->writeAttribute('xmlns:subNode', 'http://nikic.github.com/PHPParser/XML/subNode');
+        $this->writer->writeAttribute('xmlns:node',      'http://nikic.github.com/PHPParser/XML/node');
+        $this->writer->writeAttribute('xmlns:subNode',   'http://nikic.github.com/PHPParser/XML/subNode');
         $this->writer->writeAttribute('xmlns:attribute', 'http://nikic.github.com/PHPParser/XML/attribute');
-        $this->writer->writeAttribute('xmlns:scalar', 'http://nikic.github.com/PHPParser/XML/scalar');
+        $this->writer->writeAttribute('xmlns:scalar',    'http://nikic.github.com/PHPParser/XML/scalar');
 
         $this->_serialize($nodes);
 
@@ -86,5 +86,4 @@ class XML implements Serializer {
             throw new \InvalidArgumentException('Unexpected node type');
         }
     }
-
 }

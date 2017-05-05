@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesRawPhp {
-
+trait CompilesRawPhp
+{
     /**
      * Compile the raw PHP statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compilePhp($expression) {
+    protected function compilePhp($expression)
+    {
         return $expression ? "<?php {$expression}; ?>" : '<?php ';
     }
 
@@ -19,7 +20,8 @@ trait CompilesRawPhp {
      *
      * @return string
      */
-    protected function compileEndphp() {
+    protected function compileEndphp()
+    {
         return ' ?>';
     }
 
@@ -29,8 +31,8 @@ trait CompilesRawPhp {
      * @param  string  $expression
      * @return string
      */
-    protected function compileUnset($expression) {
+    protected function compileUnset($expression)
+    {
         return "<?php unset{$expression}; ?>";
     }
-
 }

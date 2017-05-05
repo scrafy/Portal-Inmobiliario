@@ -22,8 +22,8 @@ use Prophecy\Exception\Prediction\UnexpectedCallsException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class NoCallsPrediction implements PredictionInterface {
-
+class NoCallsPrediction implements PredictionInterface
+{
     private $util;
 
     /**
@@ -31,7 +31,8 @@ class NoCallsPrediction implements PredictionInterface {
      *
      * @param null|StringUtil $util
      */
-    public function __construct(StringUtil $util = null) {
+    public function __construct(StringUtil $util = null)
+    {
         $this->util = $util ?: new StringUtil;
     }
 
@@ -44,7 +45,8 @@ class NoCallsPrediction implements PredictionInterface {
      *
      * @throws \Prophecy\Exception\Prediction\UnexpectedCallsException
      */
-    public function check(array $calls, ObjectProphecy $object, MethodProphecy $method) {
+    public function check(array $calls, ObjectProphecy $object, MethodProphecy $method)
+    {
         if (!count($calls)) {
             return;
         }
@@ -52,10 +54,15 @@ class NoCallsPrediction implements PredictionInterface {
         $verb = count($calls) === 1 ? 'was' : 'were';
 
         throw new UnexpectedCallsException(sprintf(
-                "No calls expected that match:\n" .
-                "  %s->%s(%s)\n" .
-                "but %d %s made:\n%s", get_class($object->reveal()), $method->getMethodName(), $method->getArgumentsWildcard(), count($calls), $verb, $this->util->stringifyCalls($calls)
+            "No calls expected that match:\n".
+            "  %s->%s(%s)\n".
+            "but %d %s made:\n%s",
+            get_class($object->reveal()),
+            $method->getMethodName(),
+            $method->getArgumentsWildcard(),
+            count($calls),
+            $verb,
+            $this->util->stringifyCalls($calls)
         ), $method, $calls);
     }
-
 }

@@ -10,14 +10,15 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Illuminate\Contracts\View\Factory as ViewFactoryContract;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
-class RoutingServiceProvider extends ServiceProvider {
-
+class RoutingServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerRouter();
 
         $this->registerUrlGenerator();
@@ -36,7 +37,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerRouter() {
+    protected function registerRouter()
+    {
         $this->app->singleton('router', function ($app) {
             return new Router($app['events'], $app);
         });
@@ -47,7 +49,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerUrlGenerator() {
+    protected function registerUrlGenerator()
+    {
         $this->app->singleton('url', function ($app) {
             $routes = $app['router']->getRoutes();
 
@@ -57,9 +60,9 @@ class RoutingServiceProvider extends ServiceProvider {
             $app->instance('routes', $routes);
 
             $url = new UrlGenerator(
-                    $routes, $app->rebinding(
-                            'request', $this->requestRebinder()
-                    )
+                $routes, $app->rebinding(
+                    'request', $this->requestRebinder()
+                )
             );
 
             $url->setSessionResolver(function () {
@@ -82,7 +85,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return \Closure
      */
-    protected function requestRebinder() {
+    protected function requestRebinder()
+    {
         return function ($app, $request) {
             $app['url']->setRequest($request);
         };
@@ -93,7 +97,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerRedirector() {
+    protected function registerRedirector()
+    {
         $this->app->singleton('redirect', function ($app) {
             $redirector = new Redirector($app['url']);
 
@@ -113,7 +118,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerPsrRequest() {
+    protected function registerPsrRequest()
+    {
         $this->app->bind(ServerRequestInterface::class, function ($app) {
             return (new DiactorosFactory)->createRequest($app->make('request'));
         });
@@ -124,7 +130,8 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerPsrResponse() {
+    protected function registerPsrResponse()
+    {
         $this->app->bind(ResponseInterface::class, function ($app) {
             return new PsrResponse();
         });
@@ -135,10 +142,10 @@ class RoutingServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerResponseFactory() {
+    protected function registerResponseFactory()
+    {
         $this->app->singleton(ResponseFactoryContract::class, function ($app) {
             return new ResponseFactory($app[ViewFactoryContract::class], $app['redirect']);
         });
     }
-
 }

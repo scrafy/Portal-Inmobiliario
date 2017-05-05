@@ -16,13 +16,13 @@ namespace Symfony\Component\HttpKernel\Fragment;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class EsiFragmentRenderer extends AbstractSurrogateFragmentRenderer {
-
+class EsiFragmentRenderer extends AbstractSurrogateFragmentRenderer
+{
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'esi';
     }
-
 }

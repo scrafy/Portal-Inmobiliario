@@ -4,8 +4,8 @@ namespace Illuminate\Auth;
 
 use InvalidArgumentException;
 
-trait CreatesUserProviders {
-
+trait CreatesUserProviders
+{
     /**
      * The registered custom provider creators.
      *
@@ -21,12 +21,13 @@ trait CreatesUserProviders {
      *
      * @throws \InvalidArgumentException
      */
-    public function createUserProvider($provider) {
-        $config = $this->app['config']['auth.providers.' . $provider];
+    public function createUserProvider($provider)
+    {
+        $config = $this->app['config']['auth.providers.'.$provider];
 
         if (isset($this->customProviderCreators[$config['driver']])) {
             return call_user_func(
-                    $this->customProviderCreators[$config['driver']], $this->app, $config
+                $this->customProviderCreators[$config['driver']], $this->app, $config
             );
         }
 
@@ -46,7 +47,8 @@ trait CreatesUserProviders {
      * @param  array  $config
      * @return \Illuminate\Auth\DatabaseUserProvider
      */
-    protected function createDatabaseProvider($config) {
+    protected function createDatabaseProvider($config)
+    {
         $connection = $this->app['db']->connection();
 
         return new DatabaseUserProvider($connection, $this->app['hash'], $config['table']);
@@ -58,8 +60,8 @@ trait CreatesUserProviders {
      * @param  array  $config
      * @return \Illuminate\Auth\EloquentUserProvider
      */
-    protected function createEloquentProvider($config) {
+    protected function createEloquentProvider($config)
+    {
         return new EloquentUserProvider($this->app['hash'], $config['model']);
     }
-
 }

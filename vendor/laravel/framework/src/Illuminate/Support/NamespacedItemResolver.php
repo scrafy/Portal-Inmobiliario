@@ -2,8 +2,8 @@
 
 namespace Illuminate\Support;
 
-class NamespacedItemResolver {
-
+class NamespacedItemResolver
+{
     /**
      * A cache of the parsed items.
      *
@@ -17,7 +17,8 @@ class NamespacedItemResolver {
      * @param  string  $key
      * @return array
      */
-    public function parseKey($key) {
+    public function parseKey($key)
+    {
         // If we've already parsed the given key, we'll return the cached version we
         // already have, as this will save us some processing. We cache off every
         // key we parse so we can quickly return it on all subsequent requests.
@@ -48,7 +49,8 @@ class NamespacedItemResolver {
      * @param  array  $segments
      * @return array
      */
-    protected function parseBasicSegments(array $segments) {
+    protected function parseBasicSegments(array $segments)
+    {
         // The first segment in a basic array will always be the group, so we can go
         // ahead and grab that segment. If there is only one total segment we are
         // just pulling an entire group out of the array and not a single item.
@@ -74,7 +76,8 @@ class NamespacedItemResolver {
      * @param  string  $key
      * @return array
      */
-    protected function parseNamespacedSegments($key) {
+    protected function parseNamespacedSegments($key)
+    {
         list($namespace, $item) = explode('::', $key);
 
         // First we'll just explode the first segment to get the namespace and group
@@ -83,7 +86,7 @@ class NamespacedItemResolver {
         $itemSegments = explode('.', $item);
 
         $groupAndItem = array_slice(
-                $this->parseBasicSegments($itemSegments), 1
+            $this->parseBasicSegments($itemSegments), 1
         );
 
         return array_merge([$namespace], $groupAndItem);
@@ -96,8 +99,8 @@ class NamespacedItemResolver {
      * @param  array   $parsed
      * @return void
      */
-    public function setParsedKey($key, $parsed) {
+    public function setParsedKey($key, $parsed)
+    {
         $this->parsed[$key] = $parsed;
     }
-
 }

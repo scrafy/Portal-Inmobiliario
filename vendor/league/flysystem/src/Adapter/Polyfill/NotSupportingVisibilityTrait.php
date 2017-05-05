@@ -4,8 +4,8 @@ namespace League\Flysystem\Adapter\Polyfill;
 
 use LogicException;
 
-trait NotSupportingVisibilityTrait {
-
+trait NotSupportingVisibilityTrait
+{
     /**
      * Get the visibility of a file.
      *
@@ -13,7 +13,8 @@ trait NotSupportingVisibilityTrait {
      *
      * @throws LogicException
      */
-    public function getVisibility($path) {
+    public function getVisibility($path)
+    {
         throw new LogicException(get_class($this) . ' does not support visibility. Path: ' . $path);
     }
 
@@ -25,8 +26,8 @@ trait NotSupportingVisibilityTrait {
      *
      * @throws LogicException
      */
-    public function setVisibility($path, $visibility) {
+    public function setVisibility($path, $visibility)
+    {
         throw new LogicException(get_class($this) . ' does not support visibility. Path: ' . $path . ', visibility: ' . $visibility);
     }
-
 }

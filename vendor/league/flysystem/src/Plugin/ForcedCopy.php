@@ -4,12 +4,13 @@ namespace League\Flysystem\Plugin;
 
 use League\Flysystem\FileNotFoundException;
 
-class ForcedCopy extends AbstractPlugin {
-
+class ForcedCopy extends AbstractPlugin
+{
     /**
      * @inheritdoc
      */
-    public function getMethod() {
+    public function getMethod()
+    {
         return 'forceCopy';
     }
 
@@ -23,7 +24,8 @@ class ForcedCopy extends AbstractPlugin {
      *
      * @return bool True on success, false on failure.
      */
-    public function handle($path, $newpath) {
+    public function handle($path, $newpath)
+    {
         try {
             $deleted = $this->filesystem->delete($newpath);
         } catch (FileNotFoundException $e) {
@@ -37,5 +39,4 @@ class ForcedCopy extends AbstractPlugin {
 
         return false;
     }
-
 }

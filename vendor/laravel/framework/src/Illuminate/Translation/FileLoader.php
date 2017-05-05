@@ -4,8 +4,8 @@ namespace Illuminate\Translation;
 
 use Illuminate\Filesystem\Filesystem;
 
-class FileLoader implements LoaderInterface {
-
+class FileLoader implements LoaderInterface
+{
     /**
      * The filesystem instance.
      *
@@ -34,7 +34,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $path
      * @return void
      */
-    public function __construct(Filesystem $files, $path) {
+    public function __construct(Filesystem $files, $path)
+    {
         $this->path = $path;
         $this->files = $files;
     }
@@ -47,7 +48,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $namespace
      * @return array
      */
-    public function load($locale, $group, $namespace = null) {
+    public function load($locale, $group, $namespace = null)
+    {
         if ($group == '*' && $namespace == '*') {
             return $this->loadJsonPath($this->path, $locale);
         }
@@ -67,7 +69,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $namespace
      * @return array
      */
-    protected function loadNamespaced($locale, $group, $namespace) {
+    protected function loadNamespaced($locale, $group, $namespace)
+    {
         if (isset($this->hints[$namespace])) {
             $lines = $this->loadPath($this->hints[$namespace], $locale, $group);
 
@@ -86,7 +89,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $namespace
      * @return array
      */
-    protected function loadNamespaceOverrides(array $lines, $locale, $group, $namespace) {
+    protected function loadNamespaceOverrides(array $lines, $locale, $group, $namespace)
+    {
         $file = "{$this->path}/vendor/{$namespace}/{$locale}/{$group}.php";
 
         if ($this->files->exists($file)) {
@@ -104,7 +108,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $group
      * @return array
      */
-    protected function loadPath($path, $locale, $group) {
+    protected function loadPath($path, $locale, $group)
+    {
         if ($this->files->exists($full = "{$path}/{$locale}/{$group}.php")) {
             return $this->files->getRequire($full);
         }
@@ -119,7 +124,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $locale
      * @return array
      */
-    protected function loadJsonPath($path, $locale) {
+    protected function loadJsonPath($path, $locale)
+    {
         if ($this->files->exists($full = "{$path}/{$locale}.json")) {
             return json_decode($this->files->get($full), true);
         }
@@ -134,7 +140,8 @@ class FileLoader implements LoaderInterface {
      * @param  string  $hint
      * @return void
      */
-    public function addNamespace($namespace, $hint) {
+    public function addNamespace($namespace, $hint)
+    {
         $this->hints[$namespace] = $hint;
     }
 
@@ -143,8 +150,8 @@ class FileLoader implements LoaderInterface {
      *
      * @return array
      */
-    public function namespaces() {
+    public function namespaces()
+    {
         return $this->hints;
     }
-
 }

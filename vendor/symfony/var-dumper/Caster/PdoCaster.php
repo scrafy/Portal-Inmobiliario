@@ -18,8 +18,8 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class PdoCaster {
-
+class PdoCaster
+{
     private static $pdoAttributes = array(
         'CASE' => array(
             \PDO::CASE_LOWER => 'LOWER',
@@ -57,7 +57,8 @@ class PdoCaster {
         ),
     );
 
-    public static function castPdo(\PDO $c, array $a, Stub $stub, $isNested) {
+    public static function castPdo(\PDO $c, array $a, Stub $stub, $isNested)
+    {
         $attr = array();
         $errmode = $c->getAttribute(\PDO::ATTR_ERRMODE);
         $c->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -69,12 +70,11 @@ class PdoCaster {
             }
 
             try {
-                $attr[$k] = 'ERRMODE' === $k ? $errmode : $c->getAttribute(constant('PDO::ATTR_' . $k));
+                $attr[$k] = 'ERRMODE' === $k ? $errmode : $c->getAttribute(constant('PDO::ATTR_'.$k));
                 if ($v && isset($v[$attr[$k]])) {
                     $attr[$k] = new ConstStub($v[$attr[$k]], $attr[$k]);
                 }
             } catch (\Exception $e) {
-                
             }
         }
         if (isset($attr[$k = 'STATEMENT_CLASS'][1])) {
@@ -86,19 +86,19 @@ class PdoCaster {
 
         $prefix = Caster::PREFIX_VIRTUAL;
         $a += array(
-            $prefix . 'inTransaction' => method_exists($c, 'inTransaction'),
-            $prefix . 'errorInfo' => $c->errorInfo(),
-            $prefix . 'attributes' => new EnumStub($attr),
+            $prefix.'inTransaction' => method_exists($c, 'inTransaction'),
+            $prefix.'errorInfo' => $c->errorInfo(),
+            $prefix.'attributes' => new EnumStub($attr),
         );
 
-        if ($a[$prefix . 'inTransaction']) {
-            $a[$prefix . 'inTransaction'] = $c->inTransaction();
+        if ($a[$prefix.'inTransaction']) {
+            $a[$prefix.'inTransaction'] = $c->inTransaction();
         } else {
-            unset($a[$prefix . 'inTransaction']);
+            unset($a[$prefix.'inTransaction']);
         }
 
-        if (!isset($a[$prefix . 'errorInfo'][1], $a[$prefix . 'errorInfo'][2])) {
-            unset($a[$prefix . 'errorInfo']);
+        if (!isset($a[$prefix.'errorInfo'][1], $a[$prefix.'errorInfo'][2])) {
+            unset($a[$prefix.'errorInfo']);
         }
 
         $c->setAttribute(\PDO::ATTR_ERRMODE, $errmode);
@@ -106,15 +106,15 @@ class PdoCaster {
         return $a;
     }
 
-    public static function castPdoStatement(\PDOStatement $c, array $a, Stub $stub, $isNested) {
+    public static function castPdoStatement(\PDOStatement $c, array $a, Stub $stub, $isNested)
+    {
         $prefix = Caster::PREFIX_VIRTUAL;
-        $a[$prefix . 'errorInfo'] = $c->errorInfo();
+        $a[$prefix.'errorInfo'] = $c->errorInfo();
 
-        if (!isset($a[$prefix . 'errorInfo'][1], $a[$prefix . 'errorInfo'][2])) {
-            unset($a[$prefix . 'errorInfo']);
+        if (!isset($a[$prefix.'errorInfo'][1], $a[$prefix.'errorInfo'][2])) {
+            unset($a[$prefix.'errorInfo']);
         }
 
         return $a;
     }
-
 }

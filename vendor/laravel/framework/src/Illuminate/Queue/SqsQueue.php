@@ -6,8 +6,8 @@ use Aws\Sqs\SqsClient;
 use Illuminate\Queue\Jobs\SqsJob;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 
-class SqsQueue extends Queue implements QueueContract {
-
+class SqsQueue extends Queue implements QueueContract
+{
     /**
      * The Amazon SQS instance.
      *
@@ -37,7 +37,8 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string  $prefix
      * @return void
      */
-    public function __construct(SqsClient $sqs, $default, $prefix = '') {
+    public function __construct(SqsClient $sqs, $default, $prefix = '')
+    {
         $this->sqs = $sqs;
         $this->prefix = $prefix;
         $this->default = $default;
@@ -49,7 +50,8 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return int
      */
-    public function size($queue = null) {
+    public function size($queue = null)
+    {
         $response = $this->sqs->getQueueAttributes([
             'QueueUrl' => $this->getQueue($queue),
             'AttributeNames' => ['ApproximateNumberOfMessages'],
@@ -68,7 +70,8 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function push($job, $data = '', $queue = null) {
+    public function push($job, $data = '', $queue = null)
+    {
         return $this->pushRaw($this->createPayload($job, $data), $queue);
     }
 
@@ -80,10 +83,11 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  array   $options
      * @return mixed
      */
-    public function pushRaw($payload, $queue = null, array $options = []) {
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
         return $this->sqs->sendMessage([
-                    'QueueUrl' => $this->getQueue($queue), 'MessageBody' => $payload,
-                ])->get('MessageId');
+            'QueueUrl' => $this->getQueue($queue), 'MessageBody' => $payload,
+        ])->get('MessageId');
     }
 
     /**
@@ -95,12 +99,13 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function later($delay, $job, $data = '', $queue = null) {
+    public function later($delay, $job, $data = '', $queue = null)
+    {
         return $this->sqs->sendMessage([
-                    'QueueUrl' => $this->getQueue($queue),
-                    'MessageBody' => $this->createPayload($job, $data),
-                    'DelaySeconds' => $this->secondsUntil($delay),
-                ])->get('MessageId');
+            'QueueUrl' => $this->getQueue($queue),
+            'MessageBody' => $this->createPayload($job, $data),
+            'DelaySeconds' => $this->secondsUntil($delay),
+        ])->get('MessageId');
     }
 
     /**
@@ -109,7 +114,8 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
-    public function pop($queue = null) {
+    public function pop($queue = null)
+    {
         $response = $this->sqs->receiveMessage([
             'QueueUrl' => $queue = $this->getQueue($queue),
             'AttributeNames' => ['ApproximateReceiveCount'],
@@ -117,7 +123,8 @@ class SqsQueue extends Queue implements QueueContract {
 
         if (count($response['Messages']) > 0) {
             return new SqsJob(
-                    $this->container, $this->sqs, $response['Messages'][0], $this->connectionName, $queue
+                $this->container, $this->sqs, $response['Messages'][0],
+                $this->connectionName, $queue
             );
         }
     }
@@ -128,10 +135,12 @@ class SqsQueue extends Queue implements QueueContract {
      * @param  string|null  $queue
      * @return string
      */
-    public function getQueue($queue) {
+    public function getQueue($queue)
+    {
         $queue = $queue ?: $this->default;
 
-        return filter_var($queue, FILTER_VALIDATE_URL) === false ? rtrim($this->prefix, '/') . '/' . $queue : $queue;
+        return filter_var($queue, FILTER_VALIDATE_URL) === false
+                        ? rtrim($this->prefix, '/').'/'.$queue : $queue;
     }
 
     /**
@@ -139,8 +148,8 @@ class SqsQueue extends Queue implements QueueContract {
      *
      * @return \Aws\Sqs\SqsClient
      */
-    public function getSqs() {
+    public function getSqs()
+    {
         return $this->sqs;
     }
-
 }

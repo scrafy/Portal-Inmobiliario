@@ -2,14 +2,15 @@
 
 namespace League\Flysystem\Plugin;
 
-class EmptyDir extends AbstractPlugin {
-
+class EmptyDir extends AbstractPlugin
+{
     /**
      * Get the method name.
      *
      * @return string
      */
-    public function getMethod() {
+    public function getMethod()
+    {
         return 'emptyDir';
     }
 
@@ -18,7 +19,8 @@ class EmptyDir extends AbstractPlugin {
      *
      * @param $dirname
      */
-    public function handle($dirname) {
+    public function handle($dirname)
+    {
         $listing = $this->filesystem->listContents($dirname, false);
 
         foreach ($listing as $item) {
@@ -29,5 +31,4 @@ class EmptyDir extends AbstractPlugin {
             }
         }
     }
-
 }

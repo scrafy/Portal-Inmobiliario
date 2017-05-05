@@ -2,14 +2,15 @@
 
 namespace PhpParser\Node\Stmt;
 
-class PropertyTest extends \PHPUnit_Framework_TestCase {
-
+class PropertyTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider provideModifiers
      */
     public function testModifiers($modifier) {
         $node = new Property(
-                constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier)), array() // invalid
+            constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier)),
+            array() // invalid
         );
 
         $this->assertTrue($node->{'is' . $modifier}());
@@ -40,5 +41,4 @@ class PropertyTest extends \PHPUnit_Framework_TestCase {
             array('static'),
         );
     }
-
 }

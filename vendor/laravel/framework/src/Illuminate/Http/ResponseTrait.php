@@ -5,8 +5,8 @@ namespace Illuminate\Http;
 use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-trait ResponseTrait {
-
+trait ResponseTrait
+{
     /**
      * The original content of the response.
      *
@@ -26,7 +26,8 @@ trait ResponseTrait {
      *
      * @return int
      */
-    public function status() {
+    public function status()
+    {
         return $this->getStatusCode();
     }
 
@@ -35,7 +36,8 @@ trait ResponseTrait {
      *
      * @return string
      */
-    public function content() {
+    public function content()
+    {
         return $this->getContent();
     }
 
@@ -44,7 +46,8 @@ trait ResponseTrait {
      *
      * @return mixed
      */
-    public function getOriginalContent() {
+    public function getOriginalContent()
+    {
         return $this->original;
     }
 
@@ -56,7 +59,8 @@ trait ResponseTrait {
      * @param  bool    $replace
      * @return $this
      */
-    public function header($key, $values, $replace = true) {
+    public function header($key, $values, $replace = true)
+    {
         $this->headers->set($key, $values, $replace);
 
         return $this;
@@ -68,7 +72,8 @@ trait ResponseTrait {
      * @param  array  $headers
      * @return $this
      */
-    public function withHeaders(array $headers) {
+    public function withHeaders(array $headers)
+    {
         foreach ($headers as $key => $value) {
             $this->headers->set($key, $value);
         }
@@ -82,7 +87,8 @@ trait ResponseTrait {
      * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
      * @return $this
      */
-    public function cookie($cookie) {
+    public function cookie($cookie)
+    {
         return call_user_func_array([$this, 'withCookie'], func_get_args());
     }
 
@@ -92,7 +98,8 @@ trait ResponseTrait {
      * @param  \Symfony\Component\HttpFoundation\Cookie|mixed  $cookie
      * @return $this
      */
-    public function withCookie($cookie) {
+    public function withCookie($cookie)
+    {
         if (is_string($cookie) && function_exists('cookie')) {
             $cookie = call_user_func_array('cookie', func_get_args());
         }
@@ -108,7 +115,8 @@ trait ResponseTrait {
      * @param  \Exception  $e
      * @return $this
      */
-    public function withException(Exception $e) {
+    public function withException(Exception $e)
+    {
         $this->exception = $e;
 
         return $this;
@@ -119,8 +127,8 @@ trait ResponseTrait {
      *
      * @throws \Illuminate\Http\Exceptions\HttpResponseException
      */
-    public function throwResponse() {
+    public function throwResponse()
+    {
         throw new HttpResponseException($this);
     }
-
 }

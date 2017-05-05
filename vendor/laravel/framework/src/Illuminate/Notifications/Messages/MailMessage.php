@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Messages;
 
-class MailMessage extends SimpleMessage {
-
+class MailMessage extends SimpleMessage
+{
     /**
      * The view to be rendered.
      *
@@ -67,7 +67,8 @@ class MailMessage extends SimpleMessage {
      * @param  array  $data
      * @return $this
      */
-    public function view($view, array $data = []) {
+    public function view($view, array $data = [])
+    {
         $this->view = $view;
         $this->viewData = $data;
 
@@ -83,7 +84,8 @@ class MailMessage extends SimpleMessage {
      * @param  array  $data
      * @return $this
      */
-    public function markdown($view, array $data = []) {
+    public function markdown($view, array $data = [])
+    {
         $this->markdown = $view;
         $this->viewData = $data;
 
@@ -99,7 +101,8 @@ class MailMessage extends SimpleMessage {
      * @param  string|null  $name
      * @return $this
      */
-    public function from($address, $name = null) {
+    public function from($address, $name = null)
+    {
         $this->from = [$address, $name];
 
         return $this;
@@ -112,7 +115,8 @@ class MailMessage extends SimpleMessage {
      * @param  string|null  $name
      * @return $this
      */
-    public function replyTo($address, $name = null) {
+    public function replyTo($address, $name = null)
+    {
         $this->replyTo = [$address, $name];
 
         return $this;
@@ -125,7 +129,8 @@ class MailMessage extends SimpleMessage {
      * @param  array  $options
      * @return $this
      */
-    public function attach($file, array $options = []) {
+    public function attach($file, array $options = [])
+    {
         $this->attachments[] = compact('file', 'options');
 
         return $this;
@@ -139,7 +144,8 @@ class MailMessage extends SimpleMessage {
      * @param  array  $options
      * @return $this
      */
-    public function attachData($data, $name, array $options = []) {
+    public function attachData($data, $name, array $options = [])
+    {
         $this->rawAttachments[] = compact('data', 'name', 'options');
 
         return $this;
@@ -153,7 +159,8 @@ class MailMessage extends SimpleMessage {
      * @param  int  $level
      * @return $this
      */
-    public function priority($level) {
+    public function priority($level)
+    {
         $this->priority = $level;
 
         return $this;
@@ -164,8 +171,8 @@ class MailMessage extends SimpleMessage {
      *
      * @return array
      */
-    public function data() {
+    public function data()
+    {
         return array_merge($this->toArray(), $this->viewData);
     }
-
 }

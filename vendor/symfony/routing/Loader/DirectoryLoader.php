@@ -15,12 +15,13 @@ use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\Resource\DirectoryResource;
 
-class DirectoryLoader extends FileLoader {
-
+class DirectoryLoader extends FileLoader
+{
     /**
      * {@inheritdoc}
      */
-    public function load($file, $type = null) {
+    public function load($file, $type = null)
+    {
         $path = $this->locator->locate($file);
 
         $collection = new RouteCollection();
@@ -29,7 +30,7 @@ class DirectoryLoader extends FileLoader {
         foreach (scandir($path) as $dir) {
             if ('.' !== $dir[0]) {
                 $this->setCurrentDir($path);
-                $subPath = $path . '/' . $dir;
+                $subPath = $path.'/'.$dir;
                 $subType = null;
 
                 if (is_dir($subPath)) {
@@ -48,10 +49,10 @@ class DirectoryLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         // only when type is forced to directory, not to conflict with AnnotationLoader
 
         return 'directory' === $type;
     }
-
 }

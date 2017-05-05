@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -14,8 +13,8 @@
  *
  * The file path to check is passed as $other in evaluate().
  */
-class PHPUnit_Framework_Constraint_IsReadable extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_IsReadable extends PHPUnit_Framework_Constraint
+{
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -24,7 +23,8 @@ class PHPUnit_Framework_Constraint_IsReadable extends PHPUnit_Framework_Constrai
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return is_readable($other);
     }
 
@@ -38,9 +38,11 @@ class PHPUnit_Framework_Constraint_IsReadable extends PHPUnit_Framework_Constrai
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return sprintf(
-                '"%s" is readable', $other
+            '"%s" is readable',
+            $other
         );
     }
 
@@ -49,8 +51,8 @@ class PHPUnit_Framework_Constraint_IsReadable extends PHPUnit_Framework_Constrai
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'is readable';
     }
-
 }

@@ -1,12 +1,11 @@
 <?php
-
-class Issue1468Test extends PHPUnit_Framework_TestCase {
-
+class Issue1468Test extends PHPUnit_Framework_TestCase
+{
     /**
      * @todo Implement this test
      */
-    public function testFailure() {
+    public function testFailure()
+    {
         $this->markTestIncomplete();
     }
-
 }

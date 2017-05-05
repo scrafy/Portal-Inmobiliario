@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,15 +11,15 @@
 /**
  * Thrown when an assertion failed.
  */
-class PHPUnit_Framework_AssertionFailedError extends PHPUnit_Framework_Exception implements PHPUnit_Framework_SelfDescribing {
-
+class PHPUnit_Framework_AssertionFailedError extends PHPUnit_Framework_Exception implements PHPUnit_Framework_SelfDescribing
+{
     /**
      * Wrapper for getMessage() which is declared as final.
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return $this->getMessage();
     }
-
 }

@@ -14,9 +14,10 @@ namespace Symfony\Component\CssSelector\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
-class CssSelectorConverterTest extends TestCase {
-
-    public function testCssToXPath() {
+class CssSelectorConverterTest extends TestCase
+{
+    public function testCssToXPath()
+    {
         $converter = new CssSelectorConverter();
 
         $this->assertEquals('descendant-or-self::*', $converter->toXPath(''));
@@ -27,7 +28,8 @@ class CssSelectorConverterTest extends TestCase {
         $this->assertEquals('descendant-or-self::h1', $converter->toXPath('H1'));
     }
 
-    public function testCssToXPathXml() {
+    public function testCssToXPathXml()
+    {
         $converter = new CssSelectorConverter(false);
 
         $this->assertEquals('descendant-or-self::H1', $converter->toXPath('H1'));
@@ -37,19 +39,22 @@ class CssSelectorConverterTest extends TestCase {
      * @expectedException \Symfony\Component\CssSelector\Exception\ParseException
      * @expectedExceptionMessage Expected identifier, but <eof at 3> found.
      */
-    public function testParseExceptions() {
+    public function testParseExceptions()
+    {
         $converter = new CssSelectorConverter();
         $converter->toXPath('h1:');
     }
 
     /** @dataProvider getCssToXPathWithoutPrefixTestData */
-    public function testCssToXPathWithoutPrefix($css, $xpath) {
+    public function testCssToXPathWithoutPrefix($css, $xpath)
+    {
         $converter = new CssSelectorConverter();
 
         $this->assertEquals($xpath, $converter->toXPath($css, ''), '->parse() parses an input string and returns a node');
     }
 
-    public function getCssToXPathWithoutPrefixTestData() {
+    public function getCssToXPathWithoutPrefixTestData()
+    {
         return array(
             array('h1', 'h1'),
             array('foo|h1', 'foo:h1'),
@@ -68,5 +73,4 @@ class CssSelectorConverterTest extends TestCase {
             array('div > .foo', "div/*[@class and contains(concat(' ', normalize-space(@class), ' '), ' foo ')]"),
         );
     }
-
 }

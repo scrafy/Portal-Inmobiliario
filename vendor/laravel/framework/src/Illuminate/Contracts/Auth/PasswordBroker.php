@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Auth;
 
 use Closure;
 
-interface PasswordBroker {
-
+interface PasswordBroker
+{
     /**
      * Constant representing a successfully sent reminder.
      *

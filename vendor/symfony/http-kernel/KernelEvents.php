@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-final class KernelEvents {
-
+final class KernelEvents
+{
     /**
      * The REQUEST event occurs at the very beginning of request
      * dispatching.
@@ -116,5 +116,4 @@ final class KernelEvents {
      * @var string
      */
     const FINISH_REQUEST = 'kernel.finish_request';
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Session;
 
-interface ExistenceAwareInterface {
-
+interface ExistenceAwareInterface
+{
     /**
      * Set the existence state for the session.
      *

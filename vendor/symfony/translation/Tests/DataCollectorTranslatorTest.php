@@ -16,9 +16,10 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\DataCollectorTranslator;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
-class DataCollectorTranslatorTest extends TestCase {
-
-    public function testCollectMessages() {
+class DataCollectorTranslatorTest extends TestCase
+{
+    public function testCollectMessages()
+    {
         $collector = $this->createCollector();
         $collector->setFallbackLocales(array('fr', 'ru'));
 
@@ -30,55 +31,56 @@ class DataCollectorTranslatorTest extends TestCase {
 
         $expectedMessages = array();
         $expectedMessages[] = array(
-            'id' => 'foo',
-            'translation' => 'foo (en)',
-            'locale' => 'en',
-            'domain' => 'messages',
-            'state' => DataCollectorTranslator::MESSAGE_DEFINED,
-            'parameters' => array(),
-            'transChoiceNumber' => null,
+              'id' => 'foo',
+              'translation' => 'foo (en)',
+              'locale' => 'en',
+              'domain' => 'messages',
+              'state' => DataCollectorTranslator::MESSAGE_DEFINED,
+              'parameters' => array(),
+              'transChoiceNumber' => null,
         );
         $expectedMessages[] = array(
-            'id' => 'bar',
-            'translation' => 'bar (fr)',
-            'locale' => 'fr',
-            'domain' => 'messages',
-            'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
-            'parameters' => array(),
-            'transChoiceNumber' => null,
+              'id' => 'bar',
+              'translation' => 'bar (fr)',
+              'locale' => 'fr',
+              'domain' => 'messages',
+              'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
+              'parameters' => array(),
+              'transChoiceNumber' => null,
         );
         $expectedMessages[] = array(
-            'id' => 'choice',
-            'translation' => 'choice',
-            'locale' => 'en',
-            'domain' => 'messages',
-            'state' => DataCollectorTranslator::MESSAGE_MISSING,
-            'parameters' => array(),
-            'transChoiceNumber' => 0,
+              'id' => 'choice',
+              'translation' => 'choice',
+              'locale' => 'en',
+              'domain' => 'messages',
+              'state' => DataCollectorTranslator::MESSAGE_MISSING,
+              'parameters' => array(),
+              'transChoiceNumber' => 0,
         );
         $expectedMessages[] = array(
-            'id' => 'bar_ru',
-            'translation' => 'bar (ru)',
-            'locale' => 'ru',
-            'domain' => 'messages',
-            'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
-            'parameters' => array(),
-            'transChoiceNumber' => null,
+              'id' => 'bar_ru',
+              'translation' => 'bar (ru)',
+              'locale' => 'ru',
+              'domain' => 'messages',
+              'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
+              'parameters' => array(),
+              'transChoiceNumber' => null,
         );
         $expectedMessages[] = array(
-            'id' => 'bar_ru',
-            'translation' => 'bar (ru)',
-            'locale' => 'ru',
-            'domain' => 'messages',
-            'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
-            'parameters' => array('foo' => 'bar'),
-            'transChoiceNumber' => null,
+              'id' => 'bar_ru',
+              'translation' => 'bar (ru)',
+              'locale' => 'ru',
+              'domain' => 'messages',
+              'state' => DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK,
+              'parameters' => array('foo' => 'bar'),
+              'transChoiceNumber' => null,
         );
 
         $this->assertEquals($expectedMessages, $collector->getCollectedMessages());
     }
 
-    private function createCollector() {
+    private function createCollector()
+    {
         $translator = new Translator('en');
         $translator->addLoader('array', new ArrayLoader());
         $translator->addResource('array', array('foo' => 'foo (en)'), 'en');
@@ -87,5 +89,4 @@ class DataCollectorTranslatorTest extends TestCase {
 
         return new DataCollectorTranslator($translator);
     }
-
 }

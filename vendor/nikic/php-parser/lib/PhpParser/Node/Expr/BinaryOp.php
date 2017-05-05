@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-abstract class BinaryOp extends Expr {
-
+abstract class BinaryOp extends Expr
+{
     /** @var Expr The left hand side expression */
     public $left;
-
     /** @var Expr The right hand side expression */
     public $right;
 
@@ -28,5 +27,4 @@ abstract class BinaryOp extends Expr {
     public function getSubNodeNames() {
         return array('left', 'right');
     }
-
 }

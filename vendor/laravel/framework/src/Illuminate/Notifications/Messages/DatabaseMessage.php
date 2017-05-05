@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Messages;
 
-class DatabaseMessage {
-
+class DatabaseMessage
+{
     /**
      * The data that should be stored with the notification.
      *
@@ -17,8 +17,8 @@ class DatabaseMessage {
      * @param  array  $data
      * @return void
      */
-    public function __construct(array $data = []) {
+    public function __construct(array $data = [])
+    {
         $this->data = $data;
     }
-
 }

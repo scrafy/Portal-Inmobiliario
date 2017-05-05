@@ -21,8 +21,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-abstract class AbstractSurrogate implements SurrogateInterface {
-
+abstract class AbstractSurrogate implements SurrogateInterface
+{
     protected $contentTypes;
     protected $phpEscapeMap = array(
         array('<?', '<%', '<s', '<S'),
@@ -35,7 +35,8 @@ abstract class AbstractSurrogate implements SurrogateInterface {
      * @param array $contentTypes An array of content-type that should be parsed for Surrogate information
      *                            (default: text/html, text/xml, application/xhtml+xml, and application/xml)
      */
-    public function __construct(array $contentTypes = array('text/html', 'text/xml', 'application/xhtml+xml', 'application/xml')) {
+    public function __construct(array $contentTypes = array('text/html', 'text/xml', 'application/xhtml+xml', 'application/xml'))
+    {
         $this->contentTypes = $contentTypes;
     }
 
@@ -44,14 +45,16 @@ abstract class AbstractSurrogate implements SurrogateInterface {
      *
      * @return ResponseCacheStrategyInterface A ResponseCacheStrategyInterface instance
      */
-    public function createCacheStrategy() {
+    public function createCacheStrategy()
+    {
         return new ResponseCacheStrategy();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasSurrogateCapability(Request $request) {
+    public function hasSurrogateCapability(Request $request)
+    {
         if (null === $value = $request->headers->get('Surrogate-Capability')) {
             return false;
         }
@@ -62,17 +65,19 @@ abstract class AbstractSurrogate implements SurrogateInterface {
     /**
      * {@inheritdoc}
      */
-    public function addSurrogateCapability(Request $request) {
+    public function addSurrogateCapability(Request $request)
+    {
         $current = $request->headers->get('Surrogate-Capability');
         $new = sprintf('symfony="%s/1.0"', strtoupper($this->getName()));
 
-        $request->headers->set('Surrogate-Capability', $current ? $current . ', ' . $new : $new);
+        $request->headers->set('Surrogate-Capability', $current ? $current.', '.$new : $new);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function needsParsing(Response $response) {
+    public function needsParsing(Response $response)
+    {
         if (!$control = $response->headers->get('Surrogate-Control')) {
             return false;
         }
@@ -85,7 +90,8 @@ abstract class AbstractSurrogate implements SurrogateInterface {
     /**
      * {@inheritdoc}
      */
-    public function handle(HttpCache $cache, $uri, $alt, $ignoreErrors) {
+    public function handle(HttpCache $cache, $uri, $alt, $ignoreErrors)
+    {
         $subRequest = Request::create($uri, Request::METHOD_GET, array(), $cache->getRequest()->cookies->all(), array(), $cache->getRequest()->server->all());
 
         try {
@@ -112,7 +118,8 @@ abstract class AbstractSurrogate implements SurrogateInterface {
      *
      * @param Response $response
      */
-    protected function removeFromControl(Response $response) {
+    protected function removeFromControl(Response $response)
+    {
         if (!$response->headers->has('Surrogate-Control')) {
             return;
         }
@@ -128,5 +135,4 @@ abstract class AbstractSurrogate implements SurrogateInterface {
             $response->headers->set('Surrogate-Control', preg_replace(sprintf('#content="%s/1.0",\s*#', $upperName), '', $value));
         }
     }
-
 }

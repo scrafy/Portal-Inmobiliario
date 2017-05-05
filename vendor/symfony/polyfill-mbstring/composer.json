@@ -19,10 +19,8 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-4": {
-            "Symfony\\Polyfill\\Mbstring\\": ""
-        },
-        "files": ["bootstrap.php"]
+        "psr-4": { "Symfony\\Polyfill\\Mbstring\\": "" },
+        "files": [ "bootstrap.php" ]
     },
     "suggest": {
         "ext-mbstring": "For best performance"

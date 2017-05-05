@@ -18,8 +18,8 @@ use Symfony\Component\DependencyInjection\Extension\Extension as BaseExtension;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Extension extends BaseExtension {
-
+abstract class Extension extends BaseExtension
+{
     private $classes = array();
     private $annotatedClasses = array();
 
@@ -28,7 +28,8 @@ abstract class Extension extends BaseExtension {
      *
      * @return array An array of classes
      */
-    public function getClassesToCompile() {
+    public function getClassesToCompile()
+    {
         return $this->classes;
     }
 
@@ -37,7 +38,8 @@ abstract class Extension extends BaseExtension {
      *
      * @return array An array of classes
      */
-    public function getAnnotatedClassesToCompile() {
+    public function getAnnotatedClassesToCompile()
+    {
         return $this->annotatedClasses;
     }
 
@@ -46,7 +48,8 @@ abstract class Extension extends BaseExtension {
      *
      * @param array $classes An array of class patterns
      */
-    public function addClassesToCompile(array $classes) {
+    public function addClassesToCompile(array $classes)
+    {
         $this->classes = array_merge($this->classes, $classes);
     }
 
@@ -55,8 +58,8 @@ abstract class Extension extends BaseExtension {
      *
      * @param array $annotatedClasses An array of class patterns
      */
-    public function addAnnotatedClassesToCompile(array $annotatedClasses) {
+    public function addAnnotatedClassesToCompile(array $annotatedClasses)
+    {
         $this->annotatedClasses = array_merge($this->annotatedClasses, $annotatedClasses);
     }
-
 }

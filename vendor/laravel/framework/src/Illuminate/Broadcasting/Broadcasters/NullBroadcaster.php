@@ -2,27 +2,29 @@
 
 namespace Illuminate\Broadcasting\Broadcasters;
 
-class NullBroadcaster extends Broadcaster {
-
+class NullBroadcaster extends Broadcaster
+{
     /**
      * {@inheritdoc}
      */
-    public function auth($request) {
+    public function auth($request)
+    {
         //
     }
 
     /**
      * {@inheritdoc}
      */
-    public function validAuthenticationResponse($request, $result) {
+    public function validAuthenticationResponse($request, $result)
+    {
         //
     }
 
     /**
      * {@inheritdoc}
      */
-    public function broadcast(array $channels, $event, array $payload = []) {
+    public function broadcast(array $channels, $event, array $payload = [])
+    {
         //
     }
-
 }

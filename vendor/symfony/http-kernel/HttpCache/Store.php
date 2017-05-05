@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Store implements StoreInterface {
-
+class Store implements StoreInterface
+{
     protected $root;
     private $keyCache;
     private $locks;
@@ -35,7 +35,8 @@ class Store implements StoreInterface {
      *
      * @throws \RuntimeException
      */
-    public function __construct($root) {
+    public function __construct($root)
+    {
         $this->root = $root;
         if (!file_exists($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
             throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
@@ -47,7 +48,8 @@ class Store implements StoreInterface {
     /**
      * Cleanups storage.
      */
-    public function cleanup() {
+    public function cleanup()
+    {
         // unlock everything
         foreach ($this->locks as $lock) {
             flock($lock, LOCK_UN);
@@ -64,7 +66,8 @@ class Store implements StoreInterface {
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
-    public function lock(Request $request) {
+    public function lock(Request $request)
+    {
         $key = $this->getCacheKey($request);
 
         if (!isset($this->locks[$key])) {
@@ -92,7 +95,8 @@ class Store implements StoreInterface {
      *
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
-    public function unlock(Request $request) {
+    public function unlock(Request $request)
+    {
         $key = $this->getCacheKey($request);
 
         if (isset($this->locks[$key])) {
@@ -106,7 +110,8 @@ class Store implements StoreInterface {
         return false;
     }
 
-    public function isLocked(Request $request) {
+    public function isLocked(Request $request)
+    {
         $key = $this->getCacheKey($request);
 
         if (isset($this->locks[$key])) {
@@ -132,7 +137,8 @@ class Store implements StoreInterface {
      *
      * @return Response|null A Response instance, or null if no cache entry was found
      */
-    public function lookup(Request $request) {
+    public function lookup(Request $request)
+    {
         $key = $this->getCacheKey($request);
 
         if (!$entries = $this->getMetadata($key)) {
@@ -176,7 +182,8 @@ class Store implements StoreInterface {
      *
      * @throws \RuntimeException
      */
-    public function write(Request $request, Response $response) {
+    public function write(Request $request, Response $response)
+    {
         $key = $this->getCacheKey($request);
         $storedEnv = $this->persistRequest($request);
 
@@ -227,8 +234,9 @@ class Store implements StoreInterface {
      *
      * @return string
      */
-    protected function generateContentDigest(Response $response) {
-        return 'en' . hash('sha256', $response->getContent());
+    protected function generateContentDigest(Response $response)
+    {
+        return 'en'.hash('sha256', $response->getContent());
     }
 
     /**
@@ -238,7 +246,8 @@ class Store implements StoreInterface {
      *
      * @throws \RuntimeException
      */
-    public function invalidate(Request $request) {
+    public function invalidate(Request $request)
+    {
         $modified = false;
         $key = $this->getCacheKey($request);
 
@@ -269,7 +278,8 @@ class Store implements StoreInterface {
      *
      * @return bool true if the two environments match, false otherwise
      */
-    private function requestsMatch($vary, $env1, $env2) {
+    private function requestsMatch($vary, $env1, $env2)
+    {
         if (empty($vary)) {
             return true;
         }
@@ -295,7 +305,8 @@ class Store implements StoreInterface {
      *
      * @return array An array of data associated with the key
      */
-    private function getMetadata($key) {
+    private function getMetadata($key)
+    {
         if (!$entries = $this->load($key)) {
             return array();
         }
@@ -312,7 +323,8 @@ class Store implements StoreInterface {
      *
      * @return bool true if the URL exists with either HTTP or HTTPS scheme and has been purged, false otherwise
      */
-    public function purge($url) {
+    public function purge($url)
+    {
         $http = preg_replace('#^https#', 'http', $url);
         $https = preg_replace('#^http#', 'https', $url);
 
@@ -326,7 +338,8 @@ class Store implements StoreInterface {
      *
      * @return bool true if the URL exists and has been purged, false otherwise
      */
-    private function doPurge($url) {
+    private function doPurge($url)
+    {
         $key = $this->getCacheKey(Request::create($url));
         if (isset($this->locks[$key])) {
             flock($this->locks[$key], LOCK_UN);
@@ -350,7 +363,8 @@ class Store implements StoreInterface {
      *
      * @return string The data associated with the key
      */
-    private function load($key) {
+    private function load($key)
+    {
         $path = $this->getPath($key);
 
         return file_exists($path) ? file_get_contents($path) : false;
@@ -364,7 +378,8 @@ class Store implements StoreInterface {
      *
      * @return bool
      */
-    private function save($key, $data) {
+    private function save($key, $data)
+    {
         $path = $this->getPath($key);
 
         if (isset($this->locks[$key])) {
@@ -401,8 +416,9 @@ class Store implements StoreInterface {
         @chmod($path, 0666 & ~umask());
     }
 
-    public function getPath($key) {
-        return $this->root . DIRECTORY_SEPARATOR . substr($key, 0, 2) . DIRECTORY_SEPARATOR . substr($key, 2, 2) . DIRECTORY_SEPARATOR . substr($key, 4, 2) . DIRECTORY_SEPARATOR . substr($key, 6);
+    public function getPath($key)
+    {
+        return $this->root.DIRECTORY_SEPARATOR.substr($key, 0, 2).DIRECTORY_SEPARATOR.substr($key, 2, 2).DIRECTORY_SEPARATOR.substr($key, 4, 2).DIRECTORY_SEPARATOR.substr($key, 6);
     }
 
     /**
@@ -419,8 +435,9 @@ class Store implements StoreInterface {
      *
      * @return string A key for the given Request
      */
-    protected function generateCacheKey(Request $request) {
-        return 'md' . hash('sha256', $request->getUri());
+    protected function generateCacheKey(Request $request)
+    {
+        return 'md'.hash('sha256', $request->getUri());
     }
 
     /**
@@ -430,7 +447,8 @@ class Store implements StoreInterface {
      *
      * @return string A key for the given Request
      */
-    private function getCacheKey(Request $request) {
+    private function getCacheKey(Request $request)
+    {
         if (isset($this->keyCache[$request])) {
             return $this->keyCache[$request];
         }
@@ -445,7 +463,8 @@ class Store implements StoreInterface {
      *
      * @return array An array of HTTP headers
      */
-    private function persistRequest(Request $request) {
+    private function persistRequest(Request $request)
+    {
         return $request->headers->all();
     }
 
@@ -456,7 +475,8 @@ class Store implements StoreInterface {
      *
      * @return array An array of HTTP headers
      */
-    private function persistResponse(Response $response) {
+    private function persistResponse(Response $response)
+    {
         $headers = $response->headers->all();
         $headers['X-Status'] = array($response->getStatusCode());
 
@@ -471,7 +491,8 @@ class Store implements StoreInterface {
      *
      * @return Response
      */
-    private function restoreResponse($headers, $body = null) {
+    private function restoreResponse($headers, $body = null)
+    {
         $status = $headers['X-Status'][0];
         unset($headers['X-Status']);
 
@@ -481,5 +502,4 @@ class Store implements StoreInterface {
 
         return new Response($body, $status, $headers);
     }
-
 }

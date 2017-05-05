@@ -20,8 +20,8 @@ use Prophecy\Doubler\Generator\Node\MethodNode;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class SplFileInfoPatch implements ClassPatchInterface {
-
+class SplFileInfoPatch implements ClassPatchInterface
+{
     /**
      * Supports everything that extends SplFileInfo.
      *
@@ -29,12 +29,14 @@ class SplFileInfoPatch implements ClassPatchInterface {
      *
      * @return bool
      */
-    public function supports(ClassNode $node) {
+    public function supports(ClassNode $node)
+    {
         if (null === $node->getParentClass()) {
             return false;
         }
 
-        return 'SplFileInfo' === $node->getParentClass() || is_subclass_of($node->getParentClass(), 'SplFileInfo')
+        return 'SplFileInfo' === $node->getParentClass()
+            || is_subclass_of($node->getParentClass(), 'SplFileInfo')
         ;
     }
 
@@ -43,7 +45,8 @@ class SplFileInfoPatch implements ClassPatchInterface {
      *
      * @param ClassNode $node
      */
-    public function apply(ClassNode $node) {
+    public function apply(ClassNode $node)
+    {
         if ($node->hasMethod('__construct')) {
             $constructor = $node->getMethod('__construct');
         } else {
@@ -58,7 +61,7 @@ class SplFileInfoPatch implements ClassPatchInterface {
         }
 
         if ($this->nodeIsSplFileObject($node)) {
-            $constructor->setCode('return parent::__construct("' . __FILE__ . '");');
+            $constructor->setCode('return parent::__construct("' . __FILE__ .'");');
 
             return;
         }
@@ -71,7 +74,8 @@ class SplFileInfoPatch implements ClassPatchInterface {
      *
      * @return int Priority number (higher - earlier)
      */
-    public function getPriority() {
+    public function getPriority()
+    {
         return 50;
     }
 
@@ -79,20 +83,23 @@ class SplFileInfoPatch implements ClassPatchInterface {
      * @param ClassNode $node
      * @return boolean
      */
-    private function nodeIsDirectoryIterator(ClassNode $node) {
+    private function nodeIsDirectoryIterator(ClassNode $node)
+    {
         $parent = $node->getParentClass();
 
-        return 'DirectoryIterator' === $parent || is_subclass_of($parent, 'DirectoryIterator');
+        return 'DirectoryIterator' === $parent
+            || is_subclass_of($parent, 'DirectoryIterator');
     }
 
     /**
      * @param ClassNode $node
      * @return boolean
      */
-    private function nodeIsSplFileObject(ClassNode $node) {
+    private function nodeIsSplFileObject(ClassNode $node)
+    {
         $parent = $node->getParentClass();
 
-        return 'SplFileObject' === $parent || is_subclass_of($parent, 'SplFileObject');
+        return 'SplFileObject' === $parent
+            || is_subclass_of($parent, 'SplFileObject');
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -24,13 +23,16 @@ namespace test\Mockery;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class MockingProtectedMethodsTest extends MockeryTestCase {
+class MockingProtectedMethodsTest extends MockeryTestCase
+{
 
-    public function setup() {
+    public function setup()
+    {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown() {
+    public function teardown()
+    {
         $this->container->mockery_close();
     }
 
@@ -40,7 +42,8 @@ class MockingProtectedMethodsTest extends MockeryTestCase {
      * This is a regression test, basically we don't want the mock handling
      * interfering with calling protected methods partials
      */
-    public function shouldAutomaticallyDeferCallsToProtectedMethodsForPartials() {
+    public function shouldAutomaticallyDeferCallsToProtectedMethodsForPartials()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods[foo]");
         $this->assertEquals("bar", $mock->bar());
     }
@@ -51,62 +54,69 @@ class MockingProtectedMethodsTest extends MockeryTestCase {
      * This is a regression test, basically we don't want the mock handling
      * interfering with calling protected methods partials
      */
-    public function shouldAutomaticallyDeferCallsToProtectedMethodsForRuntimePartials() {
+    public function shouldAutomaticallyDeferCallsToProtectedMethodsForRuntimePartials()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")->shouldDeferMissing();
         $this->assertEquals("bar", $mock->bar());
     }
 
     /** @test */
-    public function shouldAutomaticallyIgnoreAbstractProtectedMethods() {
+    public function shouldAutomaticallyIgnoreAbstractProtectedMethods()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")->shouldDeferMissing();
         $this->assertEquals(null, $mock->foo());
     }
 
     /** @test */
-    public function shouldAllowMockingProtectedMethods() {
+    public function shouldAllowMockingProtectedMethods()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")
-                ->shouldDeferMissing()
-                ->shouldAllowMockingProtectedMethods();
+            ->shouldDeferMissing()
+            ->shouldAllowMockingProtectedMethods();
 
         $mock->shouldReceive("protectedBar")->andReturn("notbar");
         $this->assertEquals("notbar", $mock->bar());
     }
 
     /** @test */
-    public function shouldAllowMockingProtectedMethodOnDefinitionTimePartial() {
+    public function shouldAllowMockingProtectedMethodOnDefinitionTimePartial()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods[protectedBar]")
-                ->shouldAllowMockingProtectedMethods();
+            ->shouldAllowMockingProtectedMethods();
 
         $mock->shouldReceive("protectedBar")->andReturn("notbar");
         $this->assertEquals("notbar", $mock->bar());
     }
 
     /** @test */
-    public function shouldAllowMockingAbstractProtectedMethods() {
+    public function shouldAllowMockingAbstractProtectedMethods()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithProtectedMethods")
-                ->shouldDeferMissing()
-                ->shouldAllowMockingProtectedMethods();
+            ->shouldDeferMissing()
+            ->shouldAllowMockingProtectedMethods();
 
         $mock->shouldReceive("abstractProtected")->andReturn("abstractProtected");
         $this->assertEquals("abstractProtected", $mock->foo());
     }
-
 }
 
-abstract class TestWithProtectedMethods {
 
-    public function foo() {
+abstract class TestWithProtectedMethods
+{
+    public function foo()
+    {
         return $this->abstractProtected();
     }
 
     abstract protected function abstractProtected();
 
-    public function bar() {
+    public function bar()
+    {
         return $this->protectedBar();
     }
 
-    protected function protectedBar() {
+    protected function protectedBar()
+    {
         return 'bar';
     }
-
 }

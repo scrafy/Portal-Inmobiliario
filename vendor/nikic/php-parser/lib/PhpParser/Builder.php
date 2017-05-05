@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-interface Builder {
-
+interface Builder
+{
     /**
      * Returns the built node.
      *

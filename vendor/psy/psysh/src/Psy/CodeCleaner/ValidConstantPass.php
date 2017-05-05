@@ -28,8 +28,8 @@ use Psy\Exception\FatalErrorException;
  *       referencing a namespaced constant, which doesn't seem like that big of
  *       a target for failure
  */
-class ValidConstantPass extends NamespaceAwarePass {
-
+class ValidConstantPass extends NamespaceAwarePass
+{
     /**
      * Validate that namespaced constant references will succeed.
      *
@@ -40,7 +40,8 @@ class ValidConstantPass extends NamespaceAwarePass {
      *
      * @param Node $node
      */
-    public function leaveNode(Node $node) {
+    public function leaveNode(Node $node)
+    {
         if ($node instanceof ConstFetch && count($node->name->parts) > 1) {
             $name = $this->getFullyQualifiedName($node->name);
             if (!defined($name)) {
@@ -58,7 +59,8 @@ class ValidConstantPass extends NamespaceAwarePass {
      *
      * @param ClassConstFetch $stmt
      */
-    protected function validateClassConstFetchExpression(ClassConstFetch $stmt) {
+    protected function validateClassConstFetchExpression(ClassConstFetch $stmt)
+    {
         // give the `class` pseudo-constant a pass
         if ($stmt->name === 'class') {
             return;
@@ -80,5 +82,4 @@ class ValidConstantPass extends NamespaceAwarePass {
             }
         }
     }
-
 }

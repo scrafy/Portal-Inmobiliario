@@ -15,17 +15,19 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\LockHandler;
 
-class LockableTraitTest extends TestCase {
-
+class LockableTraitTest extends TestCase
+{
     protected static $fixturesPath;
 
-    public static function setUpBeforeClass() {
-        self::$fixturesPath = __DIR__ . '/../Fixtures/';
-        require_once self::$fixturesPath . '/FooLockCommand.php';
-        require_once self::$fixturesPath . '/FooLock2Command.php';
+    public static function setUpBeforeClass()
+    {
+        self::$fixturesPath = __DIR__.'/../Fixtures/';
+        require_once self::$fixturesPath.'/FooLockCommand.php';
+        require_once self::$fixturesPath.'/FooLock2Command.php';
     }
 
-    public function testLockIsReleased() {
+    public function testLockIsReleased()
+    {
         $command = new \FooLockCommand();
 
         $tester = new CommandTester($command);
@@ -33,7 +35,8 @@ class LockableTraitTest extends TestCase {
         $this->assertSame(2, $tester->execute(array()));
     }
 
-    public function testLockReturnsFalseIfAlreadyLockedByAnotherCommand() {
+    public function testLockReturnsFalseIfAlreadyLockedByAnotherCommand()
+    {
         $command = new \FooLockCommand();
 
         $lock = new LockHandler($command->getName());
@@ -46,11 +49,11 @@ class LockableTraitTest extends TestCase {
         $this->assertSame(2, $tester->execute(array()));
     }
 
-    public function testMultipleLockCallsThrowLogicException() {
+    public function testMultipleLockCallsThrowLogicException()
+    {
         $command = new \FooLock2Command();
 
         $tester = new CommandTester($command);
         $this->assertSame(1, $tester->execute(array()));
     }
-
 }

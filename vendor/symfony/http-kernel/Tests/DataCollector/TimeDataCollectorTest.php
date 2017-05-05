@@ -19,9 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @group time-sensitive
  */
-class TimeDataCollectorTest extends TestCase {
-
-    public function testCollect() {
+class TimeDataCollectorTest extends TestCase
+{
+    public function testCollect()
+    {
         $c = new TimeDataCollector();
 
         $request = new Request();
@@ -51,5 +52,4 @@ class TimeDataCollectorTest extends TestCase {
         $c->collect($request, new Response());
         $this->assertEquals(123456000, $c->getStartTime());
     }
-
 }

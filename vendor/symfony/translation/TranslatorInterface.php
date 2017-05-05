@@ -18,8 +18,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface TranslatorInterface {
-
+interface TranslatorInterface
+{
     /**
      * Translates the given message.
      *

@@ -17,32 +17,35 @@ use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 /**
  * @group legacy
  */
-class ValueExporterTest extends TestCase {
-
+class ValueExporterTest extends TestCase
+{
     /**
      * @var ValueExporter
      */
     private $valueExporter;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->valueExporter = new ValueExporter();
     }
 
-    public function testDateTime() {
+    public function testDateTime()
+    {
         $dateTime = new \DateTime('2014-06-10 07:35:40', new \DateTimeZone('UTC'));
         $this->assertSame('Object(DateTime) - 2014-06-10T07:35:40+00:00', $this->valueExporter->exportValue($dateTime));
     }
 
-    public function testDateTimeImmutable() {
+    public function testDateTimeImmutable()
+    {
         $dateTime = new \DateTimeImmutable('2014-06-10 07:35:40', new \DateTimeZone('UTC'));
         $this->assertSame('Object(DateTimeImmutable) - 2014-06-10T07:35:40+00:00', $this->valueExporter->exportValue($dateTime));
     }
 
-    public function testIncompleteClass() {
+    public function testIncompleteClass()
+    {
         $foo = new \__PHP_Incomplete_Class();
         $array = new \ArrayObject($foo);
         $array['__PHP_Incomplete_Class_Name'] = 'AppBundle/Foo';
         $this->assertSame('__PHP_Incomplete_Class(AppBundle/Foo)', $this->valueExporter->exportValue($foo));
     }
-
 }

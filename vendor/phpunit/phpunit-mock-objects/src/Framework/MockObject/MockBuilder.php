@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,8 +13,8 @@
  *
  * @since File available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_MockBuilder {
-
+class PHPUnit_Framework_MockObject_MockBuilder
+{
     /**
      * @var PHPUnit_Framework_TestCase
      */
@@ -90,9 +89,10 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      * @param PHPUnit_Framework_TestCase $testCase
      * @param array|string               $type
      */
-    public function __construct(PHPUnit_Framework_TestCase $testCase, $type) {
-        $this->testCase = $testCase;
-        $this->type = $type;
+    public function __construct(PHPUnit_Framework_TestCase $testCase, $type)
+    {
+        $this->testCase  = $testCase;
+        $this->type      = $type;
         $this->generator = new PHPUnit_Framework_MockObject_Generator;
     }
 
@@ -101,9 +101,20 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMock() {
+    public function getMock()
+    {
         $object = $this->generator->getMock(
-                $this->type, $this->methods, $this->constructorArgs, $this->mockClassName, $this->originalConstructor, $this->originalClone, $this->autoload, $this->cloneArguments, $this->callOriginalMethods, $this->proxyTarget, $this->allowMockingUnknownTypes
+            $this->type,
+            $this->methods,
+            $this->constructorArgs,
+            $this->mockClassName,
+            $this->originalConstructor,
+            $this->originalClone,
+            $this->autoload,
+            $this->cloneArguments,
+            $this->callOriginalMethods,
+            $this->proxyTarget,
+            $this->allowMockingUnknownTypes
         );
 
         $this->testCase->registerMockObject($object);
@@ -116,9 +127,17 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMockForAbstractClass() {
+    public function getMockForAbstractClass()
+    {
         $object = $this->generator->getMockForAbstractClass(
-                $this->type, $this->constructorArgs, $this->mockClassName, $this->originalConstructor, $this->originalClone, $this->autoload, $this->methods, $this->cloneArguments
+            $this->type,
+            $this->constructorArgs,
+            $this->mockClassName,
+            $this->originalConstructor,
+            $this->originalClone,
+            $this->autoload,
+            $this->methods,
+            $this->cloneArguments
         );
 
         $this->testCase->registerMockObject($object);
@@ -131,9 +150,17 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    public function getMockForTrait() {
+    public function getMockForTrait()
+    {
         $object = $this->generator->getMockForTrait(
-                $this->type, $this->constructorArgs, $this->mockClassName, $this->originalConstructor, $this->originalClone, $this->autoload, $this->methods, $this->cloneArguments
+            $this->type,
+            $this->constructorArgs,
+            $this->mockClassName,
+            $this->originalConstructor,
+            $this->originalClone,
+            $this->autoload,
+            $this->methods,
+            $this->cloneArguments
         );
 
         $this->testCase->registerMockObject($object);
@@ -148,7 +175,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setMethods(array $methods = null) {
+    public function setMethods(array $methods = null)
+    {
         $this->methods = $methods;
 
         return $this;
@@ -161,13 +189,15 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setMethodsExcept(array $methods = []) {
+    public function setMethodsExcept(array $methods = [])
+    {
         $this->methodsExcept = $methods;
 
         $this->setMethods(
-                array_diff(
-                        $this->generator->getClassMethods($this->type), $this->methodsExcept
-                )
+            array_diff(
+                $this->generator->getClassMethods($this->type),
+                $this->methodsExcept
+            )
         );
 
         return $this;
@@ -180,7 +210,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setConstructorArgs(array $args) {
+    public function setConstructorArgs(array $args)
+    {
         $this->constructorArgs = $args;
 
         return $this;
@@ -193,7 +224,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setMockClassName($name) {
+    public function setMockClassName($name)
+    {
         $this->mockClassName = $name;
 
         return $this;
@@ -204,7 +236,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function disableOriginalConstructor() {
+    public function disableOriginalConstructor()
+    {
         $this->originalConstructor = false;
 
         return $this;
@@ -217,7 +250,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 1.2.0
      */
-    public function enableOriginalConstructor() {
+    public function enableOriginalConstructor()
+    {
         $this->originalConstructor = true;
 
         return $this;
@@ -228,7 +262,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function disableOriginalClone() {
+    public function disableOriginalClone()
+    {
         $this->originalClone = false;
 
         return $this;
@@ -241,7 +276,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 1.2.0
      */
-    public function enableOriginalClone() {
+    public function enableOriginalClone()
+    {
         $this->originalClone = true;
 
         return $this;
@@ -252,7 +288,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function disableAutoload() {
+    public function disableAutoload()
+    {
         $this->autoload = false;
 
         return $this;
@@ -265,7 +302,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 1.2.0
      */
-    public function enableAutoload() {
+    public function enableAutoload()
+    {
         $this->autoload = true;
 
         return $this;
@@ -278,7 +316,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 1.2.0
      */
-    public function disableArgumentCloning() {
+    public function disableArgumentCloning()
+    {
         $this->cloneArguments = false;
 
         return $this;
@@ -291,7 +330,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 1.2.0
      */
-    public function enableArgumentCloning() {
+    public function enableArgumentCloning()
+    {
         $this->cloneArguments = true;
 
         return $this;
@@ -304,7 +344,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 2.0.0
      */
-    public function enableProxyingToOriginalMethods() {
+    public function enableProxyingToOriginalMethods()
+    {
         $this->callOriginalMethods = true;
 
         return $this;
@@ -317,9 +358,10 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 2.0.0
      */
-    public function disableProxyingToOriginalMethods() {
+    public function disableProxyingToOriginalMethods()
+    {
         $this->callOriginalMethods = false;
-        $this->proxyTarget = null;
+        $this->proxyTarget         = null;
 
         return $this;
     }
@@ -333,7 +375,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 2.0.0
      */
-    public function setProxyTarget($object) {
+    public function setProxyTarget($object)
+    {
         $this->proxyTarget = $object;
 
         return $this;
@@ -344,7 +387,8 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 3.2.0
      */
-    public function allowMockingUnknownTypes() {
+    public function allowMockingUnknownTypes()
+    {
         $this->allowMockingUnknownTypes = true;
 
         return $this;
@@ -355,10 +399,10 @@ class PHPUnit_Framework_MockObject_MockBuilder {
      *
      * @since  Method available since Release 3.2.0
      */
-    public function disallowMockingUnknownTypes() {
+    public function disallowMockingUnknownTypes()
+    {
         $this->allowMockingUnknownTypes = false;
 
         return $this;
     }
-
 }

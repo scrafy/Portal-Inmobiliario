@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,9 +8,10 @@
  * file that was distributed with this source code.
  */
 
-class CountTest extends PHPUnit_Framework_TestCase {
-
-    public function testCount() {
+class CountTest extends PHPUnit_Framework_TestCase
+{
+    public function testCount()
+    {
         $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
         $this->assertTrue($countConstraint->evaluate([1, 2, 3], '', true));
 
@@ -19,12 +19,13 @@ class CountTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($countConstraint->evaluate([], '', true));
 
         $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
-        $it = new TestIterator([1, 2]);
+        $it              = new TestIterator([1, 2]);
 
         $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
 
-    public function testCountDoesNotChangeIteratorKey() {
+    public function testCountDoesNotChangeIteratorKey()
+    {
         $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
 
         // test with 1st implementation of Iterator
@@ -57,7 +58,8 @@ class CountTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($it->valid());
     }
 
-    public function testCountGeneratorsDoNotRewind() {
+    public function testCountGeneratorsDoNotRewind()
+    {
         $generatorMaker = new TestGeneratorMaker();
 
         $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
@@ -87,5 +89,4 @@ class CountTest extends PHPUnit_Framework_TestCase {
         $countConstraint->evaluate($generator, '', true);
         $this->assertEquals(null, $generator->current());
     }
-
 }

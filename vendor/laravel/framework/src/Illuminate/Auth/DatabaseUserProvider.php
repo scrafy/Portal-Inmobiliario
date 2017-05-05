@@ -8,8 +8,8 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-class DatabaseUserProvider implements UserProvider {
-
+class DatabaseUserProvider implements UserProvider
+{
     /**
      * The active database connection.
      *
@@ -39,7 +39,8 @@ class DatabaseUserProvider implements UserProvider {
      * @param  string  $table
      * @return void
      */
-    public function __construct(ConnectionInterface $conn, HasherContract $hasher, $table) {
+    public function __construct(ConnectionInterface $conn, HasherContract $hasher, $table)
+    {
         $this->conn = $conn;
         $this->table = $table;
         $this->hasher = $hasher;
@@ -51,7 +52,8 @@ class DatabaseUserProvider implements UserProvider {
      * @param  mixed  $identifier
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function retrieveById($identifier) {
+    public function retrieveById($identifier)
+    {
         $user = $this->conn->table($this->table)->find($identifier);
 
         return $this->getGenericUser($user);
@@ -64,11 +66,12 @@ class DatabaseUserProvider implements UserProvider {
      * @param  string  $token
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function retrieveByToken($identifier, $token) {
+    public function retrieveByToken($identifier, $token)
+    {
         $user = $this->conn->table($this->table)
-                ->where('id', $identifier)
-                ->where('remember_token', $token)
-                ->first();
+                        ->where('id', $identifier)
+                        ->where('remember_token', $token)
+                        ->first();
 
         return $this->getGenericUser($user);
     }
@@ -80,7 +83,8 @@ class DatabaseUserProvider implements UserProvider {
      * @param  string  $token
      * @return void
      */
-    public function updateRememberToken(UserContract $user, $token) {
+    public function updateRememberToken(UserContract $user, $token)
+    {
         $this->conn->table($this->table)
                 ->where('id', $user->getAuthIdentifier())
                 ->update(['remember_token' => $token]);
@@ -92,14 +96,15 @@ class DatabaseUserProvider implements UserProvider {
      * @param  array  $credentials
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function retrieveByCredentials(array $credentials) {
+    public function retrieveByCredentials(array $credentials)
+    {
         // First we will add each credential element to the query as a where clause.
         // Then we can execute the query and, if we found a user, return it in a
         // generic "user" object that will be utilized by the Guard instances.
         $query = $this->conn->table($this->table);
 
         foreach ($credentials as $key => $value) {
-            if (!Str::contains($key, 'password')) {
+            if (! Str::contains($key, 'password')) {
                 $query->where($key, $value);
             }
         }
@@ -118,8 +123,9 @@ class DatabaseUserProvider implements UserProvider {
      * @param  mixed  $user
      * @return \Illuminate\Auth\GenericUser|null
      */
-    protected function getGenericUser($user) {
-        if (!is_null($user)) {
+    protected function getGenericUser($user)
+    {
+        if (! is_null($user)) {
             return new GenericUser((array) $user);
         }
     }
@@ -131,10 +137,10 @@ class DatabaseUserProvider implements UserProvider {
      * @param  array  $credentials
      * @return bool
      */
-    public function validateCredentials(UserContract $user, array $credentials) {
+    public function validateCredentials(UserContract $user, array $credentials)
+    {
         return $this->hasher->check(
-                        $credentials['password'], $user->getAuthPassword()
+            $credentials['password'], $user->getAuthPassword()
         );
     }
-
 }

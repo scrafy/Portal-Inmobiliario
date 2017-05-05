@@ -18,9 +18,10 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ConfigDataCollectorTest extends TestCase {
-
-    public function testCollect() {
+class ConfigDataCollectorTest extends TestCase
+{
+    public function testCollect()
+    {
         $kernel = new KernelForTest('test', true);
         $c = new ConfigDataCollector();
         $c->setKernel($kernel);
@@ -42,35 +43,39 @@ class ConfigDataCollectorTest extends TestCase {
         }
 
         // if else clause because we don't know it
-        if (((extension_loaded('eaccelerator') && ini_get('eaccelerator.enable')) ||
-                (extension_loaded('apc') && ini_get('apc.enabled')) ||
-                (extension_loaded('Zend OPcache') && ini_get('opcache.enable')) ||
-                (extension_loaded('xcache') && ini_get('xcache.cacher')) ||
+        if (((extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'))
+                ||
+                (extension_loaded('apc') && ini_get('apc.enabled'))
+                ||
+                (extension_loaded('Zend OPcache') && ini_get('opcache.enable'))
+                ||
+                (extension_loaded('xcache') && ini_get('xcache.cacher'))
+                ||
                 (extension_loaded('wincache') && ini_get('wincache.ocenabled')))) {
             $this->assertTrue($c->hasAccelerator());
         } else {
             $this->assertFalse($c->hasAccelerator());
         }
     }
-
 }
 
-class KernelForTest extends Kernel {
-
-    public function getName() {
+class KernelForTest extends Kernel
+{
+    public function getName()
+    {
         return 'testkernel';
     }
 
-    public function registerBundles() {
-        
+    public function registerBundles()
+    {
     }
 
-    public function getBundles() {
+    public function getBundles()
+    {
         return array();
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader) {
-        
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Translation;
 
 use Illuminate\Support\ServiceProvider;
 
-class TranslationServiceProvider extends ServiceProvider {
-
+class TranslationServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,7 +18,8 @@ class TranslationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerLoader();
 
         $this->app->singleton('translator', function ($app) {
@@ -42,7 +43,8 @@ class TranslationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerLoader() {
+    protected function registerLoader()
+    {
         $this->app->singleton('translation.loader', function ($app) {
             return new FileLoader($app['files'], $app['path.lang']);
         });
@@ -53,8 +55,8 @@ class TranslationServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return ['translator', 'translation.loader'];
     }
-
 }

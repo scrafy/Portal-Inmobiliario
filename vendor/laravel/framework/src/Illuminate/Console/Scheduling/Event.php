@@ -12,10 +12,9 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
-class Event {
-
-    use Macroable,
-        ManagesFrequencies;
+class Event
+{
+    use Macroable, ManagesFrequencies;
 
     /**
      * The cache store implementation.
@@ -136,7 +135,8 @@ class Event {
      * @param  string  $command
      * @return void
      */
-    public function __construct(Cache $cache, $command) {
+    public function __construct(Cache $cache, $command)
+    {
         $this->cache = $cache;
         $this->command = $command;
         $this->output = $this->getDefaultOutput();
@@ -147,7 +147,8 @@ class Event {
      *
      * @return string
      */
-    public function getDefaultOutput() {
+    public function getDefaultOutput()
+    {
         return (DIRECTORY_SEPARATOR == '\\') ? 'NUL' : '/dev/null';
     }
 
@@ -157,12 +158,15 @@ class Event {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function run(Container $container) {
+    public function run(Container $container)
+    {
         if ($this->withoutOverlapping) {
             $this->cache->put($this->mutexName(), true, 1440);
         }
 
-        $this->runInBackground ? $this->runCommandInBackground($container) : $this->runCommandInForeground($container);
+        $this->runInBackground
+                    ? $this->runCommandInBackground($container)
+                    : $this->runCommandInForeground($container);
     }
 
     /**
@@ -170,8 +174,9 @@ class Event {
      *
      * @return string
      */
-    public function mutexName() {
-        return 'framework' . DIRECTORY_SEPARATOR . 'schedule-' . sha1($this->expression . $this->command);
+    public function mutexName()
+    {
+        return 'framework'.DIRECTORY_SEPARATOR.'schedule-'.sha1($this->expression.$this->command);
     }
 
     /**
@@ -180,11 +185,12 @@ class Event {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    protected function runCommandInForeground(Container $container) {
+    protected function runCommandInForeground(Container $container)
+    {
         $this->callBeforeCallbacks($container);
 
         (new Process(
-        $this->buildCommand(), base_path(), null, null, null
+            $this->buildCommand(), base_path(), null, null, null
         ))->run();
 
         $this->callAfterCallbacks($container);
@@ -196,11 +202,12 @@ class Event {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    protected function runCommandInBackground(Container $container) {
+    protected function runCommandInBackground(Container $container)
+    {
         $this->callBeforeCallbacks($container);
 
         (new Process(
-        $this->buildCommand(), base_path(), null, null, null
+            $this->buildCommand(), base_path(), null, null, null
         ))->run();
     }
 
@@ -210,7 +217,8 @@ class Event {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function callBeforeCallbacks(Container $container) {
+    public function callBeforeCallbacks(Container $container)
+    {
         foreach ($this->beforeCallbacks as $callback) {
             $container->call($callback);
         }
@@ -222,7 +230,8 @@ class Event {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function callAfterCallbacks(Container $container) {
+    public function callAfterCallbacks(Container $container)
+    {
         foreach ($this->afterCallbacks as $callback) {
             $container->call($callback);
         }
@@ -233,7 +242,8 @@ class Event {
      *
      * @return string
      */
-    public function buildCommand() {
+    public function buildCommand()
+    {
         return (new CommandBuilder)->buildCommand($this);
     }
 
@@ -243,13 +253,14 @@ class Event {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return bool
      */
-    public function isDue($app) {
-        if (!$this->runsInMaintenanceMode() && $app->isDownForMaintenance()) {
+    public function isDue($app)
+    {
+        if (! $this->runsInMaintenanceMode() && $app->isDownForMaintenance()) {
             return false;
         }
 
         return $this->expressionPasses() &&
-                $this->runsInEnvironment($app->environment());
+               $this->runsInEnvironment($app->environment());
     }
 
     /**
@@ -257,7 +268,8 @@ class Event {
      *
      * @return bool
      */
-    public function runsInMaintenanceMode() {
+    public function runsInMaintenanceMode()
+    {
         return $this->evenInMaintenanceMode;
     }
 
@@ -266,7 +278,8 @@ class Event {
      *
      * @return bool
      */
-    protected function expressionPasses() {
+    protected function expressionPasses()
+    {
         $date = Carbon::now();
 
         if ($this->timezone) {
@@ -282,7 +295,8 @@ class Event {
      * @param  string  $environment
      * @return bool
      */
-    public function runsInEnvironment($environment) {
+    public function runsInEnvironment($environment)
+    {
         return empty($this->environments) || in_array($environment, $this->environments);
     }
 
@@ -292,9 +306,10 @@ class Event {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return bool
      */
-    public function filtersPass($app) {
+    public function filtersPass($app)
+    {
         foreach ($this->filters as $callback) {
-            if (!$app->call($callback)) {
+            if (! $app->call($callback)) {
                 return false;
             }
         }
@@ -315,7 +330,8 @@ class Event {
      * @param  bool  $append
      * @return $this
      */
-    public function sendOutputTo($location, $append = false) {
+    public function sendOutputTo($location, $append = false)
+    {
         $this->output = $location;
 
         $this->shouldAppendOutput = $append;
@@ -329,7 +345,8 @@ class Event {
      * @param  string  $location
      * @return $this
      */
-    public function appendOutputTo($location) {
+    public function appendOutputTo($location)
+    {
         return $this->sendOutputTo($location, true);
     }
 
@@ -342,14 +359,15 @@ class Event {
      *
      * @throws \LogicException
      */
-    public function emailOutputTo($addresses, $onlyIfOutputExists = false) {
+    public function emailOutputTo($addresses, $onlyIfOutputExists = false)
+    {
         $this->ensureOutputIsBeingCapturedForEmail();
 
         $addresses = is_array($addresses) ? $addresses : func_get_args();
 
         return $this->then(function (Mailer $mailer) use ($addresses, $onlyIfOutputExists) {
-                    $this->emailOutput($mailer, $addresses, $onlyIfOutputExists);
-                });
+            $this->emailOutput($mailer, $addresses, $onlyIfOutputExists);
+        });
     }
 
     /**
@@ -360,7 +378,8 @@ class Event {
      *
      * @throws \LogicException
      */
-    public function emailWrittenOutputTo($addresses) {
+    public function emailWrittenOutputTo($addresses)
+    {
         return $this->emailOutputTo($addresses, true);
     }
 
@@ -369,9 +388,10 @@ class Event {
      *
      * @return void
      */
-    protected function ensureOutputIsBeingCapturedForEmail() {
+    protected function ensureOutputIsBeingCapturedForEmail()
+    {
         if (is_null($this->output) || $this->output == $this->getDefaultOutput()) {
-            $this->sendOutputTo(storage_path('logs/schedule-' . sha1($this->mutexName()) . '.log'));
+            $this->sendOutputTo(storage_path('logs/schedule-'.sha1($this->mutexName()).'.log'));
         }
     }
 
@@ -383,7 +403,8 @@ class Event {
      * @param  bool  $onlyIfOutputExists
      * @return void
      */
-    protected function emailOutput(Mailer $mailer, $addresses, $onlyIfOutputExists = false) {
+    protected function emailOutput(Mailer $mailer, $addresses, $onlyIfOutputExists = false)
+    {
         $text = file_get_contents($this->output);
 
         if ($onlyIfOutputExists && empty($text)) {
@@ -400,7 +421,8 @@ class Event {
      *
      * @return string
      */
-    protected function getEmailSubject() {
+    protected function getEmailSubject()
+    {
         if ($this->description) {
             return $this->description;
         }
@@ -414,10 +436,11 @@ class Event {
      * @param  string  $url
      * @return $this
      */
-    public function pingBefore($url) {
+    public function pingBefore($url)
+    {
         return $this->before(function () use ($url) {
-                    (new HttpClient)->get($url);
-                });
+            (new HttpClient)->get($url);
+        });
     }
 
     /**
@@ -426,10 +449,11 @@ class Event {
      * @param  string  $url
      * @return $this
      */
-    public function thenPing($url) {
+    public function thenPing($url)
+    {
         return $this->then(function () use ($url) {
-                    (new HttpClient)->get($url);
-                });
+            (new HttpClient)->get($url);
+        });
     }
 
     /**
@@ -437,7 +461,8 @@ class Event {
      *
      * @return $this
      */
-    public function runInBackground() {
+    public function runInBackground()
+    {
         $this->runInBackground = true;
 
         return $this;
@@ -449,7 +474,8 @@ class Event {
      * @param  string  $user
      * @return $this
      */
-    public function user($user) {
+    public function user($user)
+    {
         $this->user = $user;
 
         return $this;
@@ -461,7 +487,8 @@ class Event {
      * @param  array|mixed  $environments
      * @return $this
      */
-    public function environments($environments) {
+    public function environments($environments)
+    {
         $this->environments = is_array($environments) ? $environments : func_get_args();
 
         return $this;
@@ -472,7 +499,8 @@ class Event {
      *
      * @return $this
      */
-    public function evenInMaintenanceMode() {
+    public function evenInMaintenanceMode()
+    {
         $this->evenInMaintenanceMode = true;
 
         return $this;
@@ -483,14 +511,15 @@ class Event {
      *
      * @return $this
      */
-    public function withoutOverlapping() {
+    public function withoutOverlapping()
+    {
         $this->withoutOverlapping = true;
 
         return $this->then(function () {
-                    $this->cache->forget($this->mutexName());
-                })->skip(function () {
-                    return $this->cache->has($this->mutexName());
-                });
+            $this->cache->forget($this->mutexName());
+        })->skip(function () {
+            return $this->cache->has($this->mutexName());
+        });
     }
 
     /**
@@ -499,7 +528,8 @@ class Event {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function when(Closure $callback) {
+    public function when(Closure $callback)
+    {
         $this->filters[] = $callback;
 
         return $this;
@@ -511,7 +541,8 @@ class Event {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function skip(Closure $callback) {
+    public function skip(Closure $callback)
+    {
         $this->rejects[] = $callback;
 
         return $this;
@@ -523,7 +554,8 @@ class Event {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function before(Closure $callback) {
+    public function before(Closure $callback)
+    {
         $this->beforeCallbacks[] = $callback;
 
         return $this;
@@ -535,7 +567,8 @@ class Event {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function after(Closure $callback) {
+    public function after(Closure $callback)
+    {
         return $this->then($callback);
     }
 
@@ -545,7 +578,8 @@ class Event {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function then(Closure $callback) {
+    public function then(Closure $callback)
+    {
         $this->afterCallbacks[] = $callback;
 
         return $this;
@@ -557,7 +591,8 @@ class Event {
      * @param  string  $description
      * @return $this
      */
-    public function name($description) {
+    public function name($description)
+    {
         return $this->description($description);
     }
 
@@ -567,7 +602,8 @@ class Event {
      * @param  string  $description
      * @return $this
      */
-    public function description($description) {
+    public function description($description)
+    {
         $this->description = $description;
 
         return $this;
@@ -578,7 +614,8 @@ class Event {
      *
      * @return string
      */
-    public function getSummaryForDisplay() {
+    public function getSummaryForDisplay()
+    {
         if (is_string($this->description)) {
             return $this->description;
         }
@@ -591,8 +628,8 @@ class Event {
      *
      * @return string
      */
-    public function getExpression() {
+    public function getExpression()
+    {
         return $this->expression;
     }
-
 }

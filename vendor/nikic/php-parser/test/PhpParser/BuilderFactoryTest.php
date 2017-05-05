@@ -4,8 +4,8 @@ namespace PhpParser;
 
 use PhpParser\Node\Expr;
 
-class BuilderFactoryTest extends \PHPUnit_Framework_TestCase {
-
+class BuilderFactoryTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider provideTestFactory
      */
@@ -17,14 +17,14 @@ class BuilderFactoryTest extends \PHPUnit_Framework_TestCase {
     public function provideTestFactory() {
         return array(
             array('namespace', 'PhpParser\Builder\Namespace_'),
-            array('class', 'PhpParser\Builder\Class_'),
+            array('class',     'PhpParser\Builder\Class_'),
             array('interface', 'PhpParser\Builder\Interface_'),
-            array('trait', 'PhpParser\Builder\Trait_'),
-            array('method', 'PhpParser\Builder\Method'),
-            array('function', 'PhpParser\Builder\Function_'),
-            array('property', 'PhpParser\Builder\Property'),
-            array('param', 'PhpParser\Builder\Param'),
-            array('use', 'PhpParser\Builder\Use_'),
+            array('trait',     'PhpParser\Builder\Trait_'),
+            array('method',    'PhpParser\Builder\Method'),
+            array('function',  'PhpParser\Builder\Function_'),
+            array('property',  'PhpParser\Builder\Property'),
+            array('param',     'PhpParser\Builder\Param'),
+            array('use',       'PhpParser\Builder\Use_'),
         );
     }
 
@@ -37,32 +37,36 @@ class BuilderFactoryTest extends \PHPUnit_Framework_TestCase {
     public function testIntegration() {
         $factory = new BuilderFactory;
         $node = $factory->namespace('Name\Space')
-                ->addStmt($factory->use('Foo\Bar\SomeOtherClass'))
-                ->addStmt($factory->use('Foo\Bar')->as('A'))
-                ->addStmt($factory
-                        ->class('SomeClass')
-                        ->extend('SomeOtherClass')
-                        ->implement('A\Few', '\Interfaces')
-                        ->makeAbstract()
-                        ->addStmt($factory->method('firstMethod'))
-                        ->addStmt($factory->method('someMethod')
-                                ->makePublic()
-                                ->makeAbstract()
-                                ->addParam($factory->param('someParam')->setTypeHint('SomeClass'))
-                                ->setDocComment('/**
+            ->addStmt($factory->use('Foo\Bar\SomeOtherClass'))
+            ->addStmt($factory->use('Foo\Bar')->as('A'))
+            ->addStmt($factory
+                ->class('SomeClass')
+                ->extend('SomeOtherClass')
+                ->implement('A\Few', '\Interfaces')
+                ->makeAbstract()
+
+                ->addStmt($factory->method('firstMethod'))
+
+                ->addStmt($factory->method('someMethod')
+                    ->makePublic()
+                    ->makeAbstract()
+                    ->addParam($factory->param('someParam')->setTypeHint('SomeClass'))
+                    ->setDocComment('/**
                                       * This method does something.
                                       *
                                       * @param SomeClass And takes a parameter
                                       */'))
-                        ->addStmt($factory->method('anotherMethod')
-                                ->makeProtected()
-                                ->addParam($factory->param('someParam')->setDefault('test'))
-                                ->addStmt(new Expr\Print_(new Expr\Variable('someParam'))))
-                        ->addStmt($factory->property('someProperty')->makeProtected())
-                        ->addStmt($factory->property('anotherProperty')
-                                ->makePrivate()
-                                ->setDefault(array(1, 2, 3))))
-                ->getNode()
+
+                ->addStmt($factory->method('anotherMethod')
+                    ->makeProtected()
+                    ->addParam($factory->param('someParam')->setDefault('test'))
+                    ->addStmt(new Expr\Print_(new Expr\Variable('someParam'))))
+
+                ->addStmt($factory->property('someProperty')->makeProtected())
+                ->addStmt($factory->property('anotherProperty')
+                    ->makePrivate()
+                    ->setDefault(array(1, 2, 3))))
+            ->getNode()
         ;
 
         $expected = <<<'EOC'
@@ -97,8 +101,8 @@ EOC;
         $generated = $prettyPrinter->prettyPrintFile($stmts);
 
         $this->assertEquals(
-                str_replace("\r\n", "\n", $expected), str_replace("\r\n", "\n", $generated)
+            str_replace("\r\n", "\n", $expected),
+            str_replace("\r\n", "\n", $generated)
         );
     }
-
 }

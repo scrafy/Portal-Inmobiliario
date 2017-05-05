@@ -5,17 +5,18 @@ namespace PhpParser\Lexer;
 use PhpParser\ErrorHandler;
 use PhpParser\Parser\Tokens;
 
-class Emulative extends \PhpParser\Lexer {
-
+class Emulative extends \PhpParser\Lexer
+{
     protected $newKeywords;
     protected $inObjectAccess;
 
-    const T_ELLIPSIS = 1001;
-    const T_POW = 1002;
-    const T_POW_EQUAL = 1003;
-    const T_COALESCE = 1004;
-    const T_SPACESHIP = 1005;
+    const T_ELLIPSIS   = 1001;
+    const T_POW        = 1002;
+    const T_POW_EQUAL  = 1003;
+    const T_COALESCE   = 1004;
+    const T_SPACESHIP  = 1005;
     const T_YIELD_FROM = 1006;
+
     const PHP_7_0 = '7.0.0dev';
     const PHP_5_6 = '5.6.0rc1';
 
@@ -23,7 +24,7 @@ class Emulative extends \PhpParser\Lexer {
         parent::__construct($options);
 
         $newKeywordsPerVersion = array(
-                // No new keywords since PHP 5.5
+            // No new keywords since PHP 5.5
         );
 
         $this->newKeywords = array();
@@ -38,15 +39,15 @@ class Emulative extends \PhpParser\Lexer {
         if (version_compare(PHP_VERSION, self::PHP_7_0, '>=')) {
             return;
         }
-        $this->tokenMap[self::T_COALESCE] = Tokens::T_COALESCE;
-        $this->tokenMap[self::T_SPACESHIP] = Tokens::T_SPACESHIP;
+        $this->tokenMap[self::T_COALESCE]   = Tokens::T_COALESCE;
+        $this->tokenMap[self::T_SPACESHIP]  = Tokens::T_SPACESHIP;
         $this->tokenMap[self::T_YIELD_FROM] = Tokens::T_YIELD_FROM;
 
         if (version_compare(PHP_VERSION, self::PHP_5_6, '>=')) {
             return;
         }
-        $this->tokenMap[self::T_ELLIPSIS] = Tokens::T_ELLIPSIS;
-        $this->tokenMap[self::T_POW] = Tokens::T_POW;
+        $this->tokenMap[self::T_ELLIPSIS]  = Tokens::T_ELLIPSIS;
+        $this->tokenMap[self::T_POW]       = Tokens::T_POW;
         $this->tokenMap[self::T_POW_EQUAL] = Tokens::T_POW_EQUAL;
     }
 
@@ -62,7 +63,6 @@ class Emulative extends \PhpParser\Lexer {
     /*
      * Checks if the code is potentially using features that require emulation.
      */
-
     protected function requiresEmulation($code) {
         if (version_compare(PHP_VERSION, self::PHP_7_0, '>=')) {
             return false;
@@ -82,7 +82,6 @@ class Emulative extends \PhpParser\Lexer {
     /*
      * Emulates tokens for newer PHP versions.
      */
-
     protected function emulateTokens() {
         // We need to manually iterate and manage a count because we'll change
         // the tokens array on the way
@@ -97,7 +96,8 @@ class Emulative extends \PhpParser\Lexer {
                     $c--;
                     continue;
                 }
-                if ($this->tokens[$i][0] === T_IS_SMALLER_OR_EQUAL && $this->tokens[$i + 1] === '>'
+                if ($this->tokens[$i][0] === T_IS_SMALLER_OR_EQUAL
+                    && $this->tokens[$i + 1] === '>'
                 ) {
                     array_splice($this->tokens, $i, 2, array(
                         array(self::T_SPACESHIP, '<=>', $line)
@@ -122,7 +122,9 @@ class Emulative extends \PhpParser\Lexer {
             }
 
             if (isset($this->tokens[$i + 2])) {
-                if ($this->tokens[$i][0] === T_YIELD && $this->tokens[$i + 1][0] === T_WHITESPACE && $this->tokens[$i + 2][0] === T_STRING && !strcasecmp($this->tokens[$i + 2][1], 'from')
+                if ($this->tokens[$i][0] === T_YIELD && $this->tokens[$i + 1][0] === T_WHITESPACE
+                    && $this->tokens[$i + 2][0] === T_STRING
+                    && !strcasecmp($this->tokens[$i + 2][1], 'from')
                 ) {
                     array_splice($this->tokens, $i, 3, array(
                         array(
@@ -135,7 +137,8 @@ class Emulative extends \PhpParser\Lexer {
                     $line += substr_count($this->tokens[$i][1], "\n");
                     continue;
                 }
-                if ($this->tokens[$i] === '.' && $this->tokens[$i + 1] === '.' && $this->tokens[$i + 2] === '.'
+                if ($this->tokens[$i] === '.' && $this->tokens[$i + 1] === '.'
+                    && $this->tokens[$i + 2] === '.'
                 ) {
                     array_splice($this->tokens, $i, 3, array(
                         array(self::T_ELLIPSIS, '...', $line)
@@ -168,5 +171,4 @@ class Emulative extends \PhpParser\Lexer {
 
         return $token;
     }
-
 }

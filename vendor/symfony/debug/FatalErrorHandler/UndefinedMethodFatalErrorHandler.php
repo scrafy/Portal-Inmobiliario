@@ -19,12 +19,13 @@ use Symfony\Component\Debug\Exception\UndefinedMethodException;
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
-class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface {
-
+class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function handleError(array $error, FatalErrorException $exception) {
+    public function handleError(array $error, FatalErrorException $exception)
+    {
         preg_match('/^Call to undefined method (.*)::(.*)\(\)$/', $error['message'], $matches);
         if (!$matches) {
             return;
@@ -50,17 +51,16 @@ class UndefinedMethodFatalErrorHandler implements FatalErrorHandlerInterface {
 
         if ($candidates) {
             sort($candidates);
-            $last = array_pop($candidates) . '"?';
+            $last = array_pop($candidates).'"?';
             if ($candidates) {
-                $candidates = 'e.g. "' . implode('", "', $candidates) . '" or "' . $last;
+                $candidates = 'e.g. "'.implode('", "', $candidates).'" or "'.$last;
             } else {
-                $candidates = '"' . $last;
+                $candidates = '"'.$last;
             }
 
-            $message .= "\nDid you mean to call " . $candidates;
+            $message .= "\nDid you mean to call ".$candidates;
         }
 
         return new UndefinedMethodException($message, $exception);
     }
-
 }

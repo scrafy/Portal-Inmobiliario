@@ -27,8 +27,8 @@ use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ExceptionHandler {
-
+class ExceptionHandler
+{
     private $debug;
     private $charset;
     private $handler;
@@ -36,7 +36,8 @@ class ExceptionHandler {
     private $caughtLength;
     private $fileLinkFormat;
 
-    public function __construct($debug = true, $charset = null, $fileLinkFormat = null) {
+    public function __construct($debug = true, $charset = null, $fileLinkFormat = null)
+    {
         $this->debug = $debug;
         $this->charset = $charset ?: ini_get('default_charset') ?: 'UTF-8';
         $this->fileLinkFormat = $fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
@@ -51,7 +52,8 @@ class ExceptionHandler {
      *
      * @return static
      */
-    public static function register($debug = true, $charset = null, $fileLinkFormat = null) {
+    public static function register($debug = true, $charset = null, $fileLinkFormat = null)
+    {
         $handler = new static($debug, $charset, $fileLinkFormat);
 
         $prev = set_exception_handler(array($handler, 'handle'));
@@ -70,7 +72,8 @@ class ExceptionHandler {
      *
      * @return callable|null The previous exception handler if any
      */
-    public function setHandler(callable $handler = null) {
+    public function setHandler(callable $handler = null)
+    {
         $old = $this->handler;
         $this->handler = $handler;
 
@@ -84,7 +87,8 @@ class ExceptionHandler {
      *
      * @return string The previous file link format
      */
-    public function setFileLinkFormat($fileLinkFormat) {
+    public function setFileLinkFormat($fileLinkFormat)
+    {
         $old = $this->fileLinkFormat;
         $this->fileLinkFormat = $fileLinkFormat;
 
@@ -99,7 +103,8 @@ class ExceptionHandler {
      * The latter takes precedence and any output from the former is cancelled,
      * if and only if nothing bad happens in this handling path.
      */
-    public function handle(\Exception $exception) {
+    public function handle(\Exception $exception)
+    {
         if (null === $this->handler || $exception instanceof OutOfMemoryException) {
             $this->sendPhpResponse($exception);
 
@@ -155,7 +160,8 @@ class ExceptionHandler {
      *
      * @param \Exception|FlattenException $exception An \Exception or FlattenException instance
      */
-    public function sendPhpResponse($exception) {
+    public function sendPhpResponse($exception)
+    {
         if (!$exception instanceof FlattenException) {
             $exception = FlattenException::create($exception);
         }
@@ -163,9 +169,9 @@ class ExceptionHandler {
         if (!headers_sent()) {
             header(sprintf('HTTP/1.0 %s', $exception->getStatusCode()));
             foreach ($exception->getHeaders() as $name => $value) {
-                header($name . ': ' . $value, false);
+                header($name.': '.$value, false);
             }
-            header('Content-Type: text/html; charset=' . $this->charset);
+            header('Content-Type: text/html; charset='.$this->charset);
         }
 
         echo $this->decorate($this->getContent($exception), $this->getStylesheet($exception));
@@ -178,7 +184,8 @@ class ExceptionHandler {
      *
      * @return string The HTML content as a string
      */
-    public function getHtml($exception) {
+    public function getHtml($exception)
+    {
         if (!$exception instanceof FlattenException) {
             $exception = FlattenException::create($exception);
         }
@@ -193,7 +200,8 @@ class ExceptionHandler {
      *
      * @return string The content as a string
      */
-    public function getContent(FlattenException $exception) {
+    public function getContent(FlattenException $exception)
+    {
         switch ($exception->getStatusCode()) {
             case 404:
                 $title = 'Sorry, the page you are looking for could not be found.';
@@ -221,7 +229,7 @@ class ExceptionHandler {
                             <ol class="traces list_exception">
 
 EOF
-                            , $ind, $total, $class, $this->formatPath($e['trace'][0]['file'], $e['trace'][0]['line']), $message);
+                        , $ind, $total, $class, $this->formatPath($e['trace'][0]['file'], $e['trace'][0]['line']), $message);
                     foreach ($e['trace'] as $trace) {
                         $content .= '       <li>';
                         if ($trace['function']) {
@@ -260,7 +268,8 @@ EOF;
      *
      * @return string The stylesheet as a string
      */
-    public function getStylesheet(FlattenException $exception) {
+    public function getStylesheet(FlattenException $exception)
+    {
         return <<<'EOF'
             .sf-reset { font: 11px Verdana, Arial, sans-serif; color: #333 }
             .sf-reset .clear { clear:both; height:0; font-size:0; line-height:0; }
@@ -308,7 +317,8 @@ EOF;
 EOF;
     }
 
-    private function decorate($content, $css) {
+    private function decorate($content, $css)
+    {
         return <<<EOF
 <!DOCTYPE html>
 <html>
@@ -332,13 +342,15 @@ EOF;
 EOF;
     }
 
-    private function formatClass($class) {
+    private function formatClass($class)
+    {
         $parts = explode('\\', $class);
 
         return sprintf('<abbr title="%s">%s</abbr>', $class, array_pop($parts));
     }
 
-    private function formatPath($path, $line) {
+    private function formatPath($path, $line)
+    {
         $file = $this->escapeHtml(preg_match('#[^/\\\\]*+$#', $path, $file) ? $file[0] : $path);
         $fmt = $this->fileLinkFormat;
 
@@ -356,7 +368,8 @@ EOF;
      *
      * @return string
      */
-    private function formatArgs(array $args) {
+    private function formatArgs(array $args)
+    {
         $result = array();
         foreach ($args as $key => $item) {
             if ('object' === $item[0]) {
@@ -366,7 +379,7 @@ EOF;
             } elseif ('null' === $item[0]) {
                 $formattedValue = '<em>null</em>';
             } elseif ('boolean' === $item[0]) {
-                $formattedValue = '<em>' . strtolower(var_export($item[1], true)) . '</em>';
+                $formattedValue = '<em>'.strtolower(var_export($item[1], true)).'</em>';
             } elseif ('resource' === $item[0]) {
                 $formattedValue = '<em>resource</em>';
             } else {
@@ -382,8 +395,8 @@ EOF;
     /**
      * HTML-encodes a string.
      */
-    private function escapeHtml($str) {
+    private function escapeHtml($str)
+    {
         return htmlspecialchars($str, ENT_COMPAT | ENT_SUBSTITUTE, $this->charset);
     }
-
 }

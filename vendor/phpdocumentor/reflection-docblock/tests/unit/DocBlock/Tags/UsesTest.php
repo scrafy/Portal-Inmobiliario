@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -24,14 +23,15 @@ use phpDocumentor\Reflection\Types\Context;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Uses
  * @covers ::<private>
  */
-class UsesTest extends \PHPUnit_Framework_TestCase {
-
+class UsesTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Uses::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Uses(new Fqsen('\DateTime'), new Description('Description'));
 
         $this->assertSame('uses', $fixture->getName());
@@ -45,7 +45,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new Uses(new Fqsen('\DateTime'), new Description('Description'));
 
         $this->assertSame('@uses \DateTime Description', $fixture->render());
@@ -56,7 +57,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Uses(new Fqsen('\DateTime'), new Description('Description'));
 
         $formatter = m::mock(Formatter::class);
@@ -69,7 +71,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getReference
      */
-    public function testHasReferenceToFqsen() {
+    public function testHasReferenceToFqsen()
+    {
         $expected = new Fqsen('\DateTime');
 
         $fixture = new Uses($expected);
@@ -82,7 +85,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Uses(new Fqsen('\DateTime'), $expected);
@@ -95,10 +99,11 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new Uses(new Fqsen('\DateTime'), new Description('Description'));
 
-        $this->assertSame('\DateTime Description', (string) $fixture);
+        $this->assertSame('\DateTime Description', (string)$fixture);
     }
 
     /**
@@ -110,22 +115,23 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $resolver = m::mock(FqsenResolver::class);
-        $context = new Context('');
+        $resolver           = m::mock(FqsenResolver::class);
+        $context            = new Context('');
 
-        $fqsen = new Fqsen('\DateTime');
+        $fqsen       = new Fqsen('\DateTime');
         $description = new Description('My Description');
 
         $descriptionFactory
-                ->shouldReceive('create')->with('My Description', $context)->andReturn($description)
+            ->shouldReceive('create')->with('My Description', $context)->andReturn($description)
         ;
         $resolver->shouldReceive('resolve')->with('DateTime', $context)->andReturn($fqsen);
 
         $fixture = Uses::create('DateTime My Description', $resolver, $descriptionFactory, $context);
 
-        $this->assertSame('\DateTime My Description', (string) $fixture);
+        $this->assertSame('\DateTime My Description', (string)$fixture);
         $this->assertSame($fqsen, $fixture->getReference());
         $this->assertSame($description, $fixture->getDescription());
     }
@@ -134,7 +140,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString() {
+    public function testFactoryMethodFailsIfBodyIsNotString()
+    {
         $this->assertNull(Uses::create([]));
     }
 
@@ -142,7 +149,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotEmpty() {
+    public function testFactoryMethodFailsIfBodyIsNotEmpty()
+    {
         $this->assertNull(Uses::create(''));
     }
 
@@ -150,7 +158,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull() {
+    public function testFactoryMethodFailsIfResolverIsNull()
+    {
         Uses::create('body');
     }
 
@@ -158,8 +167,8 @@ class UsesTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull() {
+    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    {
         Uses::create('body', new FqsenResolver());
     }
-
 }

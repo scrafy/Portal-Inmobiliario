@@ -26,15 +26,16 @@ use Psy\CodeCleaner;
  * namespace is replaced by another namespace. To reset to the top level
  * namespace, enter `namespace {}`. This is a bit ugly, but it does the trick :)
  */
-class NamespacePass extends CodeCleanerPass {
-
+class NamespacePass extends CodeCleanerPass
+{
     private $namespace = null;
     private $cleaner;
 
     /**
      * @param CodeCleaner $cleaner
      */
-    public function __construct(CodeCleaner $cleaner) {
+    public function __construct(CodeCleaner $cleaner)
+    {
         $this->cleaner = $cleaner;
     }
 
@@ -46,7 +47,8 @@ class NamespacePass extends CodeCleanerPass {
      *
      * @param array $nodes
      */
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         $first = reset($nodes);
         if (count($nodes) === 1 && $first instanceof NamespaceStmt && empty($first->stmts)) {
             $this->setNamespace($first->name);
@@ -69,9 +71,9 @@ class NamespacePass extends CodeCleanerPass {
      *
      * @param null|Name $namespace
      */
-    private function setNamespace($namespace) {
+    private function setNamespace($namespace)
+    {
         $this->namespace = $namespace;
         $this->cleaner->setNamespace($namespace === null ? null : $namespace->parts);
     }
-
 }

@@ -22,8 +22,8 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PhpFileLoader extends FileLoader {
-
+class PhpFileLoader extends FileLoader
+{
     /**
      * Loads a PHP file.
      *
@@ -32,7 +32,8 @@ class PhpFileLoader extends FileLoader {
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function load($file, $type = null) {
+    public function load($file, $type = null)
+    {
         $path = $this->locator->locate($file);
         $this->setCurrentDir(dirname($path));
 
@@ -45,7 +46,8 @@ class PhpFileLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'php' === $type);
     }
 
@@ -57,8 +59,8 @@ class PhpFileLoader extends FileLoader {
      *
      * @return RouteCollection
      */
-    private static function includeFile($file, PhpFileLoader $loader) {
+    private static function includeFile($file, PhpFileLoader $loader)
+    {
         return include $file;
     }
-
 }

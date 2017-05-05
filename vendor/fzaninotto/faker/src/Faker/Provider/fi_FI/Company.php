@@ -2,13 +2,14 @@
 
 namespace Faker\Provider\fi_FI;
 
-class Company extends \Faker\Provider\Company {
-
+class Company extends \Faker\Provider\Company
+{
     protected static $formats = array(
         '{{lastName}} {{companySuffix}}',
         '{{lastName}}-{{lastName}}',
         '{{lastName}}, {{lastName}} and {{lastName}}'
     );
+
     protected static $catchPhraseWords = array(
         array(
             'Ainoa', 'Adaptiivinen', 'Automatisoitu', 'Avoin', 'Avoimen lähdekoodin', 'Digitalisoitu', 'Dynaaminen', 'Erikoistunut', 'Ennakoiva', 'Ergonominen', 'Hallittu', 'Hajautettu', 'Horisontaalinen', 'Integroitu', 'Innovatiivinen', 'Jaettava', 'Keskittynyt', 'Käyttäjäystävällinen', 'Laajenettu', 'Laajennettava', 'Lievittävä', 'Maailmanlaajuinen', 'Muokattava', 'Monitoroitu', 'Monikerroksinen', 'Ohjelmoitava', 'Optimoitu', 'Organisoitu', 'Orgaaninen', 'Rinnastettava', 'Räätälöitävä', 'Saumaton', 'Tasapainotettava', 'Täysin yhteensopiva', 'Yhteensopiva', 'Yksinomainen', 'Vaiheittainen', 'Virtuaalinen', 'Visionäärinen', 'Valinnainen', 'Verkostoitunut'
@@ -20,6 +21,7 @@ class Company extends \Faker\Provider\Company {
             'algoritmi', 'yhteisö', 'analysaattori', 'sovellus', 'lähestymistapa', 'arkkitehtuuri', 'arkisto', 'ryhmä', 'sovitin', 'benchmark', 'kapasiteetti', 'tietokanta', 'piiri', 'emulaatio', 'konsepti', 'firmware', 'rakenne', 'funktio', 'rauta', 'help-desk', 'hierarkia', 'hubi', 'implementaatio', 'intranet', 'malli', 'ohjelmisto', 'ratkaisu', 'strategia', 'menestys', 'projekti', 'tuote', 'tuki', 'www-sivusto', 'synergia', 'protokolla', 'koodaus', 'ennuste', 'joustavuus', 'extranet', 'salaus', 'kompleksisuus', 'ydin', 'asenne', 'liitto', 'internetratkaisu', 'asennus', 'monitorointi', 'infrastruktuuri'
         )
     );
+
     protected static $bsWords = array(
         array(
             'implementoi', 'käyttää', 'integroi', 'optimoi', 'kehittää', 'muuntaa', 'omaksuu', 'mahdollistaa', 'orkestoi', 'uudelleenkeksii', 'kerää', 'kokoaa', 'kasvattaa', 'parantaa', 'helpottaa', 'toimittaa', 'antaa', 'täyttää', 'vapauttaa', 'ajaa', 'jatkaa', 'mullistaa', 'iteroi', 'generoi', 'hyödyntää', 'brandaa', 'muokkaa', 'kasvattaa', 'kytkee', 'innovoi', 'viljelee', 'visualisoi'
@@ -31,12 +33,14 @@ class Company extends \Faker\Provider\Company {
             'kanavia', 'silmämunia', 'ratkaisuja', 'e-palveluja', 'portaaleja', 'teknologioita', 'käyttäjiä', 'verkkoja', 'palveluita', 'ohjelmia', 'web-ohjelmistoja', 'kokemuksia', 'systeemejä', 'rajapintoja', 'yhteisöjä', 'markkinarakoja', 'skeemoja', 'arkkitehtuureja', 'malleja', 'sisältöä', 'mainoksia'
         )
     );
+
     protected static $companySuffix = array('OY', 'AB', 'OY AB', 'RY', 'OYj', 'Tmi.', 'Inc.', 'Ltd');
 
     /**
      * @example 'Ainoa 3.sukupolven ohjelmisto'
      */
-    public function catchPhrase() {
+    public function catchPhrase()
+    {
         $result = array();
         foreach (static::$catchPhraseWords as &$word) {
             $result[] = static::randomElement($word);
@@ -48,7 +52,8 @@ class Company extends \Faker\Provider\Company {
     /**
      * @example 'hyödyntää maailmanlaajuisia yhteisöjä'
      */
-    public function bs() {
+    public function bs()
+    {
         $result = array();
         foreach (static::$bsWords as &$word) {
             $result[] = static::randomElement($word);
@@ -56,5 +61,4 @@ class Company extends \Faker\Provider\Company {
 
         return join($result, ' ');
     }
-
 }

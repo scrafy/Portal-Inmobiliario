@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
-class Authorize {
-
+class Authorize
+{
     /**
      * The authentication factory instance.
      *
@@ -30,7 +30,8 @@ class Authorize {
      * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      * @return void
      */
-    public function __construct(Auth $auth, Gate $gate) {
+    public function __construct(Auth $auth, Gate $gate)
+    {
         $this->auth = $auth;
         $this->gate = $gate;
     }
@@ -47,7 +48,8 @@ class Authorize {
      * @throws \Illuminate\Auth\AuthenticationException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function handle($request, Closure $next, $ability, ...$models) {
+    public function handle($request, Closure $next, $ability, ...$models)
+    {
         $this->auth->authenticate();
 
         $this->gate->authorize($ability, $this->getGateArguments($request, $models));
@@ -62,14 +64,15 @@ class Authorize {
      * @param  array|null  $models
      * @return array|string|\Illuminate\Database\Eloquent\Model
      */
-    protected function getGateArguments($request, $models) {
+    protected function getGateArguments($request, $models)
+    {
         if (is_null($models)) {
             return [];
         }
 
         return collect($models)->map(function ($model) use ($request) {
-                    return $model instanceof Model ? $model : $this->getModel($request, $model);
-                })->all();
+            return $model instanceof Model ? $model : $this->getModel($request, $model);
+        })->all();
     }
 
     /**
@@ -79,7 +82,8 @@ class Authorize {
      * @param  string  $model
      * @return string|\Illuminate\Database\Eloquent\Model
      */
-    protected function getModel($request, $model) {
+    protected function getModel($request, $model)
+    {
         return $this->isClassName($model) ? $model : $request->route($model);
     }
 
@@ -89,8 +93,8 @@ class Authorize {
      * @param  string  $value
      * @return bool
      */
-    protected function isClassName($value) {
+    protected function isClassName($value)
+    {
         return strpos($value, '\\') !== false;
     }
-
 }

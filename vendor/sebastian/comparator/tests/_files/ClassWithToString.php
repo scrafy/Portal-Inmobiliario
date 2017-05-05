@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -11,10 +10,10 @@
 
 namespace SebastianBergmann\Comparator;
 
-class ClassWithToString {
-
-    public function __toString() {
+class ClassWithToString
+{
+    public function __toString()
+    {
         return 'string representation';
     }
-
 }

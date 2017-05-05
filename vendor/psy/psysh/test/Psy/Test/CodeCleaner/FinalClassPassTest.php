@@ -14,10 +14,11 @@ namespace Psy\Test\CodeCleaner;
 use PhpParser\NodeTraverser;
 use Psy\CodeCleaner\FinalClassPass;
 
-class FinalClassPassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
-        $this->pass = new FinalClassPass();
+class FinalClassPassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
+        $this->pass      = new FinalClassPass();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this->pass);
     }
@@ -26,16 +27,18 @@ class FinalClassPassTest extends CodeCleanerTestCase {
      * @dataProvider invalidStatements
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code) {
+    public function testProcessStatementFails($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function invalidStatements() {
+    public function invalidStatements()
+    {
         $stmts = array(
             array('final class A {} class B extends A {}'),
             array('class A {} final class B extends A {} class C extends B {}'),
-                // array('namespace A { final class B {} } namespace C { class D extends \\A\\B {} }'),
+            // array('namespace A { final class B {} } namespace C { class D extends \\A\\B {} }'),
         );
 
         if (!defined('HHVM_VERSION')) {
@@ -49,17 +52,18 @@ class FinalClassPassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code) {
+    public function testProcessStatementPasses($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function validStatements() {
+    public function validStatements()
+    {
         return array(
             array('class A extends \\stdClass {}'),
             array('final class A extends \\stdClass {}'),
             array('class A {} class B extends A {}'),
         );
     }
-
 }

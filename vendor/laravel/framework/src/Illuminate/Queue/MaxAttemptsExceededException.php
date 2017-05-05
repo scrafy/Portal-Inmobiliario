@@ -4,6 +4,7 @@ namespace Illuminate\Queue;
 
 use RuntimeException;
 
-class MaxAttemptsExceededException extends RuntimeException {
+class MaxAttemptsExceededException extends RuntimeException
+{
     //
 }

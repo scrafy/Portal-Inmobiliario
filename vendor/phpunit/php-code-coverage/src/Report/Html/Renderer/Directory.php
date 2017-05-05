@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -17,13 +16,14 @@ use SebastianBergmann\CodeCoverage\Node\Directory as DirectoryNode;
 /**
  * Renders a directory node.
  */
-class Directory extends Renderer {
-
+class Directory extends Renderer
+{
     /**
      * @param DirectoryNode $node
      * @param string        $file
      */
-    public function render(DirectoryNode $node, $file) {
+    public function render(DirectoryNode $node, $file)
+    {
         $template = new \Text_Template($this->templatePath . 'directory.html', '{{', '}}');
 
         $this->setCommonTemplateVariables($template, $node);
@@ -39,10 +39,10 @@ class Directory extends Renderer {
         }
 
         $template->setVar(
-                [
-                    'id' => $node->getId(),
-                    'items' => $items
-                ]
+            [
+                'id'    => $node->getId(),
+                'items' => $items
+            ]
         );
 
         $template->renderTo($file);
@@ -54,19 +54,20 @@ class Directory extends Renderer {
      *
      * @return string
      */
-    protected function renderItem(Node $node, $total = false) {
+    protected function renderItem(Node $node, $total = false)
+    {
         $data = [
-            'numClasses' => $node->getNumClassesAndTraits(),
-            'numTestedClasses' => $node->getNumTestedClassesAndTraits(),
-            'numMethods' => $node->getNumMethods(),
-            'numTestedMethods' => $node->getNumTestedMethods(),
-            'linesExecutedPercent' => $node->getLineExecutedPercent(false),
+            'numClasses'                   => $node->getNumClassesAndTraits(),
+            'numTestedClasses'             => $node->getNumTestedClassesAndTraits(),
+            'numMethods'                   => $node->getNumMethods(),
+            'numTestedMethods'             => $node->getNumTestedMethods(),
+            'linesExecutedPercent'         => $node->getLineExecutedPercent(false),
             'linesExecutedPercentAsString' => $node->getLineExecutedPercent(),
-            'numExecutedLines' => $node->getNumExecutedLines(),
-            'numExecutableLines' => $node->getNumExecutableLines(),
-            'testedMethodsPercent' => $node->getTestedMethodsPercent(false),
+            'numExecutedLines'             => $node->getNumExecutedLines(),
+            'numExecutableLines'           => $node->getNumExecutableLines(),
+            'testedMethodsPercent'         => $node->getTestedMethodsPercent(false),
             'testedMethodsPercentAsString' => $node->getTestedMethodsPercent(),
-            'testedClassesPercent' => $node->getTestedClassesAndTraitsPercent(false),
+            'testedClassesPercent'         => $node->getTestedClassesAndTraitsPercent(false),
             'testedClassesPercentAsString' => $node->getTestedClassesAndTraitsPercent()
         ];
 
@@ -75,13 +76,17 @@ class Directory extends Renderer {
         } else {
             if ($node instanceof DirectoryNode) {
                 $data['name'] = sprintf(
-                        '<a href="%s/index.html">%s</a>', $node->getName(), $node->getName()
+                    '<a href="%s/index.html">%s</a>',
+                    $node->getName(),
+                    $node->getName()
                 );
 
                 $data['icon'] = '<span class="glyphicon glyphicon-folder-open"></span> ';
             } else {
                 $data['name'] = sprintf(
-                        '<a href="%s.html">%s</a>', $node->getName(), $node->getName()
+                    '<a href="%s.html">%s</a>',
+                    $node->getName(),
+                    $node->getName()
                 );
 
                 $data['icon'] = '<span class="glyphicon glyphicon-file"></span> ';
@@ -89,8 +94,8 @@ class Directory extends Renderer {
         }
 
         return $this->renderItemTemplate(
-                        new \Text_Template($this->templatePath . 'directory_item.html', '{{', '}}'), $data
+            new \Text_Template($this->templatePath . 'directory_item.html', '{{', '}}'),
+            $data
         );
     }
-
 }

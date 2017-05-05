@@ -6,15 +6,16 @@ use Aws\Sqs\SqsClient;
 use Illuminate\Support\Arr;
 use Illuminate\Queue\SqsQueue;
 
-class SqsConnector implements ConnectorInterface {
-
+class SqsConnector implements ConnectorInterface
+{
     /**
      * Establish a queue connection.
      *
      * @param  array  $config
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         $config = $this->getDefaultConfiguration($config);
 
         if ($config['key'] && $config['secret']) {
@@ -22,7 +23,7 @@ class SqsConnector implements ConnectorInterface {
         }
 
         return new SqsQueue(
-                new SqsClient($config), $config['queue'], Arr::get($config, 'prefix', '')
+            new SqsClient($config), $config['queue'], Arr::get($config, 'prefix', '')
         );
     }
 
@@ -32,14 +33,14 @@ class SqsConnector implements ConnectorInterface {
      * @param  array  $config
      * @return array
      */
-    protected function getDefaultConfiguration(array $config) {
+    protected function getDefaultConfiguration(array $config)
+    {
         return array_merge([
             'version' => 'latest',
             'http' => [
                 'timeout' => 60,
                 'connect_timeout' => 60,
             ],
-                ], $config);
+        ], $config);
     }
-
 }

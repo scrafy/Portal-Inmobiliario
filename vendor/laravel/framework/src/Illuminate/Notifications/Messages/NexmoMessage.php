@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Messages;
 
-class NexmoMessage {
-
+class NexmoMessage
+{
     /**
      * The message content.
      *
@@ -31,7 +31,8 @@ class NexmoMessage {
      * @param  string  $content
      * @return void
      */
-    public function __construct($content = '') {
+    public function __construct($content = '')
+    {
         $this->content = $content;
     }
 
@@ -41,7 +42,8 @@ class NexmoMessage {
      * @param  string  $content
      * @return $this
      */
-    public function content($content) {
+    public function content($content)
+    {
         $this->content = $content;
 
         return $this;
@@ -53,7 +55,8 @@ class NexmoMessage {
      * @param  string  $from
      * @return $this
      */
-    public function from($from) {
+    public function from($from)
+    {
         $this->from = $from;
 
         return $this;
@@ -64,10 +67,10 @@ class NexmoMessage {
      *
      * @return $this
      */
-    public function unicode() {
+    public function unicode()
+    {
         $this->type = 'unicode';
 
         return $this;
     }
-
 }

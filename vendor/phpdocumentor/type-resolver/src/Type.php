@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -13,7 +12,7 @@
 
 namespace phpDocumentor\Reflection;
 
-interface Type {
-
+interface Type
+{
     public function __toString();
 }

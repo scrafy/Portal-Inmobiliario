@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TraceableControllerResolver implements ControllerResolverInterface, ArgumentResolverInterface {
-
+class TraceableControllerResolver implements ControllerResolverInterface, ArgumentResolverInterface
+{
     private $resolver;
     private $stopwatch;
     private $argumentResolver;
@@ -32,7 +32,8 @@ class TraceableControllerResolver implements ControllerResolverInterface, Argume
      * @param Stopwatch                   $stopwatch        A Stopwatch instance
      * @param ArgumentResolverInterface   $argumentResolver Only required for BC
      */
-    public function __construct(ControllerResolverInterface $resolver, Stopwatch $stopwatch, ArgumentResolverInterface $argumentResolver = null) {
+    public function __construct(ControllerResolverInterface $resolver, Stopwatch $stopwatch, ArgumentResolverInterface $argumentResolver = null)
+    {
         $this->resolver = $resolver;
         $this->stopwatch = $stopwatch;
         $this->argumentResolver = $argumentResolver;
@@ -50,7 +51,8 @@ class TraceableControllerResolver implements ControllerResolverInterface, Argume
     /**
      * {@inheritdoc}
      */
-    public function getController(Request $request) {
+    public function getController(Request $request)
+    {
         $e = $this->stopwatch->start('controller.get_callable');
 
         $ret = $this->resolver->getController($request);
@@ -65,12 +67,12 @@ class TraceableControllerResolver implements ControllerResolverInterface, Argume
      *
      * @deprecated This method is deprecated as of 3.1 and will be removed in 4.0.
      */
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         @trigger_error(sprintf('The %s method is deprecated as of 3.1 and will be removed in 4.0. Please use the %s instead.', __METHOD__, TraceableArgumentResolver::class), E_USER_DEPRECATED);
 
         $ret = $this->argumentResolver->getArguments($request, $controller);
 
         return $ret;
     }
-
 }

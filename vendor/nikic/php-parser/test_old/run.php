@@ -9,7 +9,7 @@ if ('cli' !== php_sapi_name()) {
 
 function showHelp($error) {
     die($error . "\n\n" .
-            <<<OUTPUT
+<<<OUTPUT
 This script has to be called with the following signature:
 
     php run.php [--no-progress] testType pathToTestFiles
@@ -69,7 +69,7 @@ switch ($testType) {
         break;
     case 'PHP5':
     case 'PHP7':
-        $version = $testType === 'PHP5' ? 'Php5' : 'Php7';
+    $version = $testType === 'PHP5' ? 'Php5' : 'Php7';
         $fileFilter = function($path) {
             return preg_match('~\.phpt$~', $path);
         };
@@ -113,10 +113,10 @@ switch ($testType) {
 require_once dirname(__FILE__) . '/../lib/PhpParser/Autoloader.php';
 PhpParser\Autoloader::register();
 
-$parserName = 'PhpParser\Parser\\' . $version;
-$parser = new $parserName(new PhpParser\Lexer\Emulative);
+$parserName    = 'PhpParser\Parser\\' . $version;
+$parser        = new $parserName(new PhpParser\Lexer\Emulative);
 $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-$nodeDumper = new PhpParser\NodeDumper;
+$nodeDumper    = new PhpParser\NodeDumper;
 
 $parseFail = $ppFail = $compareFail = $count = 0;
 
@@ -124,8 +124,9 @@ $readTime = $parseTime = $ppTime = $reparseTime = $compareTime = 0;
 $totalStartTime = microtime(true);
 
 foreach (new RecursiveIteratorIterator(
-new RecursiveDirectoryIterator($dir), RecursiveIteratorIterator::LEAVES_ONLY)
-as $file) {
+             new RecursiveDirectoryIterator($dir),
+             RecursiveIteratorIterator::LEAVES_ONLY)
+         as $file) {
     if (!$fileFilter($file)) {
         continue;
     }
@@ -194,26 +195,26 @@ if (0 === $parseFail && 0 === $ppFail && 0 === $compareFail) {
     $exit = 1;
     echo "\n\n", '==========', "\n\n", 'There were: ', "\n";
     if (0 !== $parseFail) {
-        echo '    ', $parseFail, ' parse failures.', "\n";
+        echo '    ', $parseFail,   ' parse failures.',        "\n";
     }
     if (0 !== $ppFail) {
-        echo '    ', $ppFail, ' pretty print failures.', "\n";
+        echo '    ', $ppFail,      ' pretty print failures.', "\n";
     }
     if (0 !== $compareFail) {
-        echo '    ', $compareFail, ' compare failures.', "\n";
+        echo '    ', $compareFail, ' compare failures.',      "\n";
     }
 }
 
 echo "\n",
- 'Tested files:         ', $count, "\n",
- "\n",
- 'Reading files took:   ', $readTime, "\n",
- 'Parsing took:         ', $parseTime, "\n",
- 'Pretty printing took: ', $ppTime, "\n",
- 'Reparsing took:       ', $reparseTime, "\n",
- 'Comparing took:       ', $compareTime, "\n",
- "\n",
- 'Total time:           ', microtime(true) - $totalStartTime, "\n",
- 'Maximum memory usage: ', memory_get_peak_usage(true), "\n";
+     'Tested files:         ', $count,        "\n",
+     "\n",
+     'Reading files took:   ', $readTime,    "\n",
+     'Parsing took:         ', $parseTime,   "\n",
+     'Pretty printing took: ', $ppTime,      "\n",
+     'Reparsing took:       ', $reparseTime, "\n",
+     'Comparing took:       ', $compareTime, "\n",
+     "\n",
+     'Total time:           ', microtime(true) - $totalStartTime, "\n",
+     'Maximum memory usage: ', memory_get_peak_usage(true), "\n";
 
 exit($exit);

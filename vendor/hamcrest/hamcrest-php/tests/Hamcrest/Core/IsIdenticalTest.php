@@ -1,14 +1,16 @@
 <?php
-
 namespace Hamcrest\Core;
 
-class IsIdenticalTest extends \Hamcrest\AbstractMatcherTest {
+class IsIdenticalTest extends \Hamcrest\AbstractMatcherTest
+{
 
-    protected function createMatcher() {
+    protected function createMatcher()
+    {
         return \Hamcrest\Core\IsIdentical::identicalTo('irrelevant');
     }
 
-    public function testEvaluatesToTrueIfArgumentIsReferenceToASpecifiedObject() {
+    public function testEvaluatesToTrueIfArgumentIsReferenceToASpecifiedObject()
+    {
         $o1 = new \stdClass();
         $o2 = new \stdClass();
 
@@ -16,12 +18,13 @@ class IsIdenticalTest extends \Hamcrest\AbstractMatcherTest {
         assertThat($o2, not(identicalTo($o1)));
     }
 
-    public function testReturnsReadableDescriptionFromToString() {
+    public function testReturnsReadableDescriptionFromToString()
+    {
         $this->assertDescription('"ARG"', identicalTo('ARG'));
     }
 
-    public function testReturnsReadableDescriptionFromToStringWhenInitialisedWithNull() {
+    public function testReturnsReadableDescriptionFromToStringWhenInitialisedWithNull()
+    {
         $this->assertDescription('null', identicalTo(null));
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Failed;
 
-interface FailedJobProviderInterface {
-
+interface FailedJobProviderInterface
+{
     /**
      * Log a failed job into storage.
      *

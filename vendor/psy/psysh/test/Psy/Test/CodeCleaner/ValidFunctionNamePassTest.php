@@ -13,9 +13,10 @@ namespace Psy\Test\CodeCleaner;
 
 use Psy\CodeCleaner\ValidFunctionNamePass;
 
-class ValidFunctionNamePassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
+class ValidFunctionNamePassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
         $this->setPass(new ValidFunctionNamePass());
     }
 
@@ -23,12 +24,14 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
      * @dataProvider getInvalidFunctions
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessInvalidFunctionCallsAndDeclarations($code) {
+    public function testProcessInvalidFunctionCallsAndDeclarations($code)
+    {
         $stmts = $this->parse($code);
         $this->traverse($stmts);
     }
 
-    public function getInvalidFunctions() {
+    public function getInvalidFunctions()
+    {
         return array(
             // function declarations
             array('function array_merge() {}'),
@@ -45,6 +48,7 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
                     function beta() {}
                 }
             '),
+
             // function calls
             array('psy_test_codecleaner_validfunctionnamepass_gamma()'),
             array('
@@ -52,6 +56,7 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
                     delta();
                 }
             '),
+
             // recursion
             array('function a() { a(); } function a() {}'),
         );
@@ -60,12 +65,14 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider getValidFunctions
      */
-    public function testProcessValidFunctionCallsAndDeclarations($code) {
+    public function testProcessValidFunctionCallsAndDeclarations($code)
+    {
         $stmts = $this->parse($code);
         $this->traverse($stmts);
     }
 
-    public function getValidFunctions() {
+    public function getValidFunctions()
+    {
         return array(
             array('function psy_test_codecleaner_validfunctionnamepass_epsilon() {}'),
             array('
@@ -94,6 +101,7 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
                     function array_merge() {}
                 }
             '),
+
             // function calls
             array('array_merge();'),
             array('
@@ -114,8 +122,10 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
                     Psy\\Test\\CodeCleaner\\ValidFunctionNamePass\\theta();
                 }
             '),
+
             // recursion
             array('function a() { a(); }'),
+
             // conditionally defined functions
             array('
                 function a() {}
@@ -168,5 +178,4 @@ class ValidFunctionNamePassTest extends CodeCleanerTestCase {
             '),
         );
     }
-
 }

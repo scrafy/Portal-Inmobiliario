@@ -1,11 +1,9 @@
 <?php
-
 namespace Hamcrest\Core;
 
 /*
-  Copyright (c) 2009 hamcrest.org
+ Copyright (c) 2009 hamcrest.org
  */
-
 use Hamcrest\Description;
 use Hamcrest\Util;
 
@@ -14,17 +12,21 @@ use Hamcrest\Util;
  * shortcut, so subsequent matchers are not called if an earlier matcher
  * returns <code>true</code>.
  */
-class AnyOf extends ShortcutCombination {
+class AnyOf extends ShortcutCombination
+{
 
-    public function __construct(array $matchers) {
+    public function __construct(array $matchers)
+    {
         parent::__construct($matchers);
     }
 
-    public function matches($item) {
+    public function matches($item)
+    {
         return $this->matchesWithShortcut($item, true);
     }
 
-    public function describeTo(Description $description) {
+    public function describeTo(Description $description)
+    {
         $this->describeToWithOperator($description, 'or');
     }
 
@@ -33,7 +35,8 @@ class AnyOf extends ShortcutCombination {
      *
      * @factory ...
      */
-    public static function anyOf(/* args... */) {
+    public static function anyOf(/* args... */)
+    {
         $args = func_get_args();
 
         return new self(Util::createMatcherArray($args));
@@ -44,12 +47,12 @@ class AnyOf extends ShortcutCombination {
      *
      * @factory ...
      */
-    public static function noneOf(/* args... */) {
+    public static function noneOf(/* args... */)
+    {
         $args = func_get_args();
 
         return IsNot::not(
-                        new self(Util::createMatcherArray($args))
+            new self(Util::createMatcherArray($args))
         );
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Cache\Console;
 use Illuminate\Console\Command;
 use Illuminate\Cache\CacheManager;
 
-class ForgetCommand extends Command {
-
+class ForgetCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -34,7 +34,8 @@ class ForgetCommand extends Command {
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @return void
      */
-    public function __construct(CacheManager $cache) {
+    public function __construct(CacheManager $cache)
+    {
         parent::__construct();
 
         $this->cache = $cache;
@@ -45,12 +46,12 @@ class ForgetCommand extends Command {
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         $this->cache->store($this->argument('store'))->forget(
-                $this->argument('key')
+            $this->argument('key')
         );
 
-        $this->info('The [' . $this->argument('key') . '] key has been removed from the cache.');
+        $this->info('The ['.$this->argument('key').'] key has been removed from the cache.');
     }
-
 }

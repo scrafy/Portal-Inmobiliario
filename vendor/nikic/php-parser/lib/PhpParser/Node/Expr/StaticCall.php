@@ -5,14 +5,12 @@ namespace PhpParser\Node\Expr;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 
-class StaticCall extends Expr {
-
+class StaticCall extends Expr
+{
     /** @var Node\Name|Expr Class name */
     public $class;
-
     /** @var string|Expr Method name */
     public $name;
-
     /** @var Node\Arg[] Arguments */
     public $args;
 
@@ -34,5 +32,4 @@ class StaticCall extends Expr {
     public function getSubNodeNames() {
         return array('class', 'name', 'args');
     }
-
 }

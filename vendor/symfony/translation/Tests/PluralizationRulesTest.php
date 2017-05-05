@@ -27,8 +27,8 @@ use Symfony\Component\Translation\PluralizationRules;
  *
  * @author Clemens Tolboom clemens@build2be.nl
  */
-class PluralizationRulesTest extends TestCase {
-
+class PluralizationRulesTest extends TestCase
+{
     /**
      * We test failed langcode here.
      *
@@ -36,7 +36,8 @@ class PluralizationRulesTest extends TestCase {
      *
      * @dataProvider failingLangcodes
      */
-    public function testFailedLangcodes($nplural, $langCodes) {
+    public function testFailedLangcodes($nplural, $langCodes)
+    {
         $matrix = $this->generateTestData($langCodes);
         $this->validateMatrix($nplural, $matrix, false);
     }
@@ -44,7 +45,8 @@ class PluralizationRulesTest extends TestCase {
     /**
      * @dataProvider successLangcodes
      */
-    public function testLangcodes($nplural, $langCodes) {
+    public function testLangcodes($nplural, $langCodes)
+    {
         $matrix = $this->generateTestData($langCodes);
         $this->validateMatrix($nplural, $matrix);
     }
@@ -56,7 +58,8 @@ class PluralizationRulesTest extends TestCase {
      *
      * @return array
      */
-    public function successLangcodes() {
+    public function successLangcodes()
+    {
         return array(
             array('1', array('ay', 'bo', 'cgg', 'dz', 'id', 'ja', 'jbo', 'ka', 'kk', 'km', 'ko', 'ky')),
             array('2', array('nl', 'fr', 'en', 'de', 'de_GE', 'hy', 'hy_AM')),
@@ -75,7 +78,8 @@ class PluralizationRulesTest extends TestCase {
      *
      * @return array with nplural together with langcodes
      */
-    public function failingLangcodes() {
+    public function failingLangcodes()
+    {
         return array(
             array('1', array('fa')),
             array('2', array('jbo')),
@@ -93,7 +97,8 @@ class PluralizationRulesTest extends TestCase {
      * @param array  $matrix        containing langcodes and their plural index values
      * @param bool   $expectSuccess
      */
-    protected function validateMatrix($nplural, $matrix, $expectSuccess = true) {
+    protected function validateMatrix($nplural, $matrix, $expectSuccess = true)
+    {
         foreach ($matrix as $langCode => $data) {
             $indexes = array_flip($data);
             if ($expectSuccess) {
@@ -104,7 +109,8 @@ class PluralizationRulesTest extends TestCase {
         }
     }
 
-    protected function generateTestData($langCodes) {
+    protected function generateTestData($langCodes)
+    {
         $matrix = array();
         foreach ($langCodes as $langCode) {
             for ($count = 0; $count < 200; ++$count) {
@@ -115,5 +121,4 @@ class PluralizationRulesTest extends TestCase {
 
         return $matrix;
     }
-
 }

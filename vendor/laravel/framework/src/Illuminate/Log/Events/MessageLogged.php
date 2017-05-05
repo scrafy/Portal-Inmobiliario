@@ -2,8 +2,8 @@
 
 namespace Illuminate\Log\Events;
 
-class MessageLogged {
-
+class MessageLogged
+{
     /**
      * The log "level".
      *
@@ -33,10 +33,10 @@ class MessageLogged {
      * @param  array  $context
      * @return void
      */
-    public function __construct($level, $message, array $context = []) {
+    public function __construct($level, $message, array $context = [])
+    {
         $this->level = $level;
         $this->message = $message;
         $this->context = $context;
     }
-
 }

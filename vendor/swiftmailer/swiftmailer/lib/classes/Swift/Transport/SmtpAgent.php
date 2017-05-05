@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Transport_SmtpAgent {
-
+interface Swift_Transport_SmtpAgent
+{
     /**
      * Get the IoBuffer where read/writes are occurring.
      *

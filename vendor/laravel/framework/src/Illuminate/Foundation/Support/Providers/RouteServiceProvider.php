@@ -6,8 +6,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
-class RouteServiceProvider extends ServiceProvider {
-
+class RouteServiceProvider extends ServiceProvider
+{
     /**
      * The controller namespace for the application.
      *
@@ -20,7 +20,8 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->setRootControllerNamespace();
 
         if ($this->app->routesAreCached()) {
@@ -39,8 +40,9 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function setRootControllerNamespace() {
-        if (!is_null($this->namespace)) {
+    protected function setRootControllerNamespace()
+    {
+        if (! is_null($this->namespace)) {
             $this->app[UrlGenerator::class]->setRootControllerNamespace($this->namespace);
         }
     }
@@ -50,7 +52,8 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function loadCachedRoutes() {
+    protected function loadCachedRoutes()
+    {
         $this->app->booted(function () {
             require $this->app->getCachedRoutesPath();
         });
@@ -61,7 +64,8 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function loadRoutes() {
+    protected function loadRoutes()
+    {
         if (method_exists($this, 'map')) {
             $this->app->call([$this, 'map']);
         }
@@ -72,7 +76,8 @@ class RouteServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         //
     }
 
@@ -83,10 +88,10 @@ class RouteServiceProvider extends ServiceProvider {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return call_user_func_array(
-                [$this->app->make(Router::class), $method], $parameters
+            [$this->app->make(Router::class), $method], $parameters
         );
     }
-
 }

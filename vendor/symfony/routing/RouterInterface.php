@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface RouterInterface extends UrlMatcherInterface, UrlGeneratorInterface {
-
+interface RouterInterface extends UrlMatcherInterface, UrlGeneratorInterface
+{
     /**
      * Gets the RouteCollection instance associated with this Router.
      *

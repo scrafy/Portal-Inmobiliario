@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 
-class EventGenerateCommand extends Command {
-
+class EventGenerateCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -27,7 +27,8 @@ class EventGenerateCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $provider = $this->laravel->getProvider(EventServiceProvider::class);
 
         foreach ($provider->listens() as $event => $listeners) {
@@ -44,8 +45,9 @@ class EventGenerateCommand extends Command {
      * @param  array  $listeners
      * @return void
      */
-    protected function makeEventAndListeners($event, $listeners) {
-        if (!Str::contains($event, '\\')) {
+    protected function makeEventAndListeners($event, $listeners)
+    {
+        if (! Str::contains($event, '\\')) {
             return;
         }
 
@@ -61,12 +63,12 @@ class EventGenerateCommand extends Command {
      * @param  array  $listeners
      * @return void
      */
-    protected function makeListeners($event, $listeners) {
+    protected function makeListeners($event, $listeners)
+    {
         foreach ($listeners as $listener) {
             $listener = preg_replace('/@.+$/', '', $listener);
 
             $this->callSilent('make:listener', ['name' => $listener, '--event' => $event]);
         }
     }
-
 }

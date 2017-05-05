@@ -5,10 +5,8 @@ namespace PhpParser\Node\Stmt;
 use PhpParser\Node;
 
 abstract class ClassLike extends Node\Stmt {
-
     /** @var string|null Name */
     public $name;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -43,5 +41,4 @@ abstract class ClassLike extends Node\Stmt {
         }
         return null;
     }
-
 }

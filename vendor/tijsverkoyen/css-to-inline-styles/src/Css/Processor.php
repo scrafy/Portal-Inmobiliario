@@ -5,8 +5,8 @@ namespace TijsVerkoyen\CssToInlineStyles\Css;
 use TijsVerkoyen\CssToInlineStyles\Css\Rule\Processor as RuleProcessor;
 use TijsVerkoyen\CssToInlineStyles\Css\Rule\Rule;
 
-class Processor {
-
+class Processor
+{
     /**
      * Get the rules from a given CSS-string
      *
@@ -14,7 +14,8 @@ class Processor {
      * @param array  $existingRules
      * @return Rule[]
      */
-    public function getRules($css, $existingRules = array()) {
+    public function getRules($css, $existingRules = array())
+    {
         $css = $this->doCleanup($css);
         $rulesProcessor = new RuleProcessor();
         $rules = $rulesProcessor->splitIntoSeparateRules($css);
@@ -28,7 +29,8 @@ class Processor {
      * @param string $html
      * @return string
      */
-    public function getCssFromStyleTags($html) {
+    public function getCssFromStyleTags($html)
+    {
         $css = '';
         $matches = array();
         preg_match_all('|<style(?:\s.*)?>(.*)</style>|isU', $html, $matches);
@@ -46,7 +48,8 @@ class Processor {
      * @param string $css
      * @return string
      */
-    private function doCleanup($css) {
+    private function doCleanup($css)
+    {
         // remove charset
         $css = preg_replace('/@charset "[^"]++";/', '', $css);
         // remove media queries
@@ -61,5 +64,4 @@ class Processor {
 
         return $css;
     }
-
 }

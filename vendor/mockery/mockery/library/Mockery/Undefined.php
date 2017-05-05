@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class Undefined {
+class Undefined
+{
 
     /**
      * Call capturing to merely return this same object.
@@ -30,7 +30,8 @@ class Undefined {
      * @param array $args
      * @return self
      */
-    public function __call($method, array $args) {
+    public function __call($method, array $args)
+    {
         return $this;
     }
 
@@ -39,8 +40,8 @@ class Undefined {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return __CLASS__ . ":" . spl_object_hash($this);
     }
-
 }

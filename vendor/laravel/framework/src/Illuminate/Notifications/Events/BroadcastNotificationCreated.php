@@ -7,10 +7,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class BroadcastNotificationCreated implements ShouldBroadcast {
-
-    use Queueable,
-        SerializesModels;
+class BroadcastNotificationCreated implements ShouldBroadcast
+{
+    use Queueable, SerializesModels;
 
     /**
      * The notifiable entity who received the notification.
@@ -41,7 +40,8 @@ class BroadcastNotificationCreated implements ShouldBroadcast {
      * @param  array  $data
      * @return void
      */
-    public function __construct($notifiable, $notification, $data) {
+    public function __construct($notifiable, $notification, $data)
+    {
         $this->data = $data;
         $this->notifiable = $notifiable;
         $this->notification = $notification;
@@ -52,10 +52,11 @@ class BroadcastNotificationCreated implements ShouldBroadcast {
      *
      * @return array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         $channels = $this->notification->broadcastOn();
 
-        if (!empty($channels)) {
+        if (! empty($channels)) {
             return $channels;
         }
 
@@ -67,7 +68,8 @@ class BroadcastNotificationCreated implements ShouldBroadcast {
      *
      * @return array
      */
-    public function broadcastWith() {
+    public function broadcastWith()
+    {
         return array_merge($this->data, [
             'id' => $this->notification->id,
             'type' => get_class($this->notification),
@@ -79,14 +81,14 @@ class BroadcastNotificationCreated implements ShouldBroadcast {
      *
      * @return string
      */
-    protected function channelName() {
+    protected function channelName()
+    {
         if (method_exists($this->notifiable, 'receivesBroadcastNotificationsOn')) {
             return $this->notifiable->receivesBroadcastNotificationsOn($this->notification);
         }
 
         $class = str_replace('\\', '.', get_class($this->notifiable));
 
-        return $class . '.' . $this->notifiable->getKey();
+        return $class.'.'.$this->notifiable->getKey();
     }
-
 }

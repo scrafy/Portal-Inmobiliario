@@ -2,8 +2,8 @@
 
 namespace League\Flysystem\Adapter\Polyfill;
 
-trait StreamedTrait {
-
+trait StreamedTrait
+{
     use StreamedReadingTrait;
     use StreamedWritingTrait;
 }

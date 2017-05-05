@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Diff package.
  *
@@ -18,8 +17,8 @@ use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
 /**
  * Diff implementation.
  */
-class Differ {
-
+class Differ
+{
     /**
      * @var string
      */
@@ -33,8 +32,9 @@ class Differ {
     /**
      * @param string $header
      */
-    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true) {
-        $this->header = $header;
+    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
+    {
+        $this->header           = $header;
         $this->showNonDiffLines = $showNonDiffLines;
     }
 
@@ -47,7 +47,8 @@ class Differ {
      *
      * @return string
      */
-    public function diff($from, $to, LongestCommonSubsequence $lcs = null) {
+    public function diff($from, $to, LongestCommonSubsequence $lcs = null)
+    {
         if (!is_array($from) && !is_string($from)) {
             $from = (string) $from;
         }
@@ -57,14 +58,14 @@ class Differ {
         }
 
         $buffer = $this->header;
-        $diff = $this->diffToArray($from, $to, $lcs);
+        $diff   = $this->diffToArray($from, $to, $lcs);
 
         $inOld = false;
-        $i = 0;
-        $old = array();
+        $i     = 0;
+        $old   = array();
 
         foreach ($diff as $line) {
-            if ($line[1] === 0 /* OLD */) {
+            if ($line[1] ===  0 /* OLD */) {
                 if ($inOld === false) {
                     $inOld = $i;
                 }
@@ -80,7 +81,7 @@ class Differ {
         }
 
         $start = isset($old[0]) ? $old[0] : 0;
-        $end = count($diff);
+        $end   = count($diff);
 
         if ($tmp = array_search($end, $old)) {
             $end = $tmp;
@@ -90,9 +91,9 @@ class Differ {
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $buffer .= "\n";
+                $buffer  .= "\n";
                 $newChunk = true;
-                $i = $old[$i];
+                $i        = $old[$i];
             }
 
             if ($newChunk) {
@@ -131,7 +132,8 @@ class Differ {
      *
      * @return array
      */
-    public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null) {
+    public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
+    {
         preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
         preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
 
@@ -143,11 +145,11 @@ class Differ {
             $to = preg_split('(\r\n|\r|\n)', $to);
         }
 
-        $start = array();
-        $end = array();
+        $start      = array();
+        $end        = array();
         $fromLength = count($from);
-        $toLength = count($to);
-        $length = min($fromLength, $toLength);
+        $toLength   = count($to);
+        $length     = min($fromLength, $toLength);
 
         for ($i = 0; $i < $length; ++$i) {
             if ($from[$i] === $to[$i]) {
@@ -174,13 +176,13 @@ class Differ {
         }
 
         $common = $lcs->calculate(array_values($from), array_values($to));
-        $diff = array();
+        $diff   = array();
 
         if (isset($fromMatches[0]) && $toMatches[0] &&
-                count($fromMatches[0]) === count($toMatches[0]) &&
-                $fromMatches[0] !== $toMatches[0]) {
+            count($fromMatches[0]) === count($toMatches[0]) &&
+            $fromMatches[0] !== $toMatches[0]) {
             $diff[] = array(
-                '#Warning: Strings contain different line endings!', 0
+              '#Warning: Strings contain different line endings!', 0
             );
         }
 
@@ -227,7 +229,8 @@ class Differ {
      *
      * @return LongestCommonSubsequence
      */
-    private function selectLcsImplementation(array $from, array $to) {
+    private function selectLcsImplementation(array $from, array $to)
+    {
         // We do not want to use the time-efficient implementation if its memory
         // footprint will probably exceed this value. Note that the footprint
         // calculation is only an estimation for the matrix and the LCS method
@@ -249,10 +252,10 @@ class Differ {
      *
      * @return int
      */
-    private function calculateEstimatedFootprint(array $from, array $to) {
+    private function calculateEstimatedFootprint(array $from, array $to)
+    {
         $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
 
         return $itemSize * pow(min(count($from), count($to)), 2);
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Queue;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Contracts\Bus\Dispatcher;
 
-class CallQueuedHandler {
-
+class CallQueuedHandler
+{
     /**
      * The bus dispatcher implementation.
      *
@@ -20,7 +20,8 @@ class CallQueuedHandler {
      * @param  \Illuminate\Contracts\Bus\Dispatcher  $dispatcher
      * @return void
      */
-    public function __construct(Dispatcher $dispatcher) {
+    public function __construct(Dispatcher $dispatcher)
+    {
         $this->dispatcher = $dispatcher;
     }
 
@@ -31,16 +32,17 @@ class CallQueuedHandler {
      * @param  array  $data
      * @return void
      */
-    public function call(Job $job, array $data) {
+    public function call(Job $job, array $data)
+    {
         $command = $this->setJobInstanceIfNecessary(
-                $job, unserialize($data['command'])
+            $job, unserialize($data['command'])
         );
 
         $this->dispatcher->dispatchNow(
-                $command, $handler = $this->resolveHandler($job, $command)
+            $command, $handler = $this->resolveHandler($job, $command)
         );
 
-        if (!$job->isDeletedOrReleased()) {
+        if (! $job->isDeletedOrReleased()) {
             $job->delete();
         }
     }
@@ -52,7 +54,8 @@ class CallQueuedHandler {
      * @param  mixed  $command
      * @return mixed
      */
-    protected function resolveHandler($job, $command) {
+    protected function resolveHandler($job, $command)
+    {
         $handler = $this->dispatcher->getCommandHandler($command) ?: null;
 
         if ($handler) {
@@ -69,7 +72,8 @@ class CallQueuedHandler {
      * @param  mixed  $instance
      * @return mixed
      */
-    protected function setJobInstanceIfNecessary(Job $job, $instance) {
+    protected function setJobInstanceIfNecessary(Job $job, $instance)
+    {
         if (in_array(InteractsWithQueue::class, class_uses_recursive(get_class($instance)))) {
             $instance->setJob($job);
         }
@@ -86,12 +90,12 @@ class CallQueuedHandler {
      * @param  \Exception  $e
      * @return void
      */
-    public function failed(array $data, $e) {
+    public function failed(array $data, $e)
+    {
         $command = unserialize($data['command']);
 
         if (method_exists($command, 'failed')) {
             $command->failed($e);
         }
     }
-
 }

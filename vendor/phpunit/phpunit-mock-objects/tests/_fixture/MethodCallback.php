@@ -1,8 +1,8 @@
 <?php
-
-class MethodCallback {
-
-    public static function staticCallback() {
+class MethodCallback
+{
+    public static function staticCallback()
+    {
         $args = func_get_args();
 
         if ($args == ['foo', 'bar']) {
@@ -10,12 +10,12 @@ class MethodCallback {
         }
     }
 
-    public function nonStaticCallback() {
+    public function nonStaticCallback()
+    {
         $args = func_get_args();
 
         if ($args == ['foo', 'bar']) {
             return 'pass';
         }
     }
-
 }

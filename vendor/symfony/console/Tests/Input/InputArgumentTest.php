@@ -14,14 +14,16 @@ namespace Symfony\Component\Console\Tests\Input;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 
-class InputArgumentTest extends TestCase {
-
-    public function testConstructor() {
+class InputArgumentTest extends TestCase
+{
+    public function testConstructor()
+    {
         $argument = new InputArgument('foo');
         $this->assertEquals('foo', $argument->getName(), '__construct() takes a name as its first argument');
     }
 
-    public function testModes() {
+    public function testModes()
+    {
         $argument = new InputArgument('foo');
         $this->assertFalse($argument->isRequired(), '__construct() gives a "InputArgument::OPTIONAL" mode by default');
 
@@ -38,7 +40,8 @@ class InputArgumentTest extends TestCase {
     /**
      * @dataProvider provideInvalidModes
      */
-    public function testInvalidModes($mode) {
+    public function testInvalidModes($mode)
+    {
         if (method_exists($this, 'expectException')) {
             $this->expectException('InvalidArgumentException');
             $this->expectExceptionMessage(sprintf('Argument mode "%s" is not valid.', $mode));
@@ -49,14 +52,16 @@ class InputArgumentTest extends TestCase {
         new InputArgument('foo', $mode);
     }
 
-    public function provideInvalidModes() {
+    public function provideInvalidModes()
+    {
         return array(
             array('ANOTHER_ONE'),
             array(-1),
         );
     }
 
-    public function testIsArray() {
+    public function testIsArray()
+    {
         $argument = new InputArgument('foo', InputArgument::IS_ARRAY);
         $this->assertTrue($argument->isArray(), '->isArray() returns true if the argument can be an array');
         $argument = new InputArgument('foo', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
@@ -65,17 +70,20 @@ class InputArgumentTest extends TestCase {
         $this->assertFalse($argument->isArray(), '->isArray() returns false if the argument can not be an array');
     }
 
-    public function testGetDescription() {
+    public function testGetDescription()
+    {
         $argument = new InputArgument('foo', null, 'Some description');
         $this->assertEquals('Some description', $argument->getDescription(), '->getDescription() return the message description');
     }
 
-    public function testGetDefault() {
+    public function testGetDefault()
+    {
         $argument = new InputArgument('foo', InputArgument::OPTIONAL, '', 'default');
         $this->assertEquals('default', $argument->getDefault(), '->getDefault() return the default value');
     }
 
-    public function testSetDefault() {
+    public function testSetDefault()
+    {
         $argument = new InputArgument('foo', InputArgument::OPTIONAL, '', 'default');
         $argument->setDefault(null);
         $this->assertNull($argument->getDefault(), '->setDefault() can reset the default value by passing null');
@@ -91,7 +99,8 @@ class InputArgumentTest extends TestCase {
      * @expectedException        \LogicException
      * @expectedExceptionMessage Cannot set a default value except for InputArgument::OPTIONAL mode.
      */
-    public function testSetDefaultWithRequiredArgument() {
+    public function testSetDefaultWithRequiredArgument()
+    {
         $argument = new InputArgument('foo', InputArgument::REQUIRED);
         $argument->setDefault('default');
     }
@@ -100,9 +109,9 @@ class InputArgumentTest extends TestCase {
      * @expectedException        \LogicException
      * @expectedExceptionMessage A default value for an array argument must be an array.
      */
-    public function testSetDefaultWithArrayArgument() {
+    public function testSetDefaultWithArrayArgument()
+    {
         $argument = new InputArgument('foo', InputArgument::IS_ARRAY);
         $argument->setDefault('default');
     }
-
 }

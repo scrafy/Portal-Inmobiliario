@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-interface MimeTypeGuesserInterface {
-
+interface MimeTypeGuesserInterface
+{
     /**
      * Guesses the mime type of the file with the given path.
      *

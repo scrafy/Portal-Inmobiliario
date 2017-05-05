@@ -18,20 +18,21 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-class PhpFileDumper extends FileDumper {
-
+class PhpFileDumper extends FileDumper
+{
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array()) {
-        return "<?php\n\nreturn " . var_export($messages->all($domain), true) . ";\n";
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    {
+        return "<?php\n\nreturn ".var_export($messages->all($domain), true).";\n";
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getExtension() {
+    protected function getExtension()
+    {
         return 'php';
     }
-
 }

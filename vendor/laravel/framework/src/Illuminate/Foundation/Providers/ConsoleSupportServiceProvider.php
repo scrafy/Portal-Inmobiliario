@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Providers;
 use Illuminate\Support\AggregateServiceProvider;
 use Illuminate\Database\MigrationServiceProvider;
 
-class ConsoleSupportServiceProvider extends AggregateServiceProvider {
-
+class ConsoleSupportServiceProvider extends AggregateServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -24,5 +24,4 @@ class ConsoleSupportServiceProvider extends AggregateServiceProvider {
         MigrationServiceProvider::class,
         ComposerServiceProvider::class,
     ];
-
 }

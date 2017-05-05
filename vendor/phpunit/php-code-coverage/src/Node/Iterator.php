@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\CodeCoverage\Node;
 /**
  * Recursive iterator for node object graphs.
  */
-class Iterator implements \RecursiveIterator {
-
+class Iterator implements \RecursiveIterator
+{
     /**
      * @var int
      */
@@ -29,14 +28,16 @@ class Iterator implements \RecursiveIterator {
     /**
      * @param Directory $node
      */
-    public function __construct(Directory $node) {
+    public function __construct(Directory $node)
+    {
         $this->nodes = $node->getChildNodes();
     }
 
     /**
      * Rewinds the Iterator to the first element.
      */
-    public function rewind() {
+    public function rewind()
+    {
         $this->position = 0;
     }
 
@@ -45,7 +46,8 @@ class Iterator implements \RecursiveIterator {
      *
      * @return bool
      */
-    public function valid() {
+    public function valid()
+    {
         return $this->position < count($this->nodes);
     }
 
@@ -54,7 +56,8 @@ class Iterator implements \RecursiveIterator {
      *
      * @return int
      */
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
@@ -63,14 +66,16 @@ class Iterator implements \RecursiveIterator {
      *
      * @return \PHPUnit_Framework_Test
      */
-    public function current() {
+    public function current()
+    {
         return $this->valid() ? $this->nodes[$this->position] : null;
     }
 
     /**
      * Moves forward to next element.
      */
-    public function next() {
+    public function next()
+    {
         $this->position++;
     }
 
@@ -79,9 +84,10 @@ class Iterator implements \RecursiveIterator {
      *
      * @return Iterator
      */
-    public function getChildren() {
+    public function getChildren()
+    {
         return new self(
-                $this->nodes[$this->position]
+            $this->nodes[$this->position]
         );
     }
 
@@ -90,8 +96,8 @@ class Iterator implements \RecursiveIterator {
      *
      * @return bool
      */
-    public function hasChildren() {
+    public function hasChildren()
+    {
         return $this->nodes[$this->position] instanceof Directory;
     }
-
 }

@@ -21,8 +21,8 @@ namespace Symfony\Component\CssSelector\Node;
  *
  * @internal
  */
-interface NodeInterface {
-
+interface NodeInterface
+{
     /**
      * Returns node's name.
      *

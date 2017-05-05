@@ -25,14 +25,15 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class FilterControllerEvent extends KernelEvent {
-
+class FilterControllerEvent extends KernelEvent
+{
     /**
      * The current controller.
      */
     private $controller;
 
-    public function __construct(HttpKernelInterface $kernel, callable $controller, Request $request, $requestType) {
+    public function __construct(HttpKernelInterface $kernel, callable $controller, Request $request, $requestType)
+    {
         parent::__construct($kernel, $request, $requestType);
 
         $this->setController($controller);
@@ -43,7 +44,8 @@ class FilterControllerEvent extends KernelEvent {
      *
      * @return callable
      */
-    public function getController() {
+    public function getController()
+    {
         return $this->controller;
     }
 
@@ -52,8 +54,8 @@ class FilterControllerEvent extends KernelEvent {
      *
      * @param callable $controller
      */
-    public function setController(callable $controller) {
+    public function setController(callable $controller)
+    {
         $this->controller = $controller;
     }
-
 }

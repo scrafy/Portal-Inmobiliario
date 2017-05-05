@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class Cookie {
-
+class Cookie
+{
     protected $name;
     protected $value;
     protected $domain;
@@ -46,7 +46,8 @@ class Cookie {
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true, $raw = false, $sameSite = null) {
+    public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true, $raw = false, $sameSite = null)
+    {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
@@ -88,25 +89,26 @@ class Cookie {
      *
      * @return string The cookie
      */
-    public function __toString() {
-        $str = ($this->isRaw() ? $this->getName() : urlencode($this->getName())) . '=';
+    public function __toString()
+    {
+        $str = ($this->isRaw() ? $this->getName() : urlencode($this->getName())).'=';
 
         if ('' === (string) $this->getValue()) {
-            $str .= 'deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001);
+            $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001);
         } else {
             $str .= $this->isRaw() ? $this->getValue() : urlencode($this->getValue());
 
             if (0 !== $this->getExpiresTime()) {
-                $str .= '; expires=' . gmdate('D, d-M-Y H:i:s T', $this->getExpiresTime());
+                $str .= '; expires='.gmdate('D, d-M-Y H:i:s T', $this->getExpiresTime());
             }
         }
 
         if ($this->getPath()) {
-            $str .= '; path=' . $this->getPath();
+            $str .= '; path='.$this->getPath();
         }
 
         if ($this->getDomain()) {
-            $str .= '; domain=' . $this->getDomain();
+            $str .= '; domain='.$this->getDomain();
         }
 
         if (true === $this->isSecure()) {
@@ -118,7 +120,7 @@ class Cookie {
         }
 
         if (null !== $this->getSameSite()) {
-            $str .= '; samesite=' . $this->getSameSite();
+            $str .= '; samesite='.$this->getSameSite();
         }
 
         return $str;
@@ -129,7 +131,8 @@ class Cookie {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -138,7 +141,8 @@ class Cookie {
      *
      * @return string|null
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
@@ -147,7 +151,8 @@ class Cookie {
      *
      * @return string|null
      */
-    public function getDomain() {
+    public function getDomain()
+    {
         return $this->domain;
     }
 
@@ -156,7 +161,8 @@ class Cookie {
      *
      * @return int
      */
-    public function getExpiresTime() {
+    public function getExpiresTime()
+    {
         return $this->expire;
     }
 
@@ -165,7 +171,8 @@ class Cookie {
      *
      * @return string
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
@@ -174,7 +181,8 @@ class Cookie {
      *
      * @return bool
      */
-    public function isSecure() {
+    public function isSecure()
+    {
         return $this->secure;
     }
 
@@ -183,7 +191,8 @@ class Cookie {
      *
      * @return bool
      */
-    public function isHttpOnly() {
+    public function isHttpOnly()
+    {
         return $this->httpOnly;
     }
 
@@ -192,7 +201,8 @@ class Cookie {
      *
      * @return bool
      */
-    public function isCleared() {
+    public function isCleared()
+    {
         return $this->expire < time();
     }
 
@@ -201,7 +211,8 @@ class Cookie {
      *
      * @return bool
      */
-    public function isRaw() {
+    public function isRaw()
+    {
         return $this->raw;
     }
 
@@ -210,8 +221,8 @@ class Cookie {
      *
      * @return string|null
      */
-    public function getSameSite() {
+    public function getSameSite()
+    {
         return $this->sameSite;
     }
-
 }

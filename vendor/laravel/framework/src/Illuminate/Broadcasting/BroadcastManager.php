@@ -14,8 +14,8 @@ use Illuminate\Broadcasting\Broadcasters\RedisBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
 use Illuminate\Contracts\Broadcasting\Factory as FactoryContract;
 
-class BroadcastManager implements FactoryContract {
-
+class BroadcastManager implements FactoryContract
+{
     /**
      * The application instance.
      *
@@ -43,7 +43,8 @@ class BroadcastManager implements FactoryContract {
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function __construct($app) {
+    public function __construct($app)
+    {
         $this->app = $app;
     }
 
@@ -53,7 +54,8 @@ class BroadcastManager implements FactoryContract {
      * @param  array|null  $attributes
      * @return void
      */
-    public function routes(array $attributes = null) {
+    public function routes(array $attributes = null)
+    {
         if ($this->app->routesAreCached()) {
             return;
         }
@@ -61,7 +63,7 @@ class BroadcastManager implements FactoryContract {
         $attributes = $attributes ?: ['middleware' => ['web']];
 
         $this->app['router']->group($attributes, function ($router) {
-            $router->post('/broadcasting/auth', BroadcastController::class . '@authenticate');
+            $router->post('/broadcasting/auth', BroadcastController::class.'@authenticate');
         });
     }
 
@@ -71,8 +73,9 @@ class BroadcastManager implements FactoryContract {
      * @param  \Illuminate\Http\Request|null  $request
      * @return string|null
      */
-    public function socket($request = null) {
-        if (!$request && !$this->app->bound('request')) {
+    public function socket($request = null)
+    {
+        if (! $request && ! $this->app->bound('request')) {
             return;
         }
 
@@ -89,7 +92,8 @@ class BroadcastManager implements FactoryContract {
      * @param  mixed|null  $event
      * @return \Illuminate\Broadcasting\PendingBroadcast|void
      */
-    public function event($event = null) {
+    public function event($event = null)
+    {
         return new PendingBroadcast($this->app->make('events'), $event);
     }
 
@@ -99,7 +103,8 @@ class BroadcastManager implements FactoryContract {
      * @param  mixed  $event
      * @return void
      */
-    public function queue($event) {
+    public function queue($event)
+    {
         $connection = $event instanceof ShouldBroadcastNow ? 'sync' : null;
 
         if (is_null($connection) && isset($event->connection)) {
@@ -115,7 +120,7 @@ class BroadcastManager implements FactoryContract {
         }
 
         $this->app->make('queue')->connection($connection)->pushOn(
-                $queue, new BroadcastEvent(clone $event)
+            $queue, new BroadcastEvent(clone $event)
         );
     }
 
@@ -125,7 +130,8 @@ class BroadcastManager implements FactoryContract {
      * @param  string  $driver
      * @return mixed
      */
-    public function connection($driver = null) {
+    public function connection($driver = null)
+    {
         return $this->driver($driver);
     }
 
@@ -135,7 +141,8 @@ class BroadcastManager implements FactoryContract {
      * @param  string  $name
      * @return mixed
      */
-    public function driver($name = null) {
+    public function driver($name = null)
+    {
         $name = $name ?: $this->getDefaultDriver();
 
         return $this->drivers[$name] = $this->get($name);
@@ -147,7 +154,8 @@ class BroadcastManager implements FactoryContract {
      * @param  string  $name
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
-    protected function get($name) {
+    protected function get($name)
+    {
         return isset($this->drivers[$name]) ? $this->drivers[$name] : $this->resolve($name);
     }
 
@@ -159,7 +167,8 @@ class BroadcastManager implements FactoryContract {
      *
      * @throws \InvalidArgumentException
      */
-    protected function resolve($name) {
+    protected function resolve($name)
+    {
         $config = $this->getConfig($name);
 
         if (is_null($config)) {
@@ -170,9 +179,9 @@ class BroadcastManager implements FactoryContract {
             return $this->callCustomCreator($config);
         }
 
-        $driverMethod = 'create' . ucfirst($config['driver']) . 'Driver';
+        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
 
-        if (!method_exists($this, $driverMethod)) {
+        if (! method_exists($this, $driverMethod)) {
             throw new InvalidArgumentException("Driver [{$config['driver']}] is not supported.");
         }
 
@@ -185,7 +194,8 @@ class BroadcastManager implements FactoryContract {
      * @param  array  $config
      * @return mixed
      */
-    protected function callCustomCreator(array $config) {
+    protected function callCustomCreator(array $config)
+    {
         return $this->customCreators[$config['driver']]($this->app, $config);
     }
 
@@ -195,9 +205,11 @@ class BroadcastManager implements FactoryContract {
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
-    protected function createPusherDriver(array $config) {
+    protected function createPusherDriver(array $config)
+    {
         return new PusherBroadcaster(
-                new Pusher($config['key'], $config['secret'], $config['app_id'], Arr::get($config, 'options', []))
+            new Pusher($config['key'], $config['secret'],
+            $config['app_id'], Arr::get($config, 'options', []))
         );
     }
 
@@ -207,9 +219,10 @@ class BroadcastManager implements FactoryContract {
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
-    protected function createRedisDriver(array $config) {
+    protected function createRedisDriver(array $config)
+    {
         return new RedisBroadcaster(
-                $this->app->make('redis'), Arr::get($config, 'connection')
+            $this->app->make('redis'), Arr::get($config, 'connection')
         );
     }
 
@@ -219,9 +232,10 @@ class BroadcastManager implements FactoryContract {
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
-    protected function createLogDriver(array $config) {
+    protected function createLogDriver(array $config)
+    {
         return new LogBroadcaster(
-                $this->app->make(LoggerInterface::class)
+            $this->app->make(LoggerInterface::class)
         );
     }
 
@@ -231,7 +245,8 @@ class BroadcastManager implements FactoryContract {
      * @param  array  $config
      * @return \Illuminate\Contracts\Broadcasting\Broadcaster
      */
-    protected function createNullDriver(array $config) {
+    protected function createNullDriver(array $config)
+    {
         return new NullBroadcaster;
     }
 
@@ -241,7 +256,8 @@ class BroadcastManager implements FactoryContract {
      * @param  string  $name
      * @return array
      */
-    protected function getConfig($name) {
+    protected function getConfig($name)
+    {
         return $this->app['config']["broadcasting.connections.{$name}"];
     }
 
@@ -250,7 +266,8 @@ class BroadcastManager implements FactoryContract {
      *
      * @return string
      */
-    public function getDefaultDriver() {
+    public function getDefaultDriver()
+    {
         return $this->app['config']['broadcasting.default'];
     }
 
@@ -260,7 +277,8 @@ class BroadcastManager implements FactoryContract {
      * @param  string  $name
      * @return void
      */
-    public function setDefaultDriver($name) {
+    public function setDefaultDriver($name)
+    {
         $this->app['config']['broadcasting.default'] = $name;
     }
 
@@ -271,7 +289,8 @@ class BroadcastManager implements FactoryContract {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function extend($driver, Closure $callback) {
+    public function extend($driver, Closure $callback)
+    {
         $this->customCreators[$driver] = $callback;
 
         return $this;
@@ -284,8 +303,8 @@ class BroadcastManager implements FactoryContract {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->driver()->$method(...$parameters);
     }
-
 }

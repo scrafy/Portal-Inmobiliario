@@ -5,14 +5,12 @@ namespace PhpParser\Node\Expr;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 
-class MethodCall extends Expr {
-
+class MethodCall extends Expr
+{
     /** @var Expr Variable holding object */
     public $var;
-
     /** @var string|Expr Method name */
     public $name;
-
     /** @var Arg[] Arguments */
     public $args;
 
@@ -34,5 +32,4 @@ class MethodCall extends Expr {
     public function getSubNodeNames() {
         return array('var', 'name', 'args');
     }
-
 }

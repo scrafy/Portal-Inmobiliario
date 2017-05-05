@@ -20,8 +20,8 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface LoaderInterface {
-
+interface LoaderInterface
+{
     /**
      * Loads a locale.
      *

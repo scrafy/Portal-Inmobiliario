@@ -7,8 +7,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 /**
  * These methods are typically the same across all guards.
  */
-trait GuardHelpers {
-
+trait GuardHelpers
+{
     /**
      * The currently authenticated user.
      *
@@ -30,8 +30,9 @@ trait GuardHelpers {
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function authenticate() {
-        if (!is_null($user = $this->user())) {
+    public function authenticate()
+    {
+        if (! is_null($user = $this->user())) {
             return $user;
         }
 
@@ -43,8 +44,9 @@ trait GuardHelpers {
      *
      * @return bool
      */
-    public function check() {
-        return !is_null($this->user());
+    public function check()
+    {
+        return ! is_null($this->user());
     }
 
     /**
@@ -52,8 +54,9 @@ trait GuardHelpers {
      *
      * @return bool
      */
-    public function guest() {
-        return !$this->check();
+    public function guest()
+    {
+        return ! $this->check();
     }
 
     /**
@@ -61,7 +64,8 @@ trait GuardHelpers {
      *
      * @return int|null
      */
-    public function id() {
+    public function id()
+    {
         if ($this->user()) {
             return $this->user()->getAuthIdentifier();
         }
@@ -73,10 +77,10 @@ trait GuardHelpers {
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return $this
      */
-    public function setUser(AuthenticatableContract $user) {
+    public function setUser(AuthenticatableContract $user)
+    {
         $this->user = $user;
 
         return $this;
     }
-
 }

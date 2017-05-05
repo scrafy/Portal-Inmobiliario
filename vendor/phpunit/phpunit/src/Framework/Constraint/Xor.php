@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Logical XOR.
  */
-class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
+{
     /**
      * @var PHPUnit_Framework_Constraint[]
      */
@@ -22,13 +21,14 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
     /**
      * @param PHPUnit_Framework_Constraint[] $constraints
      */
-    public function setConstraints(array $constraints) {
+    public function setConstraints(array $constraints)
+    {
         $this->constraints = [];
 
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
-                        $constraint
+                    $constraint
                 );
             }
 
@@ -54,8 +54,9 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = false) {
-        $success = true;
+    public function evaluate($other, $description = '', $returnResult = false)
+    {
+        $success    = true;
         $lastResult = null;
         $constraint = null;
 
@@ -84,7 +85,8 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         $text = '';
 
         foreach ($this->constraints as $key => $constraint) {
@@ -103,7 +105,8 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         $count = 0;
 
         foreach ($this->constraints as $constraint) {
@@ -112,5 +115,4 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint {
 
         return $count;
     }
-
 }

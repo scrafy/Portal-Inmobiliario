@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Http\Middleware;
 use Closure;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 
-class ValidatePostSize {
-
+class ValidatePostSize
+{
     /**
      * Handle an incoming request.
      *
@@ -16,7 +16,8 @@ class ValidatePostSize {
      *
      * @throws \Illuminate\Http\Exceptions\PostTooLargeException
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
         $max = $this->getPostMaxSize();
 
         if ($max > 0 && $request->server('CONTENT_LENGTH') > $max) {
@@ -31,7 +32,8 @@ class ValidatePostSize {
      *
      * @return int
      */
-    protected function getPostMaxSize() {
+    protected function getPostMaxSize()
+    {
         if (is_numeric($postMaxSize = ini_get('post_max_size'))) {
             return (int) $postMaxSize;
         }
@@ -49,5 +51,4 @@ class ValidatePostSize {
                 return (int) $postMaxSize;
         }
     }
-
 }

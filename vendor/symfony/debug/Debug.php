@@ -16,8 +16,8 @@ namespace Symfony\Component\Debug;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Debug {
-
+class Debug
+{
     private static $enabled = false;
 
     /**
@@ -31,7 +31,8 @@ class Debug {
      * @param int  $errorReportingLevel The level of error reporting you want
      * @param bool $displayErrors       Whether to display errors (for development) or just log them (for production)
      */
-    public static function enable($errorReportingLevel = E_ALL, $displayErrors = true) {
+    public static function enable($errorReportingLevel = E_ALL, $displayErrors = true)
+    {
         if (static::$enabled) {
             return;
         }
@@ -59,5 +60,4 @@ class Debug {
 
         DebugClassLoader::enable();
     }
-
 }

@@ -16,19 +16,21 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Inline;
 use Symfony\Component\Yaml\Yaml;
 
-class InlineTest extends TestCase {
-
+class InlineTest extends TestCase
+{
     /**
      * @dataProvider getTestsForParse
      */
-    public function testParse($yaml, $value) {
+    public function testParse($yaml, $value)
+    {
         $this->assertSame($value, Inline::parse($yaml), sprintf('::parse() converts an inline YAML to a PHP structure (%s)', $yaml));
     }
 
     /**
      * @dataProvider getTestsForParseWithMapObjects
      */
-    public function testParseWithMapObjects($yaml, $value) {
+    public function testParseWithMapObjects($yaml, $value)
+    {
         $actual = Inline::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP);
 
         $this->assertSame(serialize($value), serialize($actual));
@@ -37,13 +39,15 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getTestsForParsePhpConstants
      */
-    public function testParsePhpConstants($yaml, $value) {
+    public function testParsePhpConstants($yaml, $value)
+    {
         $actual = Inline::parse($yaml, Yaml::PARSE_CONSTANT);
 
         $this->assertSame($value, $actual);
     }
 
-    public function getTestsForParsePhpConstants() {
+    public function getTestsForParsePhpConstants()
+    {
         return array(
             array('!php/const:Symfony\Component\Yaml\Yaml::PARSE_CONSTANT', Yaml::PARSE_CONSTANT),
             array('!php/const:PHP_INT_MAX', PHP_INT_MAX),
@@ -56,7 +60,8 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage The constant "WRONG_CONSTANT" is not defined
      */
-    public function testParsePhpConstantThrowsExceptionWhenUndefined() {
+    public function testParsePhpConstantThrowsExceptionWhenUndefined()
+    {
         Inline::parse('!php/const:WRONG_CONSTANT', Yaml::PARSE_CONSTANT);
     }
 
@@ -64,7 +69,8 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessageRegExp #The string "!php/const:PHP_INT_MAX" could not be parsed as a constant.*#
      */
-    public function testParsePhpConstantThrowsExceptionOnInvalidType() {
+    public function testParsePhpConstantThrowsExceptionOnInvalidType()
+    {
         Inline::parse('!php/const:PHP_INT_MAX', Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
     }
 
@@ -72,7 +78,8 @@ class InlineTest extends TestCase {
      * @group legacy
      * @dataProvider getTestsForParseWithMapObjects
      */
-    public function testParseWithMapObjectsPassingTrue($yaml, $value) {
+    public function testParseWithMapObjectsPassingTrue($yaml, $value)
+    {
         $actual = Inline::parse($yaml, false, false, true);
 
         $this->assertSame(serialize($value), serialize($actual));
@@ -81,13 +88,15 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getTestsForDump
      */
-    public function testDump($yaml, $value) {
+    public function testDump($yaml, $value)
+    {
         $this->assertEquals($yaml, Inline::dump($value), sprintf('::dump() converts a PHP structure to an inline YAML (%s)', $yaml));
 
         $this->assertSame($value, Inline::parse(Inline::dump($value)), 'check consistency');
     }
 
-    public function testDumpNumericValueWithLocale() {
+    public function testDumpNumericValueWithLocale()
+    {
         $locale = setlocale(LC_NUMERIC, 0);
         if (false === $locale) {
             $this->markTestSkipped('Your platform does not support locales.');
@@ -96,7 +105,7 @@ class InlineTest extends TestCase {
         try {
             $requiredLocales = array('fr_FR.UTF-8', 'fr_FR.UTF8', 'fr_FR.utf-8', 'fr_FR.utf8', 'French_France.1252');
             if (false === setlocale(LC_NUMERIC, $requiredLocales)) {
-                $this->markTestSkipped('Could not set any of required locales: ' . implode(', ', $requiredLocales));
+                $this->markTestSkipped('Could not set any of required locales: '.implode(', ', $requiredLocales));
             }
 
             $this->assertEquals('1.2', Inline::dump(1.2));
@@ -106,7 +115,8 @@ class InlineTest extends TestCase {
         }
     }
 
-    public function testHashStringsResemblingExponentialNumericsShouldNotBeChangedToINF() {
+    public function testHashStringsResemblingExponentialNumericsShouldNotBeChangedToINF()
+    {
         $value = '686e444';
 
         $this->assertSame($value, Inline::parse(Inline::dump($value)));
@@ -116,21 +126,24 @@ class InlineTest extends TestCase {
      * @expectedException        \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage Found unknown escape character "\V".
      */
-    public function testParseScalarWithNonEscapedBlackslashShouldThrowException() {
+    public function testParseScalarWithNonEscapedBlackslashShouldThrowException()
+    {
         Inline::parse('"Foo\Var"');
     }
 
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseScalarWithNonEscapedBlackslashAtTheEndShouldThrowException() {
+    public function testParseScalarWithNonEscapedBlackslashAtTheEndShouldThrowException()
+    {
         Inline::parse('"Foo\\"');
     }
 
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseScalarWithIncorrectlyQuotedStringShouldThrowException() {
+    public function testParseScalarWithIncorrectlyQuotedStringShouldThrowException()
+    {
         $value = "'don't do somthin' like that'";
         Inline::parse($value);
     }
@@ -138,7 +151,8 @@ class InlineTest extends TestCase {
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseScalarWithIncorrectlyDoubleQuotedStringShouldThrowException() {
+    public function testParseScalarWithIncorrectlyDoubleQuotedStringShouldThrowException()
+    {
         $value = '"don"t do somthin" like that"';
         Inline::parse($value);
     }
@@ -146,7 +160,8 @@ class InlineTest extends TestCase {
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseInvalidMappingKeyShouldThrowException() {
+    public function testParseInvalidMappingKeyShouldThrowException()
+    {
         $value = '{ "foo " bar": "bar" }';
         Inline::parse($value);
     }
@@ -156,25 +171,29 @@ class InlineTest extends TestCase {
      * @expectedDeprecation Using a colon that is not followed by an indication character (i.e. " ", ",", "[", "]", "{", "}" is deprecated since version 3.2 and will throw a ParseException in 4.0.
      * throws \Symfony\Component\Yaml\Exception\ParseException in 4.0
      */
-    public function testParseMappingKeyWithColonNotFollowedBySpace() {
+    public function testParseMappingKeyWithColonNotFollowedBySpace()
+    {
         Inline::parse('{1:""}');
     }
 
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseInvalidMappingShouldThrowException() {
+    public function testParseInvalidMappingShouldThrowException()
+    {
         Inline::parse('[foo] bar');
     }
 
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseInvalidSequenceShouldThrowException() {
+    public function testParseInvalidSequenceShouldThrowException()
+    {
         Inline::parse('{ foo: bar } bar');
     }
 
-    public function testParseScalarWithCorrectlyQuotedStringShouldReturnString() {
+    public function testParseScalarWithCorrectlyQuotedStringShouldReturnString()
+    {
         $value = "'don''t do somthin'' like that'";
         $expect = "don't do somthin' like that";
 
@@ -184,7 +203,8 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getDataForParseReferences
      */
-    public function testParseReferences($yaml, $expected) {
+    public function testParseReferences($yaml, $expected)
+    {
         $this->assertSame($expected, Inline::parse($yaml, 0, array('var' => 'var-value')));
     }
 
@@ -192,11 +212,13 @@ class InlineTest extends TestCase {
      * @group legacy
      * @dataProvider getDataForParseReferences
      */
-    public function testParseReferencesAsFifthArgument($yaml, $expected) {
+    public function testParseReferencesAsFifthArgument($yaml, $expected)
+    {
         $this->assertSame($expected, Inline::parse($yaml, false, false, false, array('var' => 'var-value')));
     }
 
-    public function getDataForParseReferences() {
+    public function getDataForParseReferences()
+    {
         return array(
             'scalar' => array('*var', 'var-value'),
             'list' => array('[ *var ]', array('var-value')),
@@ -209,7 +231,8 @@ class InlineTest extends TestCase {
         );
     }
 
-    public function testParseMapReferenceInSequence() {
+    public function testParseMapReferenceInSequence()
+    {
         $foo = array(
             'a' => 'Steve',
             'b' => 'Clark',
@@ -221,7 +244,8 @@ class InlineTest extends TestCase {
     /**
      * @group legacy
      */
-    public function testParseMapReferenceInSequenceAsFifthArgument() {
+    public function testParseMapReferenceInSequenceAsFifthArgument()
+    {
         $foo = array(
             'a' => 'Steve',
             'b' => 'Clark',
@@ -234,7 +258,8 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage A reference must contain at least one character.
      */
-    public function testParseUnquotedAsterisk() {
+    public function testParseUnquotedAsterisk()
+    {
         Inline::parse('{ foo: * }');
     }
 
@@ -242,7 +267,8 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage A reference must contain at least one character.
      */
-    public function testParseUnquotedAsteriskFollowedByAComment() {
+    public function testParseUnquotedAsteriskFollowedByAComment()
+    {
         Inline::parse('{ foo: * #foo }');
     }
 
@@ -251,11 +277,13 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage cannot start a plain scalar; you need to quote the scalar.
      */
-    public function testParseUnquotedScalarStartingWithReservedIndicator($indicator) {
+    public function testParseUnquotedScalarStartingWithReservedIndicator($indicator)
+    {
         Inline::parse(sprintf('{ foo: %sfoo }', $indicator));
     }
 
-    public function getReservedIndicators() {
+    public function getReservedIndicators()
+    {
         return array(array('@'), array('`'));
     }
 
@@ -264,11 +292,13 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage cannot start a plain scalar; you need to quote the scalar.
      */
-    public function testParseUnquotedScalarStartingWithScalarIndicator($indicator) {
+    public function testParseUnquotedScalarStartingWithScalarIndicator($indicator)
+    {
         Inline::parse(sprintf('{ foo: %sfoo }', $indicator));
     }
 
-    public function getScalarIndicators() {
+    public function getScalarIndicators()
+    {
         return array(array('|'), array('>'));
     }
 
@@ -277,18 +307,21 @@ class InlineTest extends TestCase {
      * @expectedDeprecation Not quoting the scalar "%bar " starting with the "%" indicator character is deprecated since Symfony 3.1 and will throw a ParseException in 4.0.
      * throws \Symfony\Component\Yaml\Exception\ParseException in 4.0
      */
-    public function testParseUnquotedScalarStartingWithPercentCharacter() {
+    public function testParseUnquotedScalarStartingWithPercentCharacter()
+    {
         Inline::parse('{ foo: %bar }');
     }
 
     /**
      * @dataProvider getDataForIsHash
      */
-    public function testIsHash($array, $expected) {
+    public function testIsHash($array, $expected)
+    {
         $this->assertSame($expected, Inline::isHash($array));
     }
 
-    public function getDataForIsHash() {
+    public function getDataForIsHash()
+    {
         return array(
             array(array(), false),
             array(array(1, 2, 3), false),
@@ -297,7 +330,8 @@ class InlineTest extends TestCase {
         );
     }
 
-    public function getTestsForParse() {
+    public function getTestsForParse()
+    {
         return array(
             array('', ''),
             array('null', null),
@@ -326,6 +360,7 @@ class InlineTest extends TestCase {
             array("'foo # bar'", 'foo # bar'),
             array("'#cfcfcf'", '#cfcfcf'),
             array('::form_base.html.twig', '::form_base.html.twig'),
+
             // Pre-YAML-1.2 booleans
             array("'y'", 'y'),
             array("'n'", 'n'),
@@ -333,18 +368,22 @@ class InlineTest extends TestCase {
             array("'no'", 'no'),
             array("'on'", 'on'),
             array("'off'", 'off'),
+
             array('2007-10-30', gmmktime(0, 0, 0, 10, 30, 2007)),
             array('2007-10-30T02:59:43Z', gmmktime(2, 59, 43, 10, 30, 2007)),
             array('2007-10-30 02:59:43 Z', gmmktime(2, 59, 43, 10, 30, 2007)),
             array('1960-10-30 02:59:43 Z', gmmktime(2, 59, 43, 10, 30, 1960)),
             array('1730-10-30T02:59:43Z', gmmktime(2, 59, 43, 10, 30, 1730)),
+
             array('"a \\"string\\" with \'quoted strings inside\'"', 'a "string" with \'quoted strings inside\''),
             array("'a \"string\" with ''quoted strings inside'''", 'a "string" with \'quoted strings inside\''),
+
             // sequences
             // urls are no key value mapping. see #3609. Valid yaml "key: value" mappings require a space after the colon
             array('[foo, http://urls.are/no/mappings, false, null, 12]', array('foo', 'http://urls.are/no/mappings', false, null, 12)),
             array('[  foo  ,   bar , false  ,  null     ,  12  ]', array('foo', 'bar', false, null, 12)),
             array('[\'foo,bar\', \'foo bar\']', array('foo,bar', 'foo bar')),
+
             // mappings
             array('{foo: bar,bar: foo,false: false,null: null,integer: 12}', array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12)),
             array('{ foo  : bar, bar : foo,  false  :   false,  null  :   null,  integer :  12  }', array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12)),
@@ -352,6 +391,7 @@ class InlineTest extends TestCase {
             array('{\'foo\': \'bar\', "bar": \'foo: bar\'}', array('foo' => 'bar', 'bar' => 'foo: bar')),
             array('{\'foo\'\'\': \'bar\', "bar\"": \'foo: bar\'}', array('foo\'' => 'bar', 'bar"' => 'foo: bar')),
             array('{\'foo: \': \'bar\', "bar: ": \'foo: bar\'}', array('foo: ' => 'bar', 'bar: ' => 'foo: bar')),
+
             // nested sequences and mappings
             array('[foo, [bar, foo]]', array('foo', array('bar', 'foo'))),
             array('[foo, {bar: foo}]', array('foo', array('bar' => 'foo'))),
@@ -359,16 +399,22 @@ class InlineTest extends TestCase {
             array('{ foo: [bar, foo] }', array('foo' => array('bar', 'foo'))),
             array('{ foo:{bar: foo} }', array('foo' => array('bar' => 'foo'))),
             array('{ foo:[bar, foo] }', array('foo' => array('bar', 'foo'))),
+
             array('[  foo, [  bar, foo  ]  ]', array('foo', array('bar', 'foo'))),
+
             array('[{ foo: {bar: foo} }]', array(array('foo' => array('bar' => 'foo')))),
+
             array('[foo, [bar, [foo, [bar, foo]], foo]]', array('foo', array('bar', array('foo', array('bar', 'foo')), 'foo'))),
+
             array('[foo, {bar: foo, foo: [foo, {bar: foo}]}, [foo, {bar: foo}]]', array('foo', array('bar' => 'foo', 'foo' => array('foo', array('bar' => 'foo'))), array('foo', array('bar' => 'foo')))),
+
             array('[foo, bar: { foo: bar }]', array('foo', '1' => array('bar' => array('foo' => 'bar')))),
             array('[foo, \'@foo.baz\', { \'%foo%\': \'foo is %foo%\', bar: \'%foo%\' }, true, \'@service_container\']', array('foo', '@foo.baz', array('%foo%' => 'foo is %foo%', 'bar' => '%foo%'), true, '@service_container')),
         );
     }
 
-    public function getTestsForParseWithMapObjects() {
+    public function getTestsForParseWithMapObjects()
+    {
         return array(
             array('', ''),
             array('null', null),
@@ -391,18 +437,22 @@ class InlineTest extends TestCase {
             array("'foo # bar'", 'foo # bar'),
             array("'#cfcfcf'", '#cfcfcf'),
             array('::form_base.html.twig', '::form_base.html.twig'),
+
             array('2007-10-30', gmmktime(0, 0, 0, 10, 30, 2007)),
             array('2007-10-30T02:59:43Z', gmmktime(2, 59, 43, 10, 30, 2007)),
             array('2007-10-30 02:59:43 Z', gmmktime(2, 59, 43, 10, 30, 2007)),
             array('1960-10-30 02:59:43 Z', gmmktime(2, 59, 43, 10, 30, 1960)),
             array('1730-10-30T02:59:43Z', gmmktime(2, 59, 43, 10, 30, 1730)),
+
             array('"a \\"string\\" with \'quoted strings inside\'"', 'a "string" with \'quoted strings inside\''),
             array("'a \"string\" with ''quoted strings inside'''", 'a "string" with \'quoted strings inside\''),
+
             // sequences
             // urls are no key value mapping. see #3609. Valid yaml "key: value" mappings require a space after the colon
             array('[foo, http://urls.are/no/mappings, false, null, 12]', array('foo', 'http://urls.are/no/mappings', false, null, 12)),
             array('[  foo  ,   bar , false  ,  null     ,  12  ]', array('foo', 'bar', false, null, 12)),
             array('[\'foo,bar\', \'foo bar\']', array('foo,bar', 'foo bar')),
+
             // mappings
             array('{foo: bar,bar: foo,false: false,null: null,integer: 12}', (object) array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12)),
             array('{ foo  : bar, bar : foo,  false  :   false,  null  :   null,  integer :  12  }', (object) array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12)),
@@ -410,23 +460,31 @@ class InlineTest extends TestCase {
             array('{\'foo\': \'bar\', "bar": \'foo: bar\'}', (object) array('foo' => 'bar', 'bar' => 'foo: bar')),
             array('{\'foo\'\'\': \'bar\', "bar\"": \'foo: bar\'}', (object) array('foo\'' => 'bar', 'bar"' => 'foo: bar')),
             array('{\'foo: \': \'bar\', "bar: ": \'foo: bar\'}', (object) array('foo: ' => 'bar', 'bar: ' => 'foo: bar')),
+
             // nested sequences and mappings
             array('[foo, [bar, foo]]', array('foo', array('bar', 'foo'))),
             array('[foo, {bar: foo}]', array('foo', (object) array('bar' => 'foo'))),
             array('{ foo: {bar: foo} }', (object) array('foo' => (object) array('bar' => 'foo'))),
             array('{ foo: [bar, foo] }', (object) array('foo' => array('bar', 'foo'))),
+
             array('[  foo, [  bar, foo  ]  ]', array('foo', array('bar', 'foo'))),
+
             array('[{ foo: {bar: foo} }]', array((object) array('foo' => (object) array('bar' => 'foo')))),
+
             array('[foo, [bar, [foo, [bar, foo]], foo]]', array('foo', array('bar', array('foo', array('bar', 'foo')), 'foo'))),
+
             array('[foo, {bar: foo, foo: [foo, {bar: foo}]}, [foo, {bar: foo}]]', array('foo', (object) array('bar' => 'foo', 'foo' => array('foo', (object) array('bar' => 'foo'))), array('foo', (object) array('bar' => 'foo')))),
+
             array('[foo, bar: { foo: bar }]', array('foo', '1' => (object) array('bar' => (object) array('foo' => 'bar')))),
             array('[foo, \'@foo.baz\', { \'%foo%\': \'foo is %foo%\', bar: \'%foo%\' }, true, \'@service_container\']', array('foo', '@foo.baz', (object) array('%foo%' => 'foo is %foo%', 'bar' => '%foo%'), true, '@service_container')),
+
             array('{}', new \stdClass()),
             array('{ foo  : bar, bar : {}  }', (object) array('foo' => 'bar', 'bar' => new \stdClass())),
             array('{ foo  : [], bar : {}  }', (object) array('foo' => array(), 'bar' => new \stdClass())),
             array('{foo: \'bar\', bar: {} }', (object) array('foo' => 'bar', 'bar' => new \stdClass())),
             array('{\'foo\': \'bar\', "bar": {}}', (object) array('foo' => 'bar', 'bar' => new \stdClass())),
             array('{\'foo\': \'bar\', "bar": \'{}\'}', (object) array('foo' => 'bar', 'bar' => '{}')),
+
             array('[foo, [{}, {}]]', array('foo', array(new \stdClass(), new \stdClass()))),
             array('[foo, [[], {}]]', array('foo', array(array(), new \stdClass()))),
             array('[foo, [[{}, {}], {}]]', array('foo', array(array(new \stdClass(), new \stdClass()), new \stdClass()))),
@@ -434,7 +492,8 @@ class InlineTest extends TestCase {
         );
     }
 
-    public function getTestsForDump() {
+    public function getTestsForDump()
+    {
         return array(
             array('null', null),
             array('false', false),
@@ -456,9 +515,12 @@ class InlineTest extends TestCase {
             array("'foo#bar'", 'foo#bar'),
             array("'foo # bar'", 'foo # bar'),
             array("'#cfcfcf'", '#cfcfcf'),
+
             array("'a \"string\" with ''quoted strings inside'''", 'a "string" with \'quoted strings inside\''),
+
             array("'-dash'", '-dash'),
             array("'-'", '-'),
+
             // Pre-YAML-1.2 booleans
             array("'y'", 'y'),
             array("'n'", 'n'),
@@ -466,19 +528,28 @@ class InlineTest extends TestCase {
             array("'no'", 'no'),
             array("'on'", 'on'),
             array("'off'", 'off'),
+
             // sequences
             array('[foo, bar, false, null, 12]', array('foo', 'bar', false, null, 12)),
             array('[\'foo,bar\', \'foo bar\']', array('foo,bar', 'foo bar')),
+
             // mappings
             array('{ foo: bar, bar: foo, \'false\': false, \'null\': null, integer: 12 }', array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12)),
             array('{ foo: bar, bar: \'foo: bar\' }', array('foo' => 'bar', 'bar' => 'foo: bar')),
+
             // nested sequences and mappings
             array('[foo, [bar, foo]]', array('foo', array('bar', 'foo'))),
+
             array('[foo, [bar, [foo, [bar, foo]], foo]]', array('foo', array('bar', array('foo', array('bar', 'foo')), 'foo'))),
+
             array('{ foo: { bar: foo } }', array('foo' => array('bar' => 'foo'))),
+
             array('[foo, { bar: foo }]', array('foo', array('bar' => 'foo'))),
+
             array('[foo, { bar: foo, foo: [foo, { bar: foo }] }, [foo, { bar: foo }]]', array('foo', array('bar' => 'foo', 'foo' => array('foo', array('bar' => 'foo'))), array('foo', array('bar' => 'foo')))),
+
             array('[foo, \'@foo.baz\', { \'%foo%\': \'foo is %foo%\', bar: \'%foo%\' }, true, \'@service_container\']', array('foo', '@foo.baz', array('%foo%' => 'foo is %foo%', 'bar' => '%foo%'), true, '@service_container')),
+
             array('{ foo: { bar: { 1: 2, baz: 3 } } }', array('foo' => array('bar' => array(1 => 2, 'baz' => 3)))),
         );
     }
@@ -486,14 +557,16 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getTimestampTests
      */
-    public function testParseTimestampAsUnixTimestampByDefault($yaml, $year, $month, $day, $hour, $minute, $second) {
+    public function testParseTimestampAsUnixTimestampByDefault($yaml, $year, $month, $day, $hour, $minute, $second)
+    {
         $this->assertSame(gmmktime($hour, $minute, $second, $month, $day, $year), Inline::parse($yaml));
     }
 
     /**
      * @dataProvider getTimestampTests
      */
-    public function testParseTimestampAsDateTimeObject($yaml, $year, $month, $day, $hour, $minute, $second, $timezone) {
+    public function testParseTimestampAsDateTimeObject($yaml, $year, $month, $day, $hour, $minute, $second, $timezone)
+    {
         $expected = new \DateTime($yaml);
         $expected->setTimeZone(new \DateTimeZone('UTC'));
         $expected->setDate($year, $month, $day);
@@ -509,7 +582,8 @@ class InlineTest extends TestCase {
         $this->assertSame($timezone, $date->format('O'));
     }
 
-    public function getTimestampTests() {
+    public function getTimestampTests()
+    {
         return array(
             'canonical' => array('2001-12-15T02:59:43.1Z', 2001, 12, 15, 2, 59, 43.1, '+0000'),
             'ISO-8601' => array('2001-12-15t21:59:43.10-05:00', 2001, 12, 16, 2, 59, 43.1, '-0500'),
@@ -521,7 +595,8 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getTimestampTests
      */
-    public function testParseNestedTimestampListAsDateTimeObject($yaml, $year, $month, $day, $hour, $minute, $second) {
+    public function testParseNestedTimestampListAsDateTimeObject($yaml, $year, $month, $day, $hour, $minute, $second)
+    {
         $expected = new \DateTime($yaml);
         $expected->setTimeZone(new \DateTimeZone('UTC'));
         $expected->setDate($year, $month, $day);
@@ -540,11 +615,13 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getDateTimeDumpTests
      */
-    public function testDumpDateTime($dateTime, $expected) {
+    public function testDumpDateTime($dateTime, $expected)
+    {
         $this->assertSame($expected, Inline::dump($dateTime));
     }
 
-    public function getDateTimeDumpTests() {
+    public function getDateTimeDumpTests()
+    {
         $tests = array();
 
         $dateTime = new \DateTime('2001-12-15 21:59:43', new \DateTimeZone('UTC'));
@@ -559,11 +636,13 @@ class InlineTest extends TestCase {
     /**
      * @dataProvider getBinaryData
      */
-    public function testParseBinaryData($data) {
+    public function testParseBinaryData($data)
+    {
         $this->assertSame('Hello world', Inline::parse($data));
     }
 
-    public function getBinaryData() {
+    public function getBinaryData()
+    {
         return array(
             'enclosed with double quotes' => array('!!binary "SGVsbG8gd29ybGQ="'),
             'enclosed with single quotes' => array("!!binary 'SGVsbG8gd29ybGQ='"),
@@ -575,7 +654,8 @@ class InlineTest extends TestCase {
      * @dataProvider getInvalidBinaryData
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
-    public function testParseInvalidBinaryData($data, $expectedMessage) {
+    public function testParseInvalidBinaryData($data, $expectedMessage)
+    {
         if (method_exists($this, 'expectException')) {
             $this->expectExceptionMessageRegExp($expectedMessage);
         } else {
@@ -585,7 +665,8 @@ class InlineTest extends TestCase {
         Inline::parse($data);
     }
 
-    public function getInvalidBinaryData() {
+    public function getInvalidBinaryData()
+    {
         return array(
             'length not a multiple of four' => array('!!binary "SGVsbG8d29ybGQ="', '/The normalized base64 encoded data \(data without whitespace characters\) length must be a multiple of four \(\d+ bytes given\)/'),
             'invalid characters' => array('!!binary "SGVsbG8#d29ybGQ="', '/The base64 encoded data \(.*\) contains invalid characters/'),
@@ -598,11 +679,13 @@ class InlineTest extends TestCase {
      * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      * @expectedExceptionMessage Malformed inline YAML string: {this, is not, supported}.
      */
-    public function testNotSupportedMissingValue() {
+    public function testNotSupportedMissingValue()
+    {
         Inline::parse('{this, is not, supported}');
     }
 
-    public function testVeryLongQuotedStrings() {
+    public function testVeryLongQuotedStrings()
+    {
         $longStringWithQuotes = str_repeat("x\r\n\\\"x\"x", 1000);
 
         $yamlString = Inline::dump(array('longStringWithQuotes' => $longStringWithQuotes));
@@ -611,17 +694,19 @@ class InlineTest extends TestCase {
         $this->assertEquals($longStringWithQuotes, $arrayFromYaml['longStringWithQuotes']);
     }
 
-    public function testOmittedMappingKeyIsParsedAsColon() {
+    public function testOmittedMappingKeyIsParsedAsColon()
+    {
         $this->assertSame(array(':' => 'foo'), Inline::parse('{: foo}'));
     }
 
-    public function testBooleanMappingKeysAreConvertedToStrings() {
+    public function testBooleanMappingKeysAreConvertedToStrings()
+    {
         $this->assertSame(array('false' => 'foo'), Inline::parse('{false: foo}'));
         $this->assertSame(array('true' => 'foo'), Inline::parse('{true: foo}'));
     }
 
-    public function testTheEmptyStringIsAValidMappingKey() {
+    public function testTheEmptyStringIsAValidMappingKey()
+    {
         $this->assertSame(array('' => 'foo'), Inline::parse('{ "": foo }'));
     }
-
 }

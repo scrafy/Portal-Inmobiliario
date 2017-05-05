@@ -23,9 +23,10 @@ use Symfony\Component\Console\Question\Question;
 /**
  * @group tty
  */
-class QuestionHelperTest extends AbstractQuestionHelperTest {
-
-    public function testAskChoice() {
+class QuestionHelperTest extends AbstractQuestionHelperTest
+{
+    public function testAskChoice()
+    {
         $questionHelper = new QuestionHelper();
 
         $helperSet = new HelperSet(array(new FormatterHelper()));
@@ -84,7 +85,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $this->assertEquals(array('Superman', 'Batman'), $questionHelper->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question));
     }
 
-    public function testAsk() {
+    public function testAsk()
+    {
         $dialog = new QuestionHelper();
 
         $inputStream = $this->getInputStream("\n8AM\n");
@@ -99,7 +101,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $this->assertEquals('What time is it?', stream_get_contents($output->getStream()));
     }
 
-    public function testAskWithAutocomplete() {
+    public function testAskWithAutocomplete()
+    {
         if (!$this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
@@ -131,7 +134,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $this->assertEquals('FooBundle', $dialog->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question));
     }
 
-    public function testAskWithAutocompleteWithNonSequentialKeys() {
+    public function testAskWithAutocompleteWithNonSequentialKeys()
+    {
         if (!$this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
@@ -149,7 +153,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $this->assertEquals('AsseticBundle', $dialog->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question));
     }
 
-    public function testAskHiddenResponse() {
+    public function testAskHiddenResponse()
+    {
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->markTestSkipped('This test is not supported on Windows');
         }
@@ -165,15 +170,17 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @dataProvider getAskConfirmationData
      */
-    public function testAskConfirmation($question, $expected, $default = true) {
+    public function testAskConfirmation($question, $expected, $default = true)
+    {
         $dialog = new QuestionHelper();
 
-        $inputStream = $this->getInputStream($question . "\n");
+        $inputStream = $this->getInputStream($question."\n");
         $question = new ConfirmationQuestion('Do you like French fries?', $default);
-        $this->assertEquals($expected, $dialog->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question), 'confirmation question should ' . ($expected ? 'pass' : 'cancel'));
+        $this->assertEquals($expected, $dialog->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question), 'confirmation question should '.($expected ? 'pass' : 'cancel'));
     }
 
-    public function getAskConfirmationData() {
+    public function getAskConfirmationData()
+    {
         return array(
             array('', true),
             array('', false, false),
@@ -184,7 +191,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         );
     }
 
-    public function testAskConfirmationWithCustomTrueAnswer() {
+    public function testAskConfirmationWithCustomTrueAnswer()
+    {
         $dialog = new QuestionHelper();
 
         $inputStream = $this->getInputStream("j\ny\n");
@@ -194,7 +202,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $this->assertTrue($dialog->ask($this->createStreamableInputInterfaceMock($inputStream), $this->createOutputInterface(), $question));
     }
 
-    public function testAskAndValidate() {
+    public function testAskAndValidate()
+    {
         $dialog = new QuestionHelper();
         $helperSet = new HelperSet(array(new FormatterHelper()));
         $dialog->setHelperSet($helperSet);
@@ -227,7 +236,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @dataProvider simpleAnswerProvider
      */
-    public function testSelectChoiceFromSimpleChoices($providedAnswer, $expectedValue) {
+    public function testSelectChoiceFromSimpleChoices($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             'My environment 1',
             'My environment 2',
@@ -240,12 +250,13 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
         $question->setMaxAttempts(1);
-        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer . "\n")), $this->createOutputInterface(), $question);
+        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer."\n")), $this->createOutputInterface(), $question);
 
         $this->assertSame($expectedValue, $answer);
     }
 
-    public function simpleAnswerProvider() {
+    public function simpleAnswerProvider()
+    {
         return array(
             array(0, 'My environment 1'),
             array(1, 'My environment 2'),
@@ -259,7 +270,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @dataProvider mixedKeysChoiceListAnswerProvider
      */
-    public function testChoiceFromChoicelistWithMixedKeys($providedAnswer, $expectedValue) {
+    public function testChoiceFromChoicelistWithMixedKeys($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             '0' => 'No environment',
             '1' => 'My environment 1',
@@ -273,12 +285,13 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
         $question->setMaxAttempts(1);
-        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer . "\n")), $this->createOutputInterface(), $question);
+        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer."\n")), $this->createOutputInterface(), $question);
 
         $this->assertSame($expectedValue, $answer);
     }
 
-    public function mixedKeysChoiceListAnswerProvider() {
+    public function mixedKeysChoiceListAnswerProvider()
+    {
         return array(
             array('0', '0'),
             array('No environment', '0'),
@@ -292,7 +305,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @dataProvider answerProvider
      */
-    public function testSelectChoiceFromChoiceList($providedAnswer, $expectedValue) {
+    public function testSelectChoiceFromChoiceList($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             'env_1' => 'My environment 1',
             'env_2' => 'My environment',
@@ -305,7 +319,7 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
 
         $question = new ChoiceQuestion('Please select the environment to load', $possibleChoices);
         $question->setMaxAttempts(1);
-        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer . "\n")), $this->createOutputInterface(), $question);
+        $answer = $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream($providedAnswer."\n")), $this->createOutputInterface(), $question);
 
         $this->assertSame($expectedValue, $answer);
     }
@@ -314,7 +328,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage The provided answer is ambiguous. Value should be one of env_2 or env_3.
      */
-    public function testAmbiguousChoiceFromChoicelist() {
+    public function testAmbiguousChoiceFromChoicelist()
+    {
         $possibleChoices = array(
             'env_1' => 'My first environment',
             'env_2' => 'My environment',
@@ -331,7 +346,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream("My environment\n")), $this->createOutputInterface(), $question);
     }
 
-    public function answerProvider() {
+    public function answerProvider()
+    {
         return array(
             array('env_1', 'env_1'),
             array('env_2', 'env_2'),
@@ -340,7 +356,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         );
     }
 
-    public function testNoInteraction() {
+    public function testNoInteraction()
+    {
         $dialog = new QuestionHelper();
         $question = new Question('Do you have a job?', 'not yet');
         $this->assertEquals('not yet', $dialog->ask($this->createStreamableInputInterfaceMock(null, false), $this->createOutputInterface(), $question));
@@ -349,7 +366,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @requires function mb_strwidth
      */
-    public function testChoiceOutputFormattingQuestionForUtf8Keys() {
+    public function testChoiceOutputFormattingQuestionForUtf8Keys()
+    {
         $question = 'Lorem ipsum?';
         $possibleChoices = array(
             'foo' => 'foo',
@@ -378,7 +396,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAskChoice() {
+    public function testLegacyAskChoice()
+    {
         $questionHelper = new QuestionHelper();
 
         $helperSet = new HelperSet(array(new FormatterHelper()));
@@ -440,7 +459,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAsk() {
+    public function testLegacyAsk()
+    {
         $dialog = new QuestionHelper();
 
         $dialog->setInputStream($this->getInputStream("\n8AM\n"));
@@ -458,7 +478,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAskWithAutocomplete() {
+    public function testLegacyAskWithAutocomplete()
+    {
         if (!$this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
@@ -494,7 +515,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAskWithAutocompleteWithNonSequentialKeys() {
+    public function testLegacyAskWithAutocompleteWithNonSequentialKeys()
+    {
         if (!$this->hasSttyAvailable()) {
             $this->markTestSkipped('`stty` is required to test autocomplete functionality');
         }
@@ -516,7 +538,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAskHiddenResponse() {
+    public function testLegacyAskHiddenResponse()
+    {
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->markTestSkipped('This test is not supported on Windows');
         }
@@ -534,18 +557,20 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @group        legacy
      * @dataProvider getAskConfirmationData
      */
-    public function testLegacyAskConfirmation($question, $expected, $default = true) {
+    public function testLegacyAskConfirmation($question, $expected, $default = true)
+    {
         $dialog = new QuestionHelper();
 
-        $dialog->setInputStream($this->getInputStream($question . "\n"));
+        $dialog->setInputStream($this->getInputStream($question."\n"));
         $question = new ConfirmationQuestion('Do you like French fries?', $default);
-        $this->assertEquals($expected, $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question), 'confirmation question should ' . ($expected ? 'pass' : 'cancel'));
+        $this->assertEquals($expected, $dialog->ask($this->createInputInterfaceMock(), $this->createOutputInterface(), $question), 'confirmation question should '.($expected ? 'pass' : 'cancel'));
     }
 
     /**
      * @group legacy
      */
-    public function testLegacyAskConfirmationWithCustomTrueAnswer() {
+    public function testLegacyAskConfirmationWithCustomTrueAnswer()
+    {
         $dialog = new QuestionHelper();
 
         $dialog->setInputStream($this->getInputStream("j\ny\n"));
@@ -558,7 +583,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
     /**
      * @group legacy
      */
-    public function testLegacyAskAndValidate() {
+    public function testLegacyAskAndValidate()
+    {
         $dialog = new QuestionHelper();
         $helperSet = new HelperSet(array(new FormatterHelper()));
         $dialog->setHelperSet($helperSet);
@@ -593,7 +619,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @group        legacy
      * @dataProvider simpleAnswerProvider
      */
-    public function testLegacySelectChoiceFromSimpleChoices($providedAnswer, $expectedValue) {
+    public function testLegacySelectChoiceFromSimpleChoices($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             'My environment 1',
             'My environment 2',
@@ -601,7 +628,7 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         );
 
         $dialog = new QuestionHelper();
-        $dialog->setInputStream($this->getInputStream($providedAnswer . "\n"));
+        $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
         $helperSet = new HelperSet(array(new FormatterHelper()));
         $dialog->setHelperSet($helperSet);
 
@@ -616,7 +643,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @group        legacy
      * @dataProvider mixedKeysChoiceListAnswerProvider
      */
-    public function testLegacyChoiceFromChoicelistWithMixedKeys($providedAnswer, $expectedValue) {
+    public function testLegacyChoiceFromChoicelistWithMixedKeys($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             '0' => 'No environment',
             '1' => 'My environment 1',
@@ -625,7 +653,7 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         );
 
         $dialog = new QuestionHelper();
-        $dialog->setInputStream($this->getInputStream($providedAnswer . "\n"));
+        $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
         $helperSet = new HelperSet(array(new FormatterHelper()));
         $dialog->setHelperSet($helperSet);
 
@@ -640,7 +668,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @group        legacy
      * @dataProvider answerProvider
      */
-    public function testLegacySelectChoiceFromChoiceList($providedAnswer, $expectedValue) {
+    public function testLegacySelectChoiceFromChoiceList($providedAnswer, $expectedValue)
+    {
         $possibleChoices = array(
             'env_1' => 'My environment 1',
             'env_2' => 'My environment',
@@ -648,7 +677,7 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         );
 
         $dialog = new QuestionHelper();
-        $dialog->setInputStream($this->getInputStream($providedAnswer . "\n"));
+        $dialog->setInputStream($this->getInputStream($providedAnswer."\n"));
         $helperSet = new HelperSet(array(new FormatterHelper()));
         $dialog->setHelperSet($helperSet);
 
@@ -664,7 +693,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage The provided answer is ambiguous. Value should be one of env_2 or env_3.
      */
-    public function testLegacyAmbiguousChoiceFromChoicelist() {
+    public function testLegacyAmbiguousChoiceFromChoicelist()
+    {
         $possibleChoices = array(
             'env_1' => 'My first environment',
             'env_2' => 'My environment',
@@ -686,7 +716,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @requires function mb_strwidth
      * @group legacy
      */
-    public function testLegacyChoiceOutputFormattingQuestionForUtf8Keys() {
+    public function testLegacyChoiceOutputFormattingQuestionForUtf8Keys()
+    {
         $question = 'Lorem ipsum?';
         $possibleChoices = array(
             'foo' => 'foo',
@@ -717,7 +748,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @expectedException        \Symfony\Component\Console\Exception\RuntimeException
      * @expectedExceptionMessage Aborted
      */
-    public function testAskThrowsExceptionOnMissingInput() {
+    public function testAskThrowsExceptionOnMissingInput()
+    {
         $dialog = new QuestionHelper();
         $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream('')), $this->createOutputInterface(), new Question('What\'s your name?'));
     }
@@ -726,7 +758,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
      * @expectedException        \Symfony\Component\Console\Exception\RuntimeException
      * @expectedExceptionMessage Aborted
      */
-    public function testAskThrowsExceptionOnMissingInputWithValidator() {
+    public function testAskThrowsExceptionOnMissingInputWithValidator()
+    {
         $dialog = new QuestionHelper();
 
         $question = new Question('What\'s your name?');
@@ -739,7 +772,8 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         $dialog->ask($this->createStreamableInputInterfaceMock($this->getInputStream('')), $this->createOutputInterface(), $question);
     }
 
-    protected function getInputStream($input) {
+    protected function getInputStream($input)
+    {
         $stream = fopen('php://memory', 'r+', false);
         fwrite($stream, $input);
         rewind($stream);
@@ -747,23 +781,25 @@ class QuestionHelperTest extends AbstractQuestionHelperTest {
         return $stream;
     }
 
-    protected function createOutputInterface() {
+    protected function createOutputInterface()
+    {
         return new StreamOutput(fopen('php://memory', 'r+', false));
     }
 
-    protected function createInputInterfaceMock($interactive = true) {
+    protected function createInputInterfaceMock($interactive = true)
+    {
         $mock = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')->getMock();
         $mock->expects($this->any())
-                ->method('isInteractive')
-                ->will($this->returnValue($interactive));
+            ->method('isInteractive')
+            ->will($this->returnValue($interactive));
 
         return $mock;
     }
 
-    private function hasSttyAvailable() {
+    private function hasSttyAvailable()
+    {
         exec('stty 2>&1', $output, $exitcode);
 
         return $exitcode === 0;
     }
-
 }

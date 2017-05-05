@@ -22,9 +22,10 @@ use Symfony\Component\Console\Tests\Fixtures\DescriptorCommand2;
 /**
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-class ObjectsProvider {
-
-    public static function getInputArguments() {
+class ObjectsProvider
+{
+    public static function getInputArguments()
+    {
         return array(
             'input_argument_1' => new InputArgument('argument_name', InputArgument::REQUIRED),
             'input_argument_2' => new InputArgument('argument_name', InputArgument::IS_ARRAY, 'argument description'),
@@ -34,7 +35,8 @@ class ObjectsProvider {
         );
     }
 
-    public static function getInputOptions() {
+    public static function getInputOptions()
+    {
         return array(
             'input_option_1' => new InputOption('option_name', 'o', InputOption::VALUE_NONE),
             'input_option_2' => new InputOption('option_name', 'o', InputOption::VALUE_OPTIONAL, 'option description', 'default_value'),
@@ -47,7 +49,8 @@ class ObjectsProvider {
         );
     }
 
-    public static function getInputDefinitions() {
+    public static function getInputDefinitions()
+    {
         return array(
             'input_definition_1' => new InputDefinition(),
             'input_definition_2' => new InputDefinition(array(new InputArgument('argument_name', InputArgument::REQUIRED))),
@@ -55,22 +58,23 @@ class ObjectsProvider {
             'input_definition_4' => new InputDefinition(array(
                 new InputArgument('argument_name', InputArgument::REQUIRED),
                 new InputOption('option_name', 'o', InputOption::VALUE_NONE),
-                    )),
+            )),
         );
     }
 
-    public static function getCommands() {
+    public static function getCommands()
+    {
         return array(
             'command_1' => new DescriptorCommand1(),
             'command_2' => new DescriptorCommand2(),
         );
     }
 
-    public static function getApplications() {
+    public static function getApplications()
+    {
         return array(
             'application_1' => new DescriptorApplication1(),
             'application_2' => new DescriptorApplication2(),
         );
     }
-
 }

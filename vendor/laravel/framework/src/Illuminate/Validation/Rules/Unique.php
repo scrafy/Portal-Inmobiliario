@@ -4,8 +4,8 @@ namespace Illuminate\Validation\Rules;
 
 use Closure;
 
-class Unique {
-
+class Unique
+{
     /**
      * The table to run the query against.
      *
@@ -55,7 +55,8 @@ class Unique {
      * @param  string  $column
      * @return void
      */
-    public function __construct($table, $column = 'NULL') {
+    public function __construct($table, $column = 'NULL')
+    {
         $this->table = $table;
         $this->column = $column;
     }
@@ -67,7 +68,8 @@ class Unique {
      * @param  string  $value
      * @return $this
      */
-    public function where($column, $value = null) {
+    public function where($column, $value = null)
+    {
         if ($column instanceof Closure) {
             return $this->using($column);
         }
@@ -84,8 +86,9 @@ class Unique {
      * @param  string  $value
      * @return $this
      */
-    public function whereNot($column, $value) {
-        return $this->where($column, '!' . $value);
+    public function whereNot($column, $value)
+    {
+        return $this->where($column, '!'.$value);
     }
 
     /**
@@ -94,7 +97,8 @@ class Unique {
      * @param  string  $column
      * @return $this
      */
-    public function whereNull($column) {
+    public function whereNull($column)
+    {
         return $this->where($column, 'NULL');
     }
 
@@ -104,7 +108,8 @@ class Unique {
      * @param  string  $column
      * @return $this
      */
-    public function whereNotNull($column) {
+    public function whereNotNull($column)
+    {
         return $this->where($column, 'NOT_NULL');
     }
 
@@ -115,7 +120,8 @@ class Unique {
      * @param  string  $idColumn
      * @return $this
      */
-    public function ignore($id, $idColumn = 'id') {
+    public function ignore($id, $idColumn = 'id')
+    {
         $this->ignore = $id;
         $this->idColumn = $idColumn;
 
@@ -128,7 +134,8 @@ class Unique {
      * @param  \Closure $callback
      * @return $this
      */
-    public function using(Closure $callback) {
+    public function using(Closure $callback)
+    {
         $this->using = $callback;
 
         return $this;
@@ -139,10 +146,11 @@ class Unique {
      *
      * @return string
      */
-    protected function formatWheres() {
+    protected function formatWheres()
+    {
         return collect($this->wheres)->map(function ($where) {
-                    return $where['column'] . ',' . $where['value'];
-                })->implode(',');
+            return $where['column'].','.$where['value'];
+        })->implode(',');
     }
 
     /**
@@ -150,7 +158,8 @@ class Unique {
      *
      * @return array
      */
-    public function queryCallbacks() {
+    public function queryCallbacks()
+    {
         return $this->using ? [$this->using] : [];
     }
 
@@ -159,9 +168,14 @@ class Unique {
      *
      * @return string
      */
-    public function __toString() {
-        return rtrim(sprintf('unique:%s,%s,%s,%s,%s', $this->table, $this->column, $this->ignore ? '"' . $this->ignore . '"' : 'NULL', $this->idColumn, $this->formatWheres()
-                ), ',');
+    public function __toString()
+    {
+        return rtrim(sprintf('unique:%s,%s,%s,%s,%s',
+            $this->table,
+            $this->column,
+            $this->ignore ? '"'.$this->ignore.'"' : 'NULL',
+            $this->idColumn,
+            $this->formatWheres()
+        ), ',');
     }
-
 }

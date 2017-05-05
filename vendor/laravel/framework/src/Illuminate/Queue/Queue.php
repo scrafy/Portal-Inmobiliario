@@ -4,8 +4,8 @@ namespace Illuminate\Queue;
 
 use Illuminate\Container\Container;
 
-abstract class Queue {
-
+abstract class Queue
+{
     use InteractsWithTime;
 
     /**
@@ -37,7 +37,8 @@ abstract class Queue {
      * @param  mixed   $data
      * @return mixed
      */
-    public function pushOn($queue, $job, $data = '') {
+    public function pushOn($queue, $job, $data = '')
+    {
         return $this->push($job, $data, $queue);
     }
 
@@ -50,7 +51,8 @@ abstract class Queue {
      * @param  mixed   $data
      * @return mixed
      */
-    public function laterOn($queue, $delay, $job, $data = '') {
+    public function laterOn($queue, $delay, $job, $data = '')
+    {
         return $this->later($delay, $job, $data, $queue);
     }
 
@@ -62,7 +64,8 @@ abstract class Queue {
      * @param  string  $queue
      * @return mixed
      */
-    public function bulk($jobs, $data = '', $queue = null) {
+    public function bulk($jobs, $data = '', $queue = null)
+    {
         foreach ((array) $jobs as $job) {
             $this->push($job, $data, $queue);
         }
@@ -78,7 +81,8 @@ abstract class Queue {
      *
      * @throws \Illuminate\Queue\InvalidPayloadException
      */
-    protected function createPayload($job, $data = '', $queue = null) {
+    protected function createPayload($job, $data = '', $queue = null)
+    {
         $payload = json_encode($this->createPayloadArray($job, $data, $queue));
 
         if (JSON_ERROR_NONE !== json_last_error()) {
@@ -96,8 +100,11 @@ abstract class Queue {
      * @param  string  $queue
      * @return array
      */
-    protected function createPayloadArray($job, $data = '', $queue = null) {
-        return is_object($job) ? $this->createObjectPayload($job) : $this->createStringPayload($job, $data);
+    protected function createPayloadArray($job, $data = '', $queue = null)
+    {
+        return is_object($job)
+                    ? $this->createObjectPayload($job)
+                    : $this->createStringPayload($job, $data);
     }
 
     /**
@@ -106,7 +113,8 @@ abstract class Queue {
      * @param  mixed  $job
      * @return array
      */
-    protected function createObjectPayload($job) {
+    protected function createObjectPayload($job)
+    {
         return [
             'displayName' => $this->getDisplayName($job),
             'job' => 'Illuminate\Queue\CallQueuedHandler@call',
@@ -125,8 +133,10 @@ abstract class Queue {
      * @param  mixed  $job
      * @return string
      */
-    protected function getDisplayName($job) {
-        return method_exists($job, 'displayName') ? $job->displayName() : get_class($job);
+    protected function getDisplayName($job)
+    {
+        return method_exists($job, 'displayName')
+                        ? $job->displayName() : get_class($job);
     }
 
     /**
@@ -136,7 +146,8 @@ abstract class Queue {
      * @param  mixed  $data
      * @return array
      */
-    protected function createStringPayload($job, $data) {
+    protected function createStringPayload($job, $data)
+    {
         return [
             'displayName' => is_string($job) ? explode('@', $job)[0] : null,
             'job' => $job, 'maxTries' => null,
@@ -149,7 +160,8 @@ abstract class Queue {
      *
      * @return string
      */
-    public function getConnectionName() {
+    public function getConnectionName()
+    {
         return $this->connectionName;
     }
 
@@ -159,7 +171,8 @@ abstract class Queue {
      * @param  string  $name
      * @return $this
      */
-    public function setConnectionName($name) {
+    public function setConnectionName($name)
+    {
         $this->connectionName = $name;
 
         return $this;
@@ -171,8 +184,8 @@ abstract class Queue {
      * @param  \Illuminate\Container\Container  $container
      * @return void
      */
-    public function setContainer(Container $container) {
+    public function setContainer(Container $container)
+    {
         $this->container = $container;
     }
-
 }

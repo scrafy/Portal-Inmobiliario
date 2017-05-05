@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Http\Middleware;
 use Closure;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class TransformsRequest {
-
+class TransformsRequest
+{
     /**
      * The additional attributes passed to the middleware.
      *
@@ -21,7 +21,8 @@ class TransformsRequest {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, ...$attributes) {
+    public function handle($request, Closure $next, ...$attributes)
+    {
         $this->attributes = $attributes;
 
         $this->clean($request);
@@ -35,7 +36,8 @@ class TransformsRequest {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    protected function clean($request) {
+    protected function clean($request)
+    {
         $this->cleanParameterBag($request->query);
 
         $this->cleanParameterBag($request->request);
@@ -51,7 +53,8 @@ class TransformsRequest {
      * @param  \Symfony\Component\HttpFoundation\ParameterBag  $bag
      * @return void
      */
-    protected function cleanParameterBag(ParameterBag $bag) {
+    protected function cleanParameterBag(ParameterBag $bag)
+    {
         $bag->replace($this->cleanArray($bag->all()));
     }
 
@@ -61,10 +64,11 @@ class TransformsRequest {
      * @param  array  $data
      * @return array
      */
-    protected function cleanArray(array $data) {
+    protected function cleanArray(array $data)
+    {
         return collect($data)->map(function ($value, $key) {
-                    return $this->cleanValue($key, $value);
-                })->all();
+            return $this->cleanValue($key, $value);
+        })->all();
     }
 
     /**
@@ -74,7 +78,8 @@ class TransformsRequest {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function cleanValue($key, $value) {
+    protected function cleanValue($key, $value)
+    {
         if (is_array($value)) {
             return $this->cleanArray($value);
         }
@@ -89,8 +94,8 @@ class TransformsRequest {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function transform($key, $value) {
+    protected function transform($key, $value)
+    {
         return $value;
     }
-
 }

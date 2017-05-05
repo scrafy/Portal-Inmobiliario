@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Global_ extends Node\Stmt {
-
+class Global_ extends Node\Stmt
+{
     /** @var Node\Expr[] Variables */
     public $vars;
 
@@ -23,5 +23,4 @@ class Global_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('vars');
     }
-
 }

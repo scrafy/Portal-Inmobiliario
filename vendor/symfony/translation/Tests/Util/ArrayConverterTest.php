@@ -14,16 +14,18 @@ namespace Symfony\Component\Translation\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Util\ArrayConverter;
 
-class ArrayConverterTest extends TestCase {
-
+class ArrayConverterTest extends TestCase
+{
     /**
      * @dataProvider messagesData
      */
-    public function testDump($input, $expectedOutput) {
+    public function testDump($input, $expectedOutput)
+    {
         $this->assertEquals($expectedOutput, ArrayConverter::expandToTree($input));
     }
 
-    public function messagesData() {
+    public function messagesData()
+    {
         return array(
             array(
                 // input
@@ -69,5 +71,4 @@ class ArrayConverterTest extends TestCase {
             ),
         );
     }
-
 }

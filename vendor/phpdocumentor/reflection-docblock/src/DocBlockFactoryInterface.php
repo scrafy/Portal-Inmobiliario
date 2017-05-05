@@ -1,9 +1,8 @@
 <?php
-
 namespace phpDocumentor\Reflection;
 
-interface DocBlockFactoryInterface {
-
+interface DocBlockFactoryInterface
+{
     /**
      * Factory method for easy instantiation.
      *

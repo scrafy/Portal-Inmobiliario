@@ -1,44 +1,51 @@
 <?php
-
-class TemplateMethodsTest extends PHPUnit_Framework_TestCase {
-
-    public static function setUpBeforeClass() {
+class TemplateMethodsTest extends PHPUnit_Framework_TestCase
+{
+    public static function setUpBeforeClass()
+    {
         print __METHOD__ . "\n";
     }
 
-    protected function setUp() {
+    protected function setUp()
+    {
         print __METHOD__ . "\n";
     }
 
-    protected function assertPreConditions() {
+    protected function assertPreConditions()
+    {
         print __METHOD__ . "\n";
     }
 
-    public function testOne() {
+    public function testOne()
+    {
         print __METHOD__ . "\n";
         $this->assertTrue(true);
     }
 
-    public function testTwo() {
+    public function testTwo()
+    {
         print __METHOD__ . "\n";
         $this->assertTrue(false);
     }
 
-    protected function assertPostConditions() {
+    protected function assertPostConditions()
+    {
         print __METHOD__ . "\n";
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         print __METHOD__ . "\n";
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
         print __METHOD__ . "\n";
     }
 
-    protected function onNotSuccessfulTest(Exception $e) {
+    protected function onNotSuccessfulTest(Exception $e)
+    {
         print __METHOD__ . "\n";
         throw $e;
     }
-
 }

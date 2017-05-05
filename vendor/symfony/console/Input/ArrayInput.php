@@ -23,8 +23,8 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ArrayInput extends Input {
-
+class ArrayInput extends Input
+{
     private $parameters;
 
     /**
@@ -33,7 +33,8 @@ class ArrayInput extends Input {
      * @param array                $parameters An array of parameters
      * @param InputDefinition|null $definition A InputDefinition instance
      */
-    public function __construct(array $parameters, InputDefinition $definition = null) {
+    public function __construct(array $parameters, InputDefinition $definition = null)
+    {
         $this->parameters = $parameters;
 
         parent::__construct($definition);
@@ -42,7 +43,8 @@ class ArrayInput extends Input {
     /**
      * {@inheritdoc}
      */
-    public function getFirstArgument() {
+    public function getFirstArgument()
+    {
         foreach ($this->parameters as $key => $value) {
             if ($key && '-' === $key[0]) {
                 continue;
@@ -55,7 +57,8 @@ class ArrayInput extends Input {
     /**
      * {@inheritdoc}
      */
-    public function hasParameterOption($values, $onlyParams = false) {
+    public function hasParameterOption($values, $onlyParams = false)
+    {
         $values = (array) $values;
 
         foreach ($this->parameters as $k => $v) {
@@ -78,7 +81,8 @@ class ArrayInput extends Input {
     /**
      * {@inheritdoc}
      */
-    public function getParameterOption($values, $default = false, $onlyParams = false) {
+    public function getParameterOption($values, $default = false, $onlyParams = false)
+    {
         $values = (array) $values;
 
         foreach ($this->parameters as $k => $v) {
@@ -103,11 +107,12 @@ class ArrayInput extends Input {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $params = array();
         foreach ($this->parameters as $param => $val) {
             if ($param && '-' === $param[0]) {
-                $params[] = $param . ('' != $val ? '=' . $this->escapeToken($val) : '');
+                $params[] = $param.('' != $val ? '='.$this->escapeToken($val) : '');
             } else {
                 $params[] = $this->escapeToken($val);
             }
@@ -119,7 +124,8 @@ class ArrayInput extends Input {
     /**
      * {@inheritdoc}
      */
-    protected function parse() {
+    protected function parse()
+    {
         foreach ($this->parameters as $key => $value) {
             if ($key === '--') {
                 return;
@@ -142,7 +148,8 @@ class ArrayInput extends Input {
      *
      * @throws InvalidOptionException When option given doesn't exist
      */
-    private function addShortOption($shortcut, $value) {
+    private function addShortOption($shortcut, $value)
+    {
         if (!$this->definition->hasShortcut($shortcut)) {
             throw new InvalidOptionException(sprintf('The "-%s" option does not exist.', $shortcut));
         }
@@ -159,7 +166,8 @@ class ArrayInput extends Input {
      * @throws InvalidOptionException When option given doesn't exist
      * @throws InvalidOptionException When a required value is missing
      */
-    private function addLongOption($name, $value) {
+    private function addLongOption($name, $value)
+    {
         if (!$this->definition->hasOption($name)) {
             throw new InvalidOptionException(sprintf('The "--%s" option does not exist.', $name));
         }
@@ -185,12 +193,12 @@ class ArrayInput extends Input {
      *
      * @throws InvalidArgumentException When argument given doesn't exist
      */
-    private function addArgument($name, $value) {
+    private function addArgument($name, $value)
+    {
         if (!$this->definition->hasArgument($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         $this->arguments[$name] = $value;
     }
-
 }

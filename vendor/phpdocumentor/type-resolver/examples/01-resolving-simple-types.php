@@ -10,4 +10,4 @@ $typeResolver = new TypeResolver();
 var_export($typeResolver->resolve('string|integer'));
 
 // Will return the string "string|int"
-var_dump((string) $typeResolver->resolve('string|integer'));
+var_dump((string)$typeResolver->resolve('string|integer'));

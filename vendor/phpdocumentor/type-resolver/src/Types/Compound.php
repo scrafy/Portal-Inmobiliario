@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -22,8 +21,8 @@ use phpDocumentor\Reflection\Type;
  * using an OR operator (`|`). This combination of types signifies that whatever is associated with this compound type
  * may contain a value with any of the given types.
  */
-final class Compound implements Type {
-
+final class Compound implements Type
+{
     /** @var Type[] */
     private $types = [];
 
@@ -32,7 +31,8 @@ final class Compound implements Type {
      *
      * @param Type[] $types
      */
-    public function __construct(array $types) {
+    public function __construct(array $types)
+    {
         foreach ($types as $type) {
             if (!$type instanceof Type) {
                 throw new \InvalidArgumentException('A compound type can only have other types as elements');
@@ -49,7 +49,8 @@ final class Compound implements Type {
      *
      * @return Type|null
      */
-    public function get($index) {
+    public function get($index)
+    {
         if (!$this->has($index)) {
             return null;
         }
@@ -64,7 +65,8 @@ final class Compound implements Type {
      *
      * @return bool
      */
-    public function has($index) {
+    public function has($index)
+    {
         return isset($this->types[$index]);
     }
 
@@ -73,8 +75,8 @@ final class Compound implements Type {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return implode('|', $this->types);
     }
-
 }

@@ -1,35 +1,40 @@
 <?php
 
+
 namespace Faker\Provider\en_US;
 
 use Faker\Generator;
 
-class PaymentTest extends \PHPUnit_Framework_TestCase {
-
+class PaymentTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var Generator
      */
     private $faker;
 
-    public function setUp() {
+    public function setUp()
+    {
         $faker = new Generator();
         $faker->addProvider(new Payment($faker));
         $this->faker = $faker;
     }
 
-    public function testBankAccountNumber() {
+    public function testBankAccountNumber()
+    {
         $accNo = $this->faker->bankAccountNumber;
         $this->assertTrue(ctype_digit($accNo));
         $this->assertLessThanOrEqual(17, strlen($accNo));
     }
 
-    public function testBankRoutingNumber() {
+    public function testBankRoutingNumber()
+    {
         $routingNo = $this->faker->bankRoutingNumber;
         $this->assertRegExp('/^\d{9}$/', $routingNo);
         $this->assertEquals(Payment::calculateRoutingNumberChecksum($routingNo), $routingNo[8]);
     }
 
-    public function routingNumberProvider() {
+    public function routingNumberProvider()
+    {
         return array(
             array('122105155'),
             array('082000549'),
@@ -72,8 +77,8 @@ class PaymentTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider routingNumberProvider
      */
-    public function testCalculateRoutingNumberChecksum($routingNo) {
+    public function testCalculateRoutingNumberChecksum($routingNo)
+    {
         $this->assertEquals($routingNo[8], Payment::calculateRoutingNumberChecksum($routingNo), $routingNo);
     }
-
 }

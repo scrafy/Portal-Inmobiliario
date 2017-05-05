@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue;
 
-class LuaScripts {
-
+class LuaScripts
+{
     /**
      * Get the Lua script for computing the size of queue.
      *
@@ -13,7 +13,8 @@ class LuaScripts {
      *
      * @return string
      */
-    public static function size() {
+    public static function size()
+    {
         return <<<'LUA'
 return redis.call('llen', KEYS[1]) + redis.call('zcard', KEYS[2]) + redis.call('zcard', KEYS[3])
 LUA;
@@ -28,7 +29,8 @@ LUA;
      *
      * @return string
      */
-    public static function pop() {
+    public static function pop()
+    {
         return <<<'LUA'
 -- Pop the first job off of the queue...
 local job = redis.call('lpop', KEYS[1])
@@ -56,7 +58,8 @@ LUA;
      *
      * @return string
      */
-    public static function release() {
+    public static function release()
+    {
         return <<<'LUA'
 -- Remove the job from the current queue...
 redis.call('zrem', KEYS[2], ARGV[1])
@@ -77,7 +80,8 @@ LUA;
      *
      * @return string
      */
-    public static function migrateExpiredJobs() {
+    public static function migrateExpiredJobs()
+    {
         return <<<'LUA'
 -- Get all of the jobs with an expired "score"...
 local val = redis.call('zrangebyscore', KEYS[1], '-inf', ARGV[1])
@@ -96,5 +100,4 @@ end
 return val
 LUA;
     }
-
 }

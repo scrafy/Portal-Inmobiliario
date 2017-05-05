@@ -5,11 +5,10 @@ namespace PhpParser\Node\Expr;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 
-class FuncCall extends Expr {
-
+class FuncCall extends Expr
+{
     /** @var Node\Name|Expr Function name */
     public $name;
-
     /** @var Node\Arg[] Arguments */
     public $args;
 
@@ -29,5 +28,4 @@ class FuncCall extends Expr {
     public function getSubNodeNames() {
         return array('name', 'args');
     }
-
 }

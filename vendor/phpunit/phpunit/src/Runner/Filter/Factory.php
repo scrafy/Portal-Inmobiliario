@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Runner_Filter_Factory {
-
+class PHPUnit_Runner_Filter_Factory
+{
     /**
      * @var array
      */
@@ -20,12 +19,14 @@ class PHPUnit_Runner_Filter_Factory {
      * @param ReflectionClass $filter
      * @param mixed           $args
      */
-    public function addFilter(ReflectionClass $filter, $args) {
+    public function addFilter(ReflectionClass $filter, $args)
+    {
         if (!$filter->isSubclassOf('RecursiveFilterIterator')) {
             throw new InvalidArgumentException(
-            sprintf(
-                    'Class "%s" does not extend RecursiveFilterIterator', $filter->name
-            )
+                sprintf(
+                    'Class "%s" does not extend RecursiveFilterIterator',
+                    $filter->name
+                )
             );
         }
 
@@ -35,13 +36,13 @@ class PHPUnit_Runner_Filter_Factory {
     /**
      * @return FilterIterator
      */
-    public function factory(Iterator $iterator, PHPUnit_Framework_TestSuite $suite) {
+    public function factory(Iterator $iterator, PHPUnit_Framework_TestSuite $suite)
+    {
         foreach ($this->filters as $filter) {
             list($class, $args) = $filter;
-            $iterator = $class->newInstance($iterator, $args, $suite);
+            $iterator           = $class->newInstance($iterator, $args, $suite);
         }
 
         return $iterator;
     }
-
 }

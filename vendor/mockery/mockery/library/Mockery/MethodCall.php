@@ -2,22 +2,24 @@
 
 namespace Mockery;
 
-class MethodCall {
-
+class MethodCall
+{
     private $method;
     private $args;
 
-    public function __construct($method, $args) {
+    public function __construct($method, $args)
+    {
         $this->method = $method;
         $this->args = $args;
     }
 
-    public function getMethod() {
+    public function getMethod()
+    {
         return $this->method;
     }
 
-    public function getArgs() {
+    public function getArgs()
+    {
         return $this->args;
     }
-
 }

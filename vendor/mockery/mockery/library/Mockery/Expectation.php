@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class Expectation implements ExpectationInterface {
+class Expectation implements ExpectationInterface
+{
 
     /**
      * Mock object to which this expectation belongs
@@ -144,7 +144,8 @@ class Expectation implements ExpectationInterface {
      * @param \Mockery\MockInterface $mock
      * @param string $name
      */
-    public function __construct(\Mockery\MockInterface $mock, $name) {
+    public function __construct(\Mockery\MockInterface $mock, $name)
+    {
         $this->_mock = $mock;
         $this->_name = $name;
     }
@@ -156,7 +157,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args List of arguments to the method
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return \Mockery::formatArgs($this->_name, $this->_expectedArgs);
     }
 
@@ -167,7 +169,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return mixed
      */
-    public function verifyCall(array $args) {
+    public function verifyCall(array $args)
+    {
         $this->validateOrder();
         $this->_actualCount++;
         if (true === $this->_passthru) {
@@ -187,7 +190,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return mixed
      */
-    protected function _setValues() {
+    protected function _setValues()
+    {
         foreach ($this->_setQueue as $name => &$values) {
             if (count($values) > 0) {
                 $value = array_shift($values);
@@ -202,7 +206,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return mixed
      */
-    protected function _getReturnValue(array $args) {
+    protected function _getReturnValue(array $args)
+    {
         if (count($this->_closureQueue) > 1) {
             return call_user_func_array(array_shift($this->_closureQueue), $args);
         } elseif (count($this->_closureQueue) > 0) {
@@ -217,19 +222,17 @@ class Expectation implements ExpectationInterface {
         if ($rm && version_compare(PHP_VERSION, '7.0.0-dev') >= 0 && $rm->hasReturnType()) {
             $type = (string) $rm->getReturnType();
             switch ($type) {
-                case '': return;
-                case 'void': return;
+                case '':       return;
+                case 'void':   return;
                 case 'string': return '';
-                case 'int': return 0;
-                case 'float': return 0.0;
-                case 'bool': return false;
-                case 'array': return array();
+                case 'int':    return 0;
+                case 'float':  return 0.0;
+                case 'bool':   return false;
+                case 'array':  return array();
 
                 case 'callable':
                 case 'Closure':
-                    return function () {
-                        
-                    };
+                    return function () {};
 
                 case 'Traversable':
                 case 'Generator':
@@ -248,7 +251,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return bool
      */
-    public function isEligible() {
+    public function isEligible()
+    {
         foreach ($this->_countValidators as $validator) {
             if (!$validator->isEligible($this->_actualCount)) {
                 return false;
@@ -262,7 +266,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return bool
      */
-    public function isCallCountConstrained() {
+    public function isCallCountConstrained()
+    {
         return (count($this->_countValidators) > 0);
     }
 
@@ -271,13 +276,14 @@ class Expectation implements ExpectationInterface {
      *
      * @return void
      */
-    public function validateOrder() {
+    public function validateOrder()
+    {
         if ($this->_orderNumber) {
             $this->_mock->mockery_validateOrder((string) $this, $this->_orderNumber, $this->_mock);
         }
         if ($this->_globalOrderNumber) {
             $this->_mock->mockery_getContainer()
-                    ->mockery_validateOrder((string) $this, $this->_globalOrderNumber, $this->_mock);
+                ->mockery_validateOrder((string) $this, $this->_globalOrderNumber, $this->_mock);
         }
     }
 
@@ -286,7 +292,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return bool
      */
-    public function verify() {
+    public function verify()
+    {
         foreach ($this->_countValidators as $validator) {
             $validator->validate($this->_actualCount);
         }
@@ -298,7 +305,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return bool
      */
-    public function matchArgs(array $args) {
+    public function matchArgs(array $args)
+    {
         if (empty($this->_expectedArgs) && !$this->_noArgsExpectation) {
             return true;
         }
@@ -306,8 +314,8 @@ class Expectation implements ExpectationInterface {
             return false;
         }
         $argCount = count($args);
-        for ($i = 0; $i < $argCount; $i++) {
-            $param = & $args[$i];
+        for ($i=0; $i<$argCount; $i++) {
+            $param =& $args[$i];
             if (!$this->_matchArg($this->_expectedArgs[$i], $param)) {
                 return false;
             }
@@ -322,7 +330,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return bool
      */
-    protected function _matchArg($expected, &$actual) {
+    protected function _matchArg($expected, &$actual)
+    {
         if ($expected === $actual) {
             return true;
         }
@@ -331,9 +340,7 @@ class Expectation implements ExpectationInterface {
         }
         if (is_string($expected) && !is_array($actual) && !is_object($actual)) {
             # push/pop an error handler here to to make sure no error/exception thrown if $expected is not a regex
-            set_error_handler(function () {
-                
-            });
+            set_error_handler(function () {});
             $result = preg_match($expected, (string) $actual);
             restore_error_handler();
 
@@ -362,7 +369,8 @@ class Expectation implements ExpectationInterface {
      * @param mixed ...
      * @return self
      */
-    public function with() {
+    public function with()
+    {
         return $this->withArgs(func_get_args());
     }
 
@@ -372,7 +380,8 @@ class Expectation implements ExpectationInterface {
      * @param array $args
      * @return self
      */
-    public function withArgs(array $args) {
+    public function withArgs(array $args)
+    {
         if (empty($args)) {
             return $this->withNoArgs();
         }
@@ -386,7 +395,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function withNoArgs() {
+    public function withNoArgs()
+    {
         $this->_noArgsExpectation = true;
         $this->_expectedArgs = null;
         return $this;
@@ -397,7 +407,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function withAnyArgs() {
+    public function withAnyArgs()
+    {
         $this->_expectedArgs = array();
         return $this;
     }
@@ -408,7 +419,8 @@ class Expectation implements ExpectationInterface {
      * @param mixed ...
      * @return self
      */
-    public function andReturn() {
+    public function andReturn()
+    {
         $this->_returnQueue = func_get_args();
         return $this;
     }
@@ -418,7 +430,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function andReturnSelf() {
+    public function andReturnSelf()
+    {
         return $this->andReturn($this->_mock);
     }
 
@@ -428,7 +441,8 @@ class Expectation implements ExpectationInterface {
      * @param array $values
      * @return self
      */
-    public function andReturnValues(array $values) {
+    public function andReturnValues(array $values)
+    {
         call_user_func_array(array($this, 'andReturn'), $values);
         return $this;
     }
@@ -441,7 +455,8 @@ class Expectation implements ExpectationInterface {
      * @param callable ...
      * @return self
      */
-    public function andReturnUsing() {
+    public function andReturnUsing()
+    {
         $this->_closureQueue = func_get_args();
         return $this;
     }
@@ -451,7 +466,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function andReturnUndefined() {
+    public function andReturnUndefined()
+    {
         $this->andReturn(new \Mockery\Undefined);
         return $this;
     }
@@ -461,7 +477,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function andReturnNull() {
+    public function andReturnNull()
+    {
         return $this;
     }
 
@@ -474,7 +491,8 @@ class Expectation implements ExpectationInterface {
      * @param Exception $previous
      * @return self
      */
-    public function andThrow($exception, $message = '', $code = 0, \Exception $previous = null) {
+    public function andThrow($exception, $message = '', $code = 0, \Exception $previous = null)
+    {
         $this->_throw = true;
         if (is_object($exception)) {
             $this->andReturn($exception);
@@ -490,7 +508,8 @@ class Expectation implements ExpectationInterface {
      * @param array $exceptions
      * @return self
      */
-    public function andThrowExceptions(array $exceptions) {
+    public function andThrowExceptions(array $exceptions)
+    {
         $this->_throw = true;
         foreach ($exceptions as $exception) {
             if (!is_object($exception)) {
@@ -507,7 +526,8 @@ class Expectation implements ExpectationInterface {
      * @param mixed $value
      * @return self
      */
-    public function andSet($name, $value) {
+    public function andSet($name, $value)
+    {
         $values = func_get_args();
         array_shift($values);
         $this->_setQueue[$name] = $values;
@@ -522,7 +542,8 @@ class Expectation implements ExpectationInterface {
      * @param mixed $value
      * @return self
      */
-    public function set($name, $value) {
+    public function set($name, $value)
+    {
         return call_user_func_array(array($this, 'andSet'), func_get_args());
     }
 
@@ -531,7 +552,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function zeroOrMoreTimes() {
+    public function zeroOrMoreTimes()
+    {
         $this->atLeast()->never();
     }
 
@@ -541,7 +563,8 @@ class Expectation implements ExpectationInterface {
      * @param int $limit
      * @return self
      */
-    public function times($limit = null) {
+    public function times($limit = null)
+    {
         if (is_null($limit)) {
             return $this;
         }
@@ -555,7 +578,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function never() {
+    public function never()
+    {
         return $this->times(0);
     }
 
@@ -564,7 +588,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function once() {
+    public function once()
+    {
         return $this->times(1);
     }
 
@@ -573,7 +598,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function twice() {
+    public function twice()
+    {
         return $this->times(2);
     }
 
@@ -582,7 +608,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function atLeast() {
+    public function atLeast()
+    {
         $this->_countValidatorClass = 'Mockery\CountValidator\AtLeast';
         return $this;
     }
@@ -592,7 +619,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function atMost() {
+    public function atMost()
+    {
         $this->_countValidatorClass = 'Mockery\CountValidator\AtMost';
         return $this;
     }
@@ -603,7 +631,8 @@ class Expectation implements ExpectationInterface {
      * @param int $minimum
      * @param int $maximum
      */
-    public function between($minimum, $maximum) {
+    public function between($minimum, $maximum)
+    {
         return $this->atLeast()->times($minimum)->atMost()->times($maximum);
     }
 
@@ -613,7 +642,8 @@ class Expectation implements ExpectationInterface {
      * @param string $group Name of the ordered group
      * @return self
      */
-    public function ordered($group = null) {
+    public function ordered($group = null)
+    {
         if ($this->_globally) {
             $this->_globalOrderNumber = $this->_defineOrdered($group, $this->_mock->mockery_getContainer());
         } else {
@@ -628,7 +658,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function globally() {
+    public function globally()
+    {
         $this->_globally = true;
         return $this;
     }
@@ -640,7 +671,8 @@ class Expectation implements ExpectationInterface {
      * @param object $ordering
      * @return int
      */
-    protected function _defineOrdered($group, $ordering) {
+    protected function _defineOrdered($group, $ordering)
+    {
         $groups = $ordering->mockery_getGroups();
         if (is_null($group)) {
             $result = $ordering->mockery_allocateOrder();
@@ -658,7 +690,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return int
      */
-    public function getOrderNumber() {
+    public function getOrderNumber()
+    {
         return $this->_orderNumber;
     }
 
@@ -667,7 +700,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function byDefault() {
+    public function byDefault()
+    {
         $director = $this->_mock->mockery_getExpectationsFor($this->_name);
         if (!empty($director)) {
             $director->makeExpectationDefault($this);
@@ -680,7 +714,8 @@ class Expectation implements ExpectationInterface {
      *
      * @return \Mockery\MockInterface
      */
-    public function getMock() {
+    public function getMock()
+    {
         return $this->_mock;
     }
 
@@ -690,11 +725,12 @@ class Expectation implements ExpectationInterface {
      *
      * @return self
      */
-    public function passthru() {
+    public function passthru()
+    {
         if ($this->_mock instanceof Mock) {
             throw new Exception(
-            'Mock Objects not created from a loaded/existing class are '
-            . 'incapable of passing method calls through to a parent class'
+                'Mock Objects not created from a loaded/existing class are '
+                . 'incapable of passing method calls through to a parent class'
             );
         }
         $this->_passthru = true;
@@ -705,7 +741,8 @@ class Expectation implements ExpectationInterface {
      * Cloning logic
      *
      */
-    public function __clone() {
+    public function __clone()
+    {
         $newValidators = array();
         $countValidators = $this->_countValidators;
         foreach ($countValidators as $validator) {
@@ -714,8 +751,8 @@ class Expectation implements ExpectationInterface {
         $this->_countValidators = $newValidators;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->_name;
     }
-
 }

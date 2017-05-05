@@ -4,9 +4,9 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class Exit_ extends Expr {
+class Exit_ extends Expr
+{
     /* For use in "kind" attribute */
-
     const KIND_EXIT = 1;
     const KIND_DIE = 2;
 
@@ -27,5 +27,4 @@ class Exit_ extends Expr {
     public function getSubNodeNames() {
         return array('expr');
     }
-
 }

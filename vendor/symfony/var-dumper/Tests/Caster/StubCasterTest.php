@@ -20,11 +20,12 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 use Symfony\Component\VarDumper\Tests\Fixtures\FooInterface;
 
-class StubCasterTest extends TestCase {
-
+class StubCasterTest extends TestCase
+{
     use VarDumperTestTrait;
 
-    public function testArgsStubWithDefaults($foo = 234, $bar = 456) {
+    public function testArgsStubWithDefaults($foo = 234, $bar = 456)
+    {
         $args = array(new ArgsStub(array(123), __FUNCTION__, __CLASS__));
 
         $expectedDump = <<<'EODUMP'
@@ -38,7 +39,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $args);
     }
 
-    public function testArgsStubWithExtraArgs($foo = 234) {
+    public function testArgsStubWithExtraArgs($foo = 234)
+    {
         $args = array(new ArgsStub(array(123, 456), __FUNCTION__, __CLASS__));
 
         $expectedDump = <<<'EODUMP'
@@ -55,7 +57,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $args);
     }
 
-    public function testArgsStubNoParamWithExtraArgs() {
+    public function testArgsStubNoParamWithExtraArgs()
+    {
         $args = array(new ArgsStub(array(123), __FUNCTION__, __CLASS__));
 
         $expectedDump = <<<'EODUMP'
@@ -69,7 +72,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $args);
     }
 
-    public function testArgsStubWithClosure() {
+    public function testArgsStubWithClosure()
+    {
         $args = array(new ArgsStub(array(123), '{closure}', null));
 
         $expectedDump = <<<'EODUMP'
@@ -83,7 +87,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $args);
     }
 
-    public function testLinkStub() {
+    public function testLinkStub()
+    {
         $var = array(new LinkStub(__CLASS__, 0, __FILE__));
 
         $cloner = new VarCloner();
@@ -103,7 +108,8 @@ EODUMP;
         $this->assertStringMatchesFormat($expectedDump, $dump);
     }
 
-    public function testClassStub() {
+    public function testClassStub()
+    {
         $var = array(new ClassStub('hello', array(FooInterface::class, 'foo')));
 
         $cloner = new VarCloner();
@@ -122,7 +128,8 @@ EODUMP;
         $this->assertStringMatchesFormat($expectedDump, $dump);
     }
 
-    public function testClassStubWithNotExistingClass() {
+    public function testClassStubWithNotExistingClass()
+    {
         $var = array(new ClassStub(NotExisting::class));
 
         $cloner = new VarCloner();
@@ -142,7 +149,8 @@ EODUMP;
         $this->assertStringMatchesFormat($expectedDump, $dump);
     }
 
-    public function testClassStubWithNotExistingMethod() {
+    public function testClassStubWithNotExistingMethod()
+    {
         $var = array(new ClassStub('hello', array(FooInterface::class, 'missing')));
 
         $cloner = new VarCloner();
@@ -160,5 +168,4 @@ EODUMP;
 
         $this->assertStringMatchesFormat($expectedDump, $dump);
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Hashing;
 use RuntimeException;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
-class BcryptHasher implements HasherContract {
-
+class BcryptHasher implements HasherContract
+{
     /**
      * Default crypt cost factor.
      *
@@ -23,7 +23,8 @@ class BcryptHasher implements HasherContract {
      *
      * @throws \RuntimeException
      */
-    public function make($value, array $options = []) {
+    public function make($value, array $options = [])
+    {
         $cost = isset($options['rounds']) ? $options['rounds'] : $this->rounds;
 
         $hash = password_hash($value, PASSWORD_BCRYPT, ['cost' => $cost]);
@@ -43,7 +44,8 @@ class BcryptHasher implements HasherContract {
      * @param  array   $options
      * @return bool
      */
-    public function check($value, $hashedValue, array $options = []) {
+    public function check($value, $hashedValue, array $options = [])
+    {
         if (strlen($hashedValue) === 0) {
             return false;
         }
@@ -58,7 +60,8 @@ class BcryptHasher implements HasherContract {
      * @param  array   $options
      * @return bool
      */
-    public function needsRehash($hashedValue, array $options = []) {
+    public function needsRehash($hashedValue, array $options = [])
+    {
         return password_needs_rehash($hashedValue, PASSWORD_BCRYPT, [
             'cost' => isset($options['rounds']) ? $options['rounds'] : $this->rounds,
         ]);
@@ -70,10 +73,10 @@ class BcryptHasher implements HasherContract {
      * @param  int  $rounds
      * @return $this
      */
-    public function setRounds($rounds) {
+    public function setRounds($rounds)
+    {
         $this->rounds = (int) $rounds;
 
         return $this;
     }
-
 }

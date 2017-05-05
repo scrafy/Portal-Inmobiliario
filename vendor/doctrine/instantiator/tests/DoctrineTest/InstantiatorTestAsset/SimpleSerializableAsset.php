@@ -1,5 +1,4 @@
 <?php
-
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,21 +27,23 @@ use Serializable;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-class SimpleSerializableAsset implements Serializable {
-
+class SimpleSerializableAsset implements Serializable
+{
     /**
      * Constructor - should not be called
      *
      * @throws BadMethodCallException
      */
-    public function __construct() {
+    public function __construct()
+    {
         throw new BadMethodCallException('Not supposed to be called!');
     }
 
     /**
      * {@inheritDoc}
      */
-    public function serialize() {
+    public function serialize()
+    {
         return '';
     }
 
@@ -53,8 +54,8 @@ class SimpleSerializableAsset implements Serializable {
      *
      * @throws BadMethodCallException
      */
-    public function unserialize($serialized) {
+    public function unserialize($serialized)
+    {
         throw new BadMethodCallException('Not supposed to be called!');
     }
-
 }

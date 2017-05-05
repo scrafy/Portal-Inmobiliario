@@ -11,8 +11,8 @@ use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\NodeVisitorAbstract;
 
-class NameResolver extends NodeVisitorAbstract {
-
+class NameResolver extends NodeVisitorAbstract
+{
     /** @var null|Name Current namespace */
     protected $namespace;
 
@@ -77,14 +77,19 @@ class NameResolver extends NodeVisitorAbstract {
         } elseif ($node instanceof Stmt\Function_) {
             $this->addNamespacedName($node);
             $this->resolveSignature($node);
-        } elseif ($node instanceof Stmt\ClassMethod || $node instanceof Expr\Closure
+        } elseif ($node instanceof Stmt\ClassMethod
+                  || $node instanceof Expr\Closure
         ) {
             $this->resolveSignature($node);
         } elseif ($node instanceof Stmt\Const_) {
             foreach ($node->consts as $const) {
                 $this->addNamespacedName($const);
             }
-        } elseif ($node instanceof Expr\StaticCall || $node instanceof Expr\StaticPropertyFetch || $node instanceof Expr\ClassConstFetch || $node instanceof Expr\New_ || $node instanceof Expr\Instanceof_
+        } elseif ($node instanceof Expr\StaticCall
+                  || $node instanceof Expr\StaticPropertyFetch
+                  || $node instanceof Expr\ClassConstFetch
+                  || $node instanceof Expr\New_
+                  || $node instanceof Expr\Instanceof_
         ) {
             if ($node->class instanceof Name) {
                 $node->class = $this->resolveClassName($node->class);
@@ -120,8 +125,8 @@ class NameResolver extends NodeVisitorAbstract {
 
     protected function resetState(Name $namespace = null) {
         $this->namespace = $namespace;
-        $this->aliases = array(
-            Stmt\Use_::TYPE_NORMAL => array(),
+        $this->aliases   = array(
+            Stmt\Use_::TYPE_NORMAL   => array(),
             Stmt\Use_::TYPE_FUNCTION => array(),
             Stmt\Use_::TYPE_CONSTANT => array(),
         );
@@ -142,15 +147,17 @@ class NameResolver extends NodeVisitorAbstract {
 
         if (isset($this->aliases[$type][$aliasName])) {
             $typeStringMap = array(
-                Stmt\Use_::TYPE_NORMAL => '',
+                Stmt\Use_::TYPE_NORMAL   => '',
                 Stmt\Use_::TYPE_FUNCTION => 'function ',
                 Stmt\Use_::TYPE_CONSTANT => 'const ',
             );
 
             $this->errorHandler->handleError(new Error(
-                    sprintf(
-                            'Cannot use %s%s as %s because the name is already in use', $typeStringMap[$type], $name, $use->alias
-                    ), $use->getAttributes()
+                sprintf(
+                    'Cannot use %s%s as %s because the name is already in use',
+                    $typeStringMap[$type], $name, $use->alias
+                ),
+                $use->getAttributes()
             ));
             return;
         }
@@ -189,7 +196,8 @@ class NameResolver extends NodeVisitorAbstract {
         if (in_array(strtolower($name->toString()), array('self', 'parent', 'static'))) {
             if (!$name->isUnqualified()) {
                 $this->errorHandler->handleError(new Error(
-                        sprintf("'\\%s' is an invalid class name", $name->toString()), $name->getAttributes()
+                    sprintf("'\\%s' is an invalid class name", $name->toString()),
+                    $name->getAttributes()
                 ));
             }
             return $name;
@@ -249,7 +257,8 @@ class NameResolver extends NodeVisitorAbstract {
 
             // unqualified names inside a namespace cannot be resolved at compile-time
             // add the namespaced version of the name as an attribute
-            $name->setAttribute('namespacedName', FullyQualified::concat($this->namespace, $name, $name->getAttributes()));
+            $name->setAttribute('namespacedName',
+                FullyQualified::concat($this->namespace, $name, $name->getAttributes()));
             return $name;
         }
 
@@ -260,5 +269,4 @@ class NameResolver extends NodeVisitorAbstract {
     protected function addNamespacedName(Node $node) {
         $node->namespacedName = Name::concat($this->namespace, $node->name);
     }
-
 }

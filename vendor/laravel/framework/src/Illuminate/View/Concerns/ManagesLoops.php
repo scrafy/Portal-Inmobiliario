@@ -5,8 +5,8 @@ namespace Illuminate\View\Concerns;
 use Countable;
 use Illuminate\Support\Arr;
 
-trait ManagesLoops {
-
+trait ManagesLoops
+{
     /**
      * The stack of in-progress loops.
      *
@@ -20,7 +20,8 @@ trait ManagesLoops {
      * @param  \Countable|array  $data
      * @return void
      */
-    public function addLoop($data) {
+    public function addLoop($data)
+    {
         $length = is_array($data) || $data instanceof Countable ? count($data) : null;
 
         $parent = Arr::last($this->loopsStack);
@@ -42,7 +43,8 @@ trait ManagesLoops {
      *
      * @return void
      */
-    public function incrementLoopIndices() {
+    public function incrementLoopIndices()
+    {
         $loop = $this->loopsStack[$index = count($this->loopsStack) - 1];
 
         $this->loopsStack[$index] = array_merge($this->loopsStack[$index], [
@@ -59,7 +61,8 @@ trait ManagesLoops {
      *
      * @return void
      */
-    public function popLoop() {
+    public function popLoop()
+    {
         array_pop($this->loopsStack);
     }
 
@@ -68,7 +71,8 @@ trait ManagesLoops {
      *
      * @return \StdClass|null
      */
-    public function getLastLoop() {
+    public function getLastLoop()
+    {
         if ($last = Arr::last($this->loopsStack)) {
             return (object) $last;
         }
@@ -79,8 +83,8 @@ trait ManagesLoops {
      *
      * @return array
      */
-    public function getLoopStack() {
+    public function getLoopStack()
+    {
         return $this->loopsStack;
     }
-
 }

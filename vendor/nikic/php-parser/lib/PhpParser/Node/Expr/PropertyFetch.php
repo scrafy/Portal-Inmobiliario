@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class PropertyFetch extends Expr {
-
+class PropertyFetch extends Expr
+{
     /** @var Expr Variable holding object */
     public $var;
-
     /** @var string|Expr Property name */
     public $name;
 
@@ -28,5 +27,4 @@ class PropertyFetch extends Expr {
     public function getSubNodeNames() {
         return array('var', 'name');
     }
-
 }

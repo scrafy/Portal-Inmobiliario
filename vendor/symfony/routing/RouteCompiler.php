@@ -17,8 +17,8 @@ namespace Symfony\Component\Routing;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class RouteCompiler implements RouteCompilerInterface {
-
+class RouteCompiler implements RouteCompilerInterface
+{
     const REGEX_DELIMITER = '#';
 
     /**
@@ -44,7 +44,8 @@ class RouteCompiler implements RouteCompilerInterface {
      * @throws \DomainException          If a variable name starts with a digit or if it is too long to be successfully used as
      *                                   a PCRE subpattern.
      */
-    public static function compile(Route $route) {
+    public static function compile(Route $route)
+    {
         $hostVariables = array();
         $variables = array();
         $hostRegex = null;
@@ -80,11 +81,19 @@ class RouteCompiler implements RouteCompilerInterface {
         $regex = $result['regex'];
 
         return new CompiledRoute(
-                $staticPrefix, $regex, $tokens, $pathVariables, $hostRegex, $hostTokens, $hostVariables, array_unique($variables)
+            $staticPrefix,
+            $regex,
+            $tokens,
+            $pathVariables,
+            $hostRegex,
+            $hostTokens,
+            $hostVariables,
+            array_unique($variables)
         );
     }
 
-    private static function compilePattern(Route $route, $pattern, $isHost) {
+    private static function compilePattern(Route $route, $pattern, $isHost)
+    {
         $tokens = array();
         $variables = array();
         $matches = array();
@@ -151,7 +160,9 @@ class RouteCompiler implements RouteCompilerInterface {
                 // part of {_format} when generating the URL, e.g. _format = 'mobile.html'.
                 $nextSeparator = self::findNextSeparator($followingPattern, $useUtf8);
                 $regexp = sprintf(
-                        '[^%s%s]+', preg_quote($defaultSeparator, self::REGEX_DELIMITER), $defaultSeparator !== $nextSeparator && '' !== $nextSeparator ? preg_quote($nextSeparator, self::REGEX_DELIMITER) : ''
+                    '[^%s%s]+',
+                    preg_quote($defaultSeparator, self::REGEX_DELIMITER),
+                    $defaultSeparator !== $nextSeparator && '' !== $nextSeparator ? preg_quote($nextSeparator, self::REGEX_DELIMITER) : ''
                 );
                 if (('' !== $nextSeparator && !preg_match('#^\{\w+\}#', $followingPattern)) || '' === $followingPattern) {
                     // When we have a separator, which is disallowed for the variable, we can optimize the regex with a possessive
@@ -199,7 +210,7 @@ class RouteCompiler implements RouteCompilerInterface {
         for ($i = 0, $nbToken = count($tokens); $i < $nbToken; ++$i) {
             $regexp .= self::computeRegexp($tokens, $i, $firstOptional);
         }
-        $regexp = self::REGEX_DELIMITER . '^' . $regexp . '$' . self::REGEX_DELIMITER . 's' . ($isHost ? 'i' : '');
+        $regexp = self::REGEX_DELIMITER.'^'.$regexp.'$'.self::REGEX_DELIMITER.'s'.($isHost ? 'i' : '');
 
         // enable Utf8 matching if really required
         if ($needsUtf8) {
@@ -227,7 +238,8 @@ class RouteCompiler implements RouteCompilerInterface {
      *
      * @return string The next static character that functions as separator (or empty string when none available)
      */
-    private static function findNextSeparator($pattern, $useUtf8) {
+    private static function findNextSeparator($pattern, $useUtf8)
+    {
         if ('' == $pattern) {
             // return empty string if pattern is empty or false (false which can be returned by substr)
             return '';
@@ -252,7 +264,8 @@ class RouteCompiler implements RouteCompilerInterface {
      *
      * @return string The regexp pattern for a single token
      */
-    private static function computeRegexp(array $tokens, $index, $firstOptional) {
+    private static function computeRegexp(array $tokens, $index, $firstOptional)
+    {
         $token = $tokens[$index];
         if ('text' === $token[0]) {
             // Text tokens
@@ -280,5 +293,4 @@ class RouteCompiler implements RouteCompilerInterface {
             }
         }
     }
-
 }

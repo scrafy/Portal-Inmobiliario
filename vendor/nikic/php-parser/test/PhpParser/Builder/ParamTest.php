@@ -6,8 +6,8 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 
-class ParamTest extends \PHPUnit_Framework_TestCase {
-
+class ParamTest extends \PHPUnit_Framework_TestCase
+{
     public function createParamBuilder($name) {
         return new Param($name);
     }
@@ -17,8 +17,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDefaultValues($value, $expectedValueNode) {
         $node = $this->createParamBuilder('test')
-                ->setDefault($value)
-                ->getNode()
+            ->setDefault($value)
+            ->getNode()
         ;
 
         $this->assertEquals($expectedValueNode, $node->default);
@@ -56,18 +56,20 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
                     new Expr\ArrayItem(new Scalar\LNumber(1)),
                     new Expr\ArrayItem(new Scalar\LNumber(2)),
                     new Expr\ArrayItem(new Scalar\LNumber(3)),
-                        ))
+                ))
             ),
             array(
                 array('foo' => 'bar', 'bar' => 'foo'),
                 new Expr\Array_(array(
                     new Expr\ArrayItem(
-                            new Scalar\String_('bar'), new Scalar\String_('foo')
+                        new Scalar\String_('bar'),
+                        new Scalar\String_('foo')
                     ),
                     new Expr\ArrayItem(
-                            new Scalar\String_('foo'), new Scalar\String_('bar')
+                        new Scalar\String_('foo'),
+                        new Scalar\String_('bar')
                     ),
-                        ))
+                ))
             ),
             array(
                 new Scalar\MagicConst\Dir,
@@ -81,8 +83,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      */
     public function testTypeHints($typeHint, $expectedType) {
         $node = $this->createParamBuilder('test')
-                ->setTypeHint($typeHint)
-                ->getNode()
+            ->setTypeHint($typeHint)
+            ->getNode()
         ;
         $type = $node->type;
 
@@ -144,13 +146,13 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
 
     public function testByRef() {
         $node = $this->createParamBuilder('test')
-                ->makeByRef()
-                ->getNode()
+            ->makeByRef()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Node\Param('test', null, null, true), $node
+            new Node\Param('test', null, null, true),
+            $node
         );
     }
-
 }

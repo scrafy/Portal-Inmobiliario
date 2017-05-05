@@ -5,8 +5,8 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class Pivot extends Model {
-
+class Pivot extends Model
+{
     /**
      * The parent model of the relationship.
      *
@@ -44,16 +44,17 @@ class Pivot extends Model {
      * @param  bool    $exists
      * @return void
      */
-    public function __construct(Model $parent, $attributes, $table, $exists = false) {
+    public function __construct(Model $parent, $attributes, $table, $exists = false)
+    {
         parent::__construct();
 
         // The pivot model is a "dynamic" model since we will set the tables dynamically
         // for the instance. This allows it work for any intermediate tables for the
         // many to many relationship that are defined by this developer's classes.
         $this->setConnection($parent->getConnectionName())
-                ->setTable($table)
-                ->forceFill($attributes)
-                ->syncOriginal();
+             ->setTable($table)
+             ->forceFill($attributes)
+             ->syncOriginal();
 
         // We store off the parent instance so we will access the timestamp column names
         // for the model, since the pivot model timestamps aren't easily configurable
@@ -74,7 +75,8 @@ class Pivot extends Model {
      * @param  bool    $exists
      * @return static
      */
-    public static function fromRawAttributes(Model $parent, $attributes, $table, $exists = false) {
+    public static function fromRawAttributes(Model $parent, $attributes, $table, $exists = false)
+    {
         $instance = new static($parent, $attributes, $table, $exists);
 
         $instance->setRawAttributes($attributes, true);
@@ -88,7 +90,8 @@ class Pivot extends Model {
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function setKeysForSaveQuery(Builder $query) {
+    protected function setKeysForSaveQuery(Builder $query)
+    {
         $query->where($this->foreignKey, $this->getAttribute($this->foreignKey));
 
         return $query->where($this->relatedKey, $this->getAttribute($this->relatedKey));
@@ -99,7 +102,8 @@ class Pivot extends Model {
      *
      * @return int
      */
-    public function delete() {
+    public function delete()
+    {
         return $this->getDeleteQuery()->delete();
     }
 
@@ -108,10 +112,11 @@ class Pivot extends Model {
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getDeleteQuery() {
+    protected function getDeleteQuery()
+    {
         return $this->newQuery()->where([
-                    $this->foreignKey => $this->getAttribute($this->foreignKey),
-                    $this->relatedKey => $this->getAttribute($this->relatedKey),
+            $this->foreignKey => $this->getAttribute($this->foreignKey),
+            $this->relatedKey => $this->getAttribute($this->relatedKey),
         ]);
     }
 
@@ -120,7 +125,8 @@ class Pivot extends Model {
      *
      * @return string
      */
-    public function getForeignKey() {
+    public function getForeignKey()
+    {
         return $this->foreignKey;
     }
 
@@ -129,7 +135,8 @@ class Pivot extends Model {
      *
      * @return string
      */
-    public function getRelatedKey() {
+    public function getRelatedKey()
+    {
         return $this->relatedKey;
     }
 
@@ -138,7 +145,8 @@ class Pivot extends Model {
      *
      * @return string
      */
-    public function getOtherKey() {
+    public function getOtherKey()
+    {
         return $this->getRelatedKey();
     }
 
@@ -149,7 +157,8 @@ class Pivot extends Model {
      * @param  string  $relatedKey
      * @return $this
      */
-    public function setPivotKeys($foreignKey, $relatedKey) {
+    public function setPivotKeys($foreignKey, $relatedKey)
+    {
         $this->foreignKey = $foreignKey;
 
         $this->relatedKey = $relatedKey;
@@ -162,7 +171,8 @@ class Pivot extends Model {
      *
      * @return bool
      */
-    public function hasTimestampAttributes() {
+    public function hasTimestampAttributes()
+    {
         return array_key_exists($this->getCreatedAtColumn(), $this->attributes);
     }
 
@@ -171,7 +181,8 @@ class Pivot extends Model {
      *
      * @return string
      */
-    public function getCreatedAtColumn() {
+    public function getCreatedAtColumn()
+    {
         return $this->parent->getCreatedAtColumn();
     }
 
@@ -180,8 +191,8 @@ class Pivot extends Model {
      *
      * @return string
      */
-    public function getUpdatedAtColumn() {
+    public function getUpdatedAtColumn()
+    {
         return $this->parent->getUpdatedAtColumn();
     }
-
 }

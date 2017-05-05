@@ -22,14 +22,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Show the context of where you opened the debugger.
  */
-class WhereamiCommand extends Command {
-
+class WhereamiCommand extends Command
+{
     private $colorMode;
 
     /**
      * @param null|string $colorMode (default: null)
      */
-    public function __construct($colorMode = null) {
+    public function __construct($colorMode = null)
+    {
         $this->colorMode = $colorMode ?: Configuration::COLOR_MODE_AUTO;
 
         if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
@@ -44,15 +45,16 @@ class WhereamiCommand extends Command {
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('whereami')
-                ->setDefinition(array(
-                    new InputOption('num', 'n', InputOption::VALUE_OPTIONAL, 'Number of lines before and after.', '5'),
-                ))
-                ->setDescription('Show where you are in the code.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('whereami')
+            ->setDefinition(array(
+                new InputOption('num', 'n', InputOption::VALUE_OPTIONAL, 'Number of lines before and after.', '5'),
+            ))
+            ->setDescription('Show where you are in the code.')
+            ->setHelp(
+                <<<'HELP'
 Show where you are in the code.
 
 Optionally, include how many lines before and after you want to display.
@@ -61,7 +63,7 @@ e.g.
 <return>> whereami </return>
 <return>> whereami -n10</return>
 HELP
-        );
+            );
     }
 
     /**
@@ -69,7 +71,8 @@ HELP
      *
      * @return array
      */
-    protected function trace() {
+    protected function trace()
+    {
         foreach ($this->backtrace as $i => $backtrace) {
             if (!isset($backtrace['class'], $backtrace['function'])) {
                 continue;
@@ -89,7 +92,8 @@ HELP
      *
      * @return array
      */
-    protected function fileInfo() {
+    protected function fileInfo()
+    {
         $backtrace = $this->trace();
         if (preg_match('/eval\(/', $backtrace['file'])) {
             preg_match_all('/([^\(]+)\((\d+)/', $backtrace['file'], $matches);
@@ -106,7 +110,8 @@ HELP
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $info = $this->fileInfo();
         $num = $input->getOption('num');
         $factory = new ConsoleColorFactory($this->colorMode);
@@ -115,5 +120,4 @@ HELP
         $contents = file_get_contents($info['file']);
         $output->page($highlighter->getCodeSnippet($contents, $info['line'], $num, $num), ShellOutput::OUTPUT_RAW);
     }
-
 }

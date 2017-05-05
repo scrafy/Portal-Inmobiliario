@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Interface for classes that can return a description of itself.
  */
-interface PHPUnit_Framework_SelfDescribing {
-
+interface PHPUnit_Framework_SelfDescribing
+{
     /**
      * Returns a string representation of the object.
      *

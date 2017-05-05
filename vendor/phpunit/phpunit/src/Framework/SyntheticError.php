@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Creates a synthetic failed assertion.
  */
-class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError {
-
+class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError
+{
     /**
      * The synthetic file.
      *
@@ -44,33 +43,36 @@ class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailed
      * @param int    $line
      * @param array  $trace
      */
-    public function __construct($message, $code, $file, $line, $trace) {
+    public function __construct($message, $code, $file, $line, $trace)
+    {
         parent::__construct($message, $code);
 
-        $this->syntheticFile = $file;
-        $this->syntheticLine = $line;
+        $this->syntheticFile  = $file;
+        $this->syntheticLine  = $line;
         $this->syntheticTrace = $trace;
     }
 
     /**
      * @return string
      */
-    public function getSyntheticFile() {
+    public function getSyntheticFile()
+    {
         return $this->syntheticFile;
     }
 
     /**
      * @return int
      */
-    public function getSyntheticLine() {
+    public function getSyntheticLine()
+    {
         return $this->syntheticLine;
     }
 
     /**
      * @return array
      */
-    public function getSyntheticTrace() {
+    public function getSyntheticTrace()
+    {
         return $this->syntheticTrace;
     }
-
 }

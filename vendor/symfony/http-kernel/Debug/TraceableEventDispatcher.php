@@ -22,12 +22,13 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TraceableEventDispatcher extends BaseTraceableEventDispatcher {
-
+class TraceableEventDispatcher extends BaseTraceableEventDispatcher
+{
     /**
      * {@inheritdoc}
      */
-    protected function preDispatch($eventName, Event $event) {
+    protected function preDispatch($eventName, Event $event)
+    {
         switch ($eventName) {
             case KernelEvents::REQUEST:
                 $this->stopwatch->openSection();
@@ -49,7 +50,6 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher {
                 try {
                     $this->stopwatch->openSection($token);
                 } catch (\LogicException $e) {
-                    
                 }
                 break;
         }
@@ -58,7 +58,8 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher {
     /**
      * {@inheritdoc}
      */
-    protected function postDispatch($eventName, Event $event) {
+    protected function postDispatch($eventName, Event $event)
+    {
         switch ($eventName) {
             case KernelEvents::CONTROLLER_ARGUMENTS:
                 $this->stopwatch->start('controller', 'section');
@@ -74,10 +75,8 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher {
                 try {
                     $this->stopwatch->stopSection($token);
                 } catch (\LogicException $e) {
-                    
                 }
                 break;
         }
     }
-
 }

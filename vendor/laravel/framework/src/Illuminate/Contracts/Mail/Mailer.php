@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Mail;
 
-interface Mailer {
-
+interface Mailer
+{
     /**
      * Send a new message when only a raw text part.
      *

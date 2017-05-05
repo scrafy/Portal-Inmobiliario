@@ -4,6 +4,7 @@ namespace Illuminate\Broadcasting;
 
 use RuntimeException;
 
-class BroadcastException extends RuntimeException {
+class BroadcastException extends RuntimeException
+{
     //
 }

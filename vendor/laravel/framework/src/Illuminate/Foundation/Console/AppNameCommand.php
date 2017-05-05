@@ -8,8 +8,8 @@ use Symfony\Component\Finder\Finder;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AppNameCommand extends Command {
-
+class AppNameCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -52,7 +52,8 @@ class AppNameCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Composer $composer, Filesystem $files) {
+    public function __construct(Composer $composer, Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -64,7 +65,8 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->currentRoot = trim($this->laravel->getNamespace(), '\\');
 
         $this->setAppDirectoryNamespace();
@@ -85,11 +87,12 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setAppDirectoryNamespace() {
+    protected function setAppDirectoryNamespace()
+    {
         $files = Finder::create()
-                ->in($this->laravel['path'])
-                ->contains($this->currentRoot)
-                ->name('*.php');
+                            ->in($this->laravel['path'])
+                            ->contains($this->currentRoot)
+                            ->name('*.php');
 
         foreach ($files as $file) {
             $this->replaceNamespace($file->getRealPath());
@@ -102,15 +105,16 @@ class AppNameCommand extends Command {
      * @param  string  $path
      * @return void
      */
-    protected function replaceNamespace($path) {
+    protected function replaceNamespace($path)
+    {
         $search = [
-            'namespace ' . $this->currentRoot . ';',
-            $this->currentRoot . '\\',
+            'namespace '.$this->currentRoot.';',
+            $this->currentRoot.'\\',
         ];
 
         $replace = [
-            'namespace ' . $this->argument('name') . ';',
-            $this->argument('name') . '\\',
+            'namespace '.$this->argument('name').';',
+            $this->argument('name').'\\',
         ];
 
         $this->replaceIn($path, $search, $replace);
@@ -121,17 +125,18 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setBootstrapNamespaces() {
+    protected function setBootstrapNamespaces()
+    {
         $search = [
-            $this->currentRoot . '\\Http',
-            $this->currentRoot . '\\Console',
-            $this->currentRoot . '\\Exceptions',
+            $this->currentRoot.'\\Http',
+            $this->currentRoot.'\\Console',
+            $this->currentRoot.'\\Exceptions',
         ];
 
         $replace = [
-            $this->argument('name') . '\\Http',
-            $this->argument('name') . '\\Console',
-            $this->argument('name') . '\\Exceptions',
+            $this->argument('name').'\\Http',
+            $this->argument('name').'\\Console',
+            $this->argument('name').'\\Exceptions',
         ];
 
         $this->replaceIn($this->getBootstrapPath(), $search, $replace);
@@ -142,7 +147,8 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setConfigNamespaces() {
+    protected function setConfigNamespaces()
+    {
         $this->setAppConfigNamespaces();
         $this->setAuthConfigNamespace();
         $this->setServicesConfigNamespace();
@@ -153,15 +159,16 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setAppConfigNamespaces() {
+    protected function setAppConfigNamespaces()
+    {
         $search = [
-            $this->currentRoot . '\\Providers',
-            $this->currentRoot . '\\Http\\Controllers\\',
+            $this->currentRoot.'\\Providers',
+            $this->currentRoot.'\\Http\\Controllers\\',
         ];
 
         $replace = [
-            $this->argument('name') . '\\Providers',
-            $this->argument('name') . '\\Http\\Controllers\\',
+            $this->argument('name').'\\Providers',
+            $this->argument('name').'\\Http\\Controllers\\',
         ];
 
         $this->replaceIn($this->getConfigPath('app'), $search, $replace);
@@ -172,9 +179,12 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setAuthConfigNamespace() {
+    protected function setAuthConfigNamespace()
+    {
         $this->replaceIn(
-                $this->getConfigPath('auth'), $this->currentRoot . '\\User', $this->argument('name') . '\\User'
+            $this->getConfigPath('auth'),
+            $this->currentRoot.'\\User',
+            $this->argument('name').'\\User'
         );
     }
 
@@ -183,9 +193,12 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setServicesConfigNamespace() {
+    protected function setServicesConfigNamespace()
+    {
         $this->replaceIn(
-                $this->getConfigPath('services'), $this->currentRoot . '\\User', $this->argument('name') . '\\User'
+            $this->getConfigPath('services'),
+            $this->currentRoot.'\\User',
+            $this->argument('name').'\\User'
         );
     }
 
@@ -194,9 +207,12 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setComposerNamespace() {
+    protected function setComposerNamespace()
+    {
         $this->replaceIn(
-                $this->getComposerPath(), str_replace('\\', '\\\\', $this->currentRoot) . '\\\\', str_replace('\\', '\\\\', $this->argument('name')) . '\\\\'
+            $this->getComposerPath(),
+            str_replace('\\', '\\\\', $this->currentRoot).'\\\\',
+            str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
         );
     }
 
@@ -205,9 +221,11 @@ class AppNameCommand extends Command {
      *
      * @return void
      */
-    protected function setDatabaseFactoryNamespaces() {
+    protected function setDatabaseFactoryNamespaces()
+    {
         $this->replaceIn(
-                $this->laravel->databasePath() . '/factories/ModelFactory.php', $this->currentRoot, $this->argument('name')
+            $this->laravel->databasePath().'/factories/ModelFactory.php',
+            $this->currentRoot, $this->argument('name')
         );
     }
 
@@ -219,7 +237,8 @@ class AppNameCommand extends Command {
      * @param  string|array  $replace
      * @return void
      */
-    protected function replaceIn($path, $search, $replace) {
+    protected function replaceIn($path, $search, $replace)
+    {
         if ($this->files->exists($path)) {
             $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
         }
@@ -230,8 +249,9 @@ class AppNameCommand extends Command {
      *
      * @return string
      */
-    protected function getBootstrapPath() {
-        return $this->laravel->bootstrapPath() . '/app.php';
+    protected function getBootstrapPath()
+    {
+        return $this->laravel->bootstrapPath().'/app.php';
     }
 
     /**
@@ -239,8 +259,9 @@ class AppNameCommand extends Command {
      *
      * @return string
      */
-    protected function getComposerPath() {
-        return $this->laravel->basePath() . '/composer.json';
+    protected function getComposerPath()
+    {
+        return $this->laravel->basePath().'/composer.json';
     }
 
     /**
@@ -249,8 +270,9 @@ class AppNameCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function getConfigPath($name) {
-        return $this->laravel['path.config'] . '/' . $name . '.php';
+    protected function getConfigPath($name)
+    {
+        return $this->laravel['path.config'].'/'.$name.'.php';
     }
 
     /**
@@ -258,10 +280,10 @@ class AppNameCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['name', InputArgument::REQUIRED, 'The desired namespace.'],
         ];
     }
-
 }

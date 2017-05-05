@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,6 +13,6 @@ namespace SebastianBergmann\CodeCoverage;
 /**
  * Exception that is raised when covered code is not executed.
  */
-class CoveredCodeNotExecutedException extends RuntimeException {
-    
+class CoveredCodeNotExecutedException extends RuntimeException
+{
 }

@@ -4,14 +4,12 @@ namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
 
-class Arg extends NodeAbstract {
-
+class Arg extends NodeAbstract
+{
     /** @var Expr Value to pass */
     public $value;
-
     /** @var bool Whether to pass by ref */
     public $byRef;
-
     /** @var bool Whether to unpack the argument */
     public $unpack;
 
@@ -33,5 +31,4 @@ class Arg extends NodeAbstract {
     public function getSubNodeNames() {
         return array('value', 'byRef', 'unpack');
     }
-
 }

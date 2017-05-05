@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,10 +8,11 @@
  * file that was distributed with this source code.
  */
 
-class Util_GlobalStateTest extends PHPUnit_Framework_TestCase {
-
-    public function testIncludedFilesAsStringSkipsVfsProtocols() {
-        $dir = __DIR__;
+class Util_GlobalStateTest extends PHPUnit_Framework_TestCase
+{
+    public function testIncludedFilesAsStringSkipsVfsProtocols()
+    {
+        $dir   = __DIR__;
         $files = [
             'phpunit', // The 0 index is not used
             $dir . '/ConfigurationTest.php',
@@ -23,9 +23,8 @@ class Util_GlobalStateTest extends PHPUnit_Framework_TestCase {
         ];
 
         $this->assertEquals(
-                "require_once '" . $dir . "/ConfigurationTest.php';\n" .
-                "require_once '" . $dir . "/GlobalStateTest.php';\n" .
-                "require_once 'file://" . $dir . "/XMLTest.php';\n", PHPUnit_Util_GlobalState::processIncludedFilesAsString($files));
+            "require_once '" . $dir . "/ConfigurationTest.php';\n" .
+            "require_once '" . $dir . "/GlobalStateTest.php';\n" .
+            "require_once 'file://" . $dir . "/XMLTest.php';\n", PHPUnit_Util_GlobalState::processIncludedFilesAsString($files));
     }
-
 }

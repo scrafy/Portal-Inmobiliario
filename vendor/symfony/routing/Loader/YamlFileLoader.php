@@ -24,8 +24,8 @@ use Symfony\Component\Config\Loader\FileLoader;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class YamlFileLoader extends FileLoader {
-
+class YamlFileLoader extends FileLoader
+{
     private static $availableKeys = array(
         'resource', 'type', 'prefix', 'path', 'host', 'schemes', 'methods', 'defaults', 'requirements', 'options', 'condition',
     );
@@ -41,7 +41,8 @@ class YamlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When a route can't be parsed because YAML is invalid
      */
-    public function load($file, $type = null) {
+    public function load($file, $type = null)
+    {
         $path = $this->locator->locate($file);
 
         if (!stream_is_local($path)) {
@@ -91,7 +92,8 @@ class YamlFileLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return is_string($resource) && in_array(pathinfo($resource, PATHINFO_EXTENSION), array('yml', 'yaml'), true) && (!$type || 'yaml' === $type);
     }
 
@@ -103,7 +105,8 @@ class YamlFileLoader extends FileLoader {
      * @param array           $config     Route definition
      * @param string          $path       Full path of the YAML file being processed
      */
-    protected function parseRoute(RouteCollection $collection, $name, array $config, $path) {
+    protected function parseRoute(RouteCollection $collection, $name, array $config, $path)
+    {
         $defaults = isset($config['defaults']) ? $config['defaults'] : array();
         $requirements = isset($config['requirements']) ? $config['requirements'] : array();
         $options = isset($config['options']) ? $config['options'] : array();
@@ -125,7 +128,8 @@ class YamlFileLoader extends FileLoader {
      * @param string          $path       Full path of the YAML file being processed
      * @param string          $file       Loaded file name
      */
-    protected function parseImport(RouteCollection $collection, array $config, $path, $file) {
+    protected function parseImport(RouteCollection $collection, array $config, $path, $file)
+    {
         $type = isset($config['type']) ? $config['type'] : null;
         $prefix = isset($config['prefix']) ? $config['prefix'] : '';
         $defaults = isset($config['defaults']) ? $config['defaults'] : array();
@@ -170,30 +174,34 @@ class YamlFileLoader extends FileLoader {
      * @throws \InvalidArgumentException If one of the provided config keys is not supported,
      *                                   something is missing or the combination is nonsense
      */
-    protected function validate($config, $name, $path) {
+    protected function validate($config, $name, $path)
+    {
         if (!is_array($config)) {
             throw new \InvalidArgumentException(sprintf('The definition of "%s" in "%s" must be a YAML array.', $name, $path));
         }
         if ($extraKeys = array_diff(array_keys($config), self::$availableKeys)) {
             throw new \InvalidArgumentException(sprintf(
-                    'The routing file "%s" contains unsupported keys for "%s": "%s". Expected one of: "%s".', $path, $name, implode('", "', $extraKeys), implode('", "', self::$availableKeys)
+                'The routing file "%s" contains unsupported keys for "%s": "%s". Expected one of: "%s".',
+                $path, $name, implode('", "', $extraKeys), implode('", "', self::$availableKeys)
             ));
         }
         if (isset($config['resource']) && isset($config['path'])) {
             throw new \InvalidArgumentException(sprintf(
-                    'The routing file "%s" must not specify both the "resource" key and the "path" key for "%s". Choose between an import and a route definition.', $path, $name
+                'The routing file "%s" must not specify both the "resource" key and the "path" key for "%s". Choose between an import and a route definition.',
+                $path, $name
             ));
         }
         if (!isset($config['resource']) && isset($config['type'])) {
             throw new \InvalidArgumentException(sprintf(
-                    'The "type" key for the route definition "%s" in "%s" is unsupported. It is only available for imports in combination with the "resource" key.', $name, $path
+                'The "type" key for the route definition "%s" in "%s" is unsupported. It is only available for imports in combination with the "resource" key.',
+                $name, $path
             ));
         }
         if (!isset($config['resource']) && !isset($config['path'])) {
             throw new \InvalidArgumentException(sprintf(
-                    'You must define a "path" for the route "%s" in file "%s".', $name, $path
+                'You must define a "path" for the route "%s" in file "%s".',
+                $name, $path
             ));
         }
     }
-
 }

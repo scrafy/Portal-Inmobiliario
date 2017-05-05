@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -19,8 +18,8 @@ namespace Ramsey\Uuid;
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
  */
-interface UuidFactoryInterface {
-
+interface UuidFactoryInterface
+{
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -24,30 +23,34 @@ namespace test\Mockery;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class MockingVariadicArgumentsTest extends MockeryTestCase {
+class MockingVariadicArgumentsTest extends MockeryTestCase
+{
 
-    public function setup() {
+    public function setup()
+    {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown() {
+    public function teardown()
+    {
         $this->container->mockery_close();
     }
 
     /** @test */
-    public function shouldAllowMockingVariadicArguments() {
+    public function shouldAllowMockingVariadicArguments()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithVariadicArguments");
 
         $mock->shouldReceive("foo")->andReturn("notbar");
         $this->assertEquals("notbar", $mock->foo());
     }
-
 }
 
-abstract class TestWithVariadicArguments {
 
-    public function foo(...$bar) {
+abstract class TestWithVariadicArguments
+{
+    public function foo(...$bar)
+    {
         return $bar;
     }
-
 }

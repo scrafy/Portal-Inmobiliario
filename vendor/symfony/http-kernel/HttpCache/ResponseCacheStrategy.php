@@ -26,8 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ResponseCacheStrategy implements ResponseCacheStrategyInterface {
-
+class ResponseCacheStrategy implements ResponseCacheStrategyInterface
+{
     private $cacheable = true;
     private $embeddedResponses = 0;
     private $ttls = array();
@@ -37,7 +37,8 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function add(Response $response) {
+    public function add(Response $response)
+    {
         if ($response->isValidateable()) {
             $this->cacheable = false;
         } else {
@@ -56,7 +57,8 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function update(Response $response) {
+    public function update(Response $response)
+    {
         // if we have no embedded Response, do nothing
         if (0 === $this->embeddedResponses) {
             return;
@@ -88,5 +90,4 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface {
         }
         $response->setMaxAge(0);
     }
-
 }

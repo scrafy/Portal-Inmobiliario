@@ -8,14 +8,15 @@ use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 
-class FormRequestServiceProvider extends ServiceProvider {
-
+class FormRequestServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         //
     }
 
@@ -24,7 +25,8 @@ class FormRequestServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->app->afterResolving(ValidatesWhenResolved::class, function ($resolved) {
             $resolved->validate();
         });
@@ -43,13 +45,15 @@ class FormRequestServiceProvider extends ServiceProvider {
      * @param  \Symfony\Component\HttpFoundation\Request  $current
      * @return void
      */
-    protected function initializeRequest(FormRequest $form, Request $current) {
+    protected function initializeRequest(FormRequest $form, Request $current)
+    {
         $files = $current->files->all();
 
         $files = is_array($files) ? array_filter($files) : $files;
 
         $form->initialize(
-                $current->query->all(), $current->request->all(), $current->attributes->all(), $current->cookies->all(), $files, $current->server->all(), $current->getContent()
+            $current->query->all(), $current->request->all(), $current->attributes->all(),
+            $current->cookies->all(), $files, $current->server->all(), $current->getContent()
         );
 
         $form->setJson($current->json());
@@ -62,5 +66,4 @@ class FormRequestServiceProvider extends ServiceProvider {
 
         $form->setRouteResolver($current->getRouteResolver());
     }
-
 }

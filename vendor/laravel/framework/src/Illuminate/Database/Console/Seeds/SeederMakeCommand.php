@@ -6,8 +6,8 @@ use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\GeneratorCommand;
 
-class SeederMakeCommand extends GeneratorCommand {
-
+class SeederMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -43,7 +43,8 @@ class SeederMakeCommand extends GeneratorCommand {
      * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
-    public function __construct(Filesystem $files, Composer $composer) {
+    public function __construct(Filesystem $files, Composer $composer)
+    {
         parent::__construct($files);
 
         $this->composer = $composer;
@@ -54,7 +55,8 @@ class SeederMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         parent::fire();
 
         $this->composer->dumpAutoloads();
@@ -65,8 +67,9 @@ class SeederMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/seeder.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/seeder.stub';
     }
 
     /**
@@ -75,8 +78,9 @@ class SeederMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name) {
-        return $this->laravel->databasePath() . '/seeds/' . $name . '.php';
+    protected function getPath($name)
+    {
+        return $this->laravel->databasePath().'/seeds/'.$name.'.php';
     }
 
     /**
@@ -85,8 +89,8 @@ class SeederMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name) {
+    protected function qualifyClass($name)
+    {
         return $name;
     }
-
 }

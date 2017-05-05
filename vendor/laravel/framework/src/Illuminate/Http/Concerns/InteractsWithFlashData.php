@@ -2,8 +2,8 @@
 
 namespace Illuminate\Http\Concerns;
 
-trait InteractsWithFlashData {
-
+trait InteractsWithFlashData
+{
     /**
      * Retrieve an old input item.
      *
@@ -11,7 +11,8 @@ trait InteractsWithFlashData {
      * @param  string|array|null  $default
      * @return string|array
      */
-    public function old($key = null, $default = null) {
+    public function old($key = null, $default = null)
+    {
         return $this->session()->getOldInput($key, $default);
     }
 
@@ -20,7 +21,8 @@ trait InteractsWithFlashData {
      *
      * @return void
      */
-    public function flash() {
+    public function flash()
+    {
         $this->session()->flashInput($this->input());
     }
 
@@ -30,9 +32,10 @@ trait InteractsWithFlashData {
      * @param  array|mixed  $keys
      * @return void
      */
-    public function flashOnly($keys) {
+    public function flashOnly($keys)
+    {
         $this->session()->flashInput(
-                $this->only(is_array($keys) ? $keys : func_get_args())
+            $this->only(is_array($keys) ? $keys : func_get_args())
         );
     }
 
@@ -42,9 +45,10 @@ trait InteractsWithFlashData {
      * @param  array|mixed  $keys
      * @return void
      */
-    public function flashExcept($keys) {
+    public function flashExcept($keys)
+    {
         $this->session()->flashInput(
-                $this->except(is_array($keys) ? $keys : func_get_args())
+            $this->except(is_array($keys) ? $keys : func_get_args())
         );
     }
 
@@ -53,8 +57,8 @@ trait InteractsWithFlashData {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->session()->flashInput([]);
     }
-
 }

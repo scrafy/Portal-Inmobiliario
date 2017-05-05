@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 
-abstract class GeneratorCommand extends Command {
-
+abstract class GeneratorCommand extends Command
+{
     /**
      * The filesystem instance.
      *
@@ -28,7 +28,8 @@ abstract class GeneratorCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files) {
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -46,7 +47,8 @@ abstract class GeneratorCommand extends Command {
      *
      * @return bool|null
      */
-    public function fire() {
+    public function fire()
+    {
         $name = $this->qualifyClass($this->getNameInput());
 
         $path = $this->getPath($name);
@@ -55,7 +57,7 @@ abstract class GeneratorCommand extends Command {
         // to create the class and overwrite the user's code. So, we will bail out so the
         // code is untouched. Otherwise, we will continue generating this class' files.
         if ($this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type . ' already exists!');
+            $this->error($this->type.' already exists!');
 
             return false;
         }
@@ -67,7 +69,7 @@ abstract class GeneratorCommand extends Command {
 
         $this->files->put($path, $this->buildClass($name));
 
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type.' created successfully.');
     }
 
     /**
@@ -76,7 +78,8 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function qualifyClass($name) {
+    protected function qualifyClass($name)
+    {
         $rootNamespace = $this->rootNamespace();
 
         if (Str::startsWith($name, $rootNamespace)) {
@@ -86,7 +89,7 @@ abstract class GeneratorCommand extends Command {
         $name = str_replace('/', '\\', $name);
 
         return $this->qualifyClass(
-                        $this->getDefaultNamespace(trim($rootNamespace, '\\')) . '\\' . $name
+            $this->getDefaultNamespace(trim($rootNamespace, '\\')).'\\'.$name
         );
     }
 
@@ -96,7 +99,8 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
+    protected function getDefaultNamespace($rootNamespace)
+    {
         return $rootNamespace;
     }
 
@@ -106,7 +110,8 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $rawName
      * @return bool
      */
-    protected function alreadyExists($rawName) {
+    protected function alreadyExists($rawName)
+    {
         return $this->files->exists($this->getPath($this->qualifyClass($rawName)));
     }
 
@@ -116,10 +121,11 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name) {
+    protected function getPath($name)
+    {
         $name = str_replace_first($this->rootNamespace(), '', $name);
 
-        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '.php';
+        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.php';
     }
 
     /**
@@ -128,8 +134,9 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $path
      * @return string
      */
-    protected function makeDirectory($path) {
-        if (!$this->files->isDirectory(dirname($path))) {
+    protected function makeDirectory($path)
+    {
+        if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0777, true, true);
         }
 
@@ -142,7 +149,8 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function buildClass($name) {
+    protected function buildClass($name)
+    {
         $stub = $this->files->get($this->getStub());
 
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
@@ -155,9 +163,12 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return $this
      */
-    protected function replaceNamespace(&$stub, $name) {
+    protected function replaceNamespace(&$stub, $name)
+    {
         $stub = str_replace(
-                ['DummyNamespace', 'DummyRootNamespace'], [$this->getNamespace($name), $this->rootNamespace()], $stub
+            ['DummyNamespace', 'DummyRootNamespace'],
+            [$this->getNamespace($name), $this->rootNamespace()],
+            $stub
         );
 
         return $this;
@@ -169,7 +180,8 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function getNamespace($name) {
+    protected function getNamespace($name)
+    {
         return trim(implode('\\', array_slice(explode('\\', $name), 0, -1)), '\\');
     }
 
@@ -180,8 +192,9 @@ abstract class GeneratorCommand extends Command {
      * @param  string  $name
      * @return string
      */
-    protected function replaceClass($stub, $name) {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+    protected function replaceClass($stub, $name)
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
         return str_replace('DummyClass', $class, $stub);
     }
@@ -191,7 +204,8 @@ abstract class GeneratorCommand extends Command {
      *
      * @return string
      */
-    protected function getNameInput() {
+    protected function getNameInput()
+    {
         return trim($this->argument('name'));
     }
 
@@ -200,7 +214,8 @@ abstract class GeneratorCommand extends Command {
      *
      * @return string
      */
-    protected function rootNamespace() {
+    protected function rootNamespace()
+    {
         return $this->laravel->getNamespace();
     }
 
@@ -209,10 +224,10 @@ abstract class GeneratorCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the class'],
         ];
     }
-
 }

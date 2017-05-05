@@ -1,8 +1,8 @@
 <?php
-
-class ExceptionStackTest extends PHPUnit_Framework_TestCase {
-
-    public function testPrintingChildException() {
+class ExceptionStackTest extends PHPUnit_Framework_TestCase
+{
+    public function testPrintingChildException()
+    {
         try {
             $this->assertEquals([1], [2], 'message');
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -11,11 +11,11 @@ class ExceptionStackTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testNestedExceptions() {
+    public function testNestedExceptions()
+    {
         $exceptionThree = new Exception('Three');
-        $exceptionTwo = new InvalidArgumentException('Two', 0, $exceptionThree);
-        $exceptionOne = new Exception('One', 0, $exceptionTwo);
+        $exceptionTwo   = new InvalidArgumentException('Two', 0, $exceptionThree);
+        $exceptionOne   = new Exception('One', 0, $exceptionTwo);
         throw $exceptionOne;
     }
-
 }

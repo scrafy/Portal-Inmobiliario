@@ -17,9 +17,10 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class NullOutputTest extends TestCase {
-
-    public function testConstructor() {
+class NullOutputTest extends TestCase
+{
+    public function testConstructor()
+    {
         $output = new NullOutput();
 
         ob_start();
@@ -30,7 +31,8 @@ class NullOutputTest extends TestCase {
         $this->assertFalse($output->isDecorated(), '->isDecorated() returns false');
     }
 
-    public function testVerbosity() {
+    public function testVerbosity()
+    {
         $output = new NullOutput();
         $this->assertSame(OutputInterface::VERBOSITY_QUIET, $output->getVerbosity(), '->getVerbosity() returns VERBOSITY_QUIET for NullOutput by default');
 
@@ -38,43 +40,49 @@ class NullOutputTest extends TestCase {
         $this->assertSame(OutputInterface::VERBOSITY_QUIET, $output->getVerbosity(), '->getVerbosity() always returns VERBOSITY_QUIET for NullOutput');
     }
 
-    public function testSetFormatter() {
+    public function testSetFormatter()
+    {
         $output = new NullOutput();
         $outputFormatter = new OutputFormatter();
         $output->setFormatter($outputFormatter);
         $this->assertNotSame($outputFormatter, $output->getFormatter());
     }
 
-    public function testSetVerbosity() {
+    public function testSetVerbosity()
+    {
         $output = new NullOutput();
         $output->setVerbosity(Output::VERBOSITY_NORMAL);
         $this->assertEquals(Output::VERBOSITY_QUIET, $output->getVerbosity());
     }
 
-    public function testSetDecorated() {
+    public function testSetDecorated()
+    {
         $output = new NullOutput();
         $output->setDecorated(true);
         $this->assertFalse($output->isDecorated());
     }
 
-    public function testIsQuiet() {
+    public function testIsQuiet()
+    {
         $output = new NullOutput();
         $this->assertTrue($output->isQuiet());
     }
 
-    public function testIsVerbose() {
+    public function testIsVerbose()
+    {
         $output = new NullOutput();
         $this->assertFalse($output->isVerbose());
     }
 
-    public function testIsVeryVerbose() {
+    public function testIsVeryVerbose()
+    {
         $output = new NullOutput();
         $this->assertFalse($output->isVeryVerbose());
     }
 
-    public function testIsDebug() {
+    public function testIsDebug()
+    {
         $output = new NullOutput();
         $this->assertFalse($output->isDebug());
     }
-
 }

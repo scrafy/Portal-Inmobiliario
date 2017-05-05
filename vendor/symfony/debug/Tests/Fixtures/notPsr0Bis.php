@@ -2,6 +2,6 @@
 
 namespace Symfony\Component\Debug\Tests\Fixtures;
 
-class NotPSR0bis {
-    
+class NotPSR0bis
+{
 }

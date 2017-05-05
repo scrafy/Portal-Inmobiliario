@@ -5,30 +5,29 @@ namespace PhpParser\Node\Stmt;
 use PhpParser\Error;
 use PhpParser\Node;
 
-class Class_ extends ClassLike {
+class Class_ extends ClassLike
+{
+    const MODIFIER_PUBLIC    =  1;
+    const MODIFIER_PROTECTED =  2;
+    const MODIFIER_PRIVATE   =  4;
+    const MODIFIER_STATIC    =  8;
+    const MODIFIER_ABSTRACT  = 16;
+    const MODIFIER_FINAL     = 32;
 
-    const MODIFIER_PUBLIC = 1;
-    const MODIFIER_PROTECTED = 2;
-    const MODIFIER_PRIVATE = 4;
-    const MODIFIER_STATIC = 8;
-    const MODIFIER_ABSTRACT = 16;
-    const MODIFIER_FINAL = 32;
     const VISIBILITY_MODIFER_MASK = 7; // 1 | 2 | 4
 
     /** @var int Type */
-
     public $flags;
-
     /** @var null|Node\Name Name of extended class */
     public $extends;
-
     /** @var Node\Name[] Names of implemented interfaces */
     public $implements;
 
     /** @deprecated Use $flags instead */
     public $type;
+
     protected static $specialNames = array(
-        'self' => true,
+        'self'   => true,
         'parent' => true,
         'static' => true,
     );
@@ -46,7 +45,8 @@ class Class_ extends ClassLike {
      */
     public function __construct($name, array $subNodes = array(), array $attributes = array()) {
         parent::__construct($attributes);
-        $this->flags = isset($subNodes['flags']) ? $subNodes['flags'] : (isset($subNodes['type']) ? $subNodes['type'] : 0);
+        $this->flags = isset($subNodes['flags']) ? $subNodes['flags']
+            : (isset($subNodes['type']) ? $subNodes['type'] : 0);
         $this->type = $this->flags;
         $this->name = $name;
         $this->extends = isset($subNodes['extends']) ? $subNodes['extends'] : null;
@@ -94,5 +94,4 @@ class Class_ extends ClassLike {
             throw new Error('Cannot use the final modifier on an abstract class member');
         }
     }
-
 }

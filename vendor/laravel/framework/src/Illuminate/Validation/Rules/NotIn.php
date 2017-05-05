@@ -2,8 +2,8 @@
 
 namespace Illuminate\Validation\Rules;
 
-class NotIn {
-
+class NotIn
+{
     /**
      * The name of the rule.
      */
@@ -22,7 +22,8 @@ class NotIn {
      * @param  array  $values
      * @return void
      */
-    public function __construct(array $values) {
+    public function __construct(array $values)
+    {
         $this->values = $values;
     }
 
@@ -31,8 +32,8 @@ class NotIn {
      *
      * @return string
      */
-    public function __toString() {
-        return $this->rule . ':' . implode(',', $this->values);
+    public function __toString()
+    {
+        return $this->rule.':'.implode(',', $this->values);
     }
-
 }

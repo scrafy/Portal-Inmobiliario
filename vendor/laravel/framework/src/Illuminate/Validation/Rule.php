@@ -4,8 +4,8 @@ namespace Illuminate\Validation;
 
 use Illuminate\Support\Traits\Macroable;
 
-class Rule {
-
+class Rule
+{
     use Macroable;
 
     /**
@@ -14,7 +14,8 @@ class Rule {
      * @param  array  $constraints
      * @return \Illuminate\Validation\Rules\Dimensions
      */
-    public static function dimensions(array $constraints = []) {
+    public static function dimensions(array $constraints = [])
+    {
         return new Rules\Dimensions($constraints);
     }
 
@@ -25,7 +26,8 @@ class Rule {
      * @param  string  $column
      * @return \Illuminate\Validation\Rules\Exists
      */
-    public static function exists($table, $column = 'NULL') {
+    public static function exists($table, $column = 'NULL')
+    {
         return new Rules\Exists($table, $column);
     }
 
@@ -35,7 +37,8 @@ class Rule {
      * @param  array  $values
      * @return \Illuminate\Validation\Rules\In
      */
-    public static function in(array $values) {
+    public static function in(array $values)
+    {
         return new Rules\In($values);
     }
 
@@ -45,7 +48,8 @@ class Rule {
      * @param  array  $values
      * @return \Illuminate\Validation\Rules\NotIn
      */
-    public static function notIn(array $values) {
+    public static function notIn(array $values)
+    {
         return new Rules\NotIn($values);
     }
 
@@ -56,8 +60,8 @@ class Rule {
      * @param  string  $column
      * @return \Illuminate\Validation\Rules\Unique
      */
-    public static function unique($table, $column = 'NULL') {
+    public static function unique($table, $column = 'NULL')
+    {
         return new Rules\Unique($table, $column);
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -23,8 +22,8 @@ use Webmozart\Assert\Assert;
 /**
  * Reflection class for a {@}property tag in a Docblock.
  */
-class Property extends BaseTag implements Factory\StaticMethod {
-
+class Property extends BaseTag implements Factory\StaticMethod
+{
     /** @var string */
     protected $name = 'property';
 
@@ -39,7 +38,8 @@ class Property extends BaseTag implements Factory\StaticMethod {
      * @param Type        $type
      * @param Description $description
      */
-    public function __construct($variableName, Type $type = null, Description $description = null) {
+    public function __construct($variableName, Type $type = null, Description $description = null)
+    {
         Assert::string($variableName);
 
         $this->variableName = $variableName;
@@ -51,7 +51,10 @@ class Property extends BaseTag implements Factory\StaticMethod {
      * {@inheritdoc}
      */
     public static function create(
-    $body, TypeResolver $typeResolver = null, DescriptionFactory $descriptionFactory = null, TypeContext $context = null
+        $body,
+        TypeResolver $typeResolver = null,
+        DescriptionFactory $descriptionFactory = null,
+        TypeContext $context = null
     ) {
         Assert::stringNotEmpty($body);
         Assert::allNotNull([$typeResolver, $descriptionFactory]);
@@ -86,7 +89,8 @@ class Property extends BaseTag implements Factory\StaticMethod {
      *
      * @return string
      */
-    public function getVariableName() {
+    public function getVariableName()
+    {
         return $this->variableName;
     }
 
@@ -95,7 +99,8 @@ class Property extends BaseTag implements Factory\StaticMethod {
      *
      * @return Type|null
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -104,10 +109,10 @@ class Property extends BaseTag implements Factory\StaticMethod {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return ($this->type ? $this->type . ' ' : '')
-                . '$' . $this->variableName
-                . ($this->description ? ' ' . $this->description : '');
+        . '$' . $this->variableName
+        . ($this->description ? ' ' . $this->description : '');
     }
-
 }

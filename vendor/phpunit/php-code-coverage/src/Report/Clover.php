@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -17,8 +16,8 @@ use SebastianBergmann\CodeCoverage\Node\File;
 /**
  * Generates a Clover XML logfile from a code coverage object.
  */
-class Clover {
-
+class Clover
+{
     /**
      * @param CodeCoverage $coverage
      * @param string       $target
@@ -26,8 +25,9 @@ class Clover {
      *
      * @return string
      */
-    public function process(CodeCoverage $coverage, $target = null, $name = null) {
-        $xmlDocument = new \DOMDocument('1.0', 'UTF-8');
+    public function process(CodeCoverage $coverage, $target = null, $name = null)
+    {
+        $xmlDocument               = new \DOMDocument('1.0', 'UTF-8');
         $xmlDocument->formatOutput = true;
 
         $xmlCoverage = $xmlDocument->createElement('coverage');
@@ -44,7 +44,7 @@ class Clover {
         $xmlCoverage->appendChild($xmlProject);
 
         $packages = [];
-        $report = $coverage->getReport();
+        $report   = $coverage->getReport();
         unset($coverage);
 
         foreach ($report as $item) {
@@ -57,24 +57,24 @@ class Clover {
             $xmlFile = $xmlDocument->createElement('file');
             $xmlFile->setAttribute('name', $item->getPath());
 
-            $classes = $item->getClassesAndTraits();
-            $coverage = $item->getCoverageData();
-            $lines = [];
+            $classes   = $item->getClassesAndTraits();
+            $coverage  = $item->getCoverageData();
+            $lines     = [];
             $namespace = 'global';
 
             foreach ($classes as $className => $class) {
-                $classStatements = 0;
+                $classStatements        = 0;
                 $coveredClassStatements = 0;
-                $coveredMethods = 0;
-                $classMethods = 0;
+                $coveredMethods         = 0;
+                $classMethods           = 0;
 
                 foreach ($class['methods'] as $methodName => $method) {
-                    if ($method['executableLines'] == 0) {
+                    if ($method['executableLines']  == 0) {
                         continue;
                     }
 
                     $classMethods++;
-                    $classStatements += $method['executableLines'];
+                    $classStatements        += $method['executableLines'];
                     $coveredClassStatements += $method['executedLines'];
 
                     if ($method['coverage'] == 100) {
@@ -90,12 +90,12 @@ class Clover {
                     }
 
                     $lines[$method['startLine']] = [
-                        'ccn' => $method['ccn'],
-                        'count' => $methodCount,
-                        'crap' => $method['crap'],
-                        'type' => 'method',
-                        'visibility' => $method['visibility'],
-                        'name' => $methodName
+                        'ccn'         => $method['ccn'],
+                        'count'       => $methodCount,
+                        'crap'        => $method['crap'],
+                        'type'        => 'method',
+                        'visibility'  => $method['visibility'],
+                        'name'        => $methodName
                     ];
                 }
 
@@ -109,25 +109,29 @@ class Clover {
 
                 if (!empty($class['package']['fullPackage'])) {
                     $xmlClass->setAttribute(
-                            'fullPackage', $class['package']['fullPackage']
+                        'fullPackage',
+                        $class['package']['fullPackage']
                     );
                 }
 
                 if (!empty($class['package']['category'])) {
                     $xmlClass->setAttribute(
-                            'category', $class['package']['category']
+                        'category',
+                        $class['package']['category']
                     );
                 }
 
                 if (!empty($class['package']['package'])) {
                     $xmlClass->setAttribute(
-                            'package', $class['package']['package']
+                        'package',
+                        $class['package']['package']
                     );
                 }
 
                 if (!empty($class['package']['subpackage'])) {
                     $xmlClass->setAttribute(
-                            'subpackage', $class['package']['subpackage']
+                        'subpackage',
+                        $class['package']['subpackage']
                     );
                 }
 
@@ -204,7 +208,7 @@ class Clover {
             } else {
                 if (!isset($packages[$namespace])) {
                     $packages[$namespace] = $xmlDocument->createElement(
-                            'package'
+                        'package'
                     );
 
                     $packages[$namespace]->setAttribute('name', $namespace);
@@ -244,5 +248,4 @@ class Clover {
 
         return $buffer;
     }
-
 }

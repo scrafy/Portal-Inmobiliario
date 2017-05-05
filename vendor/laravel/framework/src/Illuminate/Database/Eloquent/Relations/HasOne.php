@@ -5,8 +5,8 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 
-class HasOne extends HasOneOrMany {
-
+class HasOne extends HasOneOrMany
+{
     /**
      * Indicates if a default model instance should be used.
      *
@@ -21,7 +21,8 @@ class HasOne extends HasOneOrMany {
      *
      * @return mixed
      */
-    public function getResults() {
+    public function getResults()
+    {
         return $this->query->first() ?: $this->getDefaultFor($this->parent);
     }
 
@@ -32,7 +33,8 @@ class HasOne extends HasOneOrMany {
      * @param  string  $relation
      * @return array
      */
-    public function initRelation(array $models, $relation) {
+    public function initRelation(array $models, $relation)
+    {
         foreach ($models as $model) {
             $model->setRelation($relation, $this->getDefaultFor($model));
         }
@@ -46,13 +48,14 @@ class HasOne extends HasOneOrMany {
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    protected function getDefaultFor(Model $model) {
-        if (!$this->withDefault) {
+    protected function getDefaultFor(Model $model)
+    {
+        if (! $this->withDefault) {
             return;
         }
 
         $instance = $this->related->newInstance()->setAttribute(
-                $this->getForeignKeyName(), $model->getAttribute($this->localKey)
+            $this->getForeignKeyName(), $model->getAttribute($this->localKey)
         );
 
         if (is_callable($this->withDefault)) {
@@ -74,7 +77,8 @@ class HasOne extends HasOneOrMany {
      * @param  string  $relation
      * @return array
      */
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         return $this->matchOne($models, $results, $relation);
     }
 
@@ -84,10 +88,10 @@ class HasOne extends HasOneOrMany {
      * @param  \Closure|array|bool  $callback
      * @return $this
      */
-    public function withDefault($callback = true) {
+    public function withDefault($callback = true)
+    {
         $this->withDefault = $callback;
 
         return $this;
     }
-
 }

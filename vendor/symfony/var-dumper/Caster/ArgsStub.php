@@ -18,11 +18,12 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ArgsStub extends EnumStub {
-
+class ArgsStub extends EnumStub
+{
     private static $parameters = array();
 
-    public function __construct(array $args, $function, $class) {
+    public function __construct(array $args, $function, $class)
+    {
         list($variadic, $params) = self::getParameters($function, $class);
 
         $values = array();
@@ -48,8 +49,9 @@ class ArgsStub extends EnumStub {
         }
     }
 
-    private static function getParameters($function, $class) {
-        if (isset(self::$parameters[$k = $class . '::' . $function])) {
+    private static function getParameters($function, $class)
+    {
+        if (isset(self::$parameters[$k = $class.'::'.$function])) {
             return self::$parameters[$k];
         }
 
@@ -62,9 +64,9 @@ class ArgsStub extends EnumStub {
         $variadic = '...';
         $params = array();
         foreach ($r->getParameters() as $v) {
-            $k = '$' . $v->name;
+            $k = '$'.$v->name;
             if ($v->isPassedByReference()) {
-                $k = '&' . $k;
+                $k = '&'.$k;
             }
             if (method_exists($v, 'isVariadic') && $v->isVariadic()) {
                 $variadic .= $k;
@@ -75,5 +77,4 @@ class ArgsStub extends EnumStub {
 
         return self::$parameters[$k] = array($variadic, $params);
     }
-
 }

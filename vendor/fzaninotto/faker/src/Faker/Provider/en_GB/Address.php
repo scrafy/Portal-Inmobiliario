@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\en_GB;
 
-class Address extends \Faker\Provider\Address {
-
+class Address extends \Faker\Provider\Address
+{
     protected static $cityPrefix = array('North', 'East', 'West', 'South', 'New', 'Lake', 'Port');
     protected static $citySuffix = array('town', 'ton', 'land', 'ville', 'berg', 'burgh', 'borough', 'bury', 'view', 'port', 'mouth', 'stad', 'furt', 'chester', 'mouth', 'fort', 'haven', 'side', 'shire');
     protected static $buildingNumber = array('###', '##', '#');
@@ -11,9 +11,11 @@ class Address extends \Faker\Provider\Address {
         'Alley', 'Avenue', 'Branch', 'Bridge', 'Brook', 'Brooks', 'Burg', 'Burgs', 'Bypass', 'Camp', 'Canyon', 'Cape', 'Causeway', 'Center', 'Centers', 'Circle', 'Circles', 'Cliff', 'Cliffs', 'Club', 'Common', 'Corner', 'Corners', 'Course', 'Court', 'Courts', 'Cove', 'Coves', 'Creek', 'Crescent', 'Crest', 'Crossing', 'Crossroad', 'Curve', 'Dale', 'Dam', 'Divide', 'Drive', 'Drive', 'Drives', 'Estate', 'Estates', 'Expressway', 'Extension', 'Extensions', 'Fall', 'Falls', 'Ferry', 'Field', 'Fields', 'Flat', 'Flats', 'Ford', 'Fords', 'Forest', 'Forge', 'Forges', 'Fork', 'Forks', 'Fort', 'Garden', 'Gardens', 'Gateway', 'Glen', 'Glens', 'Green', 'Greens', 'Grove', 'Groves', 'Harbour', 'Harbours', 'Haven', 'Heights', 'Highway', 'Hill', 'Hills', 'Hollow', 'Inlet', 'Island', 'Islands', 'Isle', 'Junction', 'Junctions', 'Key', 'Keys', 'Knoll', 'Knolls', 'Lake', 'Lakes', 'Land', 'Landing', 'Lane', 'Light', 'Lights', 'Loaf', 'Lock', 'Locks', 'Locks', 'Lodge', 'Lodge', 'Loop', 'Manor', 'Manors', 'Meadow', 'Meadows', 'Mews', 'Mill', 'Mills', 'Motorway', 'Mount', 'Mountain', 'Mountains', 'Neck', 'Orchard', 'Oval', 'Overpass', 'Park', 'Parks', 'Parkway', 'Parkways', 'Pass', 'Passage', 'Path', 'Pike', 'Pine', 'Pines', 'Place', 'Plain', 'Plains', 'Plaza', 'Point', 'Points', 'Port', 'Ports', 'Radial', 'Ramp', 'Ranch', 'Rapid', 'Rapids', 'Rest', 'Ridge', 'Ridges', 'River', 'Road', 'Road', 'Roads', 'Roads', 'Route', 'Row', 'Rue', 'Run', 'Shoal', 'Shoals', 'Shore', 'Shores', 'Spring', 'Springs', 'Springs', 'Spur', 'Spurs', 'Square', 'Square', 'Squares', 'Squares', 'Station', 'Station', 'Stream', 'Stream', 'Street', 'Streets', 'Summit', 'Terrace', 'Throughway', 'Trace', 'Track', 'Trafficway', 'Trail', 'Tunnel', 'Turnpike', 'Underpass', 'Union', 'Unions', 'Valley', 'Valleys', 'Via', 'Viaduct', 'View', 'Views', 'Village', 'Villages', 'Ville', 'Vista', 'Vista', 'Walk', 'Walks', 'Wall', 'Way', 'Ways', 'Well', 'Wells'
     );
     protected static $postcode = array('?# #??', '?## #??', '??# #??', '??## #??', '?#? #??', '??#? #??');
+
     protected static $county = array(
         'Aberdeenshire', 'Anglesey', 'Angus', 'Argyll', 'Ayrshire', 'Banffshire', 'Bedfordshire', 'Berwickshire', 'Breconshire', 'Buckinghamshire', 'Bute', 'Caernarvonshire', 'Caithness', 'Cambridgeshire', 'Cardiganshire', 'Carmarthenshire', 'Cheshire', 'Clackmannanshire', 'Cornwall', 'Isles of Scilly', 'Cumbria', 'Denbighshire', 'Derbyshire', 'Devon', 'Dorset', 'Dumbartonshire', 'Dumfriesshire', 'Durham', 'East Lothian', 'East Sussex', 'Essex', 'Fife', 'Flintshire', 'Glamorgan', 'Gloucestershire', 'Greater London', 'Greater Manchester', 'Hampshire', 'Hertfordshire', 'Inverness', 'Kent', 'Kincardineshire', 'Kinross-shire', 'Kirkcudbrightshire', 'Lanarkshire', 'Lancashire', 'Leicestershire', 'Lincolnshire', 'London', 'Merionethshire', 'Merseyside', 'Midlothian', 'Monmouthshire', 'Montgomeryshire', 'Moray', 'Nairnshire', 'Norfolk', 'North Yorkshire', 'Northamptonshire', 'Northumberland', 'Nottinghamshire', 'Orkney', 'Oxfordshire', 'Peebleshire', 'Pembrokeshire', 'Perthshire', 'Radnorshire', 'Renfrewshire', 'Ross & Cromarty', 'Roxburghshire', 'Selkirkshire', 'Shetland', 'Shropshire', 'Somerset', 'South Yorkshire', 'Staffordshire', 'Stirlingshire', 'Suffolk', 'Surrey', 'Sutherland', 'Tyne and Wear', 'Warwickshire', 'West Lothian', 'West Midlands', 'West Sussex', 'West Yorkshire', 'Wigtownshire', 'Wiltshire', 'Worcestershire'
     );
+
     protected static $country = array(
         'Afghanistan', 'Albania', 'Algeria', 'American Samoa', 'Andorra', 'Angola', 'Anguilla', 'Antarctica (the territory South of 60 deg S)', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan',
         'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Bouvet Island (Bouvetoya)', 'Brazil', 'British Indian Ocean Territory (Chagos Archipelago)', 'British Virgin Islands', 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burundi',
@@ -64,22 +66,24 @@ class Address extends \Faker\Provider\Address {
     /**
      * @example 'East'
      */
-    public static function cityPrefix() {
+    public static function cityPrefix()
+    {
         return static::randomElement(static::$cityPrefix);
     }
 
     /**
      * @example 'Flat 350'
      */
-    public static function secondaryAddress() {
+    public static function secondaryAddress()
+    {
         return static::bothify(static::randomElement(static::$secondaryAddressFormats));
     }
 
     /**
      * @example 'Hampshire'
      */
-    public static function county() {
+    public static function county()
+    {
         return static::randomElement(static::$county);
     }
-
 }

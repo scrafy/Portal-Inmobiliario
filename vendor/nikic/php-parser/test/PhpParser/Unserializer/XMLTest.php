@@ -5,8 +5,8 @@ namespace PhpParser\Unserializer;
 use PhpParser\Comment;
 use PhpParser\Node\Scalar;
 
-class XMLTest extends \PHPUnit_Framework_TestCase {
-
+class XMLTest extends \PHPUnit_Framework_TestCase
+{
     public function testNode() {
         $xml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -29,15 +29,16 @@ class XMLTest extends \PHPUnit_Framework_TestCase {
 </AST>
 XML;
 
-        $unserializer = new XML;
+        $unserializer  = new XML;
         $this->assertEquals(
-                new Scalar\String_('Test', array(
-            'startLine' => 1,
-            'comments' => array(
-                new Comment('// comment' . "\n", 2),
-                new Comment\Doc('/** doc comment */', 3),
-            ),
-                )), $unserializer->unserialize($xml)
+            new Scalar\String_('Test', array(
+                'startLine' => 1,
+                'comments'  => array(
+                    new Comment('// comment' . "\n", 2),
+                    new Comment\Doc('/** doc comment */', 3),
+                ),
+            )),
+            $unserializer->unserialize($xml)
         );
     }
 
@@ -49,10 +50,11 @@ XML;
 </AST>
 XML;
 
-        $unserializer = new XML;
+        $unserializer  = new XML;
 
         $this->assertEquals(
-                new Scalar\MagicConst\Class_, $unserializer->unserialize($xml)
+            new Scalar\MagicConst\Class_,
+            $unserializer->unserialize($xml)
         );
     }
 
@@ -83,7 +85,7 @@ XML;
             true, false, null
         );
 
-        $unserializer = new XML;
+        $unserializer  = new XML;
         $this->assertEquals($result, $unserializer->unserialize($xml));
     }
 
@@ -123,14 +125,14 @@ XML;
 
     public function provideTestErrors() {
         return array(
-            array('<scalar:true>test</scalar:true>', '"true" scalar must be empty'),
+            array('<scalar:true>test</scalar:true>',   '"true" scalar must be empty'),
             array('<scalar:false>test</scalar:false>', '"false" scalar must be empty'),
-            array('<scalar:null>test</scalar:null>', '"null" scalar must be empty'),
-            array('<scalar:foo>bar</scalar:foo>', 'Unknown scalar type "foo"'),
-            array('<scalar:int>x</scalar:int>', '"x" is not a valid int'),
-            array('<scalar:float>x</scalar:float>', '"x" is not a valid float'),
-            array('', 'Expected node or scalar'),
-            array('<foo:bar>test</foo:bar>', 'Unexpected node of type "foo:bar"'),
+            array('<scalar:null>test</scalar:null>',   '"null" scalar must be empty'),
+            array('<scalar:foo>bar</scalar:foo>',      'Unknown scalar type "foo"'),
+            array('<scalar:int>x</scalar:int>',        '"x" is not a valid int'),
+            array('<scalar:float>x</scalar:float>',    '"x" is not a valid float'),
+            array('',                                  'Expected node or scalar'),
+            array('<foo:bar>test</foo:bar>',           'Unexpected node of type "foo:bar"'),
             array(
                 '<node:Scalar_String><foo:bar>test</foo:bar></node:Scalar_String>',
                 'Expected sub node or attribute, got node of type "foo:bar"'
@@ -145,5 +147,4 @@ XML;
             ),
         );
     }
-
 }

@@ -15,24 +15,27 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\CssSelector\XPath\Extension\HtmlExtension;
 use Symfony\Component\CssSelector\XPath\Translator;
 
-class TranslatorTest extends TestCase {
-
+class TranslatorTest extends TestCase
+{
     /** @dataProvider getXpathLiteralTestData */
-    public function testXpathLiteral($value, $literal) {
+    public function testXpathLiteral($value, $literal)
+    {
         $this->assertEquals($literal, Translator::getXpathLiteral($value));
     }
 
     /** @dataProvider getCssToXPathTestData */
-    public function testCssToXPath($css, $xpath) {
+    public function testCssToXPath($css, $xpath)
+    {
         $translator = new Translator();
         $translator->registerExtension(new HtmlExtension($translator));
         $this->assertEquals($xpath, $translator->cssToXPath($css, ''));
     }
 
     /** @dataProvider getXmlLangTestData */
-    public function testXmlLang($css, array $elementsId) {
+    public function testXmlLang($css, array $elementsId)
+    {
         $translator = new Translator();
-        $document = new \SimpleXMLElement(file_get_contents(__DIR__ . '/Fixtures/lang.xml'));
+        $document = new \SimpleXMLElement(file_get_contents(__DIR__.'/Fixtures/lang.xml'));
         $elements = $document->xpath($translator->cssToXPath($css));
         $this->assertEquals(count($elementsId), count($elements));
         foreach ($elements as $element) {
@@ -41,13 +44,14 @@ class TranslatorTest extends TestCase {
     }
 
     /** @dataProvider getHtmlIdsTestData */
-    public function testHtmlIds($css, array $elementsId) {
+    public function testHtmlIds($css, array $elementsId)
+    {
         $translator = new Translator();
         $translator->registerExtension(new HtmlExtension($translator));
         $document = new \DOMDocument();
         $document->strictErrorChecking = false;
         $internalErrors = libxml_use_internal_errors(true);
-        $document->loadHTMLFile(__DIR__ . '/Fixtures/ids.html');
+        $document->loadHTMLFile(__DIR__.'/Fixtures/ids.html');
         $document = simplexml_import_dom($document);
         $elements = $document->xpath($translator->cssToXPath($css));
         $this->assertCount(count($elementsId), $elementsId);
@@ -61,19 +65,21 @@ class TranslatorTest extends TestCase {
     }
 
     /** @dataProvider getHtmlShakespearTestData */
-    public function testHtmlShakespear($css, $count) {
+    public function testHtmlShakespear($css, $count)
+    {
         $translator = new Translator();
         $translator->registerExtension(new HtmlExtension($translator));
         $document = new \DOMDocument();
         $document->strictErrorChecking = false;
-        $document->loadHTMLFile(__DIR__ . '/Fixtures/shakespear.html');
+        $document->loadHTMLFile(__DIR__.'/Fixtures/shakespear.html');
         $document = simplexml_import_dom($document);
         $bodies = $document->xpath('//body');
         $elements = $bodies[0]->xpath($translator->cssToXPath($css));
         $this->assertCount($count, $elements);
     }
 
-    public function getXpathLiteralTestData() {
+    public function getXpathLiteralTestData()
+    {
         return array(
             array('foo', "'foo'"),
             array("foo's bar", '"foo\'s bar"'),
@@ -82,7 +88,8 @@ class TranslatorTest extends TestCase {
         );
     }
 
-    public function getCssToXPathTestData() {
+    public function getCssToXPathTestData()
+    {
         return array(
             array('*', '*'),
             array('e', 'e'),
@@ -126,7 +133,8 @@ class TranslatorTest extends TestCase {
         );
     }
 
-    public function getXmlLangTestData() {
+    public function getXmlLangTestData()
+    {
         return array(
             array(':lang("EN")', array('first', 'second', 'third', 'fourth')),
             array(':lang("en-us")', array('second', 'fourth')),
@@ -140,10 +148,11 @@ class TranslatorTest extends TestCase {
         );
     }
 
-    public function getHtmlIdsTestData() {
+    public function getHtmlIdsTestData()
+    {
         return array(
             array('div', array('outer-div', 'li-div', 'foobar-div')),
-            array('DIV', array('outer-div', 'li-div', 'foobar-div')), // case-insensitive in HTML
+            array('DIV', array('outer-div', 'li-div', 'foobar-div')),  // case-insensitive in HTML
             array('div div', array('li-div')),
             array('div, div div', array('outer-div', 'li-div', 'foobar-div')),
             array('a[name]', array('name-anchor')),
@@ -220,9 +229,9 @@ class TranslatorTest extends TestCase {
             array('* :root', array()),
             array('*:contains("link")', array('html', 'outer-div', 'tag-anchor', 'nofollow-anchor')),
             array(':CONtains("link")', array('html', 'outer-div', 'tag-anchor', 'nofollow-anchor')),
-            array('*:contains("LInk")', array()), // case sensitive
+            array('*:contains("LInk")', array()),  // case sensitive
             array('*:contains("e")', array('html', 'nil', 'outer-div', 'first-ol', 'first-li', 'paragraph', 'p-em')),
-            array('*:contains("E")', array()), // case-sensitive
+            array('*:contains("E")', array()),  // case-sensitive
             array('.a', array('first-ol')),
             array('.b', array('first-ol')),
             array('*.a', array('first-ol')),
@@ -262,7 +271,8 @@ class TranslatorTest extends TestCase {
         );
     }
 
-    public function getHtmlShakespearTestData() {
+    public function getHtmlShakespearTestData()
+    {
         return array(
             array('*', 246),
             array('div:contains(CELIA)', 26),
@@ -312,5 +322,4 @@ class TranslatorTest extends TestCase {
             array('div[class~=dialog]', 51), // ? Seems right
         );
     }
-
 }

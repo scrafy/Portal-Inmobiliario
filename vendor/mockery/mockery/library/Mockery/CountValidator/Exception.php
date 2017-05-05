@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,6 +20,6 @@
 
 namespace Mockery\CountValidator;
 
-class Exception extends \OutOfBoundsException {
-    
+class Exception extends \OutOfBoundsException
+{
 }

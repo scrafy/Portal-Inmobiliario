@@ -2,8 +2,8 @@
 
 namespace Illuminate\Cache\Events;
 
-abstract class CacheEvent {
-
+abstract class CacheEvent
+{
     /**
      * The key of the event.
      *
@@ -25,7 +25,8 @@ abstract class CacheEvent {
      * @param  array  $tags
      * @return void
      */
-    public function __construct($key, array $tags = []) {
+    public function __construct($key, array $tags = [])
+    {
         $this->key = $key;
         $this->tags = $tags;
     }
@@ -36,10 +37,10 @@ abstract class CacheEvent {
      * @param  array  $tags
      * @return $this
      */
-    public function setTags($tags) {
+    public function setTags($tags)
+    {
         $this->tags = $tags;
 
         return $this;
     }
-
 }

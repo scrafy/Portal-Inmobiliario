@@ -13,8 +13,8 @@ use Illuminate\Database\SqlServerConnection;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
-class ConnectionFactory {
-
+class ConnectionFactory
+{
     /**
      * The IoC container instance.
      *
@@ -28,7 +28,8 @@ class ConnectionFactory {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function __construct(Container $container) {
+    public function __construct(Container $container)
+    {
         $this->container = $container;
     }
 
@@ -39,7 +40,8 @@ class ConnectionFactory {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    public function make(array $config, $name = null) {
+    public function make(array $config, $name = null)
+    {
         $config = $this->parseConfig($config, $name);
 
         if (isset($config['read'])) {
@@ -56,7 +58,8 @@ class ConnectionFactory {
      * @param  string  $name
      * @return array
      */
-    protected function parseConfig(array $config, $name) {
+    protected function parseConfig(array $config, $name)
+    {
         return Arr::add(Arr::add($config, 'prefix', ''), 'name', $name);
     }
 
@@ -66,11 +69,12 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Illuminate\Database\Connection
      */
-    protected function createSingleConnection(array $config) {
+    protected function createSingleConnection(array $config)
+    {
         $pdo = $this->createPdoResolver($config);
 
         return $this->createConnection(
-                        $config['driver'], $pdo, $config['database'], $config['prefix'], $config
+            $config['driver'], $pdo, $config['database'], $config['prefix'], $config
         );
     }
 
@@ -80,7 +84,8 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Illuminate\Database\Connection
      */
-    protected function createReadWriteConnection(array $config) {
+    protected function createReadWriteConnection(array $config)
+    {
         $connection = $this->createSingleConnection($this->getWriteConfig($config));
 
         return $connection->setReadPdo($this->createReadPdo($config));
@@ -92,7 +97,8 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Closure
      */
-    protected function createReadPdo(array $config) {
+    protected function createReadPdo(array $config)
+    {
         return $this->createPdoResolver($this->getReadConfig($config));
     }
 
@@ -102,9 +108,10 @@ class ConnectionFactory {
      * @param  array  $config
      * @return array
      */
-    protected function getReadConfig(array $config) {
+    protected function getReadConfig(array $config)
+    {
         return $this->mergeReadWriteConfig(
-                        $config, $this->getReadWriteConfig($config, 'read')
+            $config, $this->getReadWriteConfig($config, 'read')
         );
     }
 
@@ -114,9 +121,10 @@ class ConnectionFactory {
      * @param  array  $config
      * @return array
      */
-    protected function getWriteConfig(array $config) {
+    protected function getWriteConfig(array $config)
+    {
         return $this->mergeReadWriteConfig(
-                        $config, $this->getReadWriteConfig($config, 'write')
+            $config, $this->getReadWriteConfig($config, 'write')
         );
     }
 
@@ -127,8 +135,11 @@ class ConnectionFactory {
      * @param  string  $type
      * @return array
      */
-    protected function getReadWriteConfig(array $config, $type) {
-        return isset($config[$type][0]) ? $config[$type][array_rand($config[$type])] : $config[$type];
+    protected function getReadWriteConfig(array $config, $type)
+    {
+        return isset($config[$type][0])
+                        ? $config[$type][array_rand($config[$type])]
+                        : $config[$type];
     }
 
     /**
@@ -138,7 +149,8 @@ class ConnectionFactory {
      * @param  array  $merge
      * @return array
      */
-    protected function mergeReadWriteConfig(array $config, array $merge) {
+    protected function mergeReadWriteConfig(array $config, array $merge)
+    {
         return Arr::except(array_merge($config, $merge), ['read', 'write']);
     }
 
@@ -148,8 +160,11 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Closure
      */
-    protected function createPdoResolver(array $config) {
-        return array_key_exists('host', $config) ? $this->createPdoResolverWithHosts($config) : $this->createPdoResolverWithoutHosts($config);
+    protected function createPdoResolver(array $config)
+    {
+        return array_key_exists('host', $config)
+                            ? $this->createPdoResolverWithHosts($config)
+                            : $this->createPdoResolverWithoutHosts($config);
     }
 
     /**
@@ -158,7 +173,8 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Closure
      */
-    protected function createPdoResolverWithHosts(array $config) {
+    protected function createPdoResolverWithHosts(array $config)
+    {
         return function () use ($config) {
             foreach (Arr::shuffle($hosts = $this->parseHosts($config)) as $key => $host) {
                 $config['host'] = $host;
@@ -182,7 +198,8 @@ class ConnectionFactory {
      * @param  array  $config
      * @return array
      */
-    protected function parseHosts(array $config) {
+    protected function parseHosts(array $config)
+    {
         $hosts = array_wrap($config['host']);
 
         if (empty($hosts)) {
@@ -198,7 +215,8 @@ class ConnectionFactory {
      * @param  array  $config
      * @return \Closure
      */
-    protected function createPdoResolverWithoutHosts(array $config) {
+    protected function createPdoResolverWithoutHosts(array $config)
+    {
         return function () use ($config) {
             return $this->createConnector($config)->connect($config);
         };
@@ -212,8 +230,9 @@ class ConnectionFactory {
      *
      * @throws \InvalidArgumentException
      */
-    public function createConnector(array $config) {
-        if (!isset($config['driver'])) {
+    public function createConnector(array $config)
+    {
+        if (! isset($config['driver'])) {
             throw new InvalidArgumentException('A driver must be specified.');
         }
 
@@ -247,7 +266,8 @@ class ConnectionFactory {
      *
      * @throws \InvalidArgumentException
      */
-    protected function createConnection($driver, $connection, $database, $prefix = '', array $config = []) {
+    protected function createConnection($driver, $connection, $database, $prefix = '', array $config = [])
+    {
         if ($resolver = Connection::getResolver($driver)) {
             return $resolver($connection, $database, $prefix, $config);
         }
@@ -265,5 +285,4 @@ class ConnectionFactory {
 
         throw new InvalidArgumentException("Unsupported driver [$driver]");
     }
-
 }

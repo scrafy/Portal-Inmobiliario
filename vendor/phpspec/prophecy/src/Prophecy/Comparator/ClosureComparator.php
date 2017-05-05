@@ -19,18 +19,24 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class ClosureComparator extends Comparator {
-
-    public function accepts($expected, $actual) {
-        return is_object($expected) && $expected instanceof \Closure && is_object($actual) && $actual instanceof \Closure;
+final class ClosureComparator extends Comparator
+{
+    public function accepts($expected, $actual)
+    {
+        return is_object($expected) && $expected instanceof \Closure
+            && is_object($actual) && $actual instanceof \Closure;
     }
 
-    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false) {
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
         throw new ComparisonFailure(
-        $expected, $actual,
-        // we don't need a diff
-        '', '', false, 'all closures are born different'
+            $expected,
+            $actual,
+            // we don't need a diff
+            '',
+            '',
+            false,
+            'all closures are born different'
         );
     }
-
 }

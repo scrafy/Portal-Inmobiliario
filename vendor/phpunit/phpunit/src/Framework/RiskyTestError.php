@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a risky test.
  */
-class PHPUnit_Framework_RiskyTestError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_RiskyTest {
-    
+class PHPUnit_Framework_RiskyTestError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_RiskyTest
+{
 }

@@ -2,11 +2,12 @@
 
 namespace Faker\Provider\en_GB;
 
-class Person extends \Faker\Provider\Person {
-
+class Person extends \Faker\Provider\Person
+{
     protected static $maleNameFormats = array(
         '{{firstNameMale}} {{lastName}}',
     );
+
     protected static $femaleNameFormats = array(
         '{{firstNameFemale}} {{lastName}}',
     );
@@ -38,6 +39,7 @@ class Person extends \Faker\Provider\Person {
         'Wayne', 'Will', 'William',
         'Zachary', 'Zach'
     );
+
     protected static $firstNameFemale = array(
         'Abbie', 'Abigail', 'Adele', 'Alexa', 'Alexandra', 'Alice', 'Alison', 'Amanda', 'Amber', 'Amelia', 'Amy', 'Anna', 'Ashley', 'Ava',
         'Beth', 'Bethany', 'Becky',
@@ -56,7 +58,7 @@ class Person extends \Faker\Provider\Person {
         'Olivia',
         'Patricia', 'Paula', 'Pauline', 'Phoebe', 'Poppy',
         'Rachel', 'Rebecca', 'Rosie', 'Rowena', 'Roxanne', 'Ruby', 'Ruth',
-        'Sabrina', 'Sally', 'Samantha', 'Sarah', 'Sasha', 'Scarlett', 'Selina', 'Shannon', 'Sienna', 'Sofia', 'Sonia', 'Sophia', 'Sophie', 'Stacey', 'Stephanie', 'Suzanne', 'Summer',
+        'Sabrina', 'Sally', 'Samantha', 'Sarah', 'Sasha', 'Scarlett', 'Selina', 'Shannon', 'Sienna', 'Sofia', 'Sonia', 'Sophia', 'Sophie', 'Stacey', 'Stephanie','Suzanne', 'Summer',
         'Tanya', 'Tara', 'Teagan', 'Theresa', 'Tiffany', 'Tina', 'Tracy',
         'Vanessa', 'Vicky', 'Victoria',
         'Wendy',
@@ -88,5 +90,4 @@ class Person extends \Faker\Provider\Person {
         'Walker', 'Walsh', 'Ward', 'Watson', 'White', 'Wilkinson', 'Williams', 'Wilson', 'Wood', 'Wright',
         'Young',
     );
-
 }

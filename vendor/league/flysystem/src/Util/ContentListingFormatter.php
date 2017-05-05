@@ -7,13 +7,12 @@ use League\Flysystem\Util;
 /**
  * @internal
  */
-class ContentListingFormatter {
-
+class ContentListingFormatter
+{
     /**
      * @var string
      */
     private $directory;
-
     /**
      * @var bool
      */
@@ -23,7 +22,8 @@ class ContentListingFormatter {
      * @param string $directory
      * @param bool   $recursive
      */
-    public function __construct($directory, $recursive) {
+    public function __construct($directory, $recursive)
+    {
         $this->directory = $directory;
         $this->recursive = $recursive;
     }
@@ -35,17 +35,20 @@ class ContentListingFormatter {
      *
      * @return array
      */
-    public function formatListing(array $listing) {
+    public function formatListing(array $listing)
+    {
         $listing = array_values(
-                array_map(
-                        [$this, 'addPathInfo'], array_filter($listing, [$this, 'isEntryOutOfScope'])
-                )
+            array_map(
+                [$this, 'addPathInfo'],
+                array_filter($listing, [$this, 'isEntryOutOfScope'])
+            )
         );
 
         return $this->sortListing($listing);
     }
 
-    private function addPathInfo(array $entry) {
+    private function addPathInfo(array $entry)
+    {
         return $entry + Util::pathinfo($entry['path']);
     }
 
@@ -56,7 +59,8 @@ class ContentListingFormatter {
      *
      * @return bool
      */
-    private function isEntryOutOfScope(array $entry) {
+    private function isEntryOutOfScope(array $entry)
+    {
         if (empty($entry['path']) && $entry['path'] !== '0') {
             return false;
         }
@@ -75,7 +79,8 @@ class ContentListingFormatter {
      *
      * @return bool
      */
-    private function residesInDirectory(array $entry) {
+    private function residesInDirectory(array $entry)
+    {
         if ($this->directory === '') {
             return true;
         }
@@ -90,7 +95,8 @@ class ContentListingFormatter {
      *
      * @return bool
      */
-    private function isDirectChild(array $entry) {
+    private function isDirectChild(array $entry)
+    {
         return Util::dirname($entry['path']) === $this->directory;
     }
 
@@ -99,14 +105,15 @@ class ContentListingFormatter {
      *
      * @return array
      */
-    private function sortListing(array $listing) {
+    private function sortListing(array $listing)
+    {
         usort(
-                $listing, function ($a, $b) {
-            return strcasecmp($a['path'], $b['path']);
-        }
+            $listing,
+            function ($a, $b) {
+                return strcasecmp($a['path'], $b['path']);
+            }
         );
 
         return $listing;
     }
-
 }

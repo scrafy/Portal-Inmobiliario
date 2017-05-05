@@ -4,9 +4,10 @@ namespace Mockery\Generator\StringManipulation\Pass;
 
 use Mockery\Generator\MockConfiguration;
 
-class ClassPass implements Pass {
-
-    public function apply($code, MockConfiguration $config) {
+class ClassPass implements Pass
+{
+    public function apply($code, MockConfiguration $config)
+    {
         $target = $config->getTargetClass();
 
         if (!$target) {
@@ -22,10 +23,10 @@ class ClassPass implements Pass {
             $targetCode = '<?php ';
 
             if ($target->inNamespace()) {
-                $targetCode .= 'namespace ' . $target->getNamespaceName() . '; ';
+                $targetCode.= 'namespace ' . $target->getNamespaceName(). '; ';
             }
 
-            $targetCode .= 'class ' . $target->getShortName() . ' {} ';
+            $targetCode.= 'class ' . $target->getShortName() . ' {} ';
 
             /*
              * We could eval here, but it doesn't play well with the way
@@ -39,10 +40,11 @@ class ClassPass implements Pass {
         }
 
         $code = str_replace(
-                "implements MockInterface", "extends \\" . $className . " implements MockInterface", $code
+            "implements MockInterface",
+            "extends \\" . $className . " implements MockInterface",
+            $code
         );
 
         return $code;
     }
-
 }

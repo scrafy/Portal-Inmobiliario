@@ -17,8 +17,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTransport {
-
+class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTransport
+{
     /**
      * Connection buffer parameters.
      *
@@ -29,7 +29,7 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
         'blocking' => 1,
         'command' => '/usr/sbin/sendmail -bs',
         'type' => Swift_Transport_IoBuffer::TYPE_PROCESS,
-    );
+        );
 
     /**
      * Create a new SendmailTransport with $buf for I/O.
@@ -37,14 +37,16 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
      * @param Swift_Transport_IoBuffer     $buf
      * @param Swift_Events_EventDispatcher $dispatcher
      */
-    public function __construct(Swift_Transport_IoBuffer $buf, Swift_Events_EventDispatcher $dispatcher) {
+    public function __construct(Swift_Transport_IoBuffer $buf, Swift_Events_EventDispatcher $dispatcher)
+    {
         parent::__construct($buf, $dispatcher);
     }
 
     /**
      * Start the standalone SMTP session if running in -bs mode.
      */
-    public function start() {
+    public function start()
+    {
         if (false !== strpos($this->getCommand(), ' -bs')) {
             parent::start();
         }
@@ -64,7 +66,8 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
      *
      * @return Swift_Transport_SendmailTransport
      */
-    public function setCommand($command) {
+    public function setCommand($command)
+    {
         $this->_params['command'] = $command;
 
         return $this;
@@ -75,7 +78,8 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
      *
      * @return string
      */
-    public function getCommand() {
+    public function getCommand()
+    {
         return $this->_params['command'];
     }
 
@@ -93,7 +97,8 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
      *
      * @return int
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $failedRecipients = (array) $failedRecipients;
         $command = $this->getCommand();
         $buffer = $this->getBuffer();
@@ -108,7 +113,7 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
             }
 
             if (false === strpos($command, ' -f')) {
-                $command .= ' -f' . escapeshellarg($this->_getReversePath($message));
+                $command .= ' -f'.escapeshellarg($this->_getReversePath($message));
             }
 
             $buffer->initialize(array_merge($this->_params, array('command' => $command)));
@@ -119,8 +124,10 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
                 $buffer->setWriteTranslations(array("\r\n" => "\n"));
             }
 
-            $count = count((array) $message->getTo()) + count((array) $message->getCc()) + count((array) $message->getBcc())
-            ;
+            $count = count((array) $message->getTo())
+                + count((array) $message->getCc())
+                + count((array) $message->getBcc())
+                ;
             $message->toByteStream($buffer);
             $buffer->flushBuffers();
             $buffer->setWriteTranslations(array());
@@ -137,17 +144,17 @@ class Swift_Transport_SendmailTransport extends Swift_Transport_AbstractSmtpTran
             $count = parent::send($message, $failedRecipients);
         } else {
             $this->_throwException(new Swift_TransportException(
-                    'Unsupported sendmail command flags [' . $command . ']. ' .
-                    'Must be one of "-bs" or "-t" but can include additional flags.'
-            ));
+                'Unsupported sendmail command flags ['.$command.']. '.
+                'Must be one of "-bs" or "-t" but can include additional flags.'
+                ));
         }
 
         return $count;
     }
 
     /** Get the params to initialize the buffer */
-    protected function _getBufferParams() {
+    protected function _getBufferParams()
+    {
         return $this->_params;
     }
-
 }

@@ -7,8 +7,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-class Composer {
-
+class Composer
+{
     /**
      * The filesystem instance.
      *
@@ -30,7 +30,8 @@ class Composer {
      * @param  string|null  $workingPath
      * @return void
      */
-    public function __construct(Filesystem $files, $workingPath = null) {
+    public function __construct(Filesystem $files, $workingPath = null)
+    {
         $this->files = $files;
         $this->workingPath = $workingPath;
     }
@@ -41,10 +42,11 @@ class Composer {
      * @param  string  $extra
      * @return void
      */
-    public function dumpAutoloads($extra = '') {
+    public function dumpAutoloads($extra = '')
+    {
         $process = $this->getProcess();
 
-        $process->setCommandLine(trim($this->findComposer() . ' dump-autoload ' . $extra));
+        $process->setCommandLine(trim($this->findComposer().' dump-autoload '.$extra));
 
         $process->run();
     }
@@ -54,7 +56,8 @@ class Composer {
      *
      * @return void
      */
-    public function dumpOptimized() {
+    public function dumpOptimized()
+    {
         $this->dumpAutoloads('--optimize');
     }
 
@@ -63,9 +66,10 @@ class Composer {
      *
      * @return string
      */
-    protected function findComposer() {
-        if ($this->files->exists($this->workingPath . '/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)) . ' composer.phar';
+    protected function findComposer()
+    {
+        if ($this->files->exists($this->workingPath.'/composer.phar')) {
+            return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)).' composer.phar';
         }
 
         return 'composer';
@@ -76,7 +80,8 @@ class Composer {
      *
      * @return \Symfony\Component\Process\Process
      */
-    protected function getProcess() {
+    protected function getProcess()
+    {
         return (new Process('', $this->workingPath))->setTimeout(null);
     }
 
@@ -86,10 +91,10 @@ class Composer {
      * @param  string  $path
      * @return $this
      */
-    public function setWorkingPath($path) {
+    public function setWorkingPath($path)
+    {
         $this->workingPath = realpath($path);
 
         return $this;
     }
-
 }

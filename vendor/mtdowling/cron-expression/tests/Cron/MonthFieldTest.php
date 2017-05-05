@@ -9,12 +9,13 @@ use PHPUnit_Framework_TestCase;
 /**
  * @author Michael Dowling <mtdowling@gmail.com>
  */
-class MonthFieldTest extends PHPUnit_Framework_TestCase {
-
+class MonthFieldTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @covers Cron\MonthField::validate
      */
-    public function testValidatesField() {
+    public function testValidatesField()
+    {
         $f = new MonthField();
         $this->assertTrue($f->validate('12'));
         $this->assertTrue($f->validate('*'));
@@ -25,7 +26,8 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsDate() {
+    public function testIncrementsDate()
+    {
         $d = new DateTime('2011-03-15 11:15:00');
         $f = new MonthField();
         $f->increment($d);
@@ -39,7 +41,8 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsDateWithThirtyMinuteTimezone() {
+    public function testIncrementsDateWithThirtyMinuteTimezone()
+    {
         $tz = date_default_timezone_get();
         date_default_timezone_set('America/St_Johns');
         $d = new DateTime('2011-03-31 11:59:59');
@@ -53,10 +56,12 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase {
         date_default_timezone_set($tz);
     }
 
+
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testIncrementsYearAsNeeded() {
+    public function testIncrementsYearAsNeeded()
+    {
         $f = new MonthField();
         $d = new DateTime('2011-12-15 00:00:00');
         $f->increment($d);
@@ -66,11 +71,11 @@ class MonthFieldTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers Cron\MonthField::increment
      */
-    public function testDecrementsYearAsNeeded() {
+    public function testDecrementsYearAsNeeded()
+    {
         $f = new MonthField();
         $d = new DateTime('2011-01-15 00:00:00');
         $f->increment($d, true);
         $this->assertEquals('2010-12-31 23:59:00', $d->format('Y-m-d H:i:s'));
     }
-
 }

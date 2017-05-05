@@ -4,14 +4,15 @@ namespace League\Flysystem\Plugin;
 
 use InvalidArgumentException;
 
-class GetWithMetadata extends AbstractPlugin {
-
+class GetWithMetadata extends AbstractPlugin
+{
     /**
      * Get the method name.
      *
      * @return string
      */
-    public function getMethod() {
+    public function getMethod()
+    {
         return 'getWithMetadata';
     }
 
@@ -25,17 +26,18 @@ class GetWithMetadata extends AbstractPlugin {
      *
      * @return array|false metadata
      */
-    public function handle($path, array $metadata) {
+    public function handle($path, array $metadata)
+    {
         $object = $this->filesystem->getMetadata($path);
 
-        if (!$object) {
+        if ( ! $object) {
             return false;
         }
 
         $keys = array_diff($metadata, array_keys($object));
 
         foreach ($keys as $key) {
-            if (!method_exists($this->filesystem, $method = 'get' . ucfirst($key))) {
+            if ( ! method_exists($this->filesystem, $method = 'get' . ucfirst($key))) {
                 throw new InvalidArgumentException('Could not fetch metadata: ' . $key);
             }
 
@@ -44,5 +46,4 @@ class GetWithMetadata extends AbstractPlugin {
 
         return $object;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -17,8 +16,8 @@ use SebastianBergmann\CodeCoverage\Node\Directory as DirectoryNode;
 use SebastianBergmann\CodeCoverage\Node\File as FileNode;
 use SebastianBergmann\CodeCoverage\RuntimeException;
 
-class Facade {
-
+class Facade
+{
     /**
      * @var string
      */
@@ -35,7 +34,8 @@ class Facade {
      *
      * @throws RuntimeException
      */
-    public function process(CodeCoverage $coverage, $target) {
+    public function process(CodeCoverage $coverage, $target)
+    {
         if (substr($target, -1, 1) != DIRECTORY_SEPARATOR) {
             $target .= DIRECTORY_SEPARATOR;
         }
@@ -46,14 +46,14 @@ class Facade {
         $report = $coverage->getReport();
 
         $this->project = new Project(
-                $coverage->getReport()->getName()
+            $coverage->getReport()->getName()
         );
 
         $this->processTests($coverage->getTests());
         $this->processDirectory($report, $this->project);
 
-        $index = $this->project->asDom();
-        $index->formatOutput = true;
+        $index                     = $this->project->asDom();
+        $index->formatOutput       = true;
         $index->preserveWhiteSpace = false;
         $index->save($target . '/index.xml');
     }
@@ -61,27 +61,29 @@ class Facade {
     /**
      * @param string $directory
      */
-    private function initTargetDirectory($directory) {
+    private function initTargetDirectory($directory)
+    {
         if (file_exists($directory)) {
             if (!is_dir($directory)) {
                 throw new RuntimeException(
-                "'$directory' exists but is not a directory."
+                    "'$directory' exists but is not a directory."
                 );
             }
 
             if (!is_writable($directory)) {
                 throw new RuntimeException(
-                "'$directory' exists but is not writable."
+                    "'$directory' exists but is not writable."
                 );
             }
         } elseif (!@mkdir($directory, 0777, true)) {
             throw new RuntimeException(
-            "'$directory' could not be created."
+                "'$directory' could not be created."
             );
         }
     }
 
-    private function processDirectory(DirectoryNode $directory, Node $context) {
+    private function processDirectory(DirectoryNode $directory, Node $context)
+    {
         $dirObject = $context->addDirectory($directory->getName());
 
         $this->setTotals($directory, $dirObject->getTotals());
@@ -98,14 +100,16 @@ class Facade {
             }
 
             throw new RuntimeException(
-            'Unknown node type for XML report'
+                'Unknown node type for XML report'
             );
         }
     }
 
-    private function processFile(FileNode $file, Directory $context) {
+    private function processFile(FileNode $file, Directory $context)
+    {
         $fileObject = $context->addFile(
-                $file->getName(), $file->getId() . '.xml'
+            $file->getName(),
+            $file->getId() . '.xml'
         );
 
         $this->setTotals($file, $fileObject->getTotals());
@@ -137,16 +141,17 @@ class Facade {
         }
 
         $this->initTargetDirectory(
-                $this->target . dirname($file->getId()) . '/'
+            $this->target . dirname($file->getId()) . '/'
         );
 
-        $fileDom = $fileReport->asDom();
-        $fileDom->formatOutput = true;
+        $fileDom                     = $fileReport->asDom();
+        $fileDom->formatOutput       = true;
         $fileDom->preserveWhiteSpace = false;
         $fileDom->save($this->target . $file->getId() . '.xml');
     }
 
-    private function processUnit($unit, Report $report) {
+    private function processUnit($unit, Report $report)
+    {
         if (isset($unit['className'])) {
             $unitObject = $report->getClassObject($unit['className']);
         } else {
@@ -154,13 +159,18 @@ class Facade {
         }
 
         $unitObject->setLines(
-                $unit['startLine'], $unit['executableLines'], $unit['executedLines']
+            $unit['startLine'],
+            $unit['executableLines'],
+            $unit['executedLines']
         );
 
         $unitObject->setCrap($unit['crap']);
 
         $unitObject->setPackage(
-                $unit['package']['fullPackage'], $unit['package']['package'], $unit['package']['subpackage'], $unit['package']['category']
+            $unit['package']['fullPackage'],
+            $unit['package']['package'],
+            $unit['package']['subpackage'],
+            $unit['package']['category']
         );
 
         $unitObject->setNamespace($unit['package']['namespace']);
@@ -171,12 +181,15 @@ class Facade {
             $methodObject->setLines($method['startLine'], $method['endLine']);
             $methodObject->setCrap($method['crap']);
             $methodObject->setTotals(
-                    $method['executableLines'], $method['executedLines'], $method['coverage']
+                $method['executableLines'],
+                $method['executedLines'],
+                $method['coverage']
             );
         }
     }
 
-    private function processFunction($function, Report $report) {
+    private function processFunction($function, Report $report)
+    {
         $functionObject = $report->getFunctionObject($function['functionName']);
 
         $functionObject->setSignature($function['signature']);
@@ -185,7 +198,8 @@ class Facade {
         $functionObject->setTotals($function['executableLines'], $function['executedLines'], $function['coverage']);
     }
 
-    private function processTests(array $tests) {
+    private function processTests(array $tests)
+    {
         $testsObject = $this->project->getTests();
 
         foreach ($tests as $test => $result) {
@@ -197,28 +211,36 @@ class Facade {
         }
     }
 
-    private function setTotals(AbstractNode $node, Totals $totals) {
+    private function setTotals(AbstractNode $node, Totals $totals)
+    {
         $loc = $node->getLinesOfCode();
 
         $totals->setNumLines(
-                $loc['loc'], $loc['cloc'], $loc['ncloc'], $node->getNumExecutableLines(), $node->getNumExecutedLines()
+            $loc['loc'],
+            $loc['cloc'],
+            $loc['ncloc'],
+            $node->getNumExecutableLines(),
+            $node->getNumExecutedLines()
         );
 
         $totals->setNumClasses(
-                $node->getNumClasses(), $node->getNumTestedClasses()
+            $node->getNumClasses(),
+            $node->getNumTestedClasses()
         );
 
         $totals->setNumTraits(
-                $node->getNumTraits(), $node->getNumTestedTraits()
+            $node->getNumTraits(),
+            $node->getNumTestedTraits()
         );
 
         $totals->setNumMethods(
-                $node->getNumMethods(), $node->getNumTestedMethods()
+            $node->getNumMethods(),
+            $node->getNumTestedMethods()
         );
 
         $totals->setNumFunctions(
-                $node->getNumFunctions(), $node->getNumTestedFunctions()
+            $node->getNumFunctions(),
+            $node->getNumTestedFunctions()
         );
     }
-
 }

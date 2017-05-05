@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Return_ extends Node\Stmt {
-
+class Return_ extends Node\Stmt
+{
     /** @var null|Node\Expr Expression */
     public $expr;
 
@@ -23,5 +23,4 @@ class Return_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('expr');
     }
-
 }

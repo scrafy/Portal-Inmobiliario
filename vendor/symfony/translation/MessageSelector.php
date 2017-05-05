@@ -19,8 +19,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class MessageSelector {
-
+class MessageSelector
+{
     /**
      * Given a message with different plural translations separated by a
      * pipe (|), this method returns the correct portion of the message based
@@ -47,14 +47,15 @@ class MessageSelector {
      *
      * @throws InvalidArgumentException
      */
-    public function choose($message, $number, $locale) {
+    public function choose($message, $number, $locale)
+    {
         preg_match_all('/(?:\|\||[^\|])++/', $message, $parts);
         $explicitRules = array();
         $standardRules = array();
         foreach ($parts[0] as $part) {
             $part = trim(str_replace('||', '|', $part));
 
-            if (preg_match('/^(?P<interval>' . Interval::getIntervalRegexp() . ')\s*(?P<message>.*?)$/xs', $part, $matches)) {
+            if (preg_match('/^(?P<interval>'.Interval::getIntervalRegexp().')\s*(?P<message>.*?)$/xs', $part, $matches)) {
                 $explicitRules[$matches['interval']] = $matches['message'];
             } elseif (preg_match('/^\w+\:\s*(.*?)$/', $part, $matches)) {
                 $standardRules[] = $matches[1];
@@ -84,5 +85,4 @@ class MessageSelector {
 
         return $standardRules[$position];
     }
-
 }

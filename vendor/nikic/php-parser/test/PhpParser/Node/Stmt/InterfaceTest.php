@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class InterfaceTest extends \PHPUnit_Framework_TestCase {
-
+class InterfaceTest extends \PHPUnit_Framework_TestCase
+{
     public function testGetMethods() {
         $methods = array(
             new ClassMethod('foo'),
@@ -23,5 +23,4 @@ class InterfaceTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertSame($methods, $interface->getMethods());
     }
-
 }

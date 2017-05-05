@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Asserts whether or not two JSON objects are equal.
  */
-class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
+{
     /**
      * @var string
      */
@@ -24,7 +23,8 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      *
      * @param string $value
      */
-    public function __construct($value) {
+    public function __construct($value)
+    {
         parent::__construct();
         $this->value = $value;
     }
@@ -39,7 +39,8 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         $decodedOther = json_decode($other);
         if (json_last_error()) {
             return false;
@@ -58,10 +59,11 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return sprintf(
-                'matches JSON string "%s"', $this->value
+            'matches JSON string "%s"',
+            $this->value
         );
     }
-
 }

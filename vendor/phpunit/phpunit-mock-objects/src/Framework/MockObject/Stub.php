@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -17,8 +16,8 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing {
-
+interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
+{
     /**
      * Fakes the processing of the invocation $invocation by returning a
      * specific value.

@@ -4,17 +4,14 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class If_ extends Node\Stmt {
-
+class If_ extends Node\Stmt
+{
     /** @var Node\Expr Condition expression */
     public $cond;
-
     /** @var Node[] Statements */
     public $stmts;
-
     /** @var ElseIf_[] Elseif clauses */
     public $elseifs;
-
     /** @var null|Else_ Else clause */
     public $else;
 
@@ -39,5 +36,4 @@ class If_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('cond', 'stmts', 'elseifs', 'else');
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Debug;
 
 use Exception;
 
-interface ExceptionHandler {
-
+interface ExceptionHandler
+{
     /**
      * Report or log an exception.
      *

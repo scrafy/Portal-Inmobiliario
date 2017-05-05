@@ -4,14 +4,12 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class ArrayItem extends Expr {
-
+class ArrayItem extends Expr
+{
     /** @var null|Expr Key */
     public $key;
-
     /** @var Expr Value */
     public $value;
-
     /** @var bool Whether to assign by reference */
     public $byRef;
 
@@ -33,5 +31,4 @@ class ArrayItem extends Expr {
     public function getSubNodeNames() {
         return array('key', 'value', 'byRef');
     }
-
 }

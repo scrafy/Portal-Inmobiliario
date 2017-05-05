@@ -4,15 +4,16 @@ namespace Illuminate\Redis\Connections;
 
 use Closure;
 
-class PredisConnection extends Connection {
-
+class PredisConnection extends Connection
+{
     /**
      * Create a new Predis connection.
      *
      * @param  \Predis\Client  $client
      * @return void
      */
-    public function __construct($client) {
+    public function __construct($client)
+    {
         $this->client = $client;
     }
 
@@ -24,7 +25,8 @@ class PredisConnection extends Connection {
      * @param  string  $method
      * @return void
      */
-    public function createSubscription($channels, Closure $callback, $method = 'subscribe') {
+    public function createSubscription($channels, Closure $callback, $method = 'subscribe')
+    {
         $loop = $this->pubSubLoop();
 
         call_user_func_array([$loop, $method], (array) $channels);
@@ -37,5 +39,4 @@ class PredisConnection extends Connection {
 
         unset($loop);
     }
-
 }

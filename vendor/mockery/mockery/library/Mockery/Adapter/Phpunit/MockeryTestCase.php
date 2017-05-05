@@ -4,16 +4,18 @@ namespace Mockery\Adapter\Phpunit;
 
 use Mockery;
 
-abstract class MockeryTestCase extends \PHPUnit_Framework_TestCase {
-
-    protected function assertPostConditions() {
+abstract class MockeryTestCase extends \PHPUnit_Framework_TestCase
+{
+    protected function assertPostConditions()
+    {
         $this->addMockeryExpectationsToAssertionCount();
         $this->closeMockery();
 
         parent::assertPostConditions();
     }
 
-    protected function addMockeryExpectationsToAssertionCount() {
+    protected function addMockeryExpectationsToAssertionCount()
+    {
         $container = Mockery::getContainer();
         if ($container != null) {
             $count = $container->mockery_getExpectationCount();
@@ -21,8 +23,8 @@ abstract class MockeryTestCase extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function closeMockery() {
+    protected function closeMockery()
+    {
         Mockery::close();
     }
-
 }

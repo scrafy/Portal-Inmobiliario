@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Trait_ extends ClassLike {
-
+class Trait_ extends ClassLike
+{
     /**
      * Constructs a trait node.
      *
@@ -23,5 +23,4 @@ class Trait_ extends ClassLike {
     public function getSubNodeNames() {
         return array('name', 'stmts');
     }
-
 }

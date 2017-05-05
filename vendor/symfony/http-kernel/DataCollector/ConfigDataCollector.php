@@ -21,8 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ConfigDataCollector extends DataCollector {
-
+class ConfigDataCollector extends DataCollector
+{
     /**
      * @var KernelInterface
      */
@@ -36,7 +36,8 @@ class ConfigDataCollector extends DataCollector {
      * @param string $name    The name of the application using the web profiler
      * @param string $version The version of the application using the web profiler
      */
-    public function __construct($name = null, $version = null) {
+    public function __construct($name = null, $version = null)
+    {
         $this->name = $name;
         $this->version = $version;
     }
@@ -46,14 +47,16 @@ class ConfigDataCollector extends DataCollector {
      *
      * @param KernelInterface $kernel A KernelInterface instance
      */
-    public function setKernel(KernelInterface $kernel = null) {
+    public function setKernel(KernelInterface $kernel = null)
+    {
         $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         $this->data = array(
             'app_name' => $this->name,
             'app_version' => $this->version,
@@ -83,11 +86,13 @@ class ConfigDataCollector extends DataCollector {
         }
     }
 
-    public function getApplicationName() {
+    public function getApplicationName()
+    {
         return $this->data['app_name'];
     }
 
-    public function getApplicationVersion() {
+    public function getApplicationVersion()
+    {
         return $this->data['app_version'];
     }
 
@@ -96,7 +101,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The token
      */
-    public function getToken() {
+    public function getToken()
+    {
         return $this->data['token'];
     }
 
@@ -105,7 +111,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The Symfony version
      */
-    public function getSymfonyVersion() {
+    public function getSymfonyVersion()
+    {
         return $this->data['symfony_version'];
     }
 
@@ -114,7 +121,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string One of: unknown, dev, stable, eom, eol
      */
-    public function getSymfonyState() {
+    public function getSymfonyState()
+    {
         return $this->data['symfony_state'];
     }
 
@@ -123,7 +131,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The PHP version
      */
-    public function getPhpVersion() {
+    public function getPhpVersion()
+    {
         return $this->data['php_version'];
     }
 
@@ -132,7 +141,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The application name
      */
-    public function getAppName() {
+    public function getAppName()
+    {
         return $this->data['name'];
     }
 
@@ -141,7 +151,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The environment
      */
-    public function getEnv() {
+    public function getEnv()
+    {
         return $this->data['env'];
     }
 
@@ -150,7 +161,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if debug is enabled, false otherwise
      */
-    public function isDebug() {
+    public function isDebug()
+    {
         return $this->data['debug'];
     }
 
@@ -159,7 +171,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if XDebug is enabled, false otherwise
      */
-    public function hasXDebug() {
+    public function hasXDebug()
+    {
         return $this->data['xdebug_enabled'];
     }
 
@@ -168,7 +181,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if EAccelerator is enabled, false otherwise
      */
-    public function hasEAccelerator() {
+    public function hasEAccelerator()
+    {
         return $this->data['eaccel_enabled'];
     }
 
@@ -177,7 +191,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if APC is enabled, false otherwise
      */
-    public function hasApc() {
+    public function hasApc()
+    {
         return $this->data['apc_enabled'];
     }
 
@@ -186,7 +201,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if Zend OPcache is enabled, false otherwise
      */
-    public function hasZendOpcache() {
+    public function hasZendOpcache()
+    {
         return $this->data['zend_opcache_enabled'];
     }
 
@@ -195,7 +211,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if XCache is enabled, false otherwise
      */
-    public function hasXCache() {
+    public function hasXCache()
+    {
         return $this->data['xcache_enabled'];
     }
 
@@ -204,7 +221,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if WinCache is enabled, false otherwise
      */
-    public function hasWinCache() {
+    public function hasWinCache()
+    {
         return $this->data['wincache_enabled'];
     }
 
@@ -213,11 +231,13 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return bool true if any accelerator is enabled, false otherwise
      */
-    public function hasAccelerator() {
+    public function hasAccelerator()
+    {
         return $this->hasApc() || $this->hasZendOpcache() || $this->hasEAccelerator() || $this->hasXCache() || $this->hasWinCache();
     }
 
-    public function getBundles() {
+    public function getBundles()
+    {
         return $this->data['bundles'];
     }
 
@@ -226,14 +246,16 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string The environment
      */
-    public function getSapiName() {
+    public function getSapiName()
+    {
         return $this->data['sapi_name'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'config';
     }
 
@@ -242,7 +264,8 @@ class ConfigDataCollector extends DataCollector {
      *
      * @return string One of: dev, stable, eom, eol
      */
-    private function determineSymfonyState() {
+    private function determineSymfonyState()
+    {
         $now = new \DateTime();
         $eom = \DateTime::createFromFormat('m/Y', Kernel::END_OF_MAINTENANCE)->modify('last day of this month');
         $eol = \DateTime::createFromFormat('m/Y', Kernel::END_OF_LIFE)->modify('last day of this month');
@@ -259,5 +282,4 @@ class ConfigDataCollector extends DataCollector {
 
         return $versionState;
     }
-
 }

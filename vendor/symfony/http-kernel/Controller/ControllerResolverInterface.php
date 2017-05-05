@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ControllerResolverInterface {
-
+interface ControllerResolverInterface
+{
     /**
      * Returns the Controller instance associated with a Request.
      *

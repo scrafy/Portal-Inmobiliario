@@ -13,10 +13,10 @@ $contextFactory = new ContextFactory();
 $context = $contextFactory->createForNamespace('My\Example', file_get_contents('Classy.php'));
 
 // Class named: \phpDocumentor\Reflection\Types\Resolver
-var_dump((string) $typeResolver->resolve('Types\Resolver', $context));
+var_dump((string)$typeResolver->resolve('Types\Resolver', $context));
 
 // String
-var_dump((string) $typeResolver->resolve('string', $context));
+var_dump((string)$typeResolver->resolve('string', $context));
 
 // Property named: \phpDocumentor\Reflection\Types\Resolver::$keyWords
-var_dump((string) $fqsenResolver->resolve('Types\Resolver::$keyWords', $context));
+var_dump((string)$fqsenResolver->resolve('Types\Resolver::$keyWords', $context));

@@ -4,8 +4,8 @@ namespace Illuminate\Database;
 
 use Closure;
 
-interface ConnectionInterface {
-
+interface ConnectionInterface
+{
     /**
      * Begin a fluent query against a database table.
      *

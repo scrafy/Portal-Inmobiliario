@@ -2,12 +2,13 @@
 
 namespace Mockery\Generator;
 
-class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
-
+class MockConfigurationTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
-    public function blackListedMethodsShouldNotBeInListToBeMocked() {
+    public function blackListedMethodsShouldNotBeInListToBeMocked()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\TestSubject"), array("foo"));
 
         $methods = $config->getMethodsToMock();
@@ -18,7 +19,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function blackListsAreCaseInsensitive() {
+    public function blackListsAreCaseInsensitive()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\TestSubject"), array("FOO"));
 
         $methods = $config->getMethodsToMock();
@@ -26,10 +28,12 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("bar", $methods[0]->getName());
     }
 
+
     /**
      * @test
      */
-    public function onlyWhiteListedMethodsShouldBeInListToBeMocked() {
+    public function onlyWhiteListedMethodsShouldBeInListToBeMocked()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\TestSubject"), array(), array('foo'));
 
         $methods = $config->getMethodsToMock();
@@ -40,7 +44,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function whitelistOverRulesBlackList() {
+    public function whitelistOverRulesBlackList()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\TestSubject"), array("foo"), array("foo"));
 
         $methods = $config->getMethodsToMock();
@@ -51,7 +56,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function whiteListsAreCaseInsensitive() {
+    public function whiteListsAreCaseInsensitive()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\TestSubject"), array(), array("FOO"));
 
         $methods = $config->getMethodsToMock();
@@ -62,7 +68,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function finalMethodsAreExcluded() {
+    public function finalMethodsAreExcluded()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\\ClassWithFinalMethod"));
 
         $methods = $config->getMethodsToMock();
@@ -73,7 +80,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldIncludeMethodsFromAllTargets() {
+    public function shouldIncludeMethodsFromAllTargets()
+    {
         $config = new MockConfiguration(array("Mockery\\Generator\\TestInterface", "Mockery\\Generator\\TestInterface2"));
         $methods = $config->getMethodsToMock();
         $this->assertEquals(2, count($methods));
@@ -83,7 +91,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @expectedException Mockery\Exception
      */
-    public function shouldThrowIfTargetClassIsFinal() {
+    public function shouldThrowIfTargetClassIsFinal()
+    {
         $config = new MockConfiguration(array("Mockery\\Generator\\TestFinal"));
         $config->getTargetClass();
     }
@@ -91,7 +100,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldTargetIteratorAggregateIfTryingToMockTraversable() {
+    public function shouldTargetIteratorAggregateIfTryingToMockTraversable()
+    {
         $config = new MockConfiguration(array("\\Traversable"));
 
         $interfaces = $config->getTargetInterfaces();
@@ -103,7 +113,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldTargetIteratorAggregateIfTraversableInTargetsTree() {
+    public function shouldTargetIteratorAggregateIfTraversableInTargetsTree()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\TestTraversableInterface"));
 
         $interfaces = $config->getTargetInterfaces();
@@ -115,7 +126,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldBringIteratorToHeadOfTargetListIfTraversablePresent() {
+    public function shouldBringIteratorToHeadOfTargetListIfTraversablePresent()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\TestTraversableInterface2"));
 
         $interfaces = $config->getTargetInterfaces();
@@ -127,7 +139,8 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function shouldBringIteratorAggregateToHeadOfTargetListIfTraversablePresent() {
+    public function shouldBringIteratorAggregateToHeadOfTargetListIfTraversablePresent()
+    {
         $config = new MockConfiguration(array("Mockery\Generator\TestTraversableInterface3"));
 
         $interfaces = $config->getTargetInterfaces();
@@ -135,55 +148,50 @@ class MockConfigurationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("IteratorAggregate", $interfaces[0]->getName());
         $this->assertEquals("Mockery\Generator\TestTraversableInterface3", $interfaces[1]->getName());
     }
-
 }
 
-interface TestTraversableInterface extends \Traversable {
-    
+interface TestTraversableInterface extends \Traversable
+{
+}
+interface TestTraversableInterface2 extends \Traversable, \Iterator
+{
+}
+interface TestTraversableInterface3 extends \Traversable, \IteratorAggregate
+{
 }
 
-interface TestTraversableInterface2 extends \Traversable, \Iterator {
-    
+final class TestFinal
+{
 }
 
-interface TestTraversableInterface3 extends \Traversable, \IteratorAggregate {
-    
-}
-
-final class TestFinal {
-    
-}
-
-interface TestInterface {
-
+interface TestInterface
+{
     public function foo();
 }
 
-interface TestInterface2 {
-
+interface TestInterface2
+{
     public function bar();
 }
 
-class TestSubject {
-
-    public function foo() {
-        
+class TestSubject
+{
+    public function foo()
+    {
     }
 
-    public function bar() {
-        
+    public function bar()
+    {
     }
-
 }
 
-class ClassWithFinalMethod {
-
-    final public function foo() {
-        
+class ClassWithFinalMethod
+{
+    final public function foo()
+    {
     }
 
-    public function bar() {
-        
+    public function bar()
+    {
     }
-
 }

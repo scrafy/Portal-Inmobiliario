@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a test that printed output.
  */
-class PHPUnit_Framework_OutputError extends PHPUnit_Framework_AssertionFailedError {
-    
+class PHPUnit_Framework_OutputError extends PHPUnit_Framework_AssertionFailedError
+{
 }

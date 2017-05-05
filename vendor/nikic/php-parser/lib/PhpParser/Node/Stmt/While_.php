@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class While_ extends Node\Stmt {
-
+class While_ extends Node\Stmt
+{
     /** @var Node\Expr Condition */
     public $cond;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -28,5 +27,4 @@ class While_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('cond', 'stmts');
     }
-
 }

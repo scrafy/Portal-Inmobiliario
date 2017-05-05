@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -18,8 +17,8 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
  *
  * @codeCoverageIgnore
  */
-class Xdebug implements Driver {
-
+class Xdebug implements Driver
+{
     /**
      * Cache the number of lines for each file
      *
@@ -30,15 +29,16 @@ class Xdebug implements Driver {
     /**
      * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         if (!extension_loaded('xdebug')) {
             throw new RuntimeException('This driver requires Xdebug');
         }
 
         if (version_compare(phpversion('xdebug'), '2.2.1', '>=') &&
-                !ini_get('xdebug.coverage_enable')) {
+            !ini_get('xdebug.coverage_enable')) {
             throw new RuntimeException(
-            'xdebug.coverage_enable=On has to be set in php.ini'
+                'xdebug.coverage_enable=On has to be set in php.ini'
             );
         }
     }
@@ -48,7 +48,8 @@ class Xdebug implements Driver {
      *
      * @param bool $determineUnusedAndDead
      */
-    public function start($determineUnusedAndDead = true) {
+    public function start($determineUnusedAndDead = true)
+    {
         if ($determineUnusedAndDead) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         } else {
@@ -61,7 +62,8 @@ class Xdebug implements Driver {
      *
      * @return array
      */
-    public function stop() {
+    public function stop()
+    {
         $data = xdebug_get_code_coverage();
         xdebug_stop_code_coverage();
 
@@ -73,7 +75,8 @@ class Xdebug implements Driver {
      *
      * @return array
      */
-    private function cleanup(array $data) {
+    private function cleanup(array $data)
+    {
         foreach (array_keys($data) as $file) {
             unset($data[$file][0]);
 
@@ -96,10 +99,11 @@ class Xdebug implements Driver {
      *
      * @return int
      */
-    private function getNumberOfLinesInFile($file) {
+    private function getNumberOfLinesInFile($file)
+    {
         if (!isset($this->cacheNumLines[$file])) {
             $buffer = file_get_contents($file);
-            $lines = substr_count($buffer, "\n");
+            $lines  = substr_count($buffer, "\n");
 
             if (substr($buffer, -1) !== "\n") {
                 $lines++;
@@ -110,5 +114,4 @@ class Xdebug implements Driver {
 
         return $this->cacheNumLines[$file];
     }
-
 }

@@ -18,12 +18,13 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * @author singles
  */
-class JsonFileDumper extends FileDumper {
-
+class JsonFileDumper extends FileDumper
+{
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array()) {
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    {
         if (isset($options['json_encoding'])) {
             $flags = $options['json_encoding'];
         } else {
@@ -36,8 +37,8 @@ class JsonFileDumper extends FileDumper {
     /**
      * {@inheritdoc}
      */
-    protected function getExtension() {
+    protected function getExtension()
+    {
         return 'json';
     }
-
 }

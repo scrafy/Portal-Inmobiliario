@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Testing\Concerns;
 
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-trait InteractsWithAuthentication {
-
+trait InteractsWithAuthentication
+{
     /**
      * Set the currently logged in user for the application.
      *
@@ -13,7 +13,8 @@ trait InteractsWithAuthentication {
      * @param  string|null  $driver
      * @return $this
      */
-    public function actingAs(UserContract $user, $driver = null) {
+    public function actingAs(UserContract $user, $driver = null)
+    {
         $this->be($user, $driver);
 
         return $this;
@@ -26,7 +27,8 @@ trait InteractsWithAuthentication {
      * @param  string|null  $driver
      * @return void
      */
-    public function be(UserContract $user, $driver = null) {
+    public function be(UserContract $user, $driver = null)
+    {
         $this->app['auth']->guard($driver)->setUser($user);
 
         $this->app['auth']->shouldUse($driver);
@@ -38,7 +40,8 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return $this
      */
-    public function seeIsAuthenticated($guard = null) {
+    public function seeIsAuthenticated($guard = null)
+    {
         $this->assertTrue($this->isAuthenticated($guard), 'The user is not authenticated');
 
         return $this;
@@ -50,7 +53,8 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return $this
      */
-    public function dontSeeIsAuthenticated($guard = null) {
+    public function dontSeeIsAuthenticated($guard = null)
+    {
         $this->assertFalse($this->isAuthenticated($guard), 'The user is authenticated');
 
         return $this;
@@ -62,7 +66,8 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return bool
      */
-    protected function isAuthenticated($guard = null) {
+    protected function isAuthenticated($guard = null)
+    {
         return $this->app->make('auth')->guard($guard)->check();
     }
 
@@ -73,15 +78,18 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return $this
      */
-    public function seeIsAuthenticatedAs($user, $guard = null) {
+    public function seeIsAuthenticatedAs($user, $guard = null)
+    {
         $expected = $this->app->make('auth')->guard($guard)->user();
 
         $this->assertInstanceOf(
-                get_class($expected), $user, 'The currently authenticated user is not who was expected'
+            get_class($expected), $user,
+            'The currently authenticated user is not who was expected'
         );
 
         $this->assertSame(
-                $expected->getAuthIdentifier(), $user->getAuthIdentifier(), 'The currently authenticated user is not who was expected'
+            $expected->getAuthIdentifier(), $user->getAuthIdentifier(),
+            'The currently authenticated user is not who was expected'
         );
 
         return $this;
@@ -94,9 +102,10 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return $this
      */
-    public function seeCredentials(array $credentials, $guard = null) {
+    public function seeCredentials(array $credentials, $guard = null)
+    {
         $this->assertTrue(
-                $this->hasCredentials($credentials, $guard), 'The given credentials are invalid.'
+            $this->hasCredentials($credentials, $guard), 'The given credentials are invalid.'
         );
 
         return $this;
@@ -109,9 +118,10 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return $this
      */
-    public function dontSeeCredentials(array $credentials, $guard = null) {
+    public function dontSeeCredentials(array $credentials, $guard = null)
+    {
         $this->assertFalse(
-                $this->hasCredentials($credentials, $guard), 'The given credentials are valid.'
+            $this->hasCredentials($credentials, $guard), 'The given credentials are valid.'
         );
 
         return $this;
@@ -124,12 +134,12 @@ trait InteractsWithAuthentication {
      * @param  string|null  $guard
      * @return bool
      */
-    protected function hasCredentials(array $credentials, $guard = null) {
+    protected function hasCredentials(array $credentials, $guard = null)
+    {
         $provider = $this->app->make('auth')->guard($guard)->getProvider();
 
         $user = $provider->retrieveByCredentials($credentials);
 
         return $user && $provider->validateCredentials($user, $credentials);
     }
-
 }

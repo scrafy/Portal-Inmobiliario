@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -17,32 +16,36 @@ use stdClass;
  * @coversDefaultClass SebastianBergmann\Comparator\ObjectComparator
  *
  */
-class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
-
+class ObjectComparatorTest extends \PHPUnit_Framework_TestCase
+{
     private $comparator;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->comparator = new ObjectComparator;
         $this->comparator->setFactory(new Factory);
     }
 
-    public function acceptsSucceedsProvider() {
+    public function acceptsSucceedsProvider()
+    {
         return array(
-            array(new TestClass, new TestClass),
-            array(new stdClass, new stdClass),
-            array(new stdClass, new TestClass)
+          array(new TestClass, new TestClass),
+          array(new stdClass, new stdClass),
+          array(new stdClass, new TestClass)
         );
     }
 
-    public function acceptsFailsProvider() {
+    public function acceptsFailsProvider()
+    {
         return array(
-            array(new stdClass, null),
-            array(null, new stdClass),
-            array(null, null)
+          array(new stdClass, null),
+          array(null, new stdClass),
+          array(null, null)
         );
     }
 
-    public function assertEqualsSucceedsProvider() {
+    public function assertEqualsSucceedsProvider()
+    {
         // cyclic dependencies
         $book1 = new Book;
         $book1->author = new Author('Terry Pratchett');
@@ -55,15 +58,16 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
         $object2 = new SampleClass(4, 8, 15);
 
         return array(
-            array($object1, $object1),
-            array($object1, $object2),
-            array($book1, $book1),
-            array($book1, $book2),
-            array(new Struct(2.3), new Struct(2.5), 0.5)
+          array($object1, $object1),
+          array($object1, $object2),
+          array($book1, $book1),
+          array($book1, $book2),
+          array(new Struct(2.3), new Struct(2.5), 0.5)
         );
     }
 
-    public function assertEqualsFailsProvider() {
+    public function assertEqualsFailsProvider()
+    {
         $typeMessage = 'is not instance of expected class';
         $equalMessage = 'Failed asserting that two objects are equal.';
 
@@ -80,15 +84,15 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
         $book4 = new stdClass;
         $book4->author = 'Terry Pratchett';
 
-        $object1 = new SampleClass(4, 8, 15);
+        $object1 = new SampleClass( 4,  8, 15);
         $object2 = new SampleClass(16, 23, 42);
 
         return array(
-            array(new SampleClass(4, 8, 15), new SampleClass(16, 23, 42), $equalMessage),
-            array($object1, $object2, $equalMessage),
-            array($book1, $book2, $equalMessage),
-            array($book3, $book4, $typeMessage),
-            array(new Struct(2.3), new Struct(4.2), $equalMessage, 0.5)
+          array(new SampleClass(4, 8, 15), new SampleClass(16, 23, 42), $equalMessage),
+          array($object1, $object2, $equalMessage),
+          array($book1, $book2, $equalMessage),
+          array($book3, $book4, $typeMessage),
+          array(new Struct(2.3), new Struct(4.2), $equalMessage, 0.5)
         );
     }
 
@@ -96,9 +100,10 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
      * @covers       ::accepts
      * @dataProvider acceptsSucceedsProvider
      */
-    public function testAcceptsSucceeds($expected, $actual) {
+    public function testAcceptsSucceeds($expected, $actual)
+    {
         $this->assertTrue(
-                $this->comparator->accepts($expected, $actual)
+          $this->comparator->accepts($expected, $actual)
         );
     }
 
@@ -106,9 +111,10 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
      * @covers       ::accepts
      * @dataProvider acceptsFailsProvider
      */
-    public function testAcceptsFails($expected, $actual) {
+    public function testAcceptsFails($expected, $actual)
+    {
         $this->assertFalse(
-                $this->comparator->accepts($expected, $actual)
+          $this->comparator->accepts($expected, $actual)
         );
     }
 
@@ -116,13 +122,15 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
      * @covers       ::assertEquals
      * @dataProvider assertEqualsSucceedsProvider
      */
-    public function testAssertEqualsSucceeds($expected, $actual, $delta = 0.0) {
+    public function testAssertEqualsSucceeds($expected, $actual, $delta = 0.0)
+    {
         $exception = null;
 
         try {
             $this->comparator->assertEquals($expected, $actual, $delta);
-        } catch (ComparisonFailure $exception) {
-            
+        }
+
+        catch (ComparisonFailure $exception) {
         }
 
         $this->assertNull($exception, 'Unexpected ComparisonFailure');
@@ -132,11 +140,11 @@ class ObjectComparatorTest extends \PHPUnit_Framework_TestCase {
      * @covers       ::assertEquals
      * @dataProvider assertEqualsFailsProvider
      */
-    public function testAssertEqualsFails($expected, $actual, $message, $delta = 0.0) {
+    public function testAssertEqualsFails($expected, $actual, $message, $delta = 0.0)
+    {
         $this->setExpectedException(
-                'SebastianBergmann\\Comparator\\ComparisonFailure', $message
+          'SebastianBergmann\\Comparator\\ComparisonFailure', $message
         );
         $this->comparator->assertEquals($expected, $actual, $delta);
     }
-
 }

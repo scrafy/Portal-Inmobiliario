@@ -5,8 +5,8 @@ namespace League\Flysystem;
 use League\Flysystem\Util\MimeType;
 use LogicException;
 
-class Util {
-
+class Util
+{
     /**
      * Get normalized pathinfo.
      *
@@ -14,9 +14,11 @@ class Util {
      *
      * @return array pathinfo
      */
-    public static function pathinfo($path) {
+    public static function pathinfo($path)
+    {
         $pathinfo = pathinfo($path) + compact('path');
-        $pathinfo['dirname'] = array_key_exists('dirname', $pathinfo) ? static::normalizeDirname($pathinfo['dirname']) : '';
+        $pathinfo['dirname'] = array_key_exists('dirname', $pathinfo)
+            ? static::normalizeDirname($pathinfo['dirname']) : '';
 
         return $pathinfo;
     }
@@ -28,7 +30,8 @@ class Util {
      *
      * @return string normalized dirname
      */
-    public static function normalizeDirname($dirname) {
+    public static function normalizeDirname($dirname)
+    {
         return $dirname === '.' ? '' : $dirname;
     }
 
@@ -39,7 +42,8 @@ class Util {
      *
      * @return string dirname
      */
-    public static function dirname($path) {
+    public static function dirname($path)
+    {
         return static::normalizeDirname(dirname($path));
     }
 
@@ -51,11 +55,12 @@ class Util {
      *
      * @return array mapped result
      */
-    public static function map(array $object, array $map) {
+    public static function map(array $object, array $map)
+    {
         $result = [];
 
         foreach ($map as $from => $to) {
-            if (!isset($object[$from])) {
+            if ( ! isset($object[$from])) {
                 continue;
             }
 
@@ -74,7 +79,8 @@ class Util {
      *
      * @return string
      */
-    public static function normalizePath($path) {
+    public static function normalizePath($path)
+    {
         return static::normalizeRelativePath($path);
     }
 
@@ -87,7 +93,8 @@ class Util {
      *
      * @return string
      */
-    public static function normalizeRelativePath($path) {
+    public static function normalizeRelativePath($path)
+    {
         $path = str_replace('\\', '/', $path);
         $path = static::removeFunkyWhiteSpace($path);
 
@@ -97,20 +104,20 @@ class Util {
             switch ($part) {
                 case '':
                 case '.':
-                    break;
+                break;
 
-                case '..':
-                    if (empty($parts)) {
-                        throw new LogicException(
+            case '..':
+                if (empty($parts)) {
+                    throw new LogicException(
                         'Path is outside of the defined root, path: [' . $path . ']'
-                        );
-                    }
-                    array_pop($parts);
-                    break;
+                    );
+                }
+                array_pop($parts);
+                break;
 
-                default:
-                    $parts[] = $part;
-                    break;
+            default:
+                $parts[] = $part;
+                break;
             }
         }
 
@@ -142,7 +149,8 @@ class Util {
      *
      * @return string normalized path
      */
-    public static function normalizePrefix($prefix, $separator) {
+    public static function normalizePrefix($prefix, $separator)
+    {
         return rtrim($prefix, $separator) . $separator;
     }
 
@@ -153,7 +161,8 @@ class Util {
      *
      * @return int content size
      */
-    public static function contentSize($contents) {
+    public static function contentSize($contents)
+    {
         return defined('MB_OVERLOAD_STRING') ? mb_strlen($contents, '8bit') : strlen($contents);
     }
 
@@ -165,10 +174,11 @@ class Util {
      *
      * @return string|null MIME Type or NULL if no extension detected
      */
-    public static function guessMimeType($path, $content) {
+    public static function guessMimeType($path, $content)
+    {
         $mimeType = MimeType::detectByContent($content);
 
-        if (!(empty($mimeType) || in_array($mimeType, ['application/x-empty', 'text/plain', 'text/x-asm']))) {
+        if ( ! (empty($mimeType) || in_array($mimeType, ['application/x-empty', 'text/plain', 'text/x-asm']))) {
             return $mimeType;
         }
 
@@ -182,13 +192,16 @@ class Util {
      *
      * @return array listing with emulated directories
      */
-    public static function emulateDirectories(array $listing) {
+    public static function emulateDirectories(array $listing)
+    {
         $directories = [];
         $listedDirectories = [];
 
         foreach ($listing as $object) {
             list($directories, $listedDirectories) = static::emulateObjectDirectories(
-                            $object, $directories, $listedDirectories
+                $object,
+                $directories,
+                $listedDirectories
             );
         }
 
@@ -210,7 +223,8 @@ class Util {
      *
      * @throw  LogicException
      */
-    public static function ensureConfig($config) {
+    public static function ensureConfig($config)
+    {
         if ($config === null) {
             return new Config();
         }
@@ -231,13 +245,15 @@ class Util {
      *
      * @param resource $resource
      */
-    public static function rewindStream($resource) {
+    public static function rewindStream($resource)
+    {
         if (ftell($resource) !== 0 && static::isSeekableStream($resource)) {
             rewind($resource);
         }
     }
 
-    public static function isSeekableStream($resource) {
+    public static function isSeekableStream($resource)
+    {
         $metadata = stream_get_meta_data($resource);
 
         return $metadata['seekable'];
@@ -250,7 +266,8 @@ class Util {
      *
      * @return int stream size
      */
-    public static function getStreamSize($resource) {
+    public static function getStreamSize($resource)
+    {
         $stat = fstat($resource);
 
         return $stat['size'];
@@ -265,7 +282,8 @@ class Util {
      *
      * @return array
      */
-    protected static function emulateObjectDirectories(array $object, array $directories, array $listedDirectories) {
+    protected static function emulateObjectDirectories(array $object, array $directories, array $listedDirectories)
+    {
         if ($object['type'] === 'dir') {
             $listedDirectories[] = $object['path'];
         }
@@ -276,7 +294,7 @@ class Util {
 
         $parent = $object['dirname'];
 
-        while (!empty($parent) && !in_array($parent, $directories)) {
+        while ( ! empty($parent) && ! in_array($parent, $directories)) {
             $directories[] = $parent;
             $parent = static::dirname($parent);
         }
@@ -289,5 +307,4 @@ class Util {
 
         return [$directories, $listedDirectories];
     }
-
 }

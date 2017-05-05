@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -15,12 +14,12 @@ namespace SebastianBergmann\Comparator;
  * A struct.
  *
  */
-class Struct {
-
+class Struct
+{
     public $var;
 
-    public function __construct($var) {
+    public function __construct($var)
+    {
         $this->var = $var;
     }
-
 }

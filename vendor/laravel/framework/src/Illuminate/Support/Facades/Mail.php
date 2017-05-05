@@ -7,14 +7,15 @@ use Illuminate\Support\Testing\Fakes\MailFake;
 /**
  * @see \Illuminate\Mail\Mailer
  */
-class Mail extends Facade {
-
+class Mail extends Facade
+{
     /**
      * Replace the bound instance with a fake.
      *
      * @return void
      */
-    public static function fake() {
+    public static function fake()
+    {
         static::swap(new MailFake);
     }
 
@@ -23,8 +24,8 @@ class Mail extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return 'mailer';
     }
-
 }

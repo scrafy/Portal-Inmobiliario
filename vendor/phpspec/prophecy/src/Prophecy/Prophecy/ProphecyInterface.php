@@ -16,8 +16,8 @@ namespace Prophecy\Prophecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ProphecyInterface {
-
+interface ProphecyInterface
+{
     /**
      * Reveals prophecy object (double) .
      *

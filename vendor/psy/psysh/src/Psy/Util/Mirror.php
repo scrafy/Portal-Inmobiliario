@@ -17,12 +17,12 @@ use Psy\Reflection\ReflectionConstant;
 /**
  * A utility class for getting Reflectors.
  */
-class Mirror {
-
-    const CONSTANT = 1;
-    const METHOD = 2;
+class Mirror
+{
+    const CONSTANT        = 1;
+    const METHOD          = 2;
     const STATIC_PROPERTY = 4;
-    const PROPERTY = 8;
+    const PROPERTY        = 8;
 
     /**
      * Get a Reflector for a function, class or instance, constant, method or property.
@@ -41,7 +41,8 @@ class Mirror {
      *
      * @return Reflector
      */
-    public static function get($value, $member = null, $filter = 15) {
+    public static function get($value, $member = null, $filter = 15)
+    {
         if ($member === null && is_string($value) && function_exists($value)) {
             return new \ReflectionFunction($value);
         }
@@ -60,7 +61,9 @@ class Mirror {
             return $class->getProperty($member);
         } else {
             throw new RuntimeException(sprintf(
-                    'Unknown member %s on class %s', $member, is_object($value) ? get_class($value) : $value
+                'Unknown member %s on class %s',
+                $member,
+                is_object($value) ? get_class($value) : $value
             ));
         }
     }
@@ -74,7 +77,8 @@ class Mirror {
      *
      * @return \ReflectionClass
      */
-    private static function getClass($value) {
+    private static function getClass($value)
+    {
         if (is_object($value)) {
             return new \ReflectionObject($value);
         }
@@ -87,5 +91,4 @@ class Mirror {
 
         return new \ReflectionClass($value);
     }
-
 }

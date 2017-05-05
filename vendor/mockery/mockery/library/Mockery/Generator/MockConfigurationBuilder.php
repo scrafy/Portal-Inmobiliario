@@ -2,8 +2,8 @@
 
 namespace Mockery\Generator;
 
-class MockConfigurationBuilder {
-
+class MockConfigurationBuilder
+{
     protected $name;
     protected $blackListedMethods = array(
         '__call',
@@ -16,6 +16,7 @@ class MockConfigurationBuilder {
         '__isset',
         '__destruct',
         '__debugInfo',
+
         // below are reserved words in PHP
         "__halt_compiler", "abstract", "and", "array", "as",
         "break", "callable", "case", "catch", "class",
@@ -34,15 +35,18 @@ class MockConfigurationBuilder {
     protected $whiteListedMethods = array();
     protected $instanceMock = false;
     protected $parameterOverrides = array();
+
     protected $targets = array();
 
-    public function addTarget($target) {
+    public function addTarget($target)
+    {
         $this->targets[] = $target;
 
         return $this;
     }
 
-    public function addTargets($targets) {
+    public function addTargets($targets)
+    {
         foreach ($targets as $target) {
             $this->addTarget($target);
         }
@@ -50,57 +54,71 @@ class MockConfigurationBuilder {
         return $this;
     }
 
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         return $this;
     }
 
-    public function addBlackListedMethod($blackListedMethod) {
+    public function addBlackListedMethod($blackListedMethod)
+    {
         $this->blackListedMethods[] = $blackListedMethod;
         return $this;
     }
 
-    public function addBlackListedMethods(array $blackListedMethods) {
+    public function addBlackListedMethods(array $blackListedMethods)
+    {
         foreach ($blackListedMethods as $method) {
             $this->addBlackListedMethod($method);
         }
         return $this;
     }
 
-    public function setBlackListedMethods(array $blackListedMethods) {
+    public function setBlackListedMethods(array $blackListedMethods)
+    {
         $this->blackListedMethods = $blackListedMethods;
         return $this;
     }
 
-    public function addWhiteListedMethod($whiteListedMethod) {
+    public function addWhiteListedMethod($whiteListedMethod)
+    {
         $this->whiteListedMethods[] = $whiteListedMethod;
         return $this;
     }
 
-    public function addWhiteListedMethods(array $whiteListedMethods) {
+    public function addWhiteListedMethods(array $whiteListedMethods)
+    {
         foreach ($whiteListedMethods as $method) {
             $this->addWhiteListedMethod($method);
         }
         return $this;
     }
 
-    public function setWhiteListedMethods(array $whiteListedMethods) {
+    public function setWhiteListedMethods(array $whiteListedMethods)
+    {
         $this->whiteListedMethods = $whiteListedMethods;
         return $this;
     }
 
-    public function setInstanceMock($instanceMock) {
+    public function setInstanceMock($instanceMock)
+    {
         $this->instanceMock = (bool) $instanceMock;
     }
 
-    public function setParameterOverrides(array $overrides) {
+    public function setParameterOverrides(array $overrides)
+    {
         $this->parameterOverrides = $overrides;
     }
 
-    public function getMockConfiguration() {
+    public function getMockConfiguration()
+    {
         return new MockConfiguration(
-                $this->targets, $this->blackListedMethods, $this->whiteListedMethods, $this->name, $this->instanceMock, $this->parameterOverrides
+            $this->targets,
+            $this->blackListedMethods,
+            $this->whiteListedMethods,
+            $this->name,
+            $this->instanceMock,
+            $this->parameterOverrides
         );
     }
-
 }

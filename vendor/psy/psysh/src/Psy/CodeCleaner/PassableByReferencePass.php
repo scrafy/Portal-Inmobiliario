@@ -24,8 +24,8 @@ use Psy\Exception\FatalErrorException;
 /**
  * Validate that only variables (and variable-like things) are passed by reference.
  */
-class PassableByReferencePass extends CodeCleanerPass {
-
+class PassableByReferencePass extends CodeCleanerPass
+{
     const EXCEPTION_MESSAGE = 'Only variables can be passed by reference';
 
     /**
@@ -33,7 +33,8 @@ class PassableByReferencePass extends CodeCleanerPass {
      *
      * @param Node $node
      */
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         // TODO: support MethodCall and StaticCall as well.
         if ($node instanceof FuncCall) {
             $name = $node->name;
@@ -61,15 +62,15 @@ class PassableByReferencePass extends CodeCleanerPass {
         }
     }
 
-    private function isPassableByReference(Node $arg) {
+    private function isPassableByReference(Node $arg)
+    {
         // FuncCall, MethodCall and StaticCall are all PHP _warnings_ not fatal errors, so we'll let
         // PHP handle those ones :)
         return $arg->value instanceof ClassConstFetch ||
-                $arg->value instanceof PropertyFetch ||
-                $arg->value instanceof Variable ||
-                $arg->value instanceof FuncCall ||
-                $arg->value instanceof MethodCall ||
-                $arg->value instanceof StaticCall;
+            $arg->value instanceof PropertyFetch ||
+            $arg->value instanceof Variable ||
+            $arg->value instanceof FuncCall ||
+            $arg->value instanceof MethodCall ||
+            $arg->value instanceof StaticCall;
     }
-
 }

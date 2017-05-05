@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mailer {
-
+class Swift_Mailer
+{
     /** The Transport used to send messages */
     private $_transport;
 
@@ -23,7 +23,8 @@ class Swift_Mailer {
      *
      * @param Swift_Transport $transport
      */
-    public function __construct(Swift_Transport $transport) {
+    public function __construct(Swift_Transport $transport)
+    {
         $this->_transport = $transport;
     }
 
@@ -34,7 +35,8 @@ class Swift_Mailer {
      *
      * @return Swift_Mailer
      */
-    public static function newInstance(Swift_Transport $transport) {
+    public static function newInstance(Swift_Transport $transport)
+    {
         return new self($transport);
     }
 
@@ -47,9 +49,10 @@ class Swift_Mailer {
      *
      * @return object
      */
-    public function createMessage($service = 'message') {
+    public function createMessage($service = 'message')
+    {
         return Swift_DependencyContainer::getInstance()
-                        ->lookup('message.' . $service);
+            ->lookup('message.'.$service);
     }
 
     /**
@@ -68,7 +71,8 @@ class Swift_Mailer {
      *
      * @return int The number of successful recipients. Can be 0 which indicates failure
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $failedRecipients = (array) $failedRecipients;
 
         if (!$this->_transport->isStarted()) {
@@ -93,7 +97,8 @@ class Swift_Mailer {
      *
      * @param Swift_Events_EventListener $plugin
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) {
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
         $this->_transport->registerPlugin($plugin);
     }
 
@@ -102,8 +107,8 @@ class Swift_Mailer {
      *
      * @return Swift_Transport
      */
-    public function getTransport() {
+    public function getTransport()
+    {
         return $this->_transport;
     }
-
 }

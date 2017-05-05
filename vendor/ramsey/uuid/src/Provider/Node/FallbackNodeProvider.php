@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -22,8 +21,8 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  * providers, falling back to the next in line in the event a host ID can not be
  * obtained
  */
-class FallbackNodeProvider implements NodeProviderInterface {
-
+class FallbackNodeProvider implements NodeProviderInterface
+{
     /**
      * @var NodeProviderInterface[]
      */
@@ -34,7 +33,8 @@ class FallbackNodeProvider implements NodeProviderInterface {
      *
      * @param NodeProviderInterface[] $providers Array of node providers
      */
-    public function __construct(array $providers) {
+    public function __construct(array $providers)
+    {
         $this->nodeProviders = $providers;
     }
 
@@ -44,7 +44,8 @@ class FallbackNodeProvider implements NodeProviderInterface {
      *
      * @return string System node ID as a hexadecimal string
      */
-    public function getNode() {
+    public function getNode()
+    {
         foreach ($this->nodeProviders as $provider) {
             if ($node = $provider->getNode()) {
                 return $node;
@@ -53,5 +54,4 @@ class FallbackNodeProvider implements NodeProviderInterface {
 
         return null;
     }
-
 }

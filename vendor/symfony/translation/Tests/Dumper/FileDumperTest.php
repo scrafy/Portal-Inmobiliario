@@ -15,9 +15,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\FileDumper;
 
-class FileDumperTest extends TestCase {
-
-    public function testDump() {
+class FileDumperTest extends TestCase
+{
+    public function testDump()
+    {
         $tempDir = sys_get_temp_dir();
 
         $catalogue = new MessageCatalogue('en');
@@ -26,16 +27,17 @@ class FileDumperTest extends TestCase {
         $dumper = new ConcreteFileDumper();
         $dumper->dump($catalogue, array('path' => $tempDir));
 
-        $this->assertFileExists($tempDir . '/messages.en.concrete');
+        $this->assertFileExists($tempDir.'/messages.en.concrete');
     }
 
     /**
      * @group legacy
      */
-    public function testDumpBackupsFileIfExisting() {
+    public function testDumpBackupsFileIfExisting()
+    {
         $tempDir = sys_get_temp_dir();
-        $file = $tempDir . '/messages.en.concrete';
-        $backupFile = $file . '~';
+        $file = $tempDir.'/messages.en.concrete';
+        $backupFile = $file.'~';
 
         @touch($file);
 
@@ -51,10 +53,11 @@ class FileDumperTest extends TestCase {
         @unlink($backupFile);
     }
 
-    public function testDumpCreatesNestedDirectoriesAndFile() {
+    public function testDumpCreatesNestedDirectoriesAndFile()
+    {
         $tempDir = sys_get_temp_dir();
-        $translationsDir = $tempDir . '/test/translations';
-        $file = $translationsDir . '/messages.en.concrete';
+        $translationsDir = $tempDir.'/test/translations';
+        $file = $translationsDir.'/messages.en.concrete';
 
         $catalogue = new MessageCatalogue('en');
         $catalogue->add(array('foo' => 'bar'));
@@ -68,17 +71,17 @@ class FileDumperTest extends TestCase {
         @unlink($file);
         @rmdir($translationsDir);
     }
-
 }
 
-class ConcreteFileDumper extends FileDumper {
-
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array()) {
+class ConcreteFileDumper extends FileDumper
+{
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    {
         return '';
     }
 
-    protected function getExtension() {
+    protected function getExtension()
+    {
         return 'concrete';
     }
-
 }

@@ -24,19 +24,21 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class RequestDataCollector extends DataCollector implements EventSubscriberInterface {
-
+class RequestDataCollector extends DataCollector implements EventSubscriberInterface
+{
     /** @var \SplObjectStorage */
     protected $controllers;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->controllers = new \SplObjectStorage();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         $responseHeaders = $response->headers->all();
         foreach ($response->headers->getCookies() as $cookie) {
             $responseHeaders['set-cookie'][] = (string) $cookie;
@@ -119,9 +121,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
                 continue;
             }
             if ('request_headers' === $key || 'response_headers' === $key) {
-                $value = array_map(function ($v) {
-                    return isset($v[0]) && !isset($v[1]) ? $v[0] : $v;
-                }, $value);
+                $value = array_map(function ($v) { return isset($v[0]) && !isset($v[1]) ? $v[0] : $v; }, $value);
             }
             if ('request_server' !== $key && 'request_cookies' !== $key) {
                 $this->data[$key] = array_map(array($this, 'cloneVar'), $value);
@@ -151,75 +151,93 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
         }
     }
 
-    public function getMethod() {
+    public function getMethod()
+    {
         return $this->data['method'];
     }
 
-    public function getPathInfo() {
+    public function getPathInfo()
+    {
         return $this->data['path_info'];
     }
 
-    public function getRequestRequest() {
+    public function getRequestRequest()
+    {
         return new ParameterBag($this->data['request_request']);
     }
 
-    public function getRequestQuery() {
+    public function getRequestQuery()
+    {
         return new ParameterBag($this->data['request_query']);
     }
 
-    public function getRequestHeaders() {
+    public function getRequestHeaders()
+    {
         return new ParameterBag($this->data['request_headers']);
     }
 
-    public function getRequestServer($raw = false) {
+    public function getRequestServer($raw = false)
+    {
         return new ParameterBag($raw ? $this->data['request_server'] : array_map(array($this, 'cloneVar'), $this->data['request_server']));
     }
 
-    public function getRequestCookies($raw = false) {
+    public function getRequestCookies($raw = false)
+    {
         return new ParameterBag($raw ? $this->data['request_cookies'] : array_map(array($this, 'cloneVar'), $this->data['request_cookies']));
     }
 
-    public function getRequestAttributes() {
+    public function getRequestAttributes()
+    {
         return new ParameterBag($this->data['request_attributes']);
     }
 
-    public function getResponseHeaders() {
+    public function getResponseHeaders()
+    {
         return new ParameterBag($this->data['response_headers']);
     }
 
-    public function getSessionMetadata() {
+    public function getSessionMetadata()
+    {
         return $this->data['session_metadata'];
     }
 
-    public function getSessionAttributes() {
+    public function getSessionAttributes()
+    {
         return $this->data['session_attributes'];
     }
 
-    public function getFlashes() {
+    public function getFlashes()
+    {
         return $this->data['flashes'];
     }
 
-    public function getContent() {
+    public function getContent()
+    {
         return $this->data['content'];
     }
 
-    public function getContentType() {
+    public function getContentType()
+    {
         return $this->data['content_type'];
     }
 
-    public function getStatusText() {
+    public function getStatusText()
+    {
         return $this->data['status_text'];
     }
 
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->data['status_code'];
     }
 
-    public function getFormat() {
+    public function getFormat()
+    {
         return $this->data['format'];
     }
 
-    public function getLocale() {
+    public function getLocale()
+    {
         return $this->data['locale'];
     }
 
@@ -230,12 +248,14 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      *
      * @return string The route
      */
-    public function getRoute() {
+    public function getRoute()
+    {
         return $this->data['route'];
     }
 
-    public function getIdentifier() {
-        return $this->data['route'] ?: (is_array($this->data['controller']) ? $this->data['controller']['class'] . '::' . $this->data['controller']['method'] . '()' : $this->data['controller']);
+    public function getIdentifier()
+    {
+        return $this->data['route'] ?: (is_array($this->data['controller']) ? $this->data['controller']['class'].'::'.$this->data['controller']['method'].'()' : $this->data['controller']);
     }
 
     /**
@@ -245,7 +265,8 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      *
      * @return array The parameters
      */
-    public function getRouteParams() {
+    public function getRouteParams()
+    {
         if (!isset($this->data['request_attributes']['_route_params'])) {
             return array();
         }
@@ -270,7 +291,8 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      * @return array|string The controller as a string or array of data
      *                      with keys 'class', 'method', 'file' and 'line'
      */
-    public function getController() {
+    public function getController()
+    {
         return $this->data['controller'];
     }
 
@@ -280,15 +302,18 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      * @return array|bool A legacy array of data from the previous redirection response
      *                    or false otherwise
      */
-    public function getRedirect() {
+    public function getRedirect()
+    {
         return isset($this->data['redirect']) ? $this->data['redirect'] : false;
     }
 
-    public function onKernelController(FilterControllerEvent $event) {
+    public function onKernelController(FilterControllerEvent $event)
+    {
         $this->controllers[$event->getRequest()] = $event->getController();
     }
 
-    public function onKernelResponse(FilterResponseEvent $event) {
+    public function onKernelResponse(FilterResponseEvent $event)
+    {
         if (!$event->isMasterRequest() || !$event->getRequest()->hasSession() || !$event->getRequest()->getSession()->isStarted()) {
             return;
         }
@@ -298,7 +323,8 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE => 'onKernelResponse',
@@ -308,7 +334,8 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'request';
     }
 
@@ -319,7 +346,8 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      *
      * @return array|string An array of controller data or a simple string
      */
-    protected function parseController($controller) {
+    protected function parseController($controller)
+    {
         if (is_string($controller) && false !== strpos($controller, '::')) {
             $controller = explode('::', $controller);
         }
@@ -371,5 +399,4 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
         return is_string($controller) ? $controller : 'n/a';
     }
-
 }

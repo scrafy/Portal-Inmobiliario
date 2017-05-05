@@ -16,8 +16,8 @@ namespace Symfony\Component\Finder\Iterator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ExcludeDirectoryFilterIterator extends FilterIterator implements \RecursiveIterator {
-
+class ExcludeDirectoryFilterIterator extends FilterIterator implements \RecursiveIterator
+{
     private $iterator;
     private $isRecursive;
     private $excludedDirs = array();
@@ -29,7 +29,8 @@ class ExcludeDirectoryFilterIterator extends FilterIterator implements \Recursiv
      * @param \Iterator $iterator    The Iterator to filter
      * @param array     $directories An array of directories to exclude
      */
-    public function __construct(\Iterator $iterator, array $directories) {
+    public function __construct(\Iterator $iterator, array $directories)
+    {
         $this->iterator = $iterator;
         $this->isRecursive = $iterator instanceof \RecursiveIterator;
         $patterns = array();
@@ -42,7 +43,7 @@ class ExcludeDirectoryFilterIterator extends FilterIterator implements \Recursiv
             }
         }
         if ($patterns) {
-            $this->excludedPattern = '#(?:^|/)(?:' . implode('|', $patterns) . ')(?:/|$)#';
+            $this->excludedPattern = '#(?:^|/)(?:'.implode('|', $patterns).')(?:/|$)#';
         }
 
         parent::__construct($iterator);
@@ -53,7 +54,8 @@ class ExcludeDirectoryFilterIterator extends FilterIterator implements \Recursiv
      *
      * @return bool True if the value should be kept, false otherwise
      */
-    public function accept() {
+    public function accept()
+    {
         if ($this->isRecursive && isset($this->excludedDirs[$this->getFilename()]) && $this->isDir()) {
             return false;
         }
@@ -68,16 +70,17 @@ class ExcludeDirectoryFilterIterator extends FilterIterator implements \Recursiv
         return true;
     }
 
-    public function hasChildren() {
+    public function hasChildren()
+    {
         return $this->isRecursive && $this->iterator->hasChildren();
     }
 
-    public function getChildren() {
+    public function getChildren()
+    {
         $children = new self($this->iterator->getChildren(), array());
         $children->excludedDirs = $this->excludedDirs;
         $children->excludedPattern = $this->excludedPattern;
 
         return $children;
     }
-
 }

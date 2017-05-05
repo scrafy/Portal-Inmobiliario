@@ -1,5 +1,4 @@
 <?php
-
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,22 +30,23 @@ use InvalidArgumentException;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-final class Instantiator {
-
+final class Instantiator
+{
     /**
      * Markers used internally by PHP to define whether {@see \unserialize} should invoke
      * the method {@see \Serializable::unserialize()} when dealing with classes implementing
      * the {@see \Serializable} interface.
      */
-    const SERIALIZATION_FORMAT_USE_UNSERIALIZER = 'C';
+    const SERIALIZATION_FORMAT_USE_UNSERIALIZER   = 'C';
     const SERIALIZATION_FORMAT_AVOID_UNSERIALIZER = 'O';
 
     /**
      * {@inheritDoc}
      */
-    public function instantiate($className) {
-        $factory = $this->buildFactory($className);
-        $instance = $factory();
+    public function instantiate($className)
+    {
+        $factory    = $this->buildFactory($className);
+        $instance   = $factory();
         $reflection = new ReflectionClass($instance);
 
         return $instance;
@@ -65,7 +65,8 @@ final class Instantiator {
      *
      * @return Closure
      */
-    public function buildFactory($className) {
+    public function buildFactory($className)
+    {
         $reflectionClass = $this->getReflectionClass($className);
 
         if ($this->isInstantiableViaReflection($reflectionClass)) {
@@ -75,7 +76,10 @@ final class Instantiator {
         }
 
         $serializedString = sprintf(
-                '%s:%d:"%s":0:{}', $this->getSerializationFormat($reflectionClass), strlen($className), $className
+            '%s:%d:"%s":0:{}',
+            $this->getSerializationFormat($reflectionClass),
+            strlen($className),
+            $className
         );
 
         $this->attemptInstantiationViaUnSerialization($reflectionClass, $serializedString);
@@ -92,8 +96,9 @@ final class Instantiator {
      *
      * @throws InvalidArgumentException
      */
-    private function getReflectionClass($className) {
-        if (!class_exists($className)) {
+    private function getReflectionClass($className)
+    {
+        if (! class_exists($className)) {
             throw new InvalidArgumentException("Class:$className does not exist");
         }
 
@@ -114,10 +119,14 @@ final class Instantiator {
      *
      * @return void
      */
-    private function attemptInstantiationViaUnSerialization(ReflectionClass $reflectionClass, $serializedString) {
+    private function attemptInstantiationViaUnSerialization(ReflectionClass $reflectionClass, $serializedString)
+    {
         set_error_handler(function ($code, $message, $file, $line) use ($reflectionClass, & $error) {
             $msg = sprintf(
-                    'Could not produce an instance of "%s" via un-serialization, since an error was triggered in file "%s" at line "%d"', $reflectionClass->getName(), $file, $line
+                'Could not produce an instance of "%s" via un-serialization, since an error was triggered in file "%s" at line "%d"',
+                $reflectionClass->getName(),
+                $file,
+                $line
             );
 
             $error = new UnexpectedValueException($msg, 0, new \Exception($message, $code));
@@ -143,12 +152,13 @@ final class Instantiator {
      *
      * @return bool
      */
-    private function isInstantiableViaReflection(ReflectionClass $reflectionClass) {
+    private function isInstantiableViaReflection(ReflectionClass $reflectionClass)
+    {
         if (\PHP_VERSION_ID >= 50600) {
-            return !($reflectionClass->isInternal() && $reflectionClass->isFinal());
+            return ! ($reflectionClass->isInternal() && $reflectionClass->isFinal());
         }
 
-        return \PHP_VERSION_ID >= 50400 && !$this->hasInternalAncestors($reflectionClass);
+        return \PHP_VERSION_ID >= 50400 && ! $this->hasInternalAncestors($reflectionClass);
     }
 
     /**
@@ -158,7 +168,8 @@ final class Instantiator {
      *
      * @return bool
      */
-    private function hasInternalAncestors(ReflectionClass $reflectionClass) {
+    private function hasInternalAncestors(ReflectionClass $reflectionClass)
+    {
         do {
             if ($reflectionClass->isInternal()) {
                 return true;
@@ -180,8 +191,10 @@ final class Instantiator {
      * @return string the serialization format marker, either self::SERIALIZATION_FORMAT_USE_UNSERIALIZER
      *                or self::SERIALIZATION_FORMAT_AVOID_UNSERIALIZER
      */
-    private function getSerializationFormat(ReflectionClass $reflectionClass) {
-        if ($this->isPhpVersionWithBrokenSerializationFormat() && $reflectionClass->implementsInterface('Serializable')
+    private function getSerializationFormat(ReflectionClass $reflectionClass)
+    {
+        if ($this->isPhpVersionWithBrokenSerializationFormat()
+            && $reflectionClass->implementsInterface('Serializable')
         ) {
             return self::SERIALIZATION_FORMAT_USE_UNSERIALIZER;
         }
@@ -194,8 +207,8 @@ final class Instantiator {
      *
      * @return bool
      */
-    private function isPhpVersionWithBrokenSerializationFormat() {
+    private function isPhpVersionWithBrokenSerializationFormat()
+    {
         return PHP_VERSION_ID === 50429 || PHP_VERSION_ID === 50513;
     }
-
 }

@@ -2,6 +2,6 @@
 
 namespace Fixtures\Prophecy;
 
-interface EmptyInterface {
-    
+interface EmptyInterface
+{
 }

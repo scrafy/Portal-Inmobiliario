@@ -21,8 +21,8 @@ use Symfony\Component\Yaml\Exception\ParseException;
  *
  * @internal
  */
-class Unescaper {
-
+class Unescaper
+{
     /**
      * Regex fragment that matches an escaped character in a double quoted string.
      */
@@ -35,7 +35,8 @@ class Unescaper {
      *
      * @return string The unescaped string
      */
-    public function unescapeSingleQuotedString($value) {
+    public function unescapeSingleQuotedString($value)
+    {
         return str_replace('\'\'', '\'', $value);
     }
 
@@ -46,13 +47,14 @@ class Unescaper {
      *
      * @return string The unescaped string
      */
-    public function unescapeDoubleQuotedString($value) {
+    public function unescapeDoubleQuotedString($value)
+    {
         $callback = function ($match) {
             return $this->unescapeCharacter($match[0]);
         };
 
         // evaluate the string
-        return preg_replace_callback('/' . self::REGEX_ESCAPED_CHARACTER . '/u', $callback, $value);
+        return preg_replace_callback('/'.self::REGEX_ESCAPED_CHARACTER.'/u', $callback, $value);
     }
 
     /**
@@ -62,7 +64,8 @@ class Unescaper {
      *
      * @return string The unescaped character
      */
-    private function unescapeCharacter($value) {
+    private function unescapeCharacter($value)
+    {
         switch ($value[1]) {
             case '0':
                 return "\x0";
@@ -122,18 +125,18 @@ class Unescaper {
      *
      * @return string The corresponding UTF-8 character
      */
-    private static function utf8chr($c) {
+    private static function utf8chr($c)
+    {
         if (0x80 > $c %= 0x200000) {
             return chr($c);
         }
         if (0x800 > $c) {
-            return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
+            return chr(0xC0 | $c >> 6).chr(0x80 | $c & 0x3F);
         }
         if (0x10000 > $c) {
-            return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
+            return chr(0xE0 | $c >> 12).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
         }
 
-        return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F) . chr(0x80 | $c >> 6 & 0x3F) . chr(0x80 | $c & 0x3F);
+        return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
     }
-
 }

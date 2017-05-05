@@ -5,11 +5,11 @@ $grammarFileToName = [
     __DIR__ . '/php7.y' => 'Php7',
 ];
 
-$tokensFile = __DIR__ . '/tokens.y';
+$tokensFile     = __DIR__ . '/tokens.y';
 $tokensTemplate = __DIR__ . '/tokens.template';
-$skeletonFile = __DIR__ . '/parser.template';
+$skeletonFile   = __DIR__ . '/parser.template';
 $tmpGrammarFile = __DIR__ . '/tmp_parser.phpy';
-$tmpResultFile = __DIR__ . '/tmp_parser.php';
+$tmpResultFile  = __DIR__ . '/tmp_parser.php';
 $resultDir = __DIR__ . '/../lib/PhpParser/Parser';
 $tokensResultsFile = $resultDir . '/Tokens.php';
 
@@ -36,7 +36,7 @@ const LIB = '(?(DEFINE)
 )';
 
 const PARAMS = '\[(?<params>[^[\]]*+(?:\[(?&params)\][^[\]]*+)*+)\]';
-const ARGS = '\((?<args>[^()]*+(?:\((?&args)\)[^()]*+)*+)\)';
+const ARGS   = '\((?<args>[^()]*+(?:\((?&args)\)[^()]*+)*+)\)';
 
 ///////////////////
 /// Main script ///
@@ -85,128 +85,134 @@ foreach ($grammarFileToName as $grammarFile => $name) {
 
 function resolveNodes($code) {
     return preg_replace_callback(
-            '~\b(?<name>[A-Z][a-zA-Z_\\\\]++)\s*' . PARAMS . '~', function($matches) {
-        // recurse
-        $matches['params'] = resolveNodes($matches['params']);
+        '~\b(?<name>[A-Z][a-zA-Z_\\\\]++)\s*' . PARAMS . '~',
+        function($matches) {
+            // recurse
+            $matches['params'] = resolveNodes($matches['params']);
 
-        $params = magicSplit(
-                '(?:' . PARAMS . '|' . ARGS . ')(*SKIP)(*FAIL)|,', $matches['params']
-        );
+            $params = magicSplit(
+                '(?:' . PARAMS . '|' . ARGS . ')(*SKIP)(*FAIL)|,',
+                $matches['params']
+            );
 
-        $paramCode = '';
-        foreach ($params as $param) {
-            $paramCode .= $param . ', ';
-        }
+            $paramCode = '';
+            foreach ($params as $param) {
+                $paramCode .= $param . ', ';
+            }
 
-        return 'new ' . $matches['name'] . '(' . $paramCode . 'attributes())';
-    }, $code
+            return 'new ' . $matches['name'] . '(' . $paramCode . 'attributes())';
+        },
+        $code
     );
 }
 
 function resolveMacros($code) {
     return preg_replace_callback(
-            '~\b(?<!::|->)(?!array\()(?<name>[a-z][A-Za-z]++)' . ARGS . '~', function($matches) {
-        // recurse
-        $matches['args'] = resolveMacros($matches['args']);
+        '~\b(?<!::|->)(?!array\()(?<name>[a-z][A-Za-z]++)' . ARGS . '~',
+        function($matches) {
+            // recurse
+            $matches['args'] = resolveMacros($matches['args']);
 
-        $name = $matches['name'];
-        $args = magicSplit(
-                '(?:' . PARAMS . '|' . ARGS . ')(*SKIP)(*FAIL)|,', $matches['args']
-        );
+            $name = $matches['name'];
+            $args = magicSplit(
+                '(?:' . PARAMS . '|' . ARGS . ')(*SKIP)(*FAIL)|,',
+                $matches['args']
+            );
 
-        if ('attributes' == $name) {
-            assertArgs(0, $args, $name);
-            return '$this->startAttributeStack[#1] + $this->endAttributes';
-        }
+            if ('attributes' == $name) {
+                assertArgs(0, $args, $name);
+                return '$this->startAttributeStack[#1] + $this->endAttributes';
+            }
 
-        if ('stackAttributes' == $name) {
-            assertArgs(1, $args, $name);
-            return '$this->startAttributeStack[' . $args[0] . ']'
-                    . ' + $this->endAttributeStack[' . $args[0] . ']';
-        }
+            if ('stackAttributes' == $name) {
+                assertArgs(1, $args, $name);
+                return '$this->startAttributeStack[' . $args[0] . ']'
+                     . ' + $this->endAttributeStack[' . $args[0] . ']';
+            }
 
-        if ('init' == $name) {
-            return '$$ = array(' . implode(', ', $args) . ')';
-        }
+            if ('init' == $name) {
+                return '$$ = array(' . implode(', ', $args) . ')';
+            }
 
-        if ('push' == $name) {
-            assertArgs(2, $args, $name);
+            if ('push' == $name) {
+                assertArgs(2, $args, $name);
 
-            return $args[0] . '[] = ' . $args[1] . '; $$ = ' . $args[0];
-        }
+                return $args[0] . '[] = ' . $args[1] . '; $$ = ' . $args[0];
+            }
 
-        if ('pushNormalizing' == $name) {
-            assertArgs(2, $args, $name);
+            if ('pushNormalizing' == $name) {
+                assertArgs(2, $args, $name);
 
-            return 'if (is_array(' . $args[1] . ')) { $$ = array_merge(' . $args[0] . ', ' . $args[1] . '); }'
-                    . ' else { ' . $args[0] . '[] = ' . $args[1] . '; $$ = ' . $args[0] . '; }';
-        }
+                return 'if (is_array(' . $args[1] . ')) { $$ = array_merge(' . $args[0] . ', ' . $args[1] . '); }'
+                     . ' else { ' . $args[0] . '[] = ' . $args[1] . '; $$ = ' . $args[0] . '; }';
+            }
 
-        if ('toArray' == $name) {
-            assertArgs(1, $args, $name);
+            if ('toArray' == $name) {
+                assertArgs(1, $args, $name);
 
-            return 'is_array(' . $args[0] . ') ? ' . $args[0] . ' : array(' . $args[0] . ')';
-        }
+                return 'is_array(' . $args[0] . ') ? ' . $args[0] . ' : array(' . $args[0] . ')';
+            }
 
-        if ('parseVar' == $name) {
-            assertArgs(1, $args, $name);
+            if ('parseVar' == $name) {
+                assertArgs(1, $args, $name);
 
-            return 'substr(' . $args[0] . ', 1)';
-        }
+                return 'substr(' . $args[0] . ', 1)';
+            }
 
-        if ('parseEncapsed' == $name) {
-            assertArgs(3, $args, $name);
+            if ('parseEncapsed' == $name) {
+                assertArgs(3, $args, $name);
 
-            return 'foreach (' . $args[0] . ' as $s) { if ($s instanceof Node\Scalar\EncapsedStringPart) {'
-                    . ' $s->value = Node\Scalar\String_::parseEscapeSequences($s->value, ' . $args[1] . ', ' . $args[2] . '); } }';
-        }
+                return 'foreach (' . $args[0] . ' as $s) { if ($s instanceof Node\Scalar\EncapsedStringPart) {'
+                     . ' $s->value = Node\Scalar\String_::parseEscapeSequences($s->value, ' . $args[1] . ', ' . $args[2] . '); } }';
+            }
 
-        if ('parseEncapsedDoc' == $name) {
-            assertArgs(2, $args, $name);
+            if ('parseEncapsedDoc' == $name) {
+                assertArgs(2, $args, $name);
 
-            return 'foreach (' . $args[0] . ' as $s) { if ($s instanceof Node\Scalar\EncapsedStringPart) {'
-                    . ' $s->value = Node\Scalar\String_::parseEscapeSequences($s->value, null, ' . $args[1] . '); } }'
-                    . ' $s->value = preg_replace(\'~(\r\n|\n|\r)\z~\', \'\', $s->value);'
-                    . ' if (\'\' === $s->value) array_pop(' . $args[0] . ');';
-        }
+                return 'foreach (' . $args[0] . ' as $s) { if ($s instanceof Node\Scalar\EncapsedStringPart) {'
+                     . ' $s->value = Node\Scalar\String_::parseEscapeSequences($s->value, null, ' . $args[1] . '); } }'
+                     . ' $s->value = preg_replace(\'~(\r\n|\n|\r)\z~\', \'\', $s->value);'
+                     . ' if (\'\' === $s->value) array_pop(' . $args[0] . ');';
+            }
 
-        if ('makeNop' == $name) {
-            assertArgs(2, $args, $name);
+            if ('makeNop' == $name) {
+                assertArgs(2, $args, $name);
 
-            return '$startAttributes = ' . $args[1] . ';'
-                    . ' if (isset($startAttributes[\'comments\']))'
-                    . ' { ' . $args[0] . ' = new Stmt\Nop([\'comments\' => $startAttributes[\'comments\']]); }'
-                    . ' else { ' . $args[0] . ' = null; }';
-        }
+                return '$startAttributes = ' . $args[1] . ';'
+                . ' if (isset($startAttributes[\'comments\']))'
+                . ' { ' . $args[0] . ' = new Stmt\Nop([\'comments\' => $startAttributes[\'comments\']]); }'
+                . ' else { ' . $args[0] . ' = null; }';
+            }
 
-        if ('strKind' == $name) {
-            assertArgs(1, $args, $name);
+            if ('strKind' == $name) {
+                assertArgs(1, $args, $name);
 
-            return '(' . $args[0] . '[0] === "\'" || (' . $args[0] . '[1] === "\'" && '
-                    . '(' . $args[0] . '[0] === \'b\' || ' . $args[0] . '[0] === \'B\')) '
-                    . '? Scalar\String_::KIND_SINGLE_QUOTED : Scalar\String_::KIND_DOUBLE_QUOTED)';
-        }
+                return '(' . $args[0] . '[0] === "\'" || (' . $args[0] . '[1] === "\'" && '
+                     . '(' . $args[0] . '[0] === \'b\' || ' . $args[0] . '[0] === \'B\')) '
+                     . '? Scalar\String_::KIND_SINGLE_QUOTED : Scalar\String_::KIND_DOUBLE_QUOTED)';
+            }
 
-        if ('setDocStringAttrs' == $name) {
-            assertArgs(2, $args, $name);
+            if ('setDocStringAttrs' == $name) {
+                assertArgs(2, $args, $name);
 
-            return $args[0] . '[\'kind\'] = strpos(' . $args[1] . ', "\'") === false '
-                    . '? Scalar\String_::KIND_HEREDOC : Scalar\String_::KIND_NOWDOC; '
-                    . 'preg_match(\'/\A[bB]?<<<[ \t]*[\\\'"]?([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)[\\\'"]?(?:\r\n|\n|\r)\z/\', ' . $args[1] . ', $matches); '
-                    . $args[0] . '[\'docLabel\'] = $matches[1];';
-        }
+                return $args[0] . '[\'kind\'] = strpos(' . $args[1] . ', "\'") === false '
+                     . '? Scalar\String_::KIND_HEREDOC : Scalar\String_::KIND_NOWDOC; '
+                     . 'preg_match(\'/\A[bB]?<<<[ \t]*[\\\'"]?([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)[\\\'"]?(?:\r\n|\n|\r)\z/\', ' . $args[1] . ', $matches); '
+                     . $args[0] . '[\'docLabel\'] = $matches[1];';
+            }
 
-        if ('prependLeadingComments' == $name) {
-            assertArgs(1, $args, $name);
+            if ('prependLeadingComments' == $name) {
+                assertArgs(1, $args, $name);
 
-            return '$attrs = $this->startAttributeStack[#1]; $stmts = ' . $args[0] . '; '
-                    . 'if (!empty($attrs[\'comments\']) && isset($stmts[0])) {'
-                    . '$stmts[0]->setAttribute(\'comments\', '
-                    . 'array_merge($attrs[\'comments\'], $stmts[0]->getAttribute(\'comments\', []))); }';
-        }
+                return '$attrs = $this->startAttributeStack[#1]; $stmts = ' . $args[0] . '; '
+                . 'if (!empty($attrs[\'comments\']) && isset($stmts[0])) {'
+                . '$stmts[0]->setAttribute(\'comments\', '
+                . 'array_merge($attrs[\'comments\'], $stmts[0]->getAttribute(\'comments\', []))); }';
+            }
 
-        return $matches[0];
-    }, $code
+            return $matches[0];
+        },
+        $code
     );
 }
 

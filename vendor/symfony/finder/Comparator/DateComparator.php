@@ -16,8 +16,8 @@ namespace Symfony\Component\Finder\Comparator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DateComparator extends Comparator {
-
+class DateComparator extends Comparator
+{
     /**
      * Constructor.
      *
@@ -25,7 +25,8 @@ class DateComparator extends Comparator {
      *
      * @throws \InvalidArgumentException If the test is not understood
      */
-    public function __construct($test) {
+    public function __construct($test)
+    {
         if (!preg_match('#^\s*(==|!=|[<>]=?|after|since|before|until)?\s*(.+?)\s*$#i', $test, $matches)) {
             throw new \InvalidArgumentException(sprintf('Don\'t understand "%s" as a date test.', $test));
         }
@@ -49,5 +50,4 @@ class DateComparator extends Comparator {
         $this->setOperator($operator);
         $this->setTarget($target);
     }
-
 }

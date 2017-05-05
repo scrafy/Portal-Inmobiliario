@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JsonExpression;
 
-class MySqlGrammar extends Grammar {
-
+class MySqlGrammar extends Grammar
+{
     /**
      * The components that make up a select clause.
      *
@@ -33,11 +33,12 @@ class MySqlGrammar extends Grammar {
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
-    public function compileSelect(Builder $query) {
+    public function compileSelect(Builder $query)
+    {
         $sql = parent::compileSelect($query);
 
         if ($query->unions) {
-            $sql = '(' . $sql . ') ' . $this->compileUnions($query);
+            $sql = '('.$sql.') '.$this->compileUnions($query);
         }
 
         return $sql;
@@ -49,10 +50,11 @@ class MySqlGrammar extends Grammar {
      * @param  array  $union
      * @return string
      */
-    protected function compileUnion(array $union) {
+    protected function compileUnion(array $union)
+    {
         $conjuction = $union['all'] ? ' union all ' : ' union ';
 
-        return $conjuction . '(' . $union['query']->toSql() . ')';
+        return $conjuction.'('.$union['query']->toSql().')';
     }
 
     /**
@@ -61,8 +63,9 @@ class MySqlGrammar extends Grammar {
      * @param  string  $seed
      * @return string
      */
-    public function compileRandom($seed) {
-        return 'RAND(' . $seed . ')';
+    public function compileRandom($seed)
+    {
+        return 'RAND('.$seed.')';
     }
 
     /**
@@ -72,8 +75,9 @@ class MySqlGrammar extends Grammar {
      * @param  bool|string  $value
      * @return string
      */
-    protected function compileLock(Builder $query, $value) {
-        if (!is_string($value)) {
+    protected function compileLock(Builder $query, $value)
+    {
+        if (! is_string($value)) {
             return $value ? 'for update' : 'lock in share mode';
         }
 
@@ -87,7 +91,8 @@ class MySqlGrammar extends Grammar {
      * @param  array  $values
      * @return string
      */
-    public function compileUpdate(Builder $query, $values) {
+    public function compileUpdate(Builder $query, $values)
+    {
         $table = $this->wrapTable($query->from);
 
         // Each one of the columns in the update statements needs to be wrapped in the
@@ -101,7 +106,7 @@ class MySqlGrammar extends Grammar {
         $joins = '';
 
         if (isset($query->joins)) {
-            $joins = ' ' . $this->compileJoins($query, $query->joins);
+            $joins = ' '.$this->compileJoins($query, $query->joins);
         }
 
         // Of course, update queries may also be constrained by where clauses so we'll
@@ -114,15 +119,15 @@ class MySqlGrammar extends Grammar {
         // If the query has an order by clause we will compile it since MySQL supports
         // order bys on update statements. We'll compile them using the typical way
         // of compiling order bys. Then they will be appended to the SQL queries.
-        if (!empty($query->orders)) {
-            $sql .= ' ' . $this->compileOrders($query, $query->orders);
+        if (! empty($query->orders)) {
+            $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
 
         // Updates on MySQL also supports "limits", which allow you to easily update a
         // single record very easily. This is not supported by all database engines
         // so we have customized this update compiler here in order to add it in.
         if (isset($query->limit)) {
-            $sql .= ' ' . $this->compileLimit($query, $query->limit);
+            $sql .= ' '.$this->compileLimit($query, $query->limit);
         }
 
         return rtrim($sql);
@@ -134,14 +139,15 @@ class MySqlGrammar extends Grammar {
      * @param  array  $values
      * @return string
      */
-    protected function compileUpdateColumns($values) {
+    protected function compileUpdateColumns($values)
+    {
         return collect($values)->map(function ($value, $key) {
-                    if ($this->isJsonSelector($key)) {
-                        return $this->compileJsonUpdateColumn($key, new JsonExpression($value));
-                    } else {
-                        return $this->wrap($key) . ' = ' . $this->parameter($value);
-                    }
-                })->implode(', ');
+            if ($this->isJsonSelector($key)) {
+                return $this->compileJsonUpdateColumn($key, new JsonExpression($value));
+            } else {
+                return $this->wrap($key).' = '.$this->parameter($value);
+            }
+        })->implode(', ');
     }
 
     /**
@@ -151,12 +157,13 @@ class MySqlGrammar extends Grammar {
      * @param  \Illuminate\Database\Query\JsonExpression  $value
      * @return string
      */
-    protected function compileJsonUpdateColumn($key, JsonExpression $value) {
+    protected function compileJsonUpdateColumn($key, JsonExpression $value)
+    {
         $path = explode('->', $key);
 
         $field = $this->wrapValue(array_shift($path));
 
-        $accessor = '"$.' . implode('.', $path) . '"';
+        $accessor = '"$.'.implode('.', $path).'"';
 
         return "{$field} = json_set({$field}, {$accessor}, {$value->getValue()})";
     }
@@ -170,11 +177,12 @@ class MySqlGrammar extends Grammar {
      * @param  array  $values
      * @return array
      */
-    public function prepareBindingsForUpdate(array $bindings, array $values) {
+    public function prepareBindingsForUpdate(array $bindings, array $values)
+    {
         $values = collect($values)->reject(function ($value, $column) {
-                    return $this->isJsonSelector($column) &&
-                            in_array(gettype($value), ['boolean', 'integer', 'double']);
-                })->all();
+            return $this->isJsonSelector($column) &&
+                in_array(gettype($value), ['boolean', 'integer', 'double']);
+        })->all();
 
         return parent::prepareBindingsForUpdate($bindings, $values);
     }
@@ -185,12 +193,15 @@ class MySqlGrammar extends Grammar {
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return string
      */
-    public function compileDelete(Builder $query) {
+    public function compileDelete(Builder $query)
+    {
         $table = $this->wrapTable($query->from);
 
         $where = is_array($query->wheres) ? $this->compileWheres($query) : '';
 
-        return isset($query->joins) ? $this->compileDeleteWithJoins($query, $table, $where) : $this->compileDeleteWithoutJoins($query, $table, $where);
+        return isset($query->joins)
+                    ? $this->compileDeleteWithJoins($query, $table, $where)
+                    : $this->compileDeleteWithoutJoins($query, $table, $where);
     }
 
     /**
@@ -201,18 +212,19 @@ class MySqlGrammar extends Grammar {
      * @param  array  $where
      * @return string
      */
-    protected function compileDeleteWithoutJoins($query, $table, $where) {
+    protected function compileDeleteWithoutJoins($query, $table, $where)
+    {
         $sql = trim("delete from {$table} {$where}");
 
         // When using MySQL, delete statements may contain order by statements and limits
         // so we will compile both of those here. Once we have finished compiling this
         // we will return the completed SQL statement so it will be executed for us.
-        if (!empty($query->orders)) {
-            $sql .= ' ' . $this->compileOrders($query, $query->orders);
+        if (! empty($query->orders)) {
+            $sql .= ' '.$this->compileOrders($query, $query->orders);
         }
 
         if (isset($query->limit)) {
-            $sql .= ' ' . $this->compileLimit($query, $query->limit);
+            $sql .= ' '.$this->compileLimit($query, $query->limit);
         }
 
         return $sql;
@@ -226,10 +238,12 @@ class MySqlGrammar extends Grammar {
      * @param  array  $where
      * @return string
      */
-    protected function compileDeleteWithJoins($query, $table, $where) {
-        $joins = ' ' . $this->compileJoins($query, $query->joins);
+    protected function compileDeleteWithJoins($query, $table, $where)
+    {
+        $joins = ' '.$this->compileJoins($query, $query->joins);
 
-        $alias = strpos(strtolower($table), ' as ') !== false ? explode(' as ', $table)[1] : $table;
+        $alias = strpos(strtolower($table), ' as ') !== false
+                ? explode(' as ', $table)[1] : $table;
 
         return trim("delete {$alias} from {$table}{$joins} {$where}");
     }
@@ -240,7 +254,8 @@ class MySqlGrammar extends Grammar {
      * @param  string  $value
      * @return string
      */
-    protected function wrapValue($value) {
+    protected function wrapValue($value)
+    {
         if ($value === '*') {
             return $value;
         }
@@ -252,7 +267,7 @@ class MySqlGrammar extends Grammar {
             return $this->wrapJsonSelector($value);
         }
 
-        return '`' . str_replace('`', '``', $value) . '`';
+        return '`'.str_replace('`', '``', $value).'`';
     }
 
     /**
@@ -261,14 +276,15 @@ class MySqlGrammar extends Grammar {
      * @param  string  $value
      * @return string
      */
-    protected function wrapJsonSelector($value) {
+    protected function wrapJsonSelector($value)
+    {
         $path = explode('->', $value);
 
         $field = $this->wrapValue(array_shift($path));
 
         return sprintf('%s->\'$.%s\'', $field, collect($path)->map(function ($part) {
-                    return '"' . $part . '"';
-                })->implode('.'));
+            return '"'.$part.'"';
+        })->implode('.'));
     }
 
     /**
@@ -277,8 +293,8 @@ class MySqlGrammar extends Grammar {
      * @param  string  $value
      * @return bool
      */
-    protected function isJsonSelector($value) {
+    protected function isJsonSelector($value)
+    {
         return Str::contains($value, '->');
     }
-
 }

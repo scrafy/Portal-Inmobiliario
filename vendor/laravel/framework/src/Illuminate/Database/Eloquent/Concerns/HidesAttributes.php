@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
-trait HidesAttributes {
-
+trait HidesAttributes
+{
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -23,7 +23,8 @@ trait HidesAttributes {
      *
      * @return array
      */
-    public function getHidden() {
+    public function getHidden()
+    {
         return $this->hidden;
     }
 
@@ -33,7 +34,8 @@ trait HidesAttributes {
      * @param  array  $hidden
      * @return $this
      */
-    public function setHidden(array $hidden) {
+    public function setHidden(array $hidden)
+    {
         $this->hidden = $hidden;
 
         return $this;
@@ -45,9 +47,10 @@ trait HidesAttributes {
      * @param  array|string|null  $attributes
      * @return void
      */
-    public function addHidden($attributes = null) {
+    public function addHidden($attributes = null)
+    {
         $this->hidden = array_merge(
-                $this->hidden, is_array($attributes) ? $attributes : func_get_args()
+            $this->hidden, is_array($attributes) ? $attributes : func_get_args()
         );
     }
 
@@ -56,7 +59,8 @@ trait HidesAttributes {
      *
      * @return array
      */
-    public function getVisible() {
+    public function getVisible()
+    {
         return $this->visible;
     }
 
@@ -66,7 +70,8 @@ trait HidesAttributes {
      * @param  array  $visible
      * @return $this
      */
-    public function setVisible(array $visible) {
+    public function setVisible(array $visible)
+    {
         $this->visible = $visible;
 
         return $this;
@@ -78,9 +83,10 @@ trait HidesAttributes {
      * @param  array|string|null  $attributes
      * @return void
      */
-    public function addVisible($attributes = null) {
+    public function addVisible($attributes = null)
+    {
         $this->visible = array_merge(
-                $this->visible, is_array($attributes) ? $attributes : func_get_args()
+            $this->visible, is_array($attributes) ? $attributes : func_get_args()
         );
     }
 
@@ -90,10 +96,11 @@ trait HidesAttributes {
      * @param  array|string  $attributes
      * @return $this
      */
-    public function makeVisible($attributes) {
+    public function makeVisible($attributes)
+    {
         $this->hidden = array_diff($this->hidden, (array) $attributes);
 
-        if (!empty($this->visible)) {
+        if (! empty($this->visible)) {
             $this->addVisible($attributes);
         }
 
@@ -106,7 +113,8 @@ trait HidesAttributes {
      * @param  array|string  $attributes
      * @return $this
      */
-    public function makeHidden($attributes) {
+    public function makeHidden($attributes)
+    {
         $attributes = (array) $attributes;
 
         $this->visible = array_diff($this->visible, $attributes);
@@ -115,5 +123,4 @@ trait HidesAttributes {
 
         return $this;
     }
-
 }

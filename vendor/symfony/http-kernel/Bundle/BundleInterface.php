@@ -20,8 +20,8 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface BundleInterface extends ContainerAwareInterface {
-
+interface BundleInterface extends ContainerAwareInterface
+{
     /**
      * Boots the Bundle.
      */

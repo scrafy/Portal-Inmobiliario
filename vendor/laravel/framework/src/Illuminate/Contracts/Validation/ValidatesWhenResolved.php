@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Validation;
 
-interface ValidatesWhenResolved {
-
+interface ValidatesWhenResolved
+{
     /**
      * Validate the given class instance.
      *

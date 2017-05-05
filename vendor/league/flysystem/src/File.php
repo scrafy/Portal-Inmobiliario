@@ -2,14 +2,15 @@
 
 namespace League\Flysystem;
 
-class File extends Handler {
-
+class File extends Handler
+{
     /**
      * Check whether the file exists.
      *
      * @return bool
      */
-    public function exists() {
+    public function exists()
+    {
         return $this->filesystem->has($this->path);
     }
 
@@ -18,7 +19,8 @@ class File extends Handler {
      *
      * @return string file contents
      */
-    public function read() {
+    public function read()
+    {
         return $this->filesystem->read($this->path);
     }
 
@@ -27,7 +29,8 @@ class File extends Handler {
      *
      * @return resource file stream
      */
-    public function readStream() {
+    public function readStream()
+    {
         return $this->filesystem->readStream($this->path);
     }
 
@@ -38,7 +41,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function write($content) {
+    public function write($content)
+    {
         return $this->filesystem->write($this->path, $content);
     }
 
@@ -49,7 +53,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function writeStream($resource) {
+    public function writeStream($resource)
+    {
         return $this->filesystem->writeStream($this->path, $resource);
     }
 
@@ -60,7 +65,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function update($content) {
+    public function update($content)
+    {
         return $this->filesystem->update($this->path, $content);
     }
 
@@ -71,7 +77,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function updateStream($resource) {
+    public function updateStream($resource)
+    {
         return $this->filesystem->updateStream($this->path, $resource);
     }
 
@@ -82,7 +89,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function put($content) {
+    public function put($content)
+    {
         return $this->filesystem->put($this->path, $content);
     }
 
@@ -93,7 +101,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function putStream($resource) {
+    public function putStream($resource)
+    {
         return $this->filesystem->putStream($this->path, $resource);
     }
 
@@ -104,7 +113,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function rename($newpath) {
+    public function rename($newpath)
+    {
         if ($this->filesystem->rename($this->path, $newpath)) {
             $this->path = $newpath;
 
@@ -121,7 +131,8 @@ class File extends Handler {
      *
      * @return File|false new file or false
      */
-    public function copy($newpath) {
+    public function copy($newpath)
+    {
         if ($this->filesystem->copy($this->path, $newpath)) {
             return new File($this->filesystem, $newpath);
         }
@@ -134,7 +145,8 @@ class File extends Handler {
      *
      * @return int unix timestamp
      */
-    public function getTimestamp() {
+    public function getTimestamp()
+    {
         return $this->filesystem->getTimestamp($this->path);
     }
 
@@ -143,7 +155,8 @@ class File extends Handler {
      *
      * @return string mimetime
      */
-    public function getMimetype() {
+    public function getMimetype()
+    {
         return $this->filesystem->getMimetype($this->path);
     }
 
@@ -152,7 +165,8 @@ class File extends Handler {
      *
      * @return string visibility
      */
-    public function getVisibility() {
+    public function getVisibility()
+    {
         return $this->filesystem->getVisibility($this->path);
     }
 
@@ -161,7 +175,8 @@ class File extends Handler {
      *
      * @return array
      */
-    public function getMetadata() {
+    public function getMetadata()
+    {
         return $this->filesystem->getMetadata($this->path);
     }
 
@@ -170,7 +185,8 @@ class File extends Handler {
      *
      * @return int file size
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->filesystem->getSize($this->path);
     }
 
@@ -179,8 +195,8 @@ class File extends Handler {
      *
      * @return bool success boolean
      */
-    public function delete() {
+    public function delete()
+    {
         return $this->filesystem->delete($this->path);
     }
-
 }

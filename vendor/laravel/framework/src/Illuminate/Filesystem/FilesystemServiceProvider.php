@@ -4,14 +4,15 @@ namespace Illuminate\Filesystem;
 
 use Illuminate\Support\ServiceProvider;
 
-class FilesystemServiceProvider extends ServiceProvider {
-
+class FilesystemServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerNativeFilesystem();
 
         $this->registerFlysystem();
@@ -22,7 +23,8 @@ class FilesystemServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerNativeFilesystem() {
+    protected function registerNativeFilesystem()
+    {
         $this->app->singleton('files', function () {
             return new Filesystem;
         });
@@ -33,7 +35,8 @@ class FilesystemServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerFlysystem() {
+    protected function registerFlysystem()
+    {
         $this->registerManager();
 
         $this->app->singleton('filesystem.disk', function () {
@@ -50,7 +53,8 @@ class FilesystemServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerManager() {
+    protected function registerManager()
+    {
         $this->app->singleton('filesystem', function () {
             return new FilesystemManager($this->app);
         });
@@ -61,7 +65,8 @@ class FilesystemServiceProvider extends ServiceProvider {
      *
      * @return string
      */
-    protected function getDefaultDriver() {
+    protected function getDefaultDriver()
+    {
         return $this->app['config']['filesystems.default'];
     }
 
@@ -70,8 +75,8 @@ class FilesystemServiceProvider extends ServiceProvider {
      *
      * @return string
      */
-    protected function getCloudDriver() {
+    protected function getCloudDriver()
+    {
         return $this->app['config']['filesystems.cloud'];
     }
-
 }

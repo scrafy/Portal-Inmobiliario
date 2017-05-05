@@ -2,10 +2,9 @@
 
 namespace Fixtures\Prophecy;
 
-class WithTypehintedVariadicArgument {
-
-    function methodWithTypeHintedArgs(array ...$args) {
-        
+class WithTypehintedVariadicArgument
+{
+    function methodWithTypeHintedArgs(array ...$args)
+    {
     }
-
 }

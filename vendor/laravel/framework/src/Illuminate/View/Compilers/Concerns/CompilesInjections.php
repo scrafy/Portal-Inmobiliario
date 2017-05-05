@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesInjections {
-
+trait CompilesInjections
+{
     /**
      * Compile the inject statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileInject($expression) {
+    protected function compileInject($expression)
+    {
         $segments = explode(',', preg_replace("/[\(\)\\\"\']/", '', $expression));
 
         $variable = trim($segments[0]);
@@ -19,5 +20,4 @@ trait CompilesInjections {
 
         return "<?php \${$variable} = app('{$service}'); ?>";
     }
-
 }

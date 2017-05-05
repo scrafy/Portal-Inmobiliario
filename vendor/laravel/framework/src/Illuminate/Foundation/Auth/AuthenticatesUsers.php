@@ -5,17 +5,17 @@ namespace Illuminate\Foundation\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-trait AuthenticatesUsers {
-
-    use RedirectsUsers,
-        ThrottlesLogins;
+trait AuthenticatesUsers
+{
+    use RedirectsUsers, ThrottlesLogins;
 
     /**
      * Show the application's login form.
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('auth.login');
     }
 
@@ -25,7 +25,8 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -55,7 +56,8 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    protected function validateLogin(Request $request) {
+    protected function validateLogin(Request $request)
+    {
         $this->validate($request, [
             $this->username() => 'required', 'password' => 'required',
         ]);
@@ -67,9 +69,10 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
-    protected function attemptLogin(Request $request) {
+    protected function attemptLogin(Request $request)
+    {
         return $this->guard()->attempt(
-                        $this->credentials($request), $request->has('remember')
+            $this->credentials($request), $request->has('remember')
         );
     }
 
@@ -79,7 +82,8 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function credentials(Request $request) {
+    protected function credentials(Request $request)
+    {
         return $request->only($this->username(), 'password');
     }
 
@@ -89,12 +93,14 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function sendLoginResponse(Request $request) {
+    protected function sendLoginResponse(Request $request)
+    {
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
 
-        return $this->authenticated($request, $this->guard()->user()) ?: redirect()->intended($this->redirectPath());
+        return $this->authenticated($request, $this->guard()->user())
+                ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -104,7 +110,8 @@ trait AuthenticatesUsers {
      * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated(Request $request, $user) {
+    protected function authenticated(Request $request, $user)
+    {
         //
     }
 
@@ -114,7 +121,8 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function sendFailedLoginResponse(Request $request) {
+    protected function sendFailedLoginResponse(Request $request)
+    {
         $errors = [$this->username() => trans('auth.failed')];
 
         if ($request->expectsJson()) {
@@ -122,8 +130,8 @@ trait AuthenticatesUsers {
         }
 
         return redirect()->back()
-                        ->withInput($request->only($this->username(), 'remember'))
-                        ->withErrors($errors);
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors($errors);
     }
 
     /**
@@ -131,7 +139,8 @@ trait AuthenticatesUsers {
      *
      * @return string
      */
-    public function username() {
+    public function username()
+    {
         return 'email';
     }
 
@@ -141,7 +150,8 @@ trait AuthenticatesUsers {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $this->guard()->logout();
 
         $request->session()->flush();
@@ -156,8 +166,8 @@ trait AuthenticatesUsers {
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard() {
+    protected function guard()
+    {
         return Auth::guard();
     }
-
 }

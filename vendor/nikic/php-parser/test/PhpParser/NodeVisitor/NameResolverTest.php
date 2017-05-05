@@ -8,8 +8,8 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 
-class NameResolverTest extends \PHPUnit_Framework_TestCase {
-
+class NameResolverTest extends \PHPUnit_Framework_TestCase
+{
     private function canonicalize($string) {
         return str_replace("\r\n", "\n", $string);
     }
@@ -165,16 +165,17 @@ namespace Baz {
 }
 EOC;
 
-        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
+        $parser        = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
         $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-        $traverser = new PhpParser\NodeTraverser;
+        $traverser     = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
 
         $stmts = $parser->parse($code);
         $stmts = $traverser->traverse($stmts);
 
         $this->assertSame(
-                $this->canonicalize($expectedCode), $prettyPrinter->prettyPrint($stmts)
+            $this->canonicalize($expectedCode),
+            $prettyPrinter->prettyPrint($stmts)
         );
     }
 
@@ -263,16 +264,17 @@ try {
 }
 EOC;
 
-        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
+        $parser        = new PhpParser\Parser\Php7(new PhpParser\Lexer\Emulative);
         $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-        $traverser = new PhpParser\NodeTraverser;
+        $traverser     = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
 
         $stmts = $parser->parse($code);
         $stmts = $traverser->traverse($stmts);
 
         $this->assertSame(
-                $this->canonicalize($expectedCode), $prettyPrinter->prettyPrint($stmts)
+            $this->canonicalize($expectedCode),
+            $prettyPrinter->prettyPrint($stmts)
         );
     }
 
@@ -292,7 +294,7 @@ EOC;
             new Stmt\Function_('C'),
             new Stmt\Const_(array(
                 new Node\Const_('D', new Node\Scalar\LNumber(42))
-                    )),
+            )),
             new Stmt\Trait_('E'),
             new Expr\New_(new Stmt\Class_(null)),
         );
@@ -309,11 +311,11 @@ EOC;
         $this->assertObjectNotHasAttribute('namespacedName', $stmts[0]->stmts[5]->class);
 
         $stmts = $traverser->traverse([new Stmt\Namespace_(null, $nsStmts)]);
-        $this->assertSame('A', (string) $stmts[0]->stmts[0]->namespacedName);
-        $this->assertSame('B', (string) $stmts[0]->stmts[1]->namespacedName);
-        $this->assertSame('C', (string) $stmts[0]->stmts[2]->namespacedName);
-        $this->assertSame('D', (string) $stmts[0]->stmts[3]->consts[0]->namespacedName);
-        $this->assertSame('E', (string) $stmts[0]->stmts[4]->namespacedName);
+        $this->assertSame('A',     (string) $stmts[0]->stmts[0]->namespacedName);
+        $this->assertSame('B',     (string) $stmts[0]->stmts[1]->namespacedName);
+        $this->assertSame('C',     (string) $stmts[0]->stmts[2]->namespacedName);
+        $this->assertSame('D',     (string) $stmts[0]->stmts[3]->consts[0]->namespacedName);
+        $this->assertSame('E',     (string) $stmts[0]->stmts[4]->namespacedName);
         $this->assertObjectNotHasAttribute('namespacedName', $stmts[0]->stmts[5]->class);
     }
 
@@ -322,17 +324,17 @@ EOC;
             new Stmt\Namespace_(new Name('NS'), array(
                 new Expr\FuncCall(new Name('foo')),
                 new Expr\ConstFetch(new Name('FOO')),
-                    )),
+            )),
             new Stmt\Namespace_(null, array(
                 new Expr\FuncCall(new Name('foo')),
                 new Expr\ConstFetch(new Name('FOO')),
-                    )),
+            )),
         );
 
         $traverser = new PhpParser\NodeTraverser;
         $traverser->addVisitor(new NameResolver);
         $stmts = $traverser->traverse($stmts);
-
+        
         $this->assertSame('NS\\foo', (string) $stmts[0]->stmts[0]->name->getAttribute('namespacedName'));
         $this->assertSame('NS\\FOO', (string) $stmts[0]->stmts[1]->name->getAttribute('namespacedName'));
 
@@ -357,21 +359,21 @@ EOC;
                 new Stmt\Use_(array(
                     new Stmt\UseUse(new Name('A\B'), 'B', 0, array('startLine' => 1)),
                     new Stmt\UseUse(new Name('C\D'), 'B', 0, array('startLine' => 2)),
-                        ), Stmt\Use_::TYPE_NORMAL),
+                ), Stmt\Use_::TYPE_NORMAL),
                 'Cannot use C\D as B because the name is already in use on line 2'
             ),
             array(
                 new Stmt\Use_(array(
                     new Stmt\UseUse(new Name('a\b'), 'b', 0, array('startLine' => 1)),
                     new Stmt\UseUse(new Name('c\d'), 'B', 0, array('startLine' => 2)),
-                        ), Stmt\Use_::TYPE_FUNCTION),
+                ), Stmt\Use_::TYPE_FUNCTION),
                 'Cannot use function c\d as B because the name is already in use on line 2'
             ),
             array(
                 new Stmt\Use_(array(
                     new Stmt\UseUse(new Name('A\B'), 'B', 0, array('startLine' => 1)),
                     new Stmt\UseUse(new Name('C\D'), 'B', 0, array('startLine' => 2)),
-                        ), Stmt\Use_::TYPE_CONSTANT),
+                ), Stmt\Use_::TYPE_CONSTANT),
                 'Cannot use const C\D as B because the name is already in use on line 2'
             ),
             array(
@@ -393,7 +395,8 @@ EOC;
         );
     }
 
-    public function testClassNameIsCaseInsensitive() {
+    public function testClassNameIsCaseInsensitive()
+    {
         $source = <<<'EOC'
 <?php
 namespace Foo;
@@ -439,9 +442,9 @@ EOC;
         $classStmt = $stmts[0];
         $methodStmt = $classStmt->stmts[0]->stmts[0];
 
-        $this->assertSame('SELF', (string) $methodStmt->stmts[0]->class);
-        $this->assertSame('PARENT', (string) $methodStmt->stmts[1]->class);
-        $this->assertSame('STATIC', (string) $methodStmt->stmts[2]->class);
+        $this->assertSame('SELF', (string)$methodStmt->stmts[0]->class);
+        $this->assertSame('PARENT', (string)$methodStmt->stmts[1]->class);
+        $this->assertSame('STATIC', (string)$methodStmt->stmts[2]->class);
     }
 
     public function testAddOriginalNames() {
@@ -454,7 +457,7 @@ EOC;
             new Stmt\Namespace_(new Name('Foo'), [
                 new Expr\ClassConstFetch($n1, 'FOO'),
                 new Expr\FuncCall($n2),
-                    ])
+            ])
         ];
 
         $stmts = $traverser->traverse($origStmts);
@@ -462,5 +465,4 @@ EOC;
         $this->assertSame($n1, $stmts[0]->stmts[0]->class->getAttribute('originalName'));
         $this->assertSame($n2, $stmts[0]->stmts[1]->name->getAttribute('originalName'));
     }
-
 }

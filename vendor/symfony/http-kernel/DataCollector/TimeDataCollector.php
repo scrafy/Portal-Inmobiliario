@@ -20,12 +20,13 @@ use Symfony\Component\HttpKernel\KernelInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TimeDataCollector extends DataCollector implements LateDataCollectorInterface {
-
+class TimeDataCollector extends DataCollector implements LateDataCollectorInterface
+{
     protected $kernel;
     protected $stopwatch;
 
-    public function __construct(KernelInterface $kernel = null, $stopwatch = null) {
+    public function __construct(KernelInterface $kernel = null, $stopwatch = null)
+    {
         $this->kernel = $kernel;
         $this->stopwatch = $stopwatch;
     }
@@ -33,7 +34,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         if (null !== $this->kernel) {
             $startTime = $this->kernel->getStartTime();
         } else {
@@ -50,7 +52,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
     /**
      * {@inheritdoc}
      */
-    public function lateCollect() {
+    public function lateCollect()
+    {
         if (null !== $this->stopwatch && isset($this->data['token'])) {
             $this->setEvents($this->stopwatch->getSectionEvents($this->data['token']));
         }
@@ -62,7 +65,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      *
      * @param array $events The request events
      */
-    public function setEvents(array $events) {
+    public function setEvents(array $events)
+    {
         foreach ($events as $event) {
             $event->ensureStopped();
         }
@@ -75,7 +79,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      *
      * @return array The request events
      */
-    public function getEvents() {
+    public function getEvents()
+    {
         return $this->data['events'];
     }
 
@@ -84,7 +89,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      *
      * @return float The elapsed time
      */
-    public function getDuration() {
+    public function getDuration()
+    {
         if (!isset($this->data['events']['__section__'])) {
             return 0;
         }
@@ -101,7 +107,8 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      *
      * @return float The elapsed time
      */
-    public function getInitTime() {
+    public function getInitTime()
+    {
         if (!isset($this->data['events']['__section__'])) {
             return 0;
         }
@@ -114,15 +121,16 @@ class TimeDataCollector extends DataCollector implements LateDataCollectorInterf
      *
      * @return int The time
      */
-    public function getStartTime() {
+    public function getStartTime()
+    {
         return $this->data['start_time'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'time';
     }
-
 }

@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_StreamFilter {
-
+interface Swift_StreamFilter
+{
     /**
      * Based on the buffer given, this returns true if more buffering is needed.
      *

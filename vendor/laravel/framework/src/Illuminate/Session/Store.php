@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use SessionHandlerInterface;
 use Illuminate\Contracts\Session\Session;
 
-class Store implements Session {
-
+class Store implements Session
+{
     /**
      * The session ID.
      *
@@ -53,7 +53,8 @@ class Store implements Session {
      * @param  string|null $id
      * @return void
      */
-    public function __construct($name, SessionHandlerInterface $handler, $id = null) {
+    public function __construct($name, SessionHandlerInterface $handler, $id = null)
+    {
         $this->setId($id);
         $this->name = $name;
         $this->handler = $handler;
@@ -64,10 +65,11 @@ class Store implements Session {
      *
      * @return bool
      */
-    public function start() {
+    public function start()
+    {
         $this->loadSession();
 
-        if (!$this->has('_token')) {
+        if (! $this->has('_token')) {
             $this->regenerateToken();
         }
 
@@ -79,7 +81,8 @@ class Store implements Session {
      *
      * @return void
      */
-    protected function loadSession() {
+    protected function loadSession()
+    {
         $this->attributes = array_merge($this->attributes, $this->readFromHandler());
     }
 
@@ -88,11 +91,12 @@ class Store implements Session {
      *
      * @return array
      */
-    protected function readFromHandler() {
+    protected function readFromHandler()
+    {
         if ($data = $this->handler->read($this->getId())) {
             $data = @unserialize($this->prepareForUnserialize($data));
 
-            if ($data !== false && !is_null($data) && is_array($data)) {
+            if ($data !== false && ! is_null($data) && is_array($data)) {
                 return $data;
             }
         }
@@ -106,7 +110,8 @@ class Store implements Session {
      * @param  string  $data
      * @return string
      */
-    protected function prepareForUnserialize($data) {
+    protected function prepareForUnserialize($data)
+    {
         return $data;
     }
 
@@ -115,11 +120,12 @@ class Store implements Session {
      *
      * @return bool
      */
-    public function save() {
+    public function save()
+    {
         $this->ageFlashData();
 
         $this->handler->write($this->getId(), $this->prepareForStorage(
-                        serialize($this->attributes)
+            serialize($this->attributes)
         ));
 
         $this->started = false;
@@ -131,7 +137,8 @@ class Store implements Session {
      * @param  string  $data
      * @return string
      */
-    protected function prepareForStorage($data) {
+    protected function prepareForStorage($data)
+    {
         return $data;
     }
 
@@ -140,7 +147,8 @@ class Store implements Session {
      *
      * @return void
      */
-    public function ageFlashData() {
+    public function ageFlashData()
+    {
         $this->forget($this->get('_flash.old', []));
 
         $this->put('_flash.old', $this->get('_flash.new', []));
@@ -153,7 +161,8 @@ class Store implements Session {
      *
      * @return array
      */
-    public function all() {
+    public function all()
+    {
         return $this->attributes;
     }
 
@@ -163,10 +172,11 @@ class Store implements Session {
      * @param  string|array  $key
      * @return bool
      */
-    public function exists($key) {
-        return !collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
-                    return !Arr::exists($this->attributes, $key);
-                });
+    public function exists($key)
+    {
+        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
+            return ! Arr::exists($this->attributes, $key);
+        });
     }
 
     /**
@@ -175,10 +185,11 @@ class Store implements Session {
      * @param  string|array  $key
      * @return bool
      */
-    public function has($key) {
-        return !collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
-                    return is_null($this->get($key));
-                });
+    public function has($key)
+    {
+        return ! collect(is_array($key) ? $key : func_get_args())->contains(function ($key) {
+            return is_null($this->get($key));
+        });
     }
 
     /**
@@ -188,7 +199,8 @@ class Store implements Session {
      * @param  mixed  $default
      * @return mixed
      */
-    public function get($key, $default = null) {
+    public function get($key, $default = null)
+    {
         return Arr::get($this->attributes, $key, $default);
     }
 
@@ -199,7 +211,8 @@ class Store implements Session {
      * @param  string  $default
      * @return mixed
      */
-    public function pull($key, $default = null) {
+    public function pull($key, $default = null)
+    {
         return Arr::pull($this->attributes, $key, $default);
     }
 
@@ -209,10 +222,11 @@ class Store implements Session {
      * @param  string  $key
      * @return bool
      */
-    public function hasOldInput($key = null) {
+    public function hasOldInput($key = null)
+    {
         $old = $this->getOldInput($key);
 
-        return is_null($key) ? count($old) > 0 : !is_null($old);
+        return is_null($key) ? count($old) > 0 : ! is_null($old);
     }
 
     /**
@@ -222,7 +236,8 @@ class Store implements Session {
      * @param  mixed   $default
      * @return mixed
      */
-    public function getOldInput($key = null, $default = null) {
+    public function getOldInput($key = null, $default = null)
+    {
         return Arr::get($this->get('_old_input', []), $key, $default);
     }
 
@@ -232,7 +247,8 @@ class Store implements Session {
      * @param  array  $attributes
      * @return void
      */
-    public function replace(array $attributes) {
+    public function replace(array $attributes)
+    {
         $this->put($attributes);
     }
 
@@ -243,8 +259,9 @@ class Store implements Session {
      * @param  mixed       $value
      * @return void
      */
-    public function put($key, $value = null) {
-        if (!is_array($key)) {
+    public function put($key, $value = null)
+    {
+        if (! is_array($key)) {
             $key = [$key => $value];
         }
 
@@ -260,8 +277,9 @@ class Store implements Session {
      * @param  \Closure  $callback
      * @return mixed
      */
-    public function remember($key, Closure $callback) {
-        if (!is_null($value = $this->get($key))) {
+    public function remember($key, Closure $callback)
+    {
+        if (! is_null($value = $this->get($key))) {
             return $value;
         }
 
@@ -277,7 +295,8 @@ class Store implements Session {
      * @param  mixed   $value
      * @return void
      */
-    public function push($key, $value) {
+    public function push($key, $value)
+    {
         $array = $this->get($key, []);
 
         $array[] = $value;
@@ -292,7 +311,8 @@ class Store implements Session {
      * @param  int  $amount
      * @return mixed
      */
-    public function increment($key, $amount = 1) {
+    public function increment($key, $amount = 1)
+    {
         $this->put($key, $value = $this->get($key, 0) + $amount);
 
         return $value;
@@ -305,7 +325,8 @@ class Store implements Session {
      * @param  int  $amount
      * @return int
      */
-    public function decrement($key, $amount = 1) {
+    public function decrement($key, $amount = 1)
+    {
         return $this->increment($key, $amount * -1);
     }
 
@@ -316,7 +337,8 @@ class Store implements Session {
      * @param  mixed   $value
      * @return void
      */
-    public function flash($key, $value) {
+    public function flash($key, $value)
+    {
         $this->put($key, $value);
 
         $this->push('_flash.new', $key);
@@ -331,7 +353,8 @@ class Store implements Session {
      * @param  mixed $value
      * @return void
      */
-    public function now($key, $value) {
+    public function now($key, $value)
+    {
         $this->put($key, $value);
 
         $this->push('_flash.old', $key);
@@ -342,7 +365,8 @@ class Store implements Session {
      *
      * @return void
      */
-    public function reflash() {
+    public function reflash()
+    {
         $this->mergeNewFlashes($this->get('_flash.old', []));
 
         $this->put('_flash.old', []);
@@ -354,7 +378,8 @@ class Store implements Session {
      * @param  array|mixed  $keys
      * @return void
      */
-    public function keep($keys = null) {
+    public function keep($keys = null)
+    {
         $this->mergeNewFlashes($keys = is_array($keys) ? $keys : func_get_args());
 
         $this->removeFromOldFlashData($keys);
@@ -366,7 +391,8 @@ class Store implements Session {
      * @param  array  $keys
      * @return void
      */
-    protected function mergeNewFlashes(array $keys) {
+    protected function mergeNewFlashes(array $keys)
+    {
         $values = array_unique(array_merge($this->get('_flash.new', []), $keys));
 
         $this->put('_flash.new', $values);
@@ -378,7 +404,8 @@ class Store implements Session {
      * @param  array  $keys
      * @return void
      */
-    protected function removeFromOldFlashData(array $keys) {
+    protected function removeFromOldFlashData(array $keys)
+    {
         $this->put('_flash.old', array_diff($this->get('_flash.old', []), $keys));
     }
 
@@ -388,7 +415,8 @@ class Store implements Session {
      * @param  array  $value
      * @return void
      */
-    public function flashInput(array $value) {
+    public function flashInput(array $value)
+    {
         $this->flash('_old_input', $value);
     }
 
@@ -398,7 +426,8 @@ class Store implements Session {
      * @param  string  $key
      * @return mixed
      */
-    public function remove($key) {
+    public function remove($key)
+    {
         return Arr::pull($this->attributes, $key);
     }
 
@@ -408,7 +437,8 @@ class Store implements Session {
      * @param  string|array  $keys
      * @return void
      */
-    public function forget($keys) {
+    public function forget($keys)
+    {
         Arr::forget($this->attributes, $keys);
     }
 
@@ -417,7 +447,8 @@ class Store implements Session {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->attributes = [];
     }
 
@@ -426,7 +457,8 @@ class Store implements Session {
      *
      * @return bool
      */
-    public function invalidate() {
+    public function invalidate()
+    {
         $this->flush();
 
         return $this->migrate(true);
@@ -438,7 +470,8 @@ class Store implements Session {
      * @param  bool  $destroy
      * @return bool
      */
-    public function regenerate($destroy = false) {
+    public function regenerate($destroy = false)
+    {
         return $this->migrate($destroy);
     }
 
@@ -448,7 +481,8 @@ class Store implements Session {
      * @param  bool  $destroy
      * @return bool
      */
-    public function migrate($destroy = false) {
+    public function migrate($destroy = false)
+    {
         if ($destroy) {
             $this->handler->destroy($this->getId());
         }
@@ -465,7 +499,8 @@ class Store implements Session {
      *
      * @return bool
      */
-    public function isStarted() {
+    public function isStarted()
+    {
         return $this->started;
     }
 
@@ -474,7 +509,8 @@ class Store implements Session {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -484,7 +520,8 @@ class Store implements Session {
      * @param  string  $name
      * @return void
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
@@ -493,7 +530,8 @@ class Store implements Session {
      *
      * @return string
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -503,7 +541,8 @@ class Store implements Session {
      * @param  string  $id
      * @return void
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $this->isValidId($id) ? $id : $this->generateSessionId();
     }
 
@@ -513,7 +552,8 @@ class Store implements Session {
      * @param  string  $id
      * @return bool
      */
-    public function isValidId($id) {
+    public function isValidId($id)
+    {
         return is_string($id) && ctype_alnum($id) && strlen($id) === 40;
     }
 
@@ -522,7 +562,8 @@ class Store implements Session {
      *
      * @return string
      */
-    protected function generateSessionId() {
+    protected function generateSessionId()
+    {
         return Str::random(40);
     }
 
@@ -532,7 +573,8 @@ class Store implements Session {
      * @param  bool  $value
      * @return void
      */
-    public function setExists($value) {
+    public function setExists($value)
+    {
         if ($this->handler instanceof ExistenceAwareInterface) {
             $this->handler->setExists($value);
         }
@@ -543,7 +585,8 @@ class Store implements Session {
      *
      * @return string
      */
-    public function token() {
+    public function token()
+    {
         return $this->get('_token');
     }
 
@@ -552,7 +595,8 @@ class Store implements Session {
      *
      * @return void
      */
-    public function regenerateToken() {
+    public function regenerateToken()
+    {
         $this->put('_token', Str::random(40));
     }
 
@@ -561,7 +605,8 @@ class Store implements Session {
      *
      * @return string|null
      */
-    public function previousUrl() {
+    public function previousUrl()
+    {
         return $this->get('_previous.url');
     }
 
@@ -571,7 +616,8 @@ class Store implements Session {
      * @param  string  $url
      * @return void
      */
-    public function setPreviousUrl($url) {
+    public function setPreviousUrl($url)
+    {
         $this->put('_previous.url', $url);
     }
 
@@ -580,7 +626,8 @@ class Store implements Session {
      *
      * @return \SessionHandlerInterface
      */
-    public function getHandler() {
+    public function getHandler()
+    {
         return $this->handler;
     }
 
@@ -589,7 +636,8 @@ class Store implements Session {
      *
      * @return bool
      */
-    public function handlerNeedsRequest() {
+    public function handlerNeedsRequest()
+    {
         return $this->handler instanceof CookieSessionHandler;
     }
 
@@ -599,10 +647,10 @@ class Store implements Session {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function setRequestOnHandler($request) {
+    public function setRequestOnHandler($request)
+    {
         if ($this->handlerNeedsRequest()) {
             $this->handler->setRequest($request);
         }
     }
-
 }

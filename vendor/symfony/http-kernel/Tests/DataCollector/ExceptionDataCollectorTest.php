@@ -17,9 +17,10 @@ use Symfony\Component\HttpKernel\DataCollector\ExceptionDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExceptionDataCollectorTest extends TestCase {
-
-    public function testCollect() {
+class ExceptionDataCollectorTest extends TestCase
+{
+    public function testCollect()
+    {
         $e = new \Exception('foo', 500);
         $c = new ExceptionDataCollector();
         $flattened = FlattenException::create($e);
@@ -36,5 +37,4 @@ class ExceptionDataCollectorTest extends TestCase {
         $this->assertSame('exception', $c->getName());
         $this->assertSame($trace, $c->getTrace());
     }
-
 }

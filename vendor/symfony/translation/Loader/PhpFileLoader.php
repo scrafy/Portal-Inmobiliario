@@ -16,13 +16,13 @@ namespace Symfony\Component\Translation\Loader;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PhpFileLoader extends FileLoader {
-
+class PhpFileLoader extends FileLoader
+{
     /**
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         return require $resource;
     }
-
 }

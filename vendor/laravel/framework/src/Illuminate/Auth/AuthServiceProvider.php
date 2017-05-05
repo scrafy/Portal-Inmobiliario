@@ -7,14 +7,15 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class AuthServiceProvider extends ServiceProvider {
-
+class AuthServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerAuthenticator();
 
         $this->registerUserResolver();
@@ -29,7 +30,8 @@ class AuthServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerAuthenticator() {
+    protected function registerAuthenticator()
+    {
         $this->app->singleton('auth', function ($app) {
             // Once the authentication service has actually been requested by the developer
             // we will set a variable in the application indicating such. This helps us
@@ -49,11 +51,12 @@ class AuthServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerUserResolver() {
+    protected function registerUserResolver()
+    {
         $this->app->bind(
-                AuthenticatableContract::class, function ($app) {
-            return call_user_func($app['auth']->userResolver());
-        }
+            AuthenticatableContract::class, function ($app) {
+                return call_user_func($app['auth']->userResolver());
+            }
         );
     }
 
@@ -62,7 +65,8 @@ class AuthServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerAccessGate() {
+    protected function registerAccessGate()
+    {
         $this->app->singleton(GateContract::class, function ($app) {
             return new Gate($app, function () use ($app) {
                 return call_user_func($app['auth']->userResolver());
@@ -75,12 +79,12 @@ class AuthServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerRequestRebindHandler() {
+    protected function registerRequestRebindHandler()
+    {
         $this->app->rebinding('request', function ($app, $request) {
             $request->setUserResolver(function ($guard = null) use ($app) {
                 return call_user_func($app['auth']->userResolver(), $guard);
             });
         });
     }
-
 }

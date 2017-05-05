@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\zh_TW;
 
-class Text extends \Faker\Provider\Text {
-
+class Text extends \Faker\Provider\Text
+{
     protected static $separator = '';
     protected static $separatorLen = 0;
 
@@ -95,13 +95,15 @@ class Text extends \Faker\Provider\Text {
 他卻如此無禮；若不殺之，難消我氣！」便要提刀入帳來殺董卓。正是：人情勢利古猶今，誰識英雄是白身？安得快人如翼德，盡誅世上負心人！
 畢竟董卓性命如何，且看下文分解。
 EOT;
+
     protected static $encoding = 'UTF-8';
 
-    protected static function explode($text) {
+    protected static function explode($text)
+    {
         $chars = array();
 
         foreach (preg_split('//u', str_replace(PHP_EOL, '', $text)) as $char) {
-            if (!empty($char)) {
+            if (! empty($char)) {
                 $chars[] = $char;
             }
         }
@@ -109,15 +111,20 @@ EOT;
         return $chars;
     }
 
-    protected static function strlen($text) {
-        return function_exists('mb_strlen') ? mb_strlen($text, static::$encoding) : count(static::explode($text));
+    protected static function strlen($text)
+    {
+        return function_exists('mb_strlen')
+            ? mb_strlen($text, static::$encoding)
+            : count(static::explode($text));
     }
 
-    protected static function validStart($word) {
-        return !in_array($word, static::$notBeginPunct);
+    protected static function validStart($word)
+    {
+        return ! in_array($word, static::$notBeginPunct);
     }
 
-    protected static function appendEnd($text) {
+    protected static function appendEnd($text)
+    {
         $mbAvailable = extension_loaded('mbstring');
 
         // extract the last char of $text
@@ -150,7 +157,8 @@ EOT;
      * @param string $text
      * @return array
      */
-    protected static function utf8Encoding($text) {
+    protected static function utf8Encoding($text)
+    {
         $encoding = array();
 
         $chars = str_split($text);
@@ -165,19 +173,19 @@ EOT;
             switch (true) {
                 case $ord > 251:
                     $temp .= $chars[++$i];
-                // no break
+                    // no break
                 case $ord > 247:
                     $temp .= $chars[++$i];
-                // no break
+                    // no break
                 case $ord > 239:
                     $temp .= $chars[++$i];
-                // no break
+                    // no break
                 case $ord > 223:
                     $temp .= $chars[++$i];
-                // no break
+                    // no break
                 case $ord > 191:
                     $temp .= $chars[++$i];
-                // no break
+                    // no break
             }
 
             $encoding[] = $temp;
@@ -185,5 +193,4 @@ EOT;
 
         return $encoding;
     }
-
 }

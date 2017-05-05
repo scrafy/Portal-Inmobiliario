@@ -5,8 +5,8 @@ namespace Illuminate\Support;
 use Closure;
 use InvalidArgumentException;
 
-abstract class Manager {
-
+abstract class Manager
+{
     /**
      * The application instance.
      *
@@ -34,7 +34,8 @@ abstract class Manager {
      * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
-    public function __construct($app) {
+    public function __construct($app)
+    {
         $this->app = $app;
     }
 
@@ -51,13 +52,14 @@ abstract class Manager {
      * @param  string  $driver
      * @return mixed
      */
-    public function driver($driver = null) {
+    public function driver($driver = null)
+    {
         $driver = $driver ?: $this->getDefaultDriver();
 
         // If the given driver has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
         // already a driver created by this name, we'll just return that instance.
-        if (!isset($this->drivers[$driver])) {
+        if (! isset($this->drivers[$driver])) {
             $this->drivers[$driver] = $this->createDriver($driver);
         }
 
@@ -72,8 +74,9 @@ abstract class Manager {
      *
      * @throws \InvalidArgumentException
      */
-    protected function createDriver($driver) {
-        $method = 'create' . Str::studly($driver) . 'Driver';
+    protected function createDriver($driver)
+    {
+        $method = 'create'.Str::studly($driver).'Driver';
 
         // We'll check to see if a creator method exists for the given driver. If not we
         // will check for a custom driver creator, which allows developers to create
@@ -93,7 +96,8 @@ abstract class Manager {
      * @param  string  $driver
      * @return mixed
      */
-    protected function callCustomCreator($driver) {
+    protected function callCustomCreator($driver)
+    {
         return $this->customCreators[$driver]($this->app);
     }
 
@@ -104,7 +108,8 @@ abstract class Manager {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function extend($driver, Closure $callback) {
+    public function extend($driver, Closure $callback)
+    {
         $this->customCreators[$driver] = $callback;
 
         return $this;
@@ -115,7 +120,8 @@ abstract class Manager {
      *
      * @return array
      */
-    public function getDrivers() {
+    public function getDrivers()
+    {
         return $this->drivers;
     }
 
@@ -126,8 +132,8 @@ abstract class Manager {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->driver()->$method(...$parameters);
     }
-
 }

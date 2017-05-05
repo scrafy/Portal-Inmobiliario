@@ -6,8 +6,8 @@ use Closure;
 use Faker\Generator as Faker;
 use InvalidArgumentException;
 
-class FactoryBuilder {
-
+class FactoryBuilder
+{
     /**
      * The model definitions in the container.
      *
@@ -67,7 +67,8 @@ class FactoryBuilder {
      * @param  \Faker\Generator  $faker
      * @return void
      */
-    public function __construct($class, $name, array $definitions, array $states, Faker $faker) {
+    public function __construct($class, $name, array $definitions, array $states, Faker $faker)
+    {
         $this->name = $name;
         $this->class = $class;
         $this->faker = $faker;
@@ -81,7 +82,8 @@ class FactoryBuilder {
      * @param  int  $amount
      * @return $this
      */
-    public function times($amount) {
+    public function times($amount)
+    {
         $this->amount = $amount;
 
         return $this;
@@ -93,7 +95,8 @@ class FactoryBuilder {
      * @param  array|dynamic  $states
      * @return $this
      */
-    public function states($states) {
+    public function states($states)
+    {
         $this->activeStates = is_array($states) ? $states : func_get_args();
 
         return $this;
@@ -105,7 +108,8 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return mixed
      */
-    public function create(array $attributes = []) {
+    public function create(array $attributes = [])
+    {
         $results = $this->make($attributes);
 
         if ($results instanceof Model) {
@@ -123,7 +127,8 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return mixed
      */
-    public function make(array $attributes = []) {
+    public function make(array $attributes = [])
+    {
         if ($this->amount === null) {
             return $this->makeInstance($attributes);
         }
@@ -133,8 +138,8 @@ class FactoryBuilder {
         }
 
         return (new $this->class)->newCollection(array_map(function () use ($attributes) {
-                            return $this->makeInstance($attributes);
-                        }, range(1, $this->amount)));
+            return $this->makeInstance($attributes);
+        }, range(1, $this->amount)));
     }
 
     /**
@@ -143,7 +148,8 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return mixed
      */
-    public function raw(array $attributes = []) {
+    public function raw(array $attributes = [])
+    {
         if ($this->amount === null) {
             return $this->getRawAttributes($attributes);
         }
@@ -163,13 +169,15 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return mixed
      */
-    protected function getRawAttributes(array $attributes = []) {
+    protected function getRawAttributes(array $attributes = [])
+    {
         $definition = call_user_func(
-                $this->definitions[$this->class][$this->name], $this->faker, $attributes
+            $this->definitions[$this->class][$this->name],
+            $this->faker, $attributes
         );
 
         return $this->callClosureAttributes(
-                        array_merge($this->applyStates($definition, $attributes), $attributes)
+            array_merge($this->applyStates($definition, $attributes), $attributes)
         );
     }
 
@@ -181,16 +189,17 @@ class FactoryBuilder {
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeInstance(array $attributes = []) {
+    protected function makeInstance(array $attributes = [])
+    {
         return Model::unguarded(function () use ($attributes) {
-                    if (!isset($this->definitions[$this->class][$this->name])) {
-                        throw new InvalidArgumentException("Unable to locate factory with name [{$this->name}] [{$this->class}].");
-                    }
+            if (! isset($this->definitions[$this->class][$this->name])) {
+                throw new InvalidArgumentException("Unable to locate factory with name [{$this->name}] [{$this->class}].");
+            }
 
-                    return new $this->class(
-                            $this->getRawAttributes($attributes)
-                    );
-                });
+            return new $this->class(
+                $this->getRawAttributes($attributes)
+            );
+        });
     }
 
     /**
@@ -200,14 +209,16 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return array
      */
-    protected function applyStates(array $definition, array $attributes = []) {
+    protected function applyStates(array $definition, array $attributes = [])
+    {
         foreach ($this->activeStates as $state) {
-            if (!isset($this->states[$this->class][$state])) {
+            if (! isset($this->states[$this->class][$state])) {
                 throw new InvalidArgumentException("Unable to locate [{$state}] state for [{$this->class}].");
             }
 
             $definition = array_merge($definition, call_user_func(
-                            $this->states[$this->class][$state], $this->faker, $attributes
+                $this->states[$this->class][$state],
+                $this->faker, $attributes
             ));
         }
 
@@ -220,12 +231,13 @@ class FactoryBuilder {
      * @param  array  $attributes
      * @return array
      */
-    protected function callClosureAttributes(array $attributes) {
+    protected function callClosureAttributes(array $attributes)
+    {
         foreach ($attributes as &$attribute) {
-            $attribute = $attribute instanceof Closure ? $attribute($attributes) : $attribute;
+            $attribute = $attribute instanceof Closure
+                            ? $attribute($attributes) : $attribute;
         }
 
         return $attributes;
     }
-
 }

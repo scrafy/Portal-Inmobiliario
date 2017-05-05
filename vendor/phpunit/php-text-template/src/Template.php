@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Text_Template package.
  *
@@ -14,8 +13,8 @@
  *
  * @since Class available since Release 1.0.0
  */
-class Text_Template {
-
+class Text_Template
+{
     /**
      * @var string
      */
@@ -42,9 +41,10 @@ class Text_Template {
      * @param  string                   $file
      * @throws InvalidArgumentException
      */
-    public function __construct($file = '', $openDelimiter = '{', $closeDelimiter = '}') {
+    public function __construct($file = '', $openDelimiter = '{', $closeDelimiter = '}')
+    {
         $this->setFile($file);
-        $this->openDelimiter = $openDelimiter;
+        $this->openDelimiter  = $openDelimiter;
         $this->closeDelimiter = $closeDelimiter;
     }
 
@@ -54,16 +54,21 @@ class Text_Template {
      * @param  string                   $file
      * @throws InvalidArgumentException
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $distFile = $file . '.dist';
 
         if (file_exists($file)) {
             $this->template = file_get_contents($file);
-        } else if (file_exists($distFile)) {
+        }
+
+        else if (file_exists($distFile)) {
             $this->template = file_get_contents($distFile);
-        } else {
+        }
+
+        else {
             throw new InvalidArgumentException(
-            'Template file could not be loaded.'
+              'Template file could not be loaded.'
             );
         }
     }
@@ -74,7 +79,8 @@ class Text_Template {
      * @param array $values
      * @param bool  $merge
      */
-    public function setVar(array $values, $merge = TRUE) {
+    public function setVar(array $values, $merge = TRUE)
+    {
         if (!$merge || empty($this->values)) {
             $this->values = $values;
         } else {
@@ -87,7 +93,8 @@ class Text_Template {
      *
      * @return string
      */
-    public function render() {
+    public function render()
+    {
         $keys = array();
 
         foreach ($this->values as $key => $value) {
@@ -102,7 +109,8 @@ class Text_Template {
      *
      * @param string $target
      */
-    public function renderTo($target) {
+    public function renderTo($target)
+    {
         $fp = @fopen($target, 'wt');
 
         if ($fp) {
@@ -112,13 +120,16 @@ class Text_Template {
             $error = error_get_last();
 
             throw new RuntimeException(
-            sprintf(
-                    'Could not write to %s: %s', $target, substr(
-                            $error['message'], strpos($error['message'], ':') + 2
-                    )
-            )
+              sprintf(
+                'Could not write to %s: %s',
+                $target,
+                substr(
+                  $error['message'],
+                  strpos($error['message'], ':') + 2
+                )
+              )
             );
         }
     }
-
 }
+

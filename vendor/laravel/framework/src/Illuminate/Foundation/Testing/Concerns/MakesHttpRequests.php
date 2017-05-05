@@ -9,8 +9,8 @@ use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
-trait MakesHttpRequests {
-
+trait MakesHttpRequests
+{
     /**
      * Additional server variables for the request.
      *
@@ -24,7 +24,8 @@ trait MakesHttpRequests {
      * @param  array  $server
      * @return $this
      */
-    protected function withServerVariables(array $server) {
+    protected function withServerVariables(array $server)
+    {
         $this->serverVariables = $server;
 
         return $this;
@@ -35,7 +36,8 @@ trait MakesHttpRequests {
      *
      * @return $this
      */
-    public function withoutMiddleware() {
+    public function withoutMiddleware()
+    {
         $this->app->instance('middleware.disable', true);
 
         return $this;
@@ -48,7 +50,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function get($uri, array $headers = []) {
+    public function get($uri, array $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         return $this->call('GET', $uri, [], [], [], $server);
@@ -61,7 +64,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function getJson($uri, array $headers = []) {
+    public function getJson($uri, array $headers = [])
+    {
         return $this->json('GET', $uri, [], $headers);
     }
 
@@ -73,7 +77,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function post($uri, array $data = [], array $headers = []) {
+    public function post($uri, array $data = [], array $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         return $this->call('POST', $uri, $data, [], [], $server);
@@ -87,7 +92,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function postJson($uri, array $data = [], array $headers = []) {
+    public function postJson($uri, array $data = [], array $headers = [])
+    {
         return $this->json('POST', $uri, $data, $headers);
     }
 
@@ -99,7 +105,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function put($uri, array $data = [], array $headers = []) {
+    public function put($uri, array $data = [], array $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         return $this->call('PUT', $uri, $data, [], [], $server);
@@ -113,7 +120,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function putJson($uri, array $data = [], array $headers = []) {
+    public function putJson($uri, array $data = [], array $headers = [])
+    {
         return $this->json('PUT', $uri, $data, $headers);
     }
 
@@ -125,7 +133,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function patch($uri, array $data = [], array $headers = []) {
+    public function patch($uri, array $data = [], array $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         return $this->call('PATCH', $uri, $data, [], [], $server);
@@ -139,7 +148,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function patchJson($uri, array $data = [], array $headers = []) {
+    public function patchJson($uri, array $data = [], array $headers = [])
+    {
         return $this->json('PATCH', $uri, $data, $headers);
     }
 
@@ -151,7 +161,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function delete($uri, array $data = [], array $headers = []) {
+    public function delete($uri, array $data = [], array $headers = [])
+    {
         $server = $this->transformHeadersToServerVars($headers);
 
         return $this->call('DELETE', $uri, $data, [], [], $server);
@@ -165,7 +176,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function deleteJson($uri, array $data = [], array $headers = []) {
+    public function deleteJson($uri, array $data = [], array $headers = [])
+    {
         return $this->json('DELETE', $uri, $data, $headers);
     }
 
@@ -178,7 +190,8 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function json($method, $uri, array $data = [], array $headers = []) {
+    public function json($method, $uri, array $data = [], array $headers = [])
+    {
         $files = $this->extractFilesFromDataArray($data);
 
         $content = json_encode($data);
@@ -187,10 +200,10 @@ trait MakesHttpRequests {
             'CONTENT_LENGTH' => mb_strlen($content, '8bit'),
             'CONTENT_TYPE' => 'application/json',
             'Accept' => 'application/json',
-                ], $headers);
+        ], $headers);
 
         return $this->call(
-                        $method, $uri, [], [], $files, $this->transformHeadersToServerVars($headers), $content
+            $method, $uri, [], [], $files, $this->transformHeadersToServerVars($headers), $content
         );
     }
 
@@ -206,17 +219,19 @@ trait MakesHttpRequests {
      * @param  string  $content
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null) {
+    public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    {
         $kernel = $this->app->make(HttpKernel::class);
 
         $files = array_merge($files, $this->extractFilesFromDataArray($parameters));
 
         $symfonyRequest = SymfonyRequest::create(
-                        $this->prepareUrlForRequest($uri), $method, $parameters, $cookies, $files, array_replace($this->serverVariables, $server), $content
+            $this->prepareUrlForRequest($uri), $method, $parameters,
+            $cookies, $files, array_replace($this->serverVariables, $server), $content
         );
 
         $response = $kernel->handle(
-                $request = Request::createFromBase($symfonyRequest)
+            $request = Request::createFromBase($symfonyRequest)
         );
 
         $kernel->terminate($request, $response);
@@ -230,13 +245,14 @@ trait MakesHttpRequests {
      * @param  string  $uri
      * @return string
      */
-    protected function prepareUrlForRequest($uri) {
+    protected function prepareUrlForRequest($uri)
+    {
         if (Str::startsWith($uri, '/')) {
             $uri = substr($uri, 1);
         }
 
-        if (!Str::startsWith($uri, 'http')) {
-            $uri = config('app.url') . '/' . $uri;
+        if (! Str::startsWith($uri, 'http')) {
+            $uri = config('app.url').'/'.$uri;
         }
 
         return trim($uri, '/');
@@ -248,12 +264,13 @@ trait MakesHttpRequests {
      * @param  array  $headers
      * @return array
      */
-    protected function transformHeadersToServerVars(array $headers) {
+    protected function transformHeadersToServerVars(array $headers)
+    {
         return collect($headers)->mapWithKeys(function ($value, $name) {
-                    $name = strtr(strtoupper($name), '-', '_');
+            $name = strtr(strtoupper($name), '-', '_');
 
-                    return [$this->formatServerHeaderKey($name) => $value];
-                })->all();
+            return [$this->formatServerHeaderKey($name) => $value];
+        })->all();
     }
 
     /**
@@ -262,9 +279,10 @@ trait MakesHttpRequests {
      * @param  string  $name
      * @return string
      */
-    protected function formatServerHeaderKey($name) {
-        if (!Str::startsWith($name, 'HTTP_') && $name != 'CONTENT_TYPE') {
-            return 'HTTP_' . $name;
+    protected function formatServerHeaderKey($name)
+    {
+        if (! Str::startsWith($name, 'HTTP_') && $name != 'CONTENT_TYPE') {
+            return 'HTTP_'.$name;
         }
 
         return $name;
@@ -276,7 +294,8 @@ trait MakesHttpRequests {
      * @param  array  $data
      * @return array
      */
-    protected function extractFilesFromDataArray(&$data) {
+    protected function extractFilesFromDataArray(&$data)
+    {
         $files = [];
 
         foreach ($data as $key => $value) {
@@ -296,8 +315,8 @@ trait MakesHttpRequests {
      * @param  \Illuminate\Http\Response  $response
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    protected function createTestResponse($response) {
+    protected function createTestResponse($response)
+    {
         return TestResponse::fromBaseResponse($response);
     }
-
 }

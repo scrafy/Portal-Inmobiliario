@@ -7,8 +7,8 @@ use Illuminate\Cache\CacheManager;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class ClearCommand extends Command {
-
+class ClearCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -36,7 +36,8 @@ class ClearCommand extends Command {
      * @param  \Illuminate\Cache\CacheManager  $cache
      * @return void
      */
-    public function __construct(CacheManager $cache) {
+    public function __construct(CacheManager $cache)
+    {
         parent::__construct();
 
         $this->cache = $cache;
@@ -47,7 +48,8 @@ class ClearCommand extends Command {
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         $this->laravel['events']->fire('cache:clearing', [$this->argument('store'), $this->tags()]);
 
         $this->cache()->flush();
@@ -62,7 +64,8 @@ class ClearCommand extends Command {
      *
      * @return \Illuminate\Cache\Repository
      */
-    protected function cache() {
+    protected function cache()
+    {
         $cache = $this->cache->store($this->argument('store'));
 
         return empty($this->tags()) ? $cache : $cache->tags($this->tags());
@@ -73,7 +76,8 @@ class ClearCommand extends Command {
      *
      * @return array
      */
-    protected function tags() {
+    protected function tags()
+    {
         return array_filter(explode(',', $this->option('tags')));
     }
 
@@ -82,7 +86,8 @@ class ClearCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['store', InputArgument::OPTIONAL, 'The name of the store you would like to clear.'],
         ];
@@ -93,10 +98,10 @@ class ClearCommand extends Command {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['tags', null, InputOption::VALUE_OPTIONAL, 'The cache tags you would like to clear.', null],
         ];
     }
-
 }

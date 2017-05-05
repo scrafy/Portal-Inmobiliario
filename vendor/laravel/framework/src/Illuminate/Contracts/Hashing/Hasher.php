@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Hashing;
 
-interface Hasher {
-
+interface Hasher
+{
     /**
      * Hash the given value.
      *

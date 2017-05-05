@@ -6,14 +6,15 @@ use Faker\Generator;
 use Faker\Provider\cs_CZ\Person;
 use Faker\Provider\Miscellaneous;
 
-class PersonTest extends \PHPUnit_Framework_TestCase {
-
-    public function testBirthNumber() {
+class PersonTest extends \PHPUnit_Framework_TestCase
+{
+    public function testBirthNumber()
+    {
         $faker = new Generator();
         $faker->addProvider(new Person($faker));
         $faker->addProvider(new Miscellaneous($faker));
 
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 1000; $i++) { 
             $birthNumber = $faker->birthNumber();
             $birthNumber = str_replace('/', '', $birthNumber);
 
@@ -26,10 +27,8 @@ class PersonTest extends \PHPUnit_Framework_TestCase {
             $year += $year < 54 ? 2000 : 1900;
 
             // adjust special cases for month
-            if ($month > 50)
-                $month -= 50;
-            if ($year >= 2004 && $month > 20)
-                $month -= 20;
+            if ($month > 50) $month -= 50;
+            if ($year >= 2004 && $month > 20) $month -= 20;
 
             $this->assertTrue(checkdate($month, $day, $year), "Birth number $birthNumber: date $year/$month/$day is invalid.");
 
@@ -40,10 +39,8 @@ class PersonTest extends \PHPUnit_Framework_TestCase {
                 if ($refCrc == 10) {
                     $refCrc = 0;
                 }
-                $this->assertEquals($crc, $refCrc, "Birth number $birthNumber: checksum $crc doesn't match expected $refCrc.");
-                ;
+                $this->assertEquals($crc, $refCrc, "Birth number $birthNumber: checksum $crc doesn't match expected $refCrc.");;
             }
         }
     }
-
 }

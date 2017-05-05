@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Plugins_Timer {
-
+interface Swift_Plugins_Timer
+{
     /**
      * Get the current UNIX timestamp.
      *

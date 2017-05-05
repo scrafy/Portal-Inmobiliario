@@ -25,16 +25,18 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Esi extends AbstractSurrogate {
-
-    public function getName() {
+class Esi extends AbstractSurrogate
+{
+    public function getName()
+    {
         return 'esi';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSurrogateControl(Response $response) {
+    public function addSurrogateControl(Response $response)
+    {
         if (false !== strpos($response->getContent(), '<esi:include')) {
             $response->headers->set('Surrogate-Control', 'content="ESI/1.0"');
         }
@@ -43,8 +45,12 @@ class Esi extends AbstractSurrogate {
     /**
      * {@inheritdoc}
      */
-    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '') {
-        $html = sprintf('<esi:include src="%s"%s%s />', $uri, $ignoreErrors ? ' onerror="continue"' : '', $alt ? sprintf(' alt="%s"', $alt) : ''
+    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
+    {
+        $html = sprintf('<esi:include src="%s"%s%s />',
+            $uri,
+            $ignoreErrors ? ' onerror="continue"' : '',
+            $alt ? sprintf(' alt="%s"', $alt) : ''
         );
 
         if (!empty($comment)) {
@@ -57,7 +63,8 @@ class Esi extends AbstractSurrogate {
     /**
      * {@inheritdoc}
      */
-    public function process(Request $request, Response $response) {
+    public function process(Request $request, Response $response)
+    {
         $type = $response->headers->get('Content-Type');
         if (empty($type)) {
             $type = 'text/html';
@@ -88,7 +95,10 @@ class Esi extends AbstractSurrogate {
                 throw new \RuntimeException('Unable to process an ESI tag without a "src" attribute.');
             }
 
-            $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, %s, %s) ?>' . "\n", var_export($options['src'], true), var_export(isset($options['alt']) ? $options['alt'] : '', true), isset($options['onerror']) && 'continue' === $options['onerror'] ? 'true' : 'false'
+            $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, %s, %s) ?>'."\n",
+                var_export($options['src'], true),
+                var_export(isset($options['alt']) ? $options['alt'] : '', true),
+                isset($options['onerror']) && 'continue' === $options['onerror'] ? 'true' : 'false'
             );
             ++$i;
             $chunks[$i] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[$i]);
@@ -102,5 +112,4 @@ class Esi extends AbstractSurrogate {
         // remove ESI/1.0 from the Surrogate-Control header
         $this->removeFromControl($response);
     }
-
 }

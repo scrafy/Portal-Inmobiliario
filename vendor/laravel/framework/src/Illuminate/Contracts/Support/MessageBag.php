@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Support;
 
-interface MessageBag {
-
+interface MessageBag
+{
     /**
      * Get the keys present in the message bag.
      *

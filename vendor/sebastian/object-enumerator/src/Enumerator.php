@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Object Enumerator.
  *
@@ -17,8 +16,8 @@ use SebastianBergmann\RecursionContext\Context;
  * Traverses array structures and object graphs
  * to enumerate all referenced objects.
  */
-class Enumerator {
-
+class Enumerator
+{
     /**
      * Returns an array of all objects referenced either
      * directly or indirectly by a variable.
@@ -27,7 +26,8 @@ class Enumerator {
      *
      * @return object[]
      */
-    public function enumerate($variable) {
+    public function enumerate($variable)
+    {
         if (!is_array($variable) && !is_object($variable)) {
             throw new InvalidArgumentException;
         }
@@ -58,7 +58,8 @@ class Enumerator {
                 }
 
                 $objects = array_merge(
-                        $objects, $this->enumerate($element, $processed)
+                    $objects,
+                    $this->enumerate($element, $processed)
                 );
             }
         } else {
@@ -81,12 +82,12 @@ class Enumerator {
                 }
 
                 $objects = array_merge(
-                        $objects, $this->enumerate($value, $processed)
+                    $objects,
+                    $this->enumerate($value, $processed)
                 );
             }
         }
 
         return $objects;
     }
-
 }

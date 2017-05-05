@@ -8,8 +8,8 @@ use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
-class SeedCommand extends Command {
-
+class SeedCommand extends Command
+{
     use ConfirmableTrait;
 
     /**
@@ -39,7 +39,8 @@ class SeedCommand extends Command {
      * @param  \Illuminate\Database\ConnectionResolverInterface  $resolver
      * @return void
      */
-    public function __construct(Resolver $resolver) {
+    public function __construct(Resolver $resolver)
+    {
         parent::__construct();
 
         $this->resolver = $resolver;
@@ -50,8 +51,9 @@ class SeedCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
-        if (!$this->confirmToProceed()) {
+    public function fire()
+    {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
@@ -67,7 +69,8 @@ class SeedCommand extends Command {
      *
      * @return \Illuminate\Database\Seeder
      */
-    protected function getSeeder() {
+    protected function getSeeder()
+    {
         $class = $this->laravel->make($this->input->getOption('class'));
 
         return $class->setContainer($this->laravel)->setCommand($this);
@@ -78,7 +81,8 @@ class SeedCommand extends Command {
      *
      * @return string
      */
-    protected function getDatabase() {
+    protected function getDatabase()
+    {
         $database = $this->input->getOption('database');
 
         return $database ?: $this->laravel['config']['database.default'];
@@ -89,12 +93,14 @@ class SeedCommand extends Command {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['class', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder', 'DatabaseSeeder'],
+
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed'],
+
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
         ];
     }
-
 }

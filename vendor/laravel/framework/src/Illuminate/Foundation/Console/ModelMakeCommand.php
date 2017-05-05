@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ModelMakeCommand extends GeneratorCommand {
-
+class ModelMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -34,7 +34,8 @@ class ModelMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         if (parent::fire() === false) {
             return;
         }
@@ -53,7 +54,8 @@ class ModelMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    protected function createMigration() {
+    protected function createMigration()
+    {
         $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
 
         $this->call('make:migration', [
@@ -67,7 +69,8 @@ class ModelMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    protected function createController() {
+    protected function createController()
+    {
         $controller = Str::studly(class_basename($this->argument('name')));
 
         $modelName = $this->qualifyClass($this->getNameInput());
@@ -83,8 +86,9 @@ class ModelMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/model.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/model.stub';
     }
 
     /**
@@ -93,7 +97,8 @@ class ModelMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
+    protected function getDefaultNamespace($rootNamespace)
+    {
         return $rootNamespace;
     }
 
@@ -102,12 +107,14 @@ class ModelMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model.'],
+
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model.'],
+
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
         ];
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -15,12 +14,13 @@ namespace phpDocumentor\Reflection;
 
 use phpDocumentor\Reflection\Types\Context;
 
-class FqsenResolver {
-
+class FqsenResolver
+{
     /** @var string Definition of the NAMESPACE operator in PHP */
     const OPERATOR_NAMESPACE = '\\';
 
-    public function resolve($fqsen, Context $context = null) {
+    public function resolve($fqsen, Context $context = null)
+    {
         if ($context === null) {
             $context = new Context('');
         }
@@ -39,7 +39,8 @@ class FqsenResolver {
      *
      * @return bool
      */
-    private function isFqsen($type) {
+    private function isFqsen($type)
+    {
         return strpos($type, self::OPERATOR_NAMESPACE) === 0;
     }
 
@@ -52,7 +53,8 @@ class FqsenResolver {
      *
      * @return Fqsen
      */
-    private function resolvePartialStructuralElementName($type, Context $context) {
+    private function resolvePartialStructuralElementName($type, Context $context)
+    {
         $typeParts = explode(self::OPERATOR_NAMESPACE, $type, 2);
 
         $namespaceAliases = $context->getNamespaceAliases();
@@ -71,5 +73,4 @@ class FqsenResolver {
 
         return new Fqsen(self::OPERATOR_NAMESPACE . implode(self::OPERATOR_NAMESPACE, $typeParts));
     }
-
 }

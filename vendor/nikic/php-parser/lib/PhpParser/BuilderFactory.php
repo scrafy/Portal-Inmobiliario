@@ -16,8 +16,8 @@ use PhpParser\Node\Stmt\Use_;
  * @method Builder\Function_  function(string $name)  Creates a function builder.
  * @method Builder\Use_       use(string $name)       Creates a namespace/class use builder.
  */
-class BuilderFactory {
-
+class BuilderFactory
+{
     /**
      * Creates a namespace builder.
      *
@@ -124,5 +124,4 @@ class BuilderFactory {
 
         throw new \LogicException(sprintf('Method "%s" does not exist', $name));
     }
-
 }

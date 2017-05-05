@@ -18,8 +18,8 @@ use Symfony\Component\Yaml\Exception\ParseException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Yaml {
-
+class Yaml
+{
     const DUMP_OBJECT = 1;
     const PARSE_EXCEPTION_ON_INVALID_TYPE = 2;
     const PARSE_OBJECT = 4;
@@ -46,7 +46,8 @@ class Yaml {
      *
      * @throws ParseException If the YAML is not valid
      */
-    public static function parse($input, $flags = 0) {
+    public static function parse($input, $flags = 0)
+    {
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the PARSE_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
@@ -91,7 +92,8 @@ class Yaml {
      *
      * @return string A YAML string representing the original PHP value
      */
-    public static function dump($input, $inline = 2, $indent = 4, $flags = 0) {
+    public static function dump($input, $inline = 2, $indent = 4, $flags = 0)
+    {
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the DUMP_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
@@ -114,5 +116,4 @@ class Yaml {
 
         return $yaml->dump($input, $inline, 0, $flags);
     }
-
 }

@@ -2,15 +2,16 @@
 
 namespace Illuminate\Foundation\Testing\Concerns;
 
-trait InteractsWithSession {
-
+trait InteractsWithSession
+{
     /**
      * Set the session to the given array.
      *
      * @param  array  $data
      * @return $this
      */
-    public function withSession(array $data) {
+    public function withSession(array $data)
+    {
         $this->session($data);
 
         return $this;
@@ -22,7 +23,8 @@ trait InteractsWithSession {
      * @param  array  $data
      * @return $this
      */
-    public function session(array $data) {
+    public function session(array $data)
+    {
         $this->startSession();
 
         foreach ($data as $key => $value) {
@@ -37,8 +39,9 @@ trait InteractsWithSession {
      *
      * @return $this
      */
-    protected function startSession() {
-        if (!$this->app['session']->isStarted()) {
+    protected function startSession()
+    {
+        if (! $this->app['session']->isStarted()) {
             $this->app['session']->start();
         }
 
@@ -50,12 +53,12 @@ trait InteractsWithSession {
      *
      * @return $this
      */
-    public function flushSession() {
+    public function flushSession()
+    {
         $this->startSession();
 
         $this->app['session']->flush();
 
         return $this;
     }
-
 }

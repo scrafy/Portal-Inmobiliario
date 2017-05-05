@@ -7,8 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Cache\RateLimiter;
 use Symfony\Component\HttpFoundation\Response;
 
-class ThrottleRequests {
-
+class ThrottleRequests
+{
     /**
      * The rate limiter instance.
      *
@@ -22,7 +22,8 @@ class ThrottleRequests {
      * @param  \Illuminate\Cache\RateLimiter  $limiter
      * @return void
      */
-    public function __construct(RateLimiter $limiter) {
+    public function __construct(RateLimiter $limiter)
+    {
         $this->limiter = $limiter;
     }
 
@@ -35,7 +36,8 @@ class ThrottleRequests {
      * @param  float|int  $decayMinutes
      * @return mixed
      */
-    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1) {
+    public function handle($request, Closure $next, $maxAttempts = 60, $decayMinutes = 1)
+    {
         $key = $this->resolveRequestSignature($request);
 
         if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decayMinutes)) {
@@ -47,7 +49,8 @@ class ThrottleRequests {
         $response = $next($request);
 
         return $this->addHeaders(
-                        $response, $maxAttempts, $this->calculateRemainingAttempts($key, $maxAttempts)
+            $response, $maxAttempts,
+            $this->calculateRemainingAttempts($key, $maxAttempts)
         );
     }
 
@@ -57,7 +60,8 @@ class ThrottleRequests {
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    protected function resolveRequestSignature($request) {
+    protected function resolveRequestSignature($request)
+    {
         return $request->fingerprint();
     }
 
@@ -68,13 +72,16 @@ class ThrottleRequests {
      * @param  int  $maxAttempts
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function buildResponse($key, $maxAttempts) {
+    protected function buildResponse($key, $maxAttempts)
+    {
         $response = new Response('Too Many Attempts.', 429);
 
         $retryAfter = $this->limiter->availableIn($key);
 
         return $this->addHeaders(
-                        $response, $maxAttempts, $this->calculateRemainingAttempts($key, $maxAttempts, $retryAfter), $retryAfter
+            $response, $maxAttempts,
+            $this->calculateRemainingAttempts($key, $maxAttempts, $retryAfter),
+            $retryAfter
         );
     }
 
@@ -87,13 +94,14 @@ class ThrottleRequests {
      * @param  int|null  $retryAfter
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null) {
+    protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null)
+    {
         $headers = [
             'X-RateLimit-Limit' => $maxAttempts,
             'X-RateLimit-Remaining' => $remainingAttempts,
         ];
 
-        if (!is_null($retryAfter)) {
+        if (! is_null($retryAfter)) {
             $headers['Retry-After'] = $retryAfter;
             $headers['X-RateLimit-Reset'] = Carbon::now()->getTimestamp() + $retryAfter;
         }
@@ -111,12 +119,12 @@ class ThrottleRequests {
      * @param  int|null  $retryAfter
      * @return int
      */
-    protected function calculateRemainingAttempts($key, $maxAttempts, $retryAfter = null) {
+    protected function calculateRemainingAttempts($key, $maxAttempts, $retryAfter = null)
+    {
         if (is_null($retryAfter)) {
             return $this->limiter->retriesLeft($key, $maxAttempts);
         }
 
         return 0;
     }
-
 }

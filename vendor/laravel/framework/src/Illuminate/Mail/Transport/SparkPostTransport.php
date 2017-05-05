@@ -5,8 +5,8 @@ namespace Illuminate\Mail\Transport;
 use Swift_Mime_Message;
 use GuzzleHttp\ClientInterface;
 
-class SparkPostTransport extends Transport {
-
+class SparkPostTransport extends Transport
+{
     /**
      * Guzzle client instance.
      *
@@ -36,7 +36,8 @@ class SparkPostTransport extends Transport {
      * @param  array  $options
      * @return void
      */
-    public function __construct(ClientInterface $client, $key, $options = []) {
+    public function __construct(ClientInterface $client, $key, $options = [])
+    {
         $this->key = $key;
         $this->client = $client;
         $this->options = $options;
@@ -45,7 +46,8 @@ class SparkPostTransport extends Transport {
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $this->beforeSendPerformed($message);
 
         $recipients = $this->getRecipients($message);
@@ -61,7 +63,7 @@ class SparkPostTransport extends Transport {
                 'content' => [
                     'email_rfc822' => $message->toString(),
                 ],
-                    ], $this->options),
+            ], $this->options),
         ]);
 
         $this->sendPerformed($message);
@@ -77,7 +79,8 @@ class SparkPostTransport extends Transport {
      * @param  \Swift_Mime_Message $message
      * @return array
      */
-    protected function getRecipients(Swift_Mime_Message $message) {
+    protected function getRecipients(Swift_Mime_Message $message)
+    {
         $recipients = [];
 
         foreach ((array) $message->getTo() as $email => $name) {
@@ -100,7 +103,8 @@ class SparkPostTransport extends Transport {
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
@@ -110,7 +114,8 @@ class SparkPostTransport extends Transport {
      * @param  string  $key
      * @return string
      */
-    public function setKey($key) {
+    public function setKey($key)
+    {
         return $this->key = $key;
     }
 
@@ -119,7 +124,8 @@ class SparkPostTransport extends Transport {
      *
      * @return string
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         return $this->options;
     }
 
@@ -129,8 +135,8 @@ class SparkPostTransport extends Transport {
      * @param  array  $options
      * @return array
      */
-    public function setOptions(array $options) {
+    public function setOptions(array $options)
+    {
         return $this->options = $options;
     }
-
 }

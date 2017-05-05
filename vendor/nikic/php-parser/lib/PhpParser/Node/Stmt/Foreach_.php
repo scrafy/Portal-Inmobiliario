@@ -4,20 +4,16 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Foreach_ extends Node\Stmt {
-
+class Foreach_ extends Node\Stmt
+{
     /** @var Node\Expr Expression to iterate */
     public $expr;
-
     /** @var null|Node\Expr Variable to assign key to */
     public $keyVar;
-
     /** @var bool Whether to assign value by reference */
     public $byRef;
-
     /** @var Node\Expr Variable to assign value to */
     public $valueVar;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -44,5 +40,4 @@ class Foreach_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('expr', 'keyVar', 'byRef', 'valueVar', 'stmts');
     }
-
 }

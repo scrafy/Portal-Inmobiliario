@@ -14,16 +14,18 @@ namespace Psy\Test\CodeCleaner;
 use Psy\CodeCleaner\ValidClassNamePass;
 use Psy\Exception\Exception;
 
-class ValidClassNamePassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
+class ValidClassNamePassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
         $this->setPass(new ValidClassNamePass());
     }
 
     /**
      * @dataProvider getInvalid
      */
-    public function testProcessInvalid($code, $php54 = false) {
+    public function testProcessInvalid($code, $php54 = false)
+    {
         try {
             $stmts = $this->parse($code);
             $this->traverse($stmts);
@@ -37,16 +39,19 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
         }
     }
 
-    public function getInvalid() {
+    public function getInvalid()
+    {
         // class declarations
         return array(
             // core class
             array('class stdClass {}'),
             // capitalization
             array('class stdClass {}'),
+
             // collisions with interfaces and traits
             array('interface stdClass {}'),
             array('trait stdClass {}', true),
+
             // collisions inside the same code snippet
             array('
                 class Psy_Test_CodeCleaner_ValidClassNamePass_Alpha {}
@@ -76,6 +81,7 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                 class Psy_Test_CodeCleaner_ValidClassNamePass_Alpha {}
                 interface Psy_Test_CodeCleaner_ValidClassNamePass_Alpha {}
             '),
+
             // namespaced collisions
             array('
                 namespace Psy\\Test\\CodeCleaner {
@@ -90,6 +96,7 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                     class Beta {}
                 }
             '),
+
             // extends and implements
             array('class ValidClassNamePassTest extends NotAClass {}'),
             array('class ValidClassNamePassTest extends ArrayAccess {}'),
@@ -97,6 +104,7 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
             array('class ValidClassNamePassTest implements ArrayAccess, stdClass {}'),
             array('interface ValidClassNamePassTest extends stdClass {}'),
             array('interface ValidClassNamePassTest extends ArrayAccess, stdClass {}'),
+
             // class instantiations
             array('new Psy_Test_CodeCleaner_ValidClassNamePass_Gamma();'),
             array('
@@ -104,8 +112,10 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                     new Psy_Test_CodeCleaner_ValidClassNamePass_Delta();
                 }
             '),
+
             // class constant fetch
             array('Psy\\Test\\CodeCleaner\\ValidClassNamePass\\NotAClass::FOO'),
+
             // static call
             array('Psy\\Test\\CodeCleaner\\ValidClassNamePass\\NotAClass::foo()'),
             array('Psy\\Test\\CodeCleaner\\ValidClassNamePass\\NotAClass::$foo()'),
@@ -115,12 +125,14 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider getValid
      */
-    public function testProcessValid($code) {
+    public function testProcessValid($code)
+    {
         $stmts = $this->parse($code);
         $this->traverse($stmts);
     }
 
-    public function getValid() {
+    public function getValid()
+    {
         $valid = array(
             // class declarations
             array('class Psy_Test_CodeCleaner_ValidClassNamePass_Epsilon {}'),
@@ -132,6 +144,7 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                 }
             '),
             array('namespace Psy\Test\CodeCleaner\ValidClassNamePass { class stdClass {} }'),
+
             // class instantiations
             array('new stdClass();'),
             array('new stdClass();'),
@@ -157,15 +170,18 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                     new \\Psy\\Test\\CodeCleaner\\ValidClassNamePass\\Kappa();
                 }
             '),
+
             // Class constant fetch (ValidConstantPassTest validates the actual constant)
             array('class A {} A::FOO'),
             array('$a = new DateTime; $a::ATOM'),
             array('interface A { const B = 1; } A::B'),
+
             // static call
             array('DateTime::createFromFormat()'),
             array('DateTime::$someMethod()'),
             array('Psy\Test\CodeCleaner\Fixtures\ClassWithStatic::doStuff()'),
             array('Psy\Test\CodeCleaner\Fixtures\ClassWithCallStatic::doStuff()'),
+
             // Allow `self` and `static` as class names.
             array('
                 class Psy_Test_CodeCleaner_ValidClassNamePass_ClassWithStatic {
@@ -230,6 +246,7 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                     }
                 }
             '),
+
             array('class A { static function b() { return new A; } }'),
             array('
                 class A {
@@ -240,8 +257,10 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
                 }
             '),
             array('class A {} class B { function c() { return new A; } }'),
+
             // recursion
             array('class A { function a() { A::a(); } }'),
+
             // conditionally defined classes
             array('
                 class A {}
@@ -311,5 +330,4 @@ class ValidClassNamePassTest extends CodeCleanerTestCase {
 
         return $valid;
     }
-
 }

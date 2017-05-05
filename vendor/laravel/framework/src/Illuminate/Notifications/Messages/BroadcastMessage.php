@@ -4,8 +4,8 @@ namespace Illuminate\Notifications\Messages;
 
 use Illuminate\Bus\Queueable;
 
-class BroadcastMessage {
-
+class BroadcastMessage
+{
     use Queueable;
 
     /**
@@ -21,7 +21,8 @@ class BroadcastMessage {
      * @param  array  $data
      * @return void
      */
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
         $this->data = $data;
     }
 
@@ -31,10 +32,10 @@ class BroadcastMessage {
      * @param  array  $data
      * @return $this
      */
-    public function data($data) {
+    public function data($data)
+    {
         $this->data = $data;
 
         return $this;
     }
-
 }

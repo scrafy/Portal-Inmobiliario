@@ -19,8 +19,8 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-interface DumperInterface {
-
+interface DumperInterface
+{
     /**
      * Dumps the message catalogue.
      *

@@ -5,8 +5,8 @@ namespace Illuminate\View;
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 
-class FileViewFinder implements ViewFinderInterface {
-
+class FileViewFinder implements ViewFinderInterface
+{
     /**
      * The filesystem instance.
      *
@@ -50,7 +50,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  array  $extensions
      * @return void
      */
-    public function __construct(Filesystem $files, array $paths, array $extensions = null) {
+    public function __construct(Filesystem $files, array $paths, array $extensions = null)
+    {
         $this->files = $files;
         $this->paths = $paths;
 
@@ -65,7 +66,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $name
      * @return string
      */
-    public function find($name) {
+    public function find($name)
+    {
         if (isset($this->views[$name])) {
             return $this->views[$name];
         }
@@ -83,7 +85,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $name
      * @return string
      */
-    protected function findNamespacedView($name) {
+    protected function findNamespacedView($name)
+    {
         list($namespace, $view) = $this->parseNamespaceSegments($name);
 
         return $this->findInPaths($view, $this->hints[$namespace]);
@@ -97,14 +100,15 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseNamespaceSegments($name) {
+    protected function parseNamespaceSegments($name)
+    {
         $segments = explode(static::HINT_PATH_DELIMITER, $name);
 
         if (count($segments) != 2) {
             throw new InvalidArgumentException("View [$name] has an invalid name.");
         }
 
-        if (!isset($this->hints[$segments[0]])) {
+        if (! isset($this->hints[$segments[0]])) {
             throw new InvalidArgumentException("No hint path defined for [{$segments[0]}].");
         }
 
@@ -120,10 +124,11 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @throws \InvalidArgumentException
      */
-    protected function findInPaths($name, $paths) {
+    protected function findInPaths($name, $paths)
+    {
         foreach ((array) $paths as $path) {
             foreach ($this->getPossibleViewFiles($name) as $file) {
-                if ($this->files->exists($viewPath = $path . '/' . $file)) {
+                if ($this->files->exists($viewPath = $path.'/'.$file)) {
                     return $viewPath;
                 }
             }
@@ -138,9 +143,10 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $name
      * @return array
      */
-    protected function getPossibleViewFiles($name) {
+    protected function getPossibleViewFiles($name)
+    {
         return array_map(function ($extension) use ($name) {
-            return str_replace('.', '/', $name) . '.' . $extension;
+            return str_replace('.', '/', $name).'.'.$extension;
         }, $this->extensions);
     }
 
@@ -150,7 +156,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $location
      * @return void
      */
-    public function addLocation($location) {
+    public function addLocation($location)
+    {
         $this->paths[] = $location;
     }
 
@@ -160,7 +167,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $location
      * @return void
      */
-    public function prependLocation($location) {
+    public function prependLocation($location)
+    {
         array_unshift($this->paths, $location);
     }
 
@@ -171,7 +179,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string|array  $hints
      * @return void
      */
-    public function addNamespace($namespace, $hints) {
+    public function addNamespace($namespace, $hints)
+    {
         $hints = (array) $hints;
 
         if (isset($this->hints[$namespace])) {
@@ -188,7 +197,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string|array  $hints
      * @return void
      */
-    public function prependNamespace($namespace, $hints) {
+    public function prependNamespace($namespace, $hints)
+    {
         $hints = (array) $hints;
 
         if (isset($this->hints[$namespace])) {
@@ -205,7 +215,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string|array  $hints
      * @return void
      */
-    public function replaceNamespace($namespace, $hints) {
+    public function replaceNamespace($namespace, $hints)
+    {
         $this->hints[$namespace] = (array) $hints;
     }
 
@@ -215,7 +226,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $extension
      * @return void
      */
-    public function addExtension($extension) {
+    public function addExtension($extension)
+    {
         if (($index = array_search($extension, $this->extensions)) !== false) {
             unset($this->extensions[$index]);
         }
@@ -229,7 +241,8 @@ class FileViewFinder implements ViewFinderInterface {
      * @param  string  $name
      * @return bool
      */
-    public function hasHintInformation($name) {
+    public function hasHintInformation($name)
+    {
         return strpos($name, static::HINT_PATH_DELIMITER) > 0;
     }
 
@@ -238,7 +251,8 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->views = [];
     }
 
@@ -247,7 +261,8 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
-    public function getFilesystem() {
+    public function getFilesystem()
+    {
         return $this->files;
     }
 
@@ -256,7 +271,8 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @return array
      */
-    public function getPaths() {
+    public function getPaths()
+    {
         return $this->paths;
     }
 
@@ -265,7 +281,8 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @return array
      */
-    public function getHints() {
+    public function getHints()
+    {
         return $this->hints;
     }
 
@@ -274,8 +291,8 @@ class FileViewFinder implements ViewFinderInterface {
      *
      * @return array
      */
-    public function getExtensions() {
+    public function getExtensions()
+    {
         return $this->extensions;
     }
-
 }

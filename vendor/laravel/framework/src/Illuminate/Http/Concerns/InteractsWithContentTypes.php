@@ -4,8 +4,8 @@ namespace Illuminate\Http\Concerns;
 
 use Illuminate\Support\Str;
 
-trait InteractsWithContentTypes {
-
+trait InteractsWithContentTypes
+{
     /**
      * Determine if the given content types match.
      *
@@ -13,14 +13,15 @@ trait InteractsWithContentTypes {
      * @param  string  $type
      * @return bool
      */
-    public static function matchesType($actual, $type) {
+    public static function matchesType($actual, $type)
+    {
         if ($actual === $type) {
             return true;
         }
 
         $split = explode('/', $actual);
 
-        return isset($split[1]) && preg_match('#' . preg_quote($split[0], '#') . '/.+\+' . preg_quote($split[1], '#') . '#', $type);
+        return isset($split[1]) && preg_match('#'.preg_quote($split[0], '#').'/.+\+'.preg_quote($split[1], '#').'#', $type);
     }
 
     /**
@@ -28,7 +29,8 @@ trait InteractsWithContentTypes {
      *
      * @return bool
      */
-    public function isJson() {
+    public function isJson()
+    {
         return Str::contains($this->header('CONTENT_TYPE'), ['/json', '+json']);
     }
 
@@ -37,8 +39,9 @@ trait InteractsWithContentTypes {
      *
      * @return bool
      */
-    public function expectsJson() {
-        return ($this->ajax() && !$this->pjax()) || $this->wantsJson();
+    public function expectsJson()
+    {
+        return ($this->ajax() && ! $this->pjax()) || $this->wantsJson();
     }
 
     /**
@@ -46,7 +49,8 @@ trait InteractsWithContentTypes {
      *
      * @return bool
      */
-    public function wantsJson() {
+    public function wantsJson()
+    {
         $acceptable = $this->getAcceptableContentTypes();
 
         return isset($acceptable[0]) && Str::contains($acceptable[0], ['/json', '+json']);
@@ -58,7 +62,8 @@ trait InteractsWithContentTypes {
      * @param  string|array  $contentTypes
      * @return bool
      */
-    public function accepts($contentTypes) {
+    public function accepts($contentTypes)
+    {
         $accepts = $this->getAcceptableContentTypes();
 
         if (count($accepts) === 0) {
@@ -73,7 +78,7 @@ trait InteractsWithContentTypes {
             }
 
             foreach ($types as $type) {
-                if ($this->matchesType($accept, $type) || $accept === strtok($type, '/') . '/*') {
+                if ($this->matchesType($accept, $type) || $accept === strtok($type, '/').'/*') {
                     return true;
                 }
             }
@@ -88,7 +93,8 @@ trait InteractsWithContentTypes {
      * @param  string|array  $contentTypes
      * @return string|null
      */
-    public function prefers($contentTypes) {
+    public function prefers($contentTypes)
+    {
         $accepts = $this->getAcceptableContentTypes();
 
         $contentTypes = (array) $contentTypes;
@@ -101,11 +107,11 @@ trait InteractsWithContentTypes {
             foreach ($contentTypes as $contentType) {
                 $type = $contentType;
 
-                if (!is_null($mimeType = $this->getMimeType($contentType))) {
+                if (! is_null($mimeType = $this->getMimeType($contentType))) {
                     $type = $mimeType;
                 }
 
-                if ($this->matchesType($type, $accept) || $accept === strtok($type, '/') . '/*') {
+                if ($this->matchesType($type, $accept) || $accept === strtok($type, '/').'/*') {
                     return $contentType;
                 }
             }
@@ -117,7 +123,8 @@ trait InteractsWithContentTypes {
      *
      * @return bool
      */
-    public function acceptsJson() {
+    public function acceptsJson()
+    {
         return $this->accepts('application/json');
     }
 
@@ -126,7 +133,8 @@ trait InteractsWithContentTypes {
      *
      * @return bool
      */
-    public function acceptsHtml() {
+    public function acceptsHtml()
+    {
         return $this->accepts('text/html');
     }
 
@@ -136,7 +144,8 @@ trait InteractsWithContentTypes {
      * @param  string  $default
      * @return string
      */
-    public function format($default = 'html') {
+    public function format($default = 'html')
+    {
         foreach ($this->getAcceptableContentTypes() as $type) {
             if ($format = $this->getFormat($type)) {
                 return $format;
@@ -145,5 +154,4 @@ trait InteractsWithContentTypes {
 
         return $default;
     }
-
 }

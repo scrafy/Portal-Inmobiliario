@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -18,6 +17,6 @@ namespace Ramsey\Uuid\Exception;
 /**
  * Thrown to indicate that the requested operation is not supported.
  */
-class UnsupportedOperationException extends \RuntimeException {
-    
+class UnsupportedOperationException extends \RuntimeException
+{
 }

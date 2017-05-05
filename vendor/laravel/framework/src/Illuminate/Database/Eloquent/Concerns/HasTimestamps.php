@@ -4,8 +4,8 @@ namespace Illuminate\Database\Eloquent\Concerns;
 
 use Carbon\Carbon;
 
-trait HasTimestamps {
-
+trait HasTimestamps
+{
     /**
      * Indicates if the model should be timestamped.
      *
@@ -18,8 +18,9 @@ trait HasTimestamps {
      *
      * @return bool
      */
-    public function touch() {
-        if (!$this->usesTimestamps()) {
+    public function touch()
+    {
+        if (! $this->usesTimestamps()) {
             return false;
         }
 
@@ -33,14 +34,15 @@ trait HasTimestamps {
      *
      * @return void
      */
-    protected function updateTimestamps() {
+    protected function updateTimestamps()
+    {
         $time = $this->freshTimestamp();
 
-        if (!$this->isDirty(static::UPDATED_AT)) {
+        if (! $this->isDirty(static::UPDATED_AT)) {
             $this->setUpdatedAt($time);
         }
 
-        if (!$this->exists && !$this->isDirty(static::CREATED_AT)) {
+        if (! $this->exists && ! $this->isDirty(static::CREATED_AT)) {
             $this->setCreatedAt($time);
         }
     }
@@ -51,7 +53,8 @@ trait HasTimestamps {
      * @param  mixed  $value
      * @return $this
      */
-    public function setCreatedAt($value) {
+    public function setCreatedAt($value)
+    {
         $this->{static::CREATED_AT} = $value;
 
         return $this;
@@ -63,7 +66,8 @@ trait HasTimestamps {
      * @param  mixed  $value
      * @return $this
      */
-    public function setUpdatedAt($value) {
+    public function setUpdatedAt($value)
+    {
         $this->{static::UPDATED_AT} = $value;
 
         return $this;
@@ -74,7 +78,8 @@ trait HasTimestamps {
      *
      * @return \Carbon\Carbon
      */
-    public function freshTimestamp() {
+    public function freshTimestamp()
+    {
         return new Carbon;
     }
 
@@ -83,7 +88,8 @@ trait HasTimestamps {
      *
      * @return string
      */
-    public function freshTimestampString() {
+    public function freshTimestampString()
+    {
         return $this->fromDateTime($this->freshTimestamp());
     }
 
@@ -92,7 +98,8 @@ trait HasTimestamps {
      *
      * @return bool
      */
-    public function usesTimestamps() {
+    public function usesTimestamps()
+    {
         return $this->timestamps;
     }
 
@@ -101,7 +108,8 @@ trait HasTimestamps {
      *
      * @return string
      */
-    public function getCreatedAtColumn() {
+    public function getCreatedAtColumn()
+    {
         return static::CREATED_AT;
     }
 
@@ -110,8 +118,8 @@ trait HasTimestamps {
      *
      * @return string
      */
-    public function getUpdatedAtColumn() {
+    public function getUpdatedAtColumn()
+    {
         return static::UPDATED_AT;
     }
-
 }

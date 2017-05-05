@@ -20,8 +20,8 @@ use Prophecy\Util\StringUtil;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class ObjectStateToken implements TokenInterface {
-
+class ObjectStateToken implements TokenInterface
+{
     private $name;
     private $value;
     private $util;
@@ -36,11 +36,14 @@ class ObjectStateToken implements TokenInterface {
      * @param ComparatorFactory $comparatorFactory
      */
     public function __construct(
-    $methodName, $value, StringUtil $util = null, ComparatorFactory $comparatorFactory = null
+        $methodName,
+        $value,
+        StringUtil $util = null,
+        ComparatorFactory $comparatorFactory = null
     ) {
-        $this->name = $methodName;
+        $this->name  = $methodName;
         $this->value = $value;
-        $this->util = $util ?: new StringUtil;
+        $this->util  = $util ?: new StringUtil;
 
         $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
@@ -52,12 +55,13 @@ class ObjectStateToken implements TokenInterface {
      *
      * @return bool|int
      */
-    public function scoreArgument($argument) {
+    public function scoreArgument($argument)
+    {
         if (is_object($argument) && method_exists($argument, $this->name)) {
             $actual = call_user_func(array($argument, $this->name));
 
             $comparator = $this->comparatorFactory->getComparatorFor(
-                    $this->value, $actual
+                $this->value, $actual
             );
 
             try {
@@ -80,7 +84,8 @@ class ObjectStateToken implements TokenInterface {
      *
      * @return bool
      */
-    public function isLast() {
+    public function isLast()
+    {
         return false;
     }
 
@@ -89,9 +94,11 @@ class ObjectStateToken implements TokenInterface {
      *
      * @return string
      */
-    public function __toString() {
-        return sprintf('state(%s(), %s)', $this->name, $this->util->stringify($this->value)
+    public function __toString()
+    {
+        return sprintf('state(%s(), %s)',
+            $this->name,
+            $this->util->stringify($this->value)
         );
     }
-
 }

@@ -14,8 +14,8 @@ namespace Psy\Exception;
 /**
  * A "type error" Exception for Psy.
  */
-class TypeErrorException extends \Exception implements Exception {
-
+class TypeErrorException extends \Exception implements Exception
+{
     private $rawMessage;
 
     /**
@@ -24,7 +24,8 @@ class TypeErrorException extends \Exception implements Exception {
      * @param string $message (default: "")
      * @param int    $code    (default: 0)
      */
-    public function __construct($message = '', $code = 0) {
+    public function __construct($message = '', $code = 0)
+    {
         $this->rawMessage = $message;
         $message = preg_replace('/, called in .*?: eval\\(\\)\'d code/', '', $message);
         parent::__construct(sprintf('TypeError: %s', $message), $code);
@@ -35,7 +36,8 @@ class TypeErrorException extends \Exception implements Exception {
      *
      * @return string
      */
-    public function getRawMessage() {
+    public function getRawMessage()
+    {
         return $this->rawMessage;
     }
 
@@ -46,8 +48,8 @@ class TypeErrorException extends \Exception implements Exception {
      *
      * @return TypeErrorException
      */
-    public static function fromTypeError(\TypeError $e) {
+    public static function fromTypeError(\TypeError $e)
+    {
         return new self($e->getMessage(), $e->getLine());
     }
-
 }

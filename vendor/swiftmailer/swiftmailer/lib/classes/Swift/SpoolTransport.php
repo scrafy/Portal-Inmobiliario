@@ -13,21 +13,23 @@
  *
  * @author Fabien Potencier
  */
-class Swift_SpoolTransport extends Swift_Transport_SpoolTransport {
-
+class Swift_SpoolTransport extends Swift_Transport_SpoolTransport
+{
     /**
      * Create a new SpoolTransport.
      *
      * @param Swift_Spool $spool
      */
-    public function __construct(Swift_Spool $spool) {
+    public function __construct(Swift_Spool $spool)
+    {
         $arguments = Swift_DependencyContainer::getInstance()
-                ->createDependenciesFor('transport.spool');
+            ->createDependenciesFor('transport.spool');
 
         $arguments[] = $spool;
 
         call_user_func_array(
-                array($this, 'Swift_Transport_SpoolTransport::__construct'), $arguments
+            array($this, 'Swift_Transport_SpoolTransport::__construct'),
+            $arguments
         );
     }
 
@@ -38,8 +40,8 @@ class Swift_SpoolTransport extends Swift_Transport_SpoolTransport {
      *
      * @return Swift_SpoolTransport
      */
-    public static function newInstance(Swift_Spool $spool) {
+    public static function newInstance(Swift_Spool $spool)
+    {
         return new self($spool);
     }
-
 }

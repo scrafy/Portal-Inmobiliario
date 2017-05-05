@@ -4,15 +4,16 @@ namespace Illuminate\Redis\Connections;
 
 use Closure;
 
-class PhpRedisConnection extends Connection {
-
+class PhpRedisConnection extends Connection
+{
     /**
      * Create a new Predis connection.
      *
      * @param  \Redis  $client
      * @return void
      */
-    public function __construct($client) {
+    public function __construct($client)
+    {
         $this->client = $client;
     }
 
@@ -22,7 +23,8 @@ class PhpRedisConnection extends Connection {
      * @param  string  $key
      * @return string|null
      */
-    public function get($key) {
+    public function get($key)
+    {
         $result = $this->client->get($key);
 
         return $result !== false ? $result : null;
@@ -34,7 +36,8 @@ class PhpRedisConnection extends Connection {
      * @param  array  $keys
      * @return array
      */
-    public function mget(array $keys) {
+    public function mget(array $keys)
+    {
         return array_map(function ($value) {
             return $value !== false ? $value : null;
         }, $this->client->mget($keys));
@@ -50,11 +53,12 @@ class PhpRedisConnection extends Connection {
      * @param string|null  $flag
      * @return bool
      */
-    public function set($key, $value, $expireResolution = null, $expireTTL = null, $flag = null) {
+    public function set($key, $value, $expireResolution = null, $expireTTL = null, $flag = null)
+    {
         return $this->command('set', [
-                    $key,
-                    $value,
-                    $expireResolution ? [$expireResolution, $flag => $expireTTL] : null,
+            $key,
+            $value,
+            $expireResolution ? [$expireResolution, $flag => $expireTTL] : null,
         ]);
     }
 
@@ -66,7 +70,8 @@ class PhpRedisConnection extends Connection {
      * @param  $value  $value
      * @return int|false
      */
-    public function lrem($key, $count, $value) {
+    public function lrem($key, $count, $value)
+    {
         return $this->command('lrem', [$key, $value, $count]);
     }
 
@@ -77,7 +82,8 @@ class PhpRedisConnection extends Connection {
      * @param  int|null  $count
      * @return mixed|false
      */
-    public function spop($key, $count = null) {
+    public function spop($key, $count = null)
+    {
         return $this->command('spop', [$key]);
     }
 
@@ -88,7 +94,8 @@ class PhpRedisConnection extends Connection {
      * @param  mixed  $dictionary
      * @return int
      */
-    public function zadd($key, ...$dictionary) {
+    public function zadd($key, ...$dictionary)
+    {
         if (count($dictionary) === 1) {
             $_dictionary = [];
 
@@ -111,9 +118,10 @@ class PhpRedisConnection extends Connection {
      * @param  mixed  $arguments
      * @return mixed
      */
-    public function evalsha($script, $numkeys, ...$arguments) {
+    public function evalsha($script, $numkeys, ...$arguments)
+    {
         return $this->command('evalsha', [
-                    $this->script('load', $script), $arguments, $numkeys,
+            $this->script('load', $script), $arguments, $numkeys,
         ]);
     }
 
@@ -123,11 +131,12 @@ class PhpRedisConnection extends Connection {
      * @param  array  $parameters
      * @return mixed
      */
-    protected function proxyToEval(array $parameters) {
+    protected function proxyToEval(array $parameters)
+    {
         return $this->command('eval', [
-                    isset($parameters[0]) ? $parameters[0] : null,
-                    array_slice($parameters, 2),
-                    isset($parameters[1]) ? $parameters[1] : null,
+            isset($parameters[0]) ? $parameters[0] : null,
+            array_slice($parameters, 2),
+            isset($parameters[1]) ? $parameters[1] : null,
         ]);
     }
 
@@ -138,7 +147,8 @@ class PhpRedisConnection extends Connection {
      * @param  \Closure  $callback
      * @return void
      */
-    public function subscribe($channels, Closure $callback) {
+    public function subscribe($channels, Closure $callback)
+    {
         $this->client->subscribe((array) $channels, function ($redis, $channel, $message) use ($callback) {
             $callback($message, $channel);
         });
@@ -151,7 +161,8 @@ class PhpRedisConnection extends Connection {
      * @param  \Closure  $callback
      * @return void
      */
-    public function psubscribe($channels, Closure $callback) {
+    public function psubscribe($channels, Closure $callback)
+    {
         $this->client->psubscribe((array) $channels, function ($redis, $pattern, $channel, $message) use ($callback) {
             $callback($message, $channel);
         });
@@ -165,7 +176,8 @@ class PhpRedisConnection extends Connection {
      * @param  string  $method
      * @return void
      */
-    public function createSubscription($channels, Closure $callback, $method = 'subscribe') {
+    public function createSubscription($channels, Closure $callback, $method = 'subscribe')
+    {
         //
     }
 
@@ -174,7 +186,8 @@ class PhpRedisConnection extends Connection {
      *
      * @return void
      */
-    public function disconnect() {
+    public function disconnect()
+    {
         $this->client->close();
     }
 
@@ -185,7 +198,8 @@ class PhpRedisConnection extends Connection {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         $method = strtolower($method);
 
         if ($method == 'eval') {
@@ -200,5 +214,4 @@ class PhpRedisConnection extends Connection {
 
         return parent::__call($method, $parameters);
     }
-
 }

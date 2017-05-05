@@ -4,8 +4,8 @@ namespace Illuminate\View\Concerns;
 
 use InvalidArgumentException;
 
-trait ManagesLayouts {
-
+trait ManagesLayouts
+{
     /**
      * All of the finished, captured sections.
      *
@@ -34,7 +34,8 @@ trait ManagesLayouts {
      * @param  string|null  $content
      * @return void
      */
-    public function startSection($section, $content = null) {
+    public function startSection($section, $content = null)
+    {
         if ($content === null) {
             if (ob_start()) {
                 $this->sectionStack[] = $section;
@@ -51,7 +52,8 @@ trait ManagesLayouts {
      * @param  string  $content
      * @return void
      */
-    public function inject($section, $content) {
+    public function inject($section, $content)
+    {
         return $this->startSection($section, $content);
     }
 
@@ -60,7 +62,8 @@ trait ManagesLayouts {
      *
      * @return string
      */
-    public function yieldSection() {
+    public function yieldSection()
+    {
         if (empty($this->sectionStack)) {
             return '';
         }
@@ -75,7 +78,8 @@ trait ManagesLayouts {
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function stopSection($overwrite = false) {
+    public function stopSection($overwrite = false)
+    {
         if (empty($this->sectionStack)) {
             throw new InvalidArgumentException('Cannot end a section without first starting one.');
         }
@@ -97,7 +101,8 @@ trait ManagesLayouts {
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function appendSection() {
+    public function appendSection()
+    {
         if (empty($this->sectionStack)) {
             throw new InvalidArgumentException('Cannot end a section without first starting one.');
         }
@@ -120,7 +125,8 @@ trait ManagesLayouts {
      * @param  string  $content
      * @return void
      */
-    protected function extendSection($section, $content) {
+    protected function extendSection($section, $content)
+    {
         if (isset($this->sections[$section])) {
             $content = str_replace(static::parentPlaceholder($section), $content, $this->sections[$section]);
         }
@@ -135,7 +141,8 @@ trait ManagesLayouts {
      * @param  string  $default
      * @return string
      */
-    public function yieldContent($section, $default = '') {
+    public function yieldContent($section, $default = '')
+    {
         $sectionContent = $default;
 
         if (isset($this->sections[$section])) {
@@ -145,7 +152,7 @@ trait ManagesLayouts {
         $sectionContent = str_replace('@@parent', '--parent--holder--', $sectionContent);
 
         return str_replace(
-                '--parent--holder--', '@parent', str_replace(static::parentPlaceholder($section), '', $sectionContent)
+            '--parent--holder--', '@parent', str_replace(static::parentPlaceholder($section), '', $sectionContent)
         );
     }
 
@@ -155,9 +162,10 @@ trait ManagesLayouts {
      * @param  string  $section
      * @return string
      */
-    public static function parentPlaceholder($section = '') {
-        if (!isset(static::$parentPlaceholder[$section])) {
-            static::$parentPlaceholder[$section] = '##parent-placeholder-' . sha1($section) . '##';
+    public static function parentPlaceholder($section = '')
+    {
+        if (! isset(static::$parentPlaceholder[$section])) {
+            static::$parentPlaceholder[$section] = '##parent-placeholder-'.sha1($section).'##';
         }
 
         return static::$parentPlaceholder[$section];
@@ -169,7 +177,8 @@ trait ManagesLayouts {
      * @param  string  $name
      * @return bool
      */
-    public function hasSection($name) {
+    public function hasSection($name)
+    {
         return array_key_exists($name, $this->sections);
     }
 
@@ -178,7 +187,8 @@ trait ManagesLayouts {
      *
      * @return array
      */
-    public function getSections() {
+    public function getSections()
+    {
         return $this->sections;
     }
 
@@ -187,9 +197,9 @@ trait ManagesLayouts {
      *
      * @return void
      */
-    public function flushSections() {
+    public function flushSections()
+    {
         $this->sections = [];
         $this->sectionStack = [];
     }
-
 }

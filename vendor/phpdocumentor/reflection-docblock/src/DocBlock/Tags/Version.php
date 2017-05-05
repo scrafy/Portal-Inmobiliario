@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -21,8 +20,8 @@ use Webmozart\Assert\Assert;
 /**
  * Reflection class for a {@}version tag in a Docblock.
  */
-final class Version extends BaseTag implements Factory\StaticMethod {
-
+final class Version extends BaseTag implements Factory\StaticMethod
+{
     protected $name = 'version';
 
     /**
@@ -44,7 +43,8 @@ final class Version extends BaseTag implements Factory\StaticMethod {
     /** @var string The version vector. */
     private $version = '';
 
-    public function __construct($version = null, Description $description = null) {
+    public function __construct($version = null, Description $description = null)
+    {
         Assert::nullOrStringNotEmpty($version);
 
         $this->version = $version;
@@ -54,7 +54,8 @@ final class Version extends BaseTag implements Factory\StaticMethod {
     /**
      * @return static
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null) {
+    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null)
+    {
         Assert::nullOrString($body);
         if (empty($body)) {
             return new static();
@@ -66,7 +67,8 @@ final class Version extends BaseTag implements Factory\StaticMethod {
         }
 
         return new static(
-                $matches[1], $descriptionFactory->create(isset($matches[2]) ? $matches[2] : '', $context)
+            $matches[1],
+            $descriptionFactory->create(isset($matches[2]) ? $matches[2] : '', $context)
         );
     }
 
@@ -75,7 +77,8 @@ final class Version extends BaseTag implements Factory\StaticMethod {
      *
      * @return string
      */
-    public function getVersion() {
+    public function getVersion()
+    {
         return $this->version;
     }
 
@@ -84,8 +87,8 @@ final class Version extends BaseTag implements Factory\StaticMethod {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->version . ($this->description ? ' ' . $this->description->render() : '');
     }
-
 }

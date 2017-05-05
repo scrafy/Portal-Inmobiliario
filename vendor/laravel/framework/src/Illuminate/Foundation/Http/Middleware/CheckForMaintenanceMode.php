@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 
-class CheckForMaintenanceMode {
-
+class CheckForMaintenanceMode
+{
     /**
      * The application implementation.
      *
@@ -21,7 +21,8 @@ class CheckForMaintenanceMode {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function __construct(Application $app) {
+    public function __construct(Application $app)
+    {
         $this->app = $app;
     }
 
@@ -34,14 +35,14 @@ class CheckForMaintenanceMode {
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
         if ($this->app->isDownForMaintenance()) {
-            $data = json_decode(file_get_contents($this->app->storagePath() . '/framework/down'), true);
+            $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
 
             throw new MaintenanceModeException($data['time'], $data['retry'], $data['message']);
         }
 
         return $next($request);
     }
-
 }

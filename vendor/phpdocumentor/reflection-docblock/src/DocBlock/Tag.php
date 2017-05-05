@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -15,8 +14,8 @@ namespace phpDocumentor\Reflection\DocBlock;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 
-interface Tag {
-
+interface Tag
+{
     public function getName();
 
     public static function create($body);

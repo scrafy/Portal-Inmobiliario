@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class Logout {
-
+class Logout
+{
     use SerializesModels;
 
     /**
@@ -21,8 +21,8 @@ class Logout {
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
      */
-    public function __construct($user) {
+    public function __construct($user)
+    {
         $this->user = $user;
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Database\Schema\Grammars;
 use Illuminate\Support\Fluent;
 use Illuminate\Database\Schema\Blueprint;
 
-class SqlServerGrammar extends Grammar {
-
+class SqlServerGrammar extends Grammar
+{
     /**
      * The possible column modifiers.
      *
@@ -26,7 +26,8 @@ class SqlServerGrammar extends Grammar {
      *
      * @return string
      */
-    public function compileTableExists() {
+    public function compileTableExists()
+    {
         return "select * from sysobjects where type = 'U' and name = ?";
     }
 
@@ -36,7 +37,8 @@ class SqlServerGrammar extends Grammar {
      * @param  string  $table
      * @return string
      */
-    public function compileColumnListing($table) {
+    public function compileColumnListing($table)
+    {
         return "select col.name from sys.columns as col
                 join sys.objects as obj on col.object_id = obj.object_id
                 where obj.type = 'U' and obj.name = '$table'";
@@ -49,10 +51,11 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileCreate(Blueprint $blueprint, Fluent $command) {
+    public function compileCreate(Blueprint $blueprint, Fluent $command)
+    {
         $columns = implode(', ', $this->getColumns($blueprint));
 
-        return 'create table ' . $this->wrapTable($blueprint) . " ($columns)";
+        return 'create table '.$this->wrapTable($blueprint)." ($columns)";
     }
 
     /**
@@ -62,8 +65,11 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileAdd(Blueprint $blueprint, Fluent $command) {
-        return sprintf('alter table %s add %s', $this->wrapTable($blueprint), implode(', ', $this->getColumns($blueprint))
+    public function compileAdd(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('alter table %s add %s',
+            $this->wrapTable($blueprint),
+            implode(', ', $this->getColumns($blueprint))
         );
     }
 
@@ -74,8 +80,12 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compilePrimary(Blueprint $blueprint, Fluent $command) {
-        return sprintf('alter table %s add constraint %s primary key (%s)', $this->wrapTable($blueprint), $this->wrap($command->index), $this->columnize($command->columns)
+    public function compilePrimary(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('alter table %s add constraint %s primary key (%s)',
+            $this->wrapTable($blueprint),
+            $this->wrap($command->index),
+            $this->columnize($command->columns)
         );
     }
 
@@ -86,8 +96,12 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileUnique(Blueprint $blueprint, Fluent $command) {
-        return sprintf('create unique index %s on %s (%s)', $this->wrap($command->index), $this->wrapTable($blueprint), $this->columnize($command->columns)
+    public function compileUnique(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('create unique index %s on %s (%s)',
+            $this->wrap($command->index),
+            $this->wrapTable($blueprint),
+            $this->columnize($command->columns)
         );
     }
 
@@ -98,8 +112,12 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileIndex(Blueprint $blueprint, Fluent $command) {
-        return sprintf('create index %s on %s (%s)', $this->wrap($command->index), $this->wrapTable($blueprint), $this->columnize($command->columns)
+    public function compileIndex(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('create index %s on %s (%s)',
+            $this->wrap($command->index),
+            $this->wrapTable($blueprint),
+            $this->columnize($command->columns)
         );
     }
 
@@ -110,8 +128,9 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDrop(Blueprint $blueprint, Fluent $command) {
-        return 'drop table ' . $this->wrapTable($blueprint);
+    public function compileDrop(Blueprint $blueprint, Fluent $command)
+    {
+        return 'drop table '.$this->wrapTable($blueprint);
     }
 
     /**
@@ -121,8 +140,11 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropIfExists(Blueprint $blueprint, Fluent $command) {
-        return sprintf('if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = %s) drop table %s', "'" . str_replace("'", "''", $this->getTablePrefix() . $blueprint->getTable()) . "'", $this->wrapTable($blueprint)
+    public function compileDropIfExists(Blueprint $blueprint, Fluent $command)
+    {
+        return sprintf('if exists (select * from INFORMATION_SCHEMA.TABLES where TABLE_NAME = %s) drop table %s',
+            "'".str_replace("'", "''", $this->getTablePrefix().$blueprint->getTable())."'",
+            $this->wrapTable($blueprint)
         );
     }
 
@@ -133,10 +155,11 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropColumn(Blueprint $blueprint, Fluent $command) {
+    public function compileDropColumn(Blueprint $blueprint, Fluent $command)
+    {
         $columns = $this->wrapArray($command->columns);
 
-        return 'alter table ' . $this->wrapTable($blueprint) . ' drop column ' . implode(', ', $columns);
+        return 'alter table '.$this->wrapTable($blueprint).' drop column '.implode(', ', $columns);
     }
 
     /**
@@ -146,7 +169,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropPrimary(Blueprint $blueprint, Fluent $command) {
+    public function compileDropPrimary(Blueprint $blueprint, Fluent $command)
+    {
         $index = $this->wrap($command->index);
 
         return "alter table {$this->wrapTable($blueprint)} drop constraint {$index}";
@@ -159,7 +183,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropUnique(Blueprint $blueprint, Fluent $command) {
+    public function compileDropUnique(Blueprint $blueprint, Fluent $command)
+    {
         $index = $this->wrap($command->index);
 
         return "drop index {$index} on {$this->wrapTable($blueprint)}";
@@ -172,7 +197,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropIndex(Blueprint $blueprint, Fluent $command) {
+    public function compileDropIndex(Blueprint $blueprint, Fluent $command)
+    {
         $index = $this->wrap($command->index);
 
         return "drop index {$index} on {$this->wrapTable($blueprint)}";
@@ -185,7 +211,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileDropForeign(Blueprint $blueprint, Fluent $command) {
+    public function compileDropForeign(Blueprint $blueprint, Fluent $command)
+    {
         $index = $this->wrap($command->index);
 
         return "alter table {$this->wrapTable($blueprint)} drop constraint {$index}";
@@ -198,10 +225,11 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $command
      * @return string
      */
-    public function compileRename(Blueprint $blueprint, Fluent $command) {
+    public function compileRename(Blueprint $blueprint, Fluent $command)
+    {
         $from = $this->wrapTable($blueprint);
 
-        return "sp_rename {$from}, " . $this->wrapTable($command->to);
+        return "sp_rename {$from}, ".$this->wrapTable($command->to);
     }
 
     /**
@@ -209,7 +237,8 @@ class SqlServerGrammar extends Grammar {
      *
      * @return string
      */
-    public function compileEnableForeignKeyConstraints() {
+    public function compileEnableForeignKeyConstraints()
+    {
         return 'EXEC sp_msforeachtable @command1="print \'?\'", @command2="ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all";';
     }
 
@@ -218,7 +247,8 @@ class SqlServerGrammar extends Grammar {
      *
      * @return string
      */
-    public function compileDisableForeignKeyConstraints() {
+    public function compileDisableForeignKeyConstraints()
+    {
         return 'EXEC sp_msforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT all";';
     }
 
@@ -228,7 +258,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeChar(Fluent $column) {
+    protected function typeChar(Fluent $column)
+    {
         return "nchar({$column->length})";
     }
 
@@ -238,7 +269,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeString(Fluent $column) {
+    protected function typeString(Fluent $column)
+    {
         return "nvarchar({$column->length})";
     }
 
@@ -248,7 +280,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeText(Fluent $column) {
+    protected function typeText(Fluent $column)
+    {
         return 'nvarchar(max)';
     }
 
@@ -258,7 +291,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeMediumText(Fluent $column) {
+    protected function typeMediumText(Fluent $column)
+    {
         return 'nvarchar(max)';
     }
 
@@ -268,7 +302,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeLongText(Fluent $column) {
+    protected function typeLongText(Fluent $column)
+    {
         return 'nvarchar(max)';
     }
 
@@ -278,7 +313,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeInteger(Fluent $column) {
+    protected function typeInteger(Fluent $column)
+    {
         return 'int';
     }
 
@@ -288,7 +324,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeBigInteger(Fluent $column) {
+    protected function typeBigInteger(Fluent $column)
+    {
         return 'bigint';
     }
 
@@ -298,7 +335,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeMediumInteger(Fluent $column) {
+    protected function typeMediumInteger(Fluent $column)
+    {
         return 'int';
     }
 
@@ -308,7 +346,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeTinyInteger(Fluent $column) {
+    protected function typeTinyInteger(Fluent $column)
+    {
         return 'tinyint';
     }
 
@@ -318,7 +357,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeSmallInteger(Fluent $column) {
+    protected function typeSmallInteger(Fluent $column)
+    {
         return 'smallint';
     }
 
@@ -328,7 +368,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeFloat(Fluent $column) {
+    protected function typeFloat(Fluent $column)
+    {
         return 'float';
     }
 
@@ -338,7 +379,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeDouble(Fluent $column) {
+    protected function typeDouble(Fluent $column)
+    {
         return 'float';
     }
 
@@ -348,7 +390,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeDecimal(Fluent $column) {
+    protected function typeDecimal(Fluent $column)
+    {
         return "decimal({$column->total}, {$column->places})";
     }
 
@@ -358,7 +401,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeBoolean(Fluent $column) {
+    protected function typeBoolean(Fluent $column)
+    {
         return 'bit';
     }
 
@@ -368,7 +412,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeEnum(Fluent $column) {
+    protected function typeEnum(Fluent $column)
+    {
         return 'nvarchar(255)';
     }
 
@@ -378,7 +423,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeJson(Fluent $column) {
+    protected function typeJson(Fluent $column)
+    {
         return 'nvarchar(max)';
     }
 
@@ -388,7 +434,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeJsonb(Fluent $column) {
+    protected function typeJsonb(Fluent $column)
+    {
         return 'nvarchar(max)';
     }
 
@@ -398,7 +445,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeDate(Fluent $column) {
+    protected function typeDate(Fluent $column)
+    {
         return 'date';
     }
 
@@ -408,7 +456,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeDateTime(Fluent $column) {
+    protected function typeDateTime(Fluent $column)
+    {
         return 'datetime';
     }
 
@@ -418,7 +467,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeDateTimeTz(Fluent $column) {
+    protected function typeDateTimeTz(Fluent $column)
+    {
         return 'datetimeoffset(0)';
     }
 
@@ -428,7 +478,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeTime(Fluent $column) {
+    protected function typeTime(Fluent $column)
+    {
         return 'time';
     }
 
@@ -438,7 +489,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeTimeTz(Fluent $column) {
+    protected function typeTimeTz(Fluent $column)
+    {
         return 'time';
     }
 
@@ -448,7 +500,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeTimestamp(Fluent $column) {
+    protected function typeTimestamp(Fluent $column)
+    {
         if ($column->useCurrent) {
             return 'datetime default CURRENT_TIMESTAMP';
         }
@@ -464,7 +517,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeTimestampTz(Fluent $column) {
+    protected function typeTimestampTz(Fluent $column)
+    {
         if ($column->useCurrent) {
             return 'datetimeoffset(0) default CURRENT_TIMESTAMP';
         }
@@ -478,7 +532,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeBinary(Fluent $column) {
+    protected function typeBinary(Fluent $column)
+    {
         return 'varbinary(max)';
     }
 
@@ -488,7 +543,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeUuid(Fluent $column) {
+    protected function typeUuid(Fluent $column)
+    {
         return 'uniqueidentifier';
     }
 
@@ -498,7 +554,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeIpAddress(Fluent $column) {
+    protected function typeIpAddress(Fluent $column)
+    {
         return 'nvarchar(45)';
     }
 
@@ -508,7 +565,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string
      */
-    protected function typeMacAddress(Fluent $column) {
+    protected function typeMacAddress(Fluent $column)
+    {
         return 'nvarchar(17)';
     }
 
@@ -519,9 +577,10 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string|null
      */
-    protected function modifyCollate(Blueprint $blueprint, Fluent $column) {
-        if (!is_null($column->collation)) {
-            return ' collate ' . $column->collation;
+    protected function modifyCollate(Blueprint $blueprint, Fluent $column)
+    {
+        if (! is_null($column->collation)) {
+            return ' collate '.$column->collation;
         }
     }
 
@@ -532,7 +591,8 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string|null
      */
-    protected function modifyNullable(Blueprint $blueprint, Fluent $column) {
+    protected function modifyNullable(Blueprint $blueprint, Fluent $column)
+    {
         return $column->nullable ? ' null' : ' not null';
     }
 
@@ -543,9 +603,10 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string|null
      */
-    protected function modifyDefault(Blueprint $blueprint, Fluent $column) {
-        if (!is_null($column->default)) {
-            return ' default ' . $this->getDefaultValue($column->default);
+    protected function modifyDefault(Blueprint $blueprint, Fluent $column)
+    {
+        if (! is_null($column->default)) {
+            return ' default '.$this->getDefaultValue($column->default);
         }
     }
 
@@ -556,10 +617,10 @@ class SqlServerGrammar extends Grammar {
      * @param  \Illuminate\Support\Fluent  $column
      * @return string|null
      */
-    protected function modifyIncrement(Blueprint $blueprint, Fluent $column) {
+    protected function modifyIncrement(Blueprint $blueprint, Fluent $column)
+    {
         if (in_array($column->type, $this->serials) && $column->autoIncrement) {
             return ' identity primary key';
         }
     }
-
 }

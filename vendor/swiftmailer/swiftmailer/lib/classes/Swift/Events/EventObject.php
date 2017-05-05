@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Events_EventObject implements Swift_Events_Event {
-
+class Swift_Events_EventObject implements Swift_Events_Event
+{
     /** The source of this Event */
     private $_source;
 
@@ -26,7 +26,8 @@ class Swift_Events_EventObject implements Swift_Events_Event {
      *
      * @param object $source
      */
-    public function __construct($source) {
+    public function __construct($source)
+    {
         $this->_source = $source;
     }
 
@@ -35,7 +36,8 @@ class Swift_Events_EventObject implements Swift_Events_Event {
      *
      * @return object
      */
-    public function getSource() {
+    public function getSource()
+    {
         return $this->_source;
     }
 
@@ -44,7 +46,8 @@ class Swift_Events_EventObject implements Swift_Events_Event {
      *
      * @param bool $cancel, optional
      */
-    public function cancelBubble($cancel = true) {
+    public function cancelBubble($cancel = true)
+    {
         $this->_bubbleCancelled = $cancel;
     }
 
@@ -53,8 +56,8 @@ class Swift_Events_EventObject implements Swift_Events_Event {
      *
      * @return bool
      */
-    public function bubbleCancelled() {
+    public function bubbleCancelled()
+    {
         return $this->_bubbleCancelled;
     }
-
 }

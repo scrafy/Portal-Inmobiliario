@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Console;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class MailMakeCommand extends GeneratorCommand {
-
+class MailMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -33,7 +33,8 @@ class MailMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         if (parent::fire() === false) {
             return;
         }
@@ -48,14 +49,15 @@ class MailMakeCommand extends GeneratorCommand {
      *
      * @return void
      */
-    protected function writeMarkdownTemplate() {
-        $path = resource_path('views/' . str_replace('.', '/', $this->option('markdown'))) . '.blade.php';
+    protected function writeMarkdownTemplate()
+    {
+        $path = resource_path('views/'.str_replace('.', '/', $this->option('markdown'))).'.blade.php';
 
-        if (!$this->files->isDirectory(dirname($path))) {
+        if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0755, true);
         }
 
-        $this->files->put($path, file_get_contents(__DIR__ . '/stubs/markdown.stub'));
+        $this->files->put($path, file_get_contents(__DIR__.'/stubs/markdown.stub'));
     }
 
     /**
@@ -64,7 +66,8 @@ class MailMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function buildClass($name) {
+    protected function buildClass($name)
+    {
         $class = parent::buildClass($name);
 
         if ($this->option('markdown')) {
@@ -79,8 +82,11 @@ class MailMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return $this->option('markdown') ? __DIR__ . '/stubs/markdown-mail.stub' : __DIR__ . '/stubs/mail.stub';
+    protected function getStub()
+    {
+        return $this->option('markdown')
+                        ? __DIR__.'/stubs/markdown-mail.stub'
+                        : __DIR__.'/stubs/mail.stub';
     }
 
     /**
@@ -89,8 +95,9 @@ class MailMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Mail';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Mail';
     }
 
     /**
@@ -98,10 +105,10 @@ class MailMakeCommand extends GeneratorCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['markdown', 'm', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable.'],
         ];
     }
-
 }

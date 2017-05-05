@@ -6,8 +6,8 @@ use Illuminate\Container\Container;
 use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-class DatabaseJob extends Job implements JobContract {
-
+class DatabaseJob extends Job implements JobContract
+{
     /**
      * The database queue instance.
      *
@@ -32,7 +32,8 @@ class DatabaseJob extends Job implements JobContract {
      * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, DatabaseQueue $database, $job, $connectionName, $queue) {
+    public function __construct(Container $container, DatabaseQueue $database, $job, $connectionName, $queue)
+    {
         $this->job = $job;
         $this->queue = $queue;
         $this->database = $database;
@@ -46,7 +47,8 @@ class DatabaseJob extends Job implements JobContract {
      * @param  int  $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         parent::release($delay);
 
         $this->delete();
@@ -59,7 +61,8 @@ class DatabaseJob extends Job implements JobContract {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         parent::delete();
 
         $this->database->deleteReserved($this->queue, $this->job->id);
@@ -70,7 +73,8 @@ class DatabaseJob extends Job implements JobContract {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         return (int) $this->job->attempts;
     }
 
@@ -79,7 +83,8 @@ class DatabaseJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getJobId() {
+    public function getJobId()
+    {
         return $this->job->id;
     }
 
@@ -88,8 +93,8 @@ class DatabaseJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getRawBody() {
+    public function getRawBody()
+    {
         return $this->job->payload;
     }
-
 }

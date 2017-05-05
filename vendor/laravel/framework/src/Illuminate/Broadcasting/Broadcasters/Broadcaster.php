@@ -11,8 +11,8 @@ use Illuminate\Contracts\Routing\BindingRegistrar;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Contracts\Broadcasting\Broadcaster as BroadcasterContract;
 
-abstract class Broadcaster implements BroadcasterContract {
-
+abstract class Broadcaster implements BroadcasterContract
+{
     /**
      * The registered channel authenticators.
      *
@@ -34,7 +34,8 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  callable  $callback
      * @return $this
      */
-    public function channel($channel, callable $callback) {
+    public function channel($channel, callable $callback)
+    {
         $this->channels[$channel] = $callback;
 
         return $this;
@@ -47,9 +48,10 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  string  $channel
      * @return mixed
      */
-    protected function verifyUserCanAccessChannel($request, $channel) {
+    protected function verifyUserCanAccessChannel($request, $channel)
+    {
         foreach ($this->channels as $pattern => $callback) {
-            if (!Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel)) {
+            if (! Str::is(preg_replace('/\{(.*?)\}/', '*', $pattern), $channel)) {
                 continue;
             }
 
@@ -71,14 +73,15 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  callable  $callback
      * @return array
      */
-    protected function extractAuthParameters($pattern, $channel, $callback) {
+    protected function extractAuthParameters($pattern, $channel, $callback)
+    {
         $callbackParameters = (new ReflectionFunction($callback))->getParameters();
 
         return collect($this->extractChannelKeys($pattern, $channel))->reject(function ($value, $key) {
-                    return is_numeric($key);
-                })->map(function ($value, $key) use ($callbackParameters) {
-                    return $this->resolveBinding($key, $value, $callbackParameters);
-                })->values()->all();
+            return is_numeric($key);
+        })->map(function ($value, $key) use ($callbackParameters) {
+            return $this->resolveBinding($key, $value, $callbackParameters);
+        })->values()->all();
     }
 
     /**
@@ -88,8 +91,9 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  string  $channel
      * @return array
      */
-    protected function extractChannelKeys($pattern, $channel) {
-        preg_match('/^' . preg_replace('/\{(.*?)\}/', '(?<$1>[^\.]+)', $pattern) . '/', $channel, $keys);
+    protected function extractChannelKeys($pattern, $channel)
+    {
+        preg_match('/^'.preg_replace('/\{(.*?)\}/', '(?<$1>[^\.]+)', $pattern).'/', $channel, $keys);
 
         return $keys;
     }
@@ -102,12 +106,13 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  array  $callbackParameters
      * @return mixed
      */
-    protected function resolveBinding($key, $value, $callbackParameters) {
+    protected function resolveBinding($key, $value, $callbackParameters)
+    {
         $newValue = $this->resolveExplicitBindingIfPossible($key, $value);
 
         return $newValue === $value ? $this->resolveImplicitBindingIfPossible(
-                        $key, $value, $callbackParameters
-                ) : $newValue;
+            $key, $value, $callbackParameters
+        ) : $newValue;
     }
 
     /**
@@ -117,7 +122,8 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function resolveExplicitBindingIfPossible($key, $value) {
+    protected function resolveExplicitBindingIfPossible($key, $value)
+    {
         $binder = $this->binder();
 
         if ($binder && $binder->getBindingCallback($key)) {
@@ -135,17 +141,18 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  array  $callbackParameters
      * @return mixed
      */
-    protected function resolveImplicitBindingIfPossible($key, $value, $callbackParameters) {
+    protected function resolveImplicitBindingIfPossible($key, $value, $callbackParameters)
+    {
         foreach ($callbackParameters as $parameter) {
-            if (!$this->isImplicitlyBindable($key, $parameter)) {
+            if (! $this->isImplicitlyBindable($key, $parameter)) {
                 continue;
             }
 
             $model = $parameter->getClass()->newInstance();
 
             return $model->where($model->getRouteKeyName(), $value)->firstOr(function () {
-                        throw new HttpException(403);
-                    });
+                throw new HttpException(403);
+            });
         }
 
         return $value;
@@ -158,7 +165,8 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  ReflectionParameter  $parameter
      * @return bool
      */
-    protected function isImplicitlyBindable($key, $parameter) {
+    protected function isImplicitlyBindable($key, $parameter)
+    {
         return $parameter->name === $key && $parameter->getClass() &&
                 $parameter->getClass()->isSubclassOf(Model::class);
     }
@@ -169,7 +177,8 @@ abstract class Broadcaster implements BroadcasterContract {
      * @param  array  $channels
      * @return array
      */
-    protected function formatChannels(array $channels) {
+    protected function formatChannels(array $channels)
+    {
         return array_map(function ($channel) {
             return (string) $channel;
         }, $channels);
@@ -180,12 +189,13 @@ abstract class Broadcaster implements BroadcasterContract {
      *
      * @return BindingRegistrar
      */
-    protected function binder() {
-        if (!$this->bindingRegistrar) {
-            $this->bindingRegistrar = Container::getInstance()->bound(BindingRegistrar::class) ? Container::getInstance()->make(BindingRegistrar::class) : null;
+    protected function binder()
+    {
+        if (! $this->bindingRegistrar) {
+            $this->bindingRegistrar = Container::getInstance()->bound(BindingRegistrar::class)
+                        ? Container::getInstance()->make(BindingRegistrar::class) : null;
         }
 
         return $this->bindingRegistrar;
     }
-
 }

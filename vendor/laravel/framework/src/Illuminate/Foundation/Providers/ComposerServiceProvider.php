@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Providers;
 use Illuminate\Support\Composer;
 use Illuminate\Support\ServiceProvider;
 
-class ComposerServiceProvider extends ServiceProvider {
-
+class ComposerServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -19,7 +19,8 @@ class ComposerServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton('composer', function ($app) {
             return new Composer($app['files'], $app->basePath());
         });
@@ -30,8 +31,8 @@ class ComposerServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return ['composer'];
     }
-
 }

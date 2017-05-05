@@ -1,8 +1,9 @@
 <?php
 
-class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase {
-
-    public function testReportingPasses() {
+class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase
+{
+    public function testReportingPasses()
+    {
         $message = $this->_createMessage();
         $evt = $this->_createSendEvent();
         $reporter = $this->_createReporter();
@@ -16,7 +17,8 @@ class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReportingFailedTo() {
+    public function testReportingFailedTo()
+    {
         $message = $this->_createMessage();
         $evt = $this->_createSendEvent();
         $reporter = $this->_createReporter();
@@ -31,7 +33,8 @@ class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReportingFailedCc() {
+    public function testReportingFailedCc()
+    {
         $message = $this->_createMessage();
         $evt = $this->_createSendEvent();
         $reporter = $this->_createReporter();
@@ -48,7 +51,8 @@ class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReportingFailedBcc() {
+    public function testReportingFailedBcc()
+    {
         $message = $this->_createMessage();
         $evt = $this->_createSendEvent();
         $reporter = $this->_createReporter();
@@ -65,16 +69,18 @@ class Swift_Plugins_ReporterPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    private function _createMessage() {
+    private function _createMessage()
+    {
         return $this->getMockery('Swift_Mime_Message')->shouldIgnoreMissing();
     }
 
-    private function _createSendEvent() {
+    private function _createSendEvent()
+    {
         return $this->getMockery('Swift_Events_SendEvent')->shouldIgnoreMissing();
     }
 
-    private function _createReporter() {
+    private function _createReporter()
+    {
         return $this->getMockery('Swift_Plugins_Reporter')->shouldIgnoreMissing();
     }
-
 }

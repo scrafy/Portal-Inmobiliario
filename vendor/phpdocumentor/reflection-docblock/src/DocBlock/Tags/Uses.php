@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -23,8 +22,8 @@ use Webmozart\Assert\Assert;
 /**
  * Reflection class for a {@}uses tag in a Docblock.
  */
-final class Uses extends BaseTag implements Factory\StaticMethod {
-
+final class Uses extends BaseTag implements Factory\StaticMethod
+{
     protected $name = 'uses';
 
     /** @var Fqsen */
@@ -36,8 +35,9 @@ final class Uses extends BaseTag implements Factory\StaticMethod {
      * @param Fqsen       $refers
      * @param Description $description
      */
-    public function __construct(Fqsen $refers, Description $description = null) {
-        $this->refers = $refers;
+    public function __construct(Fqsen $refers, Description $description = null)
+    {
+        $this->refers      = $refers;
         $this->description = $description;
     }
 
@@ -45,7 +45,10 @@ final class Uses extends BaseTag implements Factory\StaticMethod {
      * {@inheritdoc}
      */
     public static function create(
-    $body, FqsenResolver $resolver = null, DescriptionFactory $descriptionFactory = null, TypeContext $context = null
+        $body,
+        FqsenResolver $resolver = null,
+        DescriptionFactory $descriptionFactory = null,
+        TypeContext $context = null
     ) {
         Assert::string($body);
         Assert::allNotNull([$resolver, $descriptionFactory]);
@@ -53,7 +56,8 @@ final class Uses extends BaseTag implements Factory\StaticMethod {
         $parts = preg_split('/\s+/Su', $body, 2);
 
         return new static(
-                $resolver->resolve($parts[0], $context), $descriptionFactory->create(isset($parts[1]) ? $parts[1] : '', $context)
+            $resolver->resolve($parts[0], $context),
+            $descriptionFactory->create(isset($parts[1]) ? $parts[1] : '', $context)
         );
     }
 
@@ -62,7 +66,8 @@ final class Uses extends BaseTag implements Factory\StaticMethod {
      *
      * @return Fqsen
      */
-    public function getReference() {
+    public function getReference()
+    {
         return $this->refers;
     }
 
@@ -71,8 +76,8 @@ final class Uses extends BaseTag implements Factory\StaticMethod {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->refers . ' ' . $this->description->render();
     }
-
 }

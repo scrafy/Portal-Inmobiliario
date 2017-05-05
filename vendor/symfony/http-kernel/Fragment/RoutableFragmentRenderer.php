@@ -20,8 +20,8 @@ use Symfony\Component\HttpKernel\EventListener\FragmentListener;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class RoutableFragmentRenderer implements FragmentRendererInterface {
-
+abstract class RoutableFragmentRenderer implements FragmentRendererInterface
+{
     private $fragmentPath = '/_fragment';
 
     /**
@@ -31,7 +31,8 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface {
      *
      * @see FragmentListener
      */
-    public function setFragmentPath($path) {
+    public function setFragmentPath($path)
+    {
         $this->fragmentPath = $path;
     }
 
@@ -45,7 +46,8 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface {
      *
      * @return string A fragment URI
      */
-    protected function generateFragmentUri(ControllerReference $reference, Request $request, $absolute = false, $strict = true) {
+    protected function generateFragmentUri(ControllerReference $reference, Request $request, $absolute = false, $strict = true)
+    {
         if ($strict) {
             $this->checkNonScalar($reference->attributes);
         }
@@ -66,16 +68,17 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface {
 
         $reference->query['_path'] = http_build_query($reference->attributes, '', '&');
 
-        $path = $this->fragmentPath . '?' . http_build_query($reference->query, '', '&');
+        $path = $this->fragmentPath.'?'.http_build_query($reference->query, '', '&');
 
         if ($absolute) {
             return $request->getUriForPath($path);
         }
 
-        return $request->getBaseUrl() . $path;
+        return $request->getBaseUrl().$path;
     }
 
-    private function checkNonScalar($values) {
+    private function checkNonScalar($values)
+    {
         foreach ($values as $key => $value) {
             if (is_array($value)) {
                 $this->checkNonScalar($value);
@@ -84,5 +87,4 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface {
             }
         }
     }
-
 }

@@ -4,15 +4,16 @@ namespace Illuminate\Database\Connectors;
 
 use PDO;
 
-class MySqlConnector extends Connector implements ConnectorInterface {
-
+class MySqlConnector extends Connector implements ConnectorInterface
+{
     /**
      * Establish a database connection.
      *
      * @param  array  $config
      * @return \PDO
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         $dsn = $this->getDsn($config);
 
         $options = $this->getOptions($config);
@@ -22,7 +23,7 @@ class MySqlConnector extends Connector implements ConnectorInterface {
         // connection's behavior, and some might be specified by the developers.
         $connection = $this->createConnection($dsn, $config, $options);
 
-        if (!empty($config['database'])) {
+        if (! empty($config['database'])) {
             $connection->exec("use `{$config['database']}`;");
         }
 
@@ -45,13 +46,14 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureEncoding($connection, array $config) {
-        if (!isset($config['charset'])) {
+    protected function configureEncoding($connection, array $config)
+    {
+        if (! isset($config['charset'])) {
             return $connection;
         }
 
         $connection->prepare(
-                "set names '{$config['charset']}'" . $this->getCollation($config)
+            "set names '{$config['charset']}'".$this->getCollation($config)
         )->execute();
     }
 
@@ -61,8 +63,9 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return string
      */
-    protected function getCollation(array $config) {
-        return !is_null($config['collation']) ? " collate '{$config['collation']}'" : '';
+    protected function getCollation(array $config)
+    {
+        return ! is_null($config['collation']) ? " collate '{$config['collation']}'" : '';
     }
 
     /**
@@ -72,9 +75,10 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function configureTimezone($connection, array $config) {
+    protected function configureTimezone($connection, array $config)
+    {
         if (isset($config['timezone'])) {
-            $connection->prepare('set time_zone="' . $config['timezone'] . '"')->execute();
+            $connection->prepare('set time_zone="'.$config['timezone'].'"')->execute();
         }
     }
 
@@ -86,8 +90,11 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array   $config
      * @return string
      */
-    protected function getDsn(array $config) {
-        return $this->hasSocket($config) ? $this->getSocketDsn($config) : $this->getHostDsn($config);
+    protected function getDsn(array $config)
+    {
+        return $this->hasSocket($config)
+                            ? $this->getSocketDsn($config)
+                            : $this->getHostDsn($config);
     }
 
     /**
@@ -96,8 +103,9 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return bool
      */
-    protected function hasSocket(array $config) {
-        return isset($config['unix_socket']) && !empty($config['unix_socket']);
+    protected function hasSocket(array $config)
+    {
+        return isset($config['unix_socket']) && ! empty($config['unix_socket']);
     }
 
     /**
@@ -106,7 +114,8 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return string
      */
-    protected function getSocketDsn(array $config) {
+    protected function getSocketDsn(array $config)
+    {
         return "mysql:unix_socket={$config['unix_socket']};dbname={$config['database']}";
     }
 
@@ -116,10 +125,13 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return string
      */
-    protected function getHostDsn(array $config) {
+    protected function getHostDsn(array $config)
+    {
         extract($config, EXTR_SKIP);
 
-        return isset($port) ? "mysql:host={$host};port={$port};dbname={$database}" : "mysql:host={$host};dbname={$database}";
+        return isset($port)
+                    ? "mysql:host={$host};port={$port};dbname={$database}"
+                    : "mysql:host={$host};dbname={$database}";
     }
 
     /**
@@ -129,7 +141,8 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function setModes(PDO $connection, array $config) {
+    protected function setModes(PDO $connection, array $config)
+    {
         if (isset($config['modes'])) {
             $this->setCustomModes($connection, $config);
         } elseif (isset($config['strict'])) {
@@ -148,7 +161,8 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      * @param  array  $config
      * @return void
      */
-    protected function setCustomModes(PDO $connection, array $config) {
+    protected function setCustomModes(PDO $connection, array $config)
+    {
         $modes = implode(',', $config['modes']);
 
         $connection->prepare("set session sql_mode='{$modes}'")->execute();
@@ -159,8 +173,8 @@ class MySqlConnector extends Connector implements ConnectorInterface {
      *
      * @return string
      */
-    protected function strictMode() {
+    protected function strictMode()
+    {
         return "set session sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'";
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase {
-
+class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
+{
     const EXPECT_CONTENT = <<<EOF
 --TEST--
 EXPECT test
@@ -19,6 +18,7 @@ EXPECT test
 --EXPECT--
 Hello PHPUnit!
 EOF;
+
     const EXPECTF_CONTENT = <<<EOF
 --TEST--
 EXPECTF test
@@ -27,6 +27,7 @@ EXPECTF test
 --EXPECTF--
 Hello %s!
 EOF;
+
     const EXPECTREGEX_CONTENT = <<<EOF
 --TEST--
 EXPECTREGEX test
@@ -35,6 +36,7 @@ EXPECTREGEX test
 --EXPECTREGEX--
 Hello [HPU]{4}[nit]{3}!
 EOF;
+
     const FILE_SECTION = <<<EOF
 <?php echo "Hello PHPUnit!"; ?>
 
@@ -44,7 +46,8 @@ EOF;
     protected $testCase;
     protected $phpUtil;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
         touch($this->filename);
 
@@ -53,7 +56,8 @@ EOF;
         $this->testCase = new PHPUnit_Extensions_PhptTestCase($this->filename, $this->phpUtil);
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         @unlink($this->filename);
 
         $this->filename = null;
@@ -65,25 +69,28 @@ EOF;
      *
      * @param string $content
      */
-    private function setPhpContent($content) {
+    private function setPhpContent($content)
+    {
         file_put_contents($this->filename, $content);
     }
 
-    public function testShouldRunFileSectionAsTest() {
+    public function testShouldRunFileSectionAsTest()
+    {
         $this->setPhpContent(self::EXPECT_CONTENT);
 
         $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
 
         $this->phpUtil
-                ->expects($this->once())
-                ->method('runJob')
-                ->with($fileSection)
-                ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+            ->expects($this->once())
+            ->method('runJob')
+            ->with($fileSection)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }
 
-    public function testShouldRunSkipifSectionWhenExists() {
+    public function testShouldRunSkipifSectionWhenExists()
+    {
         $skipifSection = '<?php /** Nothing **/ ?>' . PHP_EOL;
 
         $phptContent = self::EXPECT_CONTENT . PHP_EOL;
@@ -93,15 +100,16 @@ EOF;
         $this->setPhpContent($phptContent);
 
         $this->phpUtil
-                ->expects($this->at(0))
-                ->method('runJob')
-                ->with($skipifSection)
-                ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+            ->expects($this->at(0))
+            ->method('runJob')
+            ->with($skipifSection)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }
 
-    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord() {
+    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord()
+    {
         $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
 
         $phptContent = self::EXPECT_CONTENT . PHP_EOL;
@@ -111,15 +119,16 @@ EOF;
         $this->setPhpContent($phptContent);
 
         $this->phpUtil
-                ->expects($this->once())
-                ->method('runJob')
-                ->with($skipifSection)
-                ->will($this->returnValue(['stdout' => 'skip: Reason', 'stderr' => '']));
+            ->expects($this->once())
+            ->method('runJob')
+            ->with($skipifSection)
+            ->will($this->returnValue(['stdout' => 'skip: Reason', 'stderr' => '']));
 
         $this->testCase->run();
     }
 
-    public function testShouldRunCleanSectionWhenDefined() {
+    public function testShouldRunCleanSectionWhenDefined()
+    {
         $cleanSection = '<?php unlink("/tmp/something"); ?>' . PHP_EOL;
 
         $phptContent = self::EXPECT_CONTENT . PHP_EOL;
@@ -129,9 +138,9 @@ EOF;
         $this->setPhpContent($phptContent);
 
         $this->phpUtil
-                ->expects($this->at(1))
-                ->method('runJob')
-                ->with($cleanSection);
+            ->expects($this->at(1))
+            ->method('runJob')
+            ->with($cleanSection);
 
         $this->testCase->run();
     }
@@ -140,7 +149,8 @@ EOF;
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage Invalid PHPT file
      */
-    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty() {
+    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty()
+    {
         $this->setPhpContent('');
 
         $this->testCase->run();
@@ -150,9 +160,10 @@ EOF;
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage Invalid PHPT file
      */
-    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing() {
+    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
+    {
         $this->setPhpContent(
-                <<<EOF
+<<<EOF
 --TEST--
 Something to decribe it
 --EXPECT--
@@ -166,9 +177,10 @@ EOF
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage Invalid PHPT file
      */
-    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile() {
+    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
+    {
         $this->setPhpContent(
-                <<<EOF
+<<<EOF
 --TEST--
 Something to decribe it
 --FILE--
@@ -180,51 +192,55 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldValidateExpectSession() {
+    public function testShouldValidateExpectSession()
+    {
         $this->setPhpContent(self::EXPECT_CONTENT);
 
         $this->phpUtil
-                ->expects($this->once())
-                ->method('runJob')
-                ->with(self::FILE_SECTION)
-                ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testShouldValidateExpectfSession() {
+    public function testShouldValidateExpectfSession()
+    {
         $this->setPhpContent(self::EXPECTF_CONTENT);
 
         $this->phpUtil
-                ->expects($this->once())
-                ->method('runJob')
-                ->with(self::FILE_SECTION)
-                ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testShouldValidateExpectregexSession() {
+    public function testShouldValidateExpectregexSession()
+    {
         $this->setPhpContent(self::EXPECTREGEX_CONTENT);
 
         $this->phpUtil
-                ->expects($this->once())
-                ->method('runJob')
-                ->with(self::FILE_SECTION)
-                ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testParseIniSection() {
+    public function testParseIniSection()
+    {
         $phptTestCase = new PhpTestCaseProxy(__FILE__);
-        $settings = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
+        $settings     = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
 
         $expected = [
             'foo=1',
@@ -236,13 +252,12 @@ EOF
 
         $this->assertEquals($expected, $settings);
     }
-
 }
 
-class PhpTestCaseProxy extends PHPUnit_Extensions_PhptTestCase {
-
-    public function parseIniSection($content) {
+class PhpTestCaseProxy extends PHPUnit_Extensions_PhptTestCase
+{
+    public function parseIniSection($content)
+    {
         return parent::parseIniSection($content);
     }
-
 }

@@ -14,10 +14,11 @@ namespace Psy\Test\CodeCleaner;
 use PhpParser\NodeTraverser;
 use Psy\CodeCleaner\PassableByReferencePass;
 
-class PassableByReferencePassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
-        $this->pass = new PassableByReferencePass();
+class PassableByReferencePassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
+        $this->pass      = new PassableByReferencePass();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this->pass);
     }
@@ -26,12 +27,14 @@ class PassableByReferencePassTest extends CodeCleanerTestCase {
      * @dataProvider invalidStatements
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code) {
+    public function testProcessStatementFails($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function invalidStatements() {
+    public function invalidStatements()
+    {
         return array(
             array('array_pop(array())'),
             array('array_pop(array($foo))'),
@@ -42,12 +45,14 @@ class PassableByReferencePassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code) {
+    public function testProcessStatementPasses($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function validStatements() {
+    public function validStatements()
+    {
         return array(
             array('array_pop(json_decode("[]"))'),
             array('array_pop($foo)'),
@@ -56,5 +61,4 @@ class PassableByReferencePassTest extends CodeCleanerTestCase {
             array('array_pop(Foo::qux)'),
         );
     }
-
 }

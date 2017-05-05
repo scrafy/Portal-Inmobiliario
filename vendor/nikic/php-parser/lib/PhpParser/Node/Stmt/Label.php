@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node\Stmt;
 
-class Label extends Stmt {
-
+class Label extends Stmt
+{
     /** @var string Name */
     public $name;
 
@@ -23,5 +23,4 @@ class Label extends Stmt {
     public function getSubNodeNames() {
         return array('name');
     }
-
 }

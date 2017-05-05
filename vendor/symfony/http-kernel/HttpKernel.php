@@ -36,14 +36,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class HttpKernel implements HttpKernelInterface, TerminableInterface {
-
+class HttpKernel implements HttpKernelInterface, TerminableInterface
+{
     protected $dispatcher;
     protected $resolver;
     protected $requestStack;
     private $argumentResolver;
 
-    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null) {
+    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null)
+    {
         $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
         $this->requestStack = $requestStack ?: new RequestStack();
@@ -59,7 +60,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true) {
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    {
         $request->headers->set('X-Php-Ob-Level', ob_get_level());
 
         try {
@@ -81,7 +83,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
     /**
      * {@inheritdoc}
      */
-    public function terminate(Request $request, Response $response) {
+    public function terminate(Request $request, Response $response)
+    {
         $this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
     }
 
@@ -90,7 +93,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
      *
      * @internal
      */
-    public function terminateWithException(\Exception $exception) {
+    public function terminateWithException(\Exception $exception)
+    {
         if (!$request = $this->requestStack->getMasterRequest()) {
             throw new \LogicException('Request stack is empty', 0, $exception);
         }
@@ -116,7 +120,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
      * @throws \LogicException       If one of the listener does not behave as expected
      * @throws NotFoundHttpException When controller cannot be found
      */
-    private function handleRaw(Request $request, $type = self::MASTER_REQUEST) {
+    private function handleRaw(Request $request, $type = self::MASTER_REQUEST)
+    {
         $this->requestStack->push($request);
 
         // request
@@ -181,7 +186,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
      *
      * @throws \RuntimeException if the passed object is not a Response instance
      */
-    private function filterResponse(Response $response, Request $request, $type) {
+    private function filterResponse(Response $response, Request $request, $type)
+    {
         $event = new FilterResponseEvent($this, $request, $type, $response);
 
         $this->dispatcher->dispatch(KernelEvents::RESPONSE, $event);
@@ -201,7 +207,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
      * @param Request $request
      * @param int     $type
      */
-    private function finishRequest(Request $request, $type) {
+    private function finishRequest(Request $request, $type)
+    {
         $this->dispatcher->dispatch(KernelEvents::FINISH_REQUEST, new FinishRequestEvent($this, $request, $type));
         $this->requestStack->pop();
     }
@@ -217,7 +224,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
      *
      * @throws \Exception
      */
-    private function handleException(\Exception $e, $request, $type) {
+    private function handleException(\Exception $e, $request, $type)
+    {
         $event = new GetResponseForExceptionEvent($this, $request, $type, $e);
         $this->dispatcher->dispatch(KernelEvents::EXCEPTION, $event);
 
@@ -255,7 +263,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
         }
     }
 
-    private function varToString($var) {
+    private function varToString($var)
+    {
         if (is_object($var)) {
             return sprintf('Object(%s)', get_class($var));
         }
@@ -287,5 +296,4 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface {
 
         return (string) $var;
     }
-
 }

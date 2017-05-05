@@ -20,12 +20,13 @@ namespace Symfony\Component\Translation\Catalogue;
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-class MergeOperation extends AbstractOperation {
-
+class MergeOperation extends AbstractOperation
+{
     /**
      * {@inheritdoc}
      */
-    protected function processDomain($domain) {
+    protected function processDomain($domain)
+    {
         $this->messages[$domain] = array(
             'all' => array(),
             'new' => array(),
@@ -51,5 +52,4 @@ class MergeOperation extends AbstractOperation {
             }
         }
     }
-
 }

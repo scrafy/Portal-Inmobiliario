@@ -12,7 +12,6 @@ use PhpParser\ParserTest;
 require_once __DIR__ . '/../ParserTest.php';
 
 class MultipleTest extends ParserTest {
-
     // This provider is for the generic parser tests, just pick an arbitrary order here
     protected function getParser(Lexer $lexer) {
         return new Multiple([new Php5($lexer), new Php7($lexer)]);
@@ -41,8 +40,8 @@ class MultipleTest extends ParserTest {
                 $this->getPrefer5(),
                 [
                     new Stmt\Class_('Test', ['stmts' => [
-                            new Stmt\ClassMethod('function')
-                        ]]),
+                        new Stmt\ClassMethod('function')
+                    ]]),
                 ]
             ],
             [
@@ -52,7 +51,7 @@ class MultipleTest extends ParserTest {
                 [
                     new Stmt\Global_([
                         new Expr\Variable(new Expr\PropertyFetch(new Expr\Variable('a'), 'b'))
-                            ])
+                    ])
                 ]
             ],
             [
@@ -61,7 +60,7 @@ class MultipleTest extends ParserTest {
                 $this->getPrefer5(),
                 [
                     new Expr\Variable(
-                            new Expr\ArrayDimFetch(new Expr\Variable('a'), LNumber::fromString('0'))
+                        new Expr\ArrayDimFetch(new Expr\Variable('a'), LNumber::fromString('0'))
                     )
                 ]
             ],
@@ -71,7 +70,7 @@ class MultipleTest extends ParserTest {
                 $this->getPrefer7(),
                 [
                     new Expr\ArrayDimFetch(
-                            new Expr\Variable(new Expr\Variable('a')), LNumber::fromString('0')
+                        new Expr\Variable(new Expr\Variable('a')), LNumber::fromString('0')
                     )
                 ]
             ],
@@ -83,14 +82,13 @@ class MultipleTest extends ParserTest {
 
         $parserA = $this->getMockBuilder('PhpParser\Parser')->getMock();
         $parserA->expects($this->at(0))
-                ->method('parse')->will($this->throwException(new Error('FAIL A')));
+            ->method('parse')->will($this->throwException(new Error('FAIL A')));
 
         $parserB = $this->getMockBuilder('PhpParser\Parser')->getMock();
         $parserB->expects($this->at(0))
-                ->method('parse')->will($this->throwException(new Error('FAIL B')));
+            ->method('parse')->will($this->throwException(new Error('FAIL B')));
 
         $parser = new Multiple([$parserA, $parserB]);
         $parser->parse('dummy');
     }
-
 }

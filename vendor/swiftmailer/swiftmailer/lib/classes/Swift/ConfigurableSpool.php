@@ -13,8 +13,8 @@
  *
  * @author Fabien Potencier
  */
-abstract class Swift_ConfigurableSpool implements Swift_Spool {
-
+abstract class Swift_ConfigurableSpool implements Swift_Spool
+{
     /** The maximum number of messages to send per flush */
     private $_message_limit;
 
@@ -26,7 +26,8 @@ abstract class Swift_ConfigurableSpool implements Swift_Spool {
      *
      * @param int $limit
      */
-    public function setMessageLimit($limit) {
+    public function setMessageLimit($limit)
+    {
         $this->_message_limit = (int) $limit;
     }
 
@@ -35,7 +36,8 @@ abstract class Swift_ConfigurableSpool implements Swift_Spool {
      *
      * @return int The limit
      */
-    public function getMessageLimit() {
+    public function getMessageLimit()
+    {
         return $this->_message_limit;
     }
 
@@ -44,7 +46,8 @@ abstract class Swift_ConfigurableSpool implements Swift_Spool {
      *
      * @param int $limit The limit
      */
-    public function setTimeLimit($limit) {
+    public function setTimeLimit($limit)
+    {
         $this->_time_limit = (int) $limit;
     }
 
@@ -53,8 +56,8 @@ abstract class Swift_ConfigurableSpool implements Swift_Spool {
      *
      * @return int The limit
      */
-    public function getTimeLimit() {
+    public function getTimeLimit()
+    {
         return $this->_time_limit;
     }
-
 }

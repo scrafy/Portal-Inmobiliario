@@ -4,8 +4,8 @@ namespace Mockery\Generator\StringManipulation\Pass;
 
 use Mockery\Generator\MockConfiguration;
 
-class InstanceMockPass {
-
+class InstanceMockPass
+{
     const INSTANCE_MOCK_CODE = <<<MOCK
 
     protected \$_mockery_ignoreVerification = true;
@@ -39,7 +39,8 @@ class InstanceMockPass {
     }
 MOCK;
 
-    public function apply($code, MockConfiguration $config) {
+    public function apply($code, MockConfiguration $config)
+    {
         if ($config->isInstanceMock()) {
             $code = $this->appendToClass($code, static::INSTANCE_MOCK_CODE);
         }
@@ -47,10 +48,10 @@ MOCK;
         return $code;
     }
 
-    protected function appendToClass($class, $code) {
+    protected function appendToClass($class, $code)
+    {
         $lastBrace = strrpos($class, "}");
         $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
         return $class;
     }
-
 }

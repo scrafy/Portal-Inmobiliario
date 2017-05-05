@@ -15,15 +15,15 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\IcuResFileDumper;
 
-class IcuResFileDumperTest extends TestCase {
-
-    public function testFormatCatalogue() {
+class IcuResFileDumperTest extends TestCase
+{
+    public function testFormatCatalogue()
+    {
         $catalogue = new MessageCatalogue('en');
         $catalogue->add(array('foo' => 'bar'));
 
         $dumper = new IcuResFileDumper();
 
-        $this->assertStringEqualsFile(__DIR__ . '/../fixtures/resourcebundle/res/en.res', $dumper->formatCatalogue($catalogue, 'messages'));
+        $this->assertStringEqualsFile(__DIR__.'/../fixtures/resourcebundle/res/en.res', $dumper->formatCatalogue($catalogue, 'messages'));
     }
-
 }

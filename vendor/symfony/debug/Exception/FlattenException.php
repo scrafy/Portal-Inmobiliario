@@ -20,8 +20,8 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FlattenException {
-
+class FlattenException
+{
     private $message;
     private $code;
     private $previous;
@@ -32,7 +32,8 @@ class FlattenException {
     private $file;
     private $line;
 
-    public static function create(\Exception $exception, $statusCode = null, array $headers = array()) {
+    public static function create(\Exception $exception, $statusCode = null, array $headers = array())
+    {
         $e = new static();
         $e->setMessage($exception->getMessage());
         $e->setCode($exception->getCode());
@@ -64,7 +65,8 @@ class FlattenException {
         return $e;
     }
 
-    public function toArray() {
+    public function toArray()
+    {
         $exceptions = array();
         foreach (array_merge(array($this), $this->getAllPrevious()) as $exception) {
             $exceptions[] = array(
@@ -77,71 +79,88 @@ class FlattenException {
         return $exceptions;
     }
 
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
 
-    public function setStatusCode($code) {
+    public function setStatusCode($code)
+    {
         $this->statusCode = $code;
     }
 
-    public function getHeaders() {
+    public function getHeaders()
+    {
         return $this->headers;
     }
 
-    public function setHeaders(array $headers) {
+    public function setHeaders(array $headers)
+    {
         $this->headers = $headers;
     }
 
-    public function getClass() {
+    public function getClass()
+    {
         return $this->class;
     }
 
-    public function setClass($class) {
+    public function setClass($class)
+    {
         $this->class = $class;
     }
 
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
     }
 
-    public function getLine() {
+    public function getLine()
+    {
         return $this->line;
     }
 
-    public function setLine($line) {
+    public function setLine($line)
+    {
         $this->line = $line;
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 
-    public function setMessage($message) {
+    public function setMessage($message)
+    {
         $this->message = $message;
     }
 
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
 
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
     }
 
-    public function getPrevious() {
+    public function getPrevious()
+    {
         return $this->previous;
     }
 
-    public function setPrevious(FlattenException $previous) {
+    public function setPrevious(FlattenException $previous)
+    {
         $this->previous = $previous;
     }
 
-    public function getAllPrevious() {
+    public function getAllPrevious()
+    {
         $exceptions = array();
         $e = $this;
         while ($e = $e->getPrevious()) {
@@ -151,15 +170,18 @@ class FlattenException {
         return $exceptions;
     }
 
-    public function getTrace() {
+    public function getTrace()
+    {
         return $this->trace;
     }
 
-    public function setTraceFromException(\Exception $exception) {
+    public function setTraceFromException(\Exception $exception)
+    {
         $this->setTrace($exception->getTrace(), $exception->getFile(), $exception->getLine());
     }
 
-    public function setTrace($trace, $file, $line) {
+    public function setTrace($trace, $file, $line)
+    {
         $this->trace = array();
         $this->trace[] = array(
             'namespace' => '',
@@ -193,7 +215,8 @@ class FlattenException {
         }
     }
 
-    private function flattenArgs($args, $level = 0, &$count = 0) {
+    private function flattenArgs($args, $level = 0, &$count = 0)
+    {
         $result = array();
         foreach ($args as $key => $value) {
             if (++$count > 1e4) {
@@ -228,10 +251,10 @@ class FlattenException {
         return $result;
     }
 
-    private function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value) {
+    private function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value)
+    {
         $array = new \ArrayObject($value);
 
         return $array['__PHP_Incomplete_Class_Name'];
     }
-
 }

@@ -18,10 +18,10 @@ use PhpParser\ParserFactory as OriginalParserFactory;
 /**
  * Parser factory to abstract over PHP parser library versions.
  */
-class ParserFactory {
-
-    const ONLY_PHP5 = 'ONLY_PHP5';
-    const ONLY_PHP7 = 'ONLY_PHP7';
+class ParserFactory
+{
+    const ONLY_PHP5   = 'ONLY_PHP5';
+    const ONLY_PHP7   = 'ONLY_PHP7';
     const PREFER_PHP5 = 'PREFER_PHP5';
     const PREFER_PHP7 = 'PREFER_PHP7';
 
@@ -30,7 +30,8 @@ class ParserFactory {
      *
      * @return array
      */
-    public static function getPossibleKinds() {
+    public static function getPossibleKinds()
+    {
         return array('ONLY_PHP5', 'ONLY_PHP7', 'PREFER_PHP5', 'PREFER_PHP7');
     }
 
@@ -41,7 +42,8 @@ class ParserFactory {
      *
      * @return bool
      */
-    public function hasKindsSupport() {
+    public function hasKindsSupport()
+    {
         return class_exists('PhpParser\ParserFactory');
     }
 
@@ -50,7 +52,8 @@ class ParserFactory {
      *
      * @return string|null
      */
-    public function getDefaultKind() {
+    public function getDefaultKind()
+    {
         if ($this->hasKindsSupport()) {
             return version_compare(PHP_VERSION, '7.0', '>=') ? static::ONLY_PHP7 : static::ONLY_PHP5;
         }
@@ -63,7 +66,8 @@ class ParserFactory {
      *
      * @return Parser
      */
-    public function createParser($kind = null) {
+    public function createParser($kind = null)
+    {
         if ($this->hasKindsSupport()) {
             $originalFactory = new OriginalParserFactory();
 
@@ -84,5 +88,4 @@ class ParserFactory {
 
         return $parser;
     }
-
 }

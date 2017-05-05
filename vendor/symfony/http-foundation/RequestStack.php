@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class RequestStack {
-
+class RequestStack
+{
     /**
      * @var Request[]
      */
@@ -29,7 +29,8 @@ class RequestStack {
      * This method should generally not be called directly as the stack
      * management should be taken care of by the application itself.
      */
-    public function push(Request $request) {
+    public function push(Request $request)
+    {
         $this->requests[] = $request;
     }
 
@@ -43,7 +44,8 @@ class RequestStack {
      *
      * @return Request|null
      */
-    public function pop() {
+    public function pop()
+    {
         if (!$this->requests) {
             return;
         }
@@ -54,7 +56,8 @@ class RequestStack {
     /**
      * @return Request|null
      */
-    public function getCurrentRequest() {
+    public function getCurrentRequest()
+    {
         return end($this->requests) ?: null;
     }
 
@@ -67,7 +70,8 @@ class RequestStack {
      *
      * @return Request|null
      */
-    public function getMasterRequest() {
+    public function getMasterRequest()
+    {
         if (!$this->requests) {
             return;
         }
@@ -86,7 +90,8 @@ class RequestStack {
      *
      * @return Request|null
      */
-    public function getParentRequest() {
+    public function getParentRequest()
+    {
         $pos = count($this->requests) - 2;
 
         if (!isset($this->requests[$pos])) {
@@ -95,5 +100,4 @@ class RequestStack {
 
         return $this->requests[$pos];
     }
-
 }

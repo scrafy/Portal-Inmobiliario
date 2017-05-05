@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class RouteBinding {
-
+class RouteBinding
+{
     /**
      * Create a Route model binding for a given callback.
      *
@@ -15,7 +15,8 @@ class RouteBinding {
      * @param  \Closure|string  $binder
      * @return \Closure
      */
-    public static function forCallback($container, $binder) {
+    public static function forCallback($container, $binder)
+    {
         if (is_string($binder)) {
             return static::createClassBinding($container, $binder);
         }
@@ -30,7 +31,8 @@ class RouteBinding {
      * @param  string  $binding
      * @return \Closure
      */
-    protected static function createClassBinding($container, $binding) {
+    protected static function createClassBinding($container, $binding)
+    {
         return function ($value, $route) use ($container, $binding) {
             // If the binding has an @ sign, we will assume it's being used to delimit
             // the class name from the bind method name. This allows for bindings
@@ -51,7 +53,8 @@ class RouteBinding {
      * @param  \Closure|null  $callback
      * @return \Closure
      */
-    public static function forModel($container, $class, $callback = null) {
+    public static function forModel($container, $class, $callback = null)
+    {
         return function ($value) use ($container, $class, $callback) {
             if (is_null($value)) {
                 return;
@@ -76,5 +79,4 @@ class RouteBinding {
             throw (new ModelNotFoundException)->setModel($class);
         };
     }
-
 }

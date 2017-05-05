@@ -16,8 +16,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_InputByteStream {
-
+interface Swift_InputByteStream
+{
     /**
      * Writes $bytes to the end of the stream.
      *

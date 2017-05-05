@@ -2,8 +2,8 @@
 
 namespace Illuminate\View\Compilers;
 
-interface CompilerInterface {
-
+interface CompilerInterface
+{
     /**
      * Get the path to the compiled version of a view.
      *

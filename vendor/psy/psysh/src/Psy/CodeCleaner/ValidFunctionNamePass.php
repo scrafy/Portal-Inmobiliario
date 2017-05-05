@@ -28,8 +28,8 @@ use Psy\Exception\FatalErrorException;
  * This pass throws a FatalErrorException rather than letting PHP run
  * headfirst into a real fatal error and die.
  */
-class ValidFunctionNamePass extends NamespaceAwarePass {
-
+class ValidFunctionNamePass extends NamespaceAwarePass
+{
     private $conditionalScopes = 0;
 
     /**
@@ -37,7 +37,8 @@ class ValidFunctionNamePass extends NamespaceAwarePass {
      *
      * @param Node $node
      */
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         parent::enterNode($node);
 
         if (self::isConditional($node)) {
@@ -49,7 +50,7 @@ class ValidFunctionNamePass extends NamespaceAwarePass {
             // whether a function is being redefined by static analysis alone.
             if ($this->conditionalScopes === 0) {
                 if (function_exists($name) ||
-                        isset($this->currentScope[strtolower($name)])) {
+                    isset($this->currentScope[strtolower($name)])) {
                     $msg = sprintf('Cannot redeclare %s()', $name);
                     throw new FatalErrorException($msg, 0, 1, null, $node->getLine());
                 }
@@ -67,7 +68,8 @@ class ValidFunctionNamePass extends NamespaceAwarePass {
      *
      * @param Node $node
      */
-    public function leaveNode(Node $node) {
+    public function leaveNode(Node $node)
+    {
         if (self::isConditional($node)) {
             $this->conditionalScopes--;
         } elseif ($node instanceof FuncCall) {
@@ -75,7 +77,7 @@ class ValidFunctionNamePass extends NamespaceAwarePass {
             $name = $node->name;
             if (!$name instanceof Expr && !$name instanceof Variable) {
                 $shortName = implode('\\', $name->parts);
-                $fullName = $this->getFullyQualifiedName($name);
+                $fullName  = $this->getFullyQualifiedName($name);
                 $inScope = isset($this->currentScope[strtolower($fullName)]);
                 if (!$inScope && !function_exists($shortName) && !function_exists($fullName)) {
                     $message = sprintf('Call to undefined function %s()', $name);
@@ -85,11 +87,11 @@ class ValidFunctionNamePass extends NamespaceAwarePass {
         }
     }
 
-    private static function isConditional(Node $node) {
+    private static function isConditional(Node $node)
+    {
         return $node instanceof IfStmt ||
-                $node instanceof WhileStmt ||
-                $node instanceof DoStmt ||
-                $node instanceof SwitchStmt;
+            $node instanceof WhileStmt ||
+            $node instanceof DoStmt ||
+            $node instanceof SwitchStmt;
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Queue\Console;
 
 use Illuminate\Console\Command;
 
-class FlushFailedCommand extends Command {
-
+class FlushFailedCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -25,10 +25,10 @@ class FlushFailedCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->laravel['queue.failer']->flush();
 
         $this->info('All failed jobs deleted successfully!');
     }
-
 }

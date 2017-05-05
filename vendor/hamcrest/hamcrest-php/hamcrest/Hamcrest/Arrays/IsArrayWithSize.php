@@ -1,11 +1,9 @@
 <?php
-
 namespace Hamcrest\Arrays;
 
 /*
-  Copyright (c) 2009 hamcrest.org
+ Copyright (c) 2009 hamcrest.org
  */
-
 use Hamcrest\Core\DescribedAs;
 use Hamcrest\Core\IsNot;
 use Hamcrest\FeatureMatcher;
@@ -15,15 +13,22 @@ use Hamcrest\Util;
 /**
  * Matches if array size satisfies a nested matcher.
  */
-class IsArrayWithSize extends FeatureMatcher {
+class IsArrayWithSize extends FeatureMatcher
+{
 
-    public function __construct(Matcher $sizeMatcher) {
+    public function __construct(Matcher $sizeMatcher)
+    {
         parent::__construct(
-                self::TYPE_ARRAY, null, $sizeMatcher, 'an array with size', 'array size'
+            self::TYPE_ARRAY,
+            null,
+            $sizeMatcher,
+            'an array with size',
+            'array size'
         );
     }
 
-    protected function featureValueOf($array) {
+    protected function featureValueOf($array)
+    {
         return count($array);
     }
 
@@ -35,7 +40,8 @@ class IsArrayWithSize extends FeatureMatcher {
      * @return \Hamcrest\Arrays\IsArrayWithSize
      * @factory
      */
-    public static function arrayWithSize($size) {
+    public static function arrayWithSize($size)
+    {
         return new self(Util::wrapValueWithIsEqual($size));
     }
 
@@ -44,9 +50,11 @@ class IsArrayWithSize extends FeatureMatcher {
      *
      * @factory
      */
-    public static function emptyArray() {
+    public static function emptyArray()
+    {
         return DescribedAs::describedAs(
-                        'an empty array', self::arrayWithSize(0)
+            'an empty array',
+            self::arrayWithSize(0)
         );
     }
 
@@ -55,10 +63,11 @@ class IsArrayWithSize extends FeatureMatcher {
      *
      * @factory
      */
-    public static function nonEmptyArray() {
+    public static function nonEmptyArray()
+    {
         return DescribedAs::describedAs(
-                        'a non-empty array', self::arrayWithSize(IsNot::not(0))
+            'a non-empty array',
+            self::arrayWithSize(IsNot::not(0))
         );
     }
-
 }

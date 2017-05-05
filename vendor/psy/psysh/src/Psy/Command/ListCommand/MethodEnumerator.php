@@ -16,12 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Method Enumerator class.
  */
-class MethodEnumerator extends Enumerator {
-
+class MethodEnumerator extends Enumerator
+{
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         // only list methods when a Reflector is present.
 
         if ($reflector === null) {
@@ -59,7 +60,8 @@ class MethodEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function getMethods($showAll, \Reflector $reflector) {
+    protected function getMethods($showAll, \Reflector $reflector)
+    {
         $methods = array();
         foreach ($reflector->getMethods() as $name => $method) {
             if ($showAll || $method->isPublic()) {
@@ -80,14 +82,15 @@ class MethodEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function prepareMethods(array $methods) {
+    protected function prepareMethods(array $methods)
+    {
         // My kingdom for a generator.
         $ret = array();
 
         foreach ($methods as $name => $method) {
             if ($this->showItem($name)) {
                 $ret[$name] = array(
-                    'name' => $name,
+                    'name'  => $name,
                     'style' => $this->getVisibilityStyle($method),
                     'value' => $this->presentSignature($method),
                 );
@@ -104,7 +107,8 @@ class MethodEnumerator extends Enumerator {
      *
      * @return string
      */
-    protected function getKindLabel(\ReflectionClass $reflector) {
+    protected function getKindLabel(\ReflectionClass $reflector)
+    {
         if ($reflector->isInterface()) {
             return 'Interface Methods';
         } elseif (method_exists($reflector, 'isTrait') && $reflector->isTrait()) {
@@ -121,7 +125,8 @@ class MethodEnumerator extends Enumerator {
      *
      * @return string
      */
-    private function getVisibilityStyle(\ReflectionMethod $method) {
+    private function getVisibilityStyle(\ReflectionMethod $method)
+    {
         if ($method->isPublic()) {
             return self::IS_PUBLIC;
         } elseif ($method->isProtected()) {
@@ -130,5 +135,4 @@ class MethodEnumerator extends Enumerator {
             return self::IS_PRIVATE;
         }
     }
-
 }

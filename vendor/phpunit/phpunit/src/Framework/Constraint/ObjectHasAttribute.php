@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -15,8 +14,8 @@
  *
  * The attribute name is passed in the constructor.
  */
-class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_Constraint_ClassHasAttribute {
-
+class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_Constraint_ClassHasAttribute
+{
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -25,10 +24,10 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         $object = new ReflectionObject($other);
 
         return $object->hasProperty($this->attributeName);
     }
-
 }

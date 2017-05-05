@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\FatalErrorHandler\UndefinedMethodFatalErrorHandler;
 
-class UndefinedMethodFatalErrorHandlerTest extends TestCase {
-
+class UndefinedMethodFatalErrorHandlerTest extends TestCase
+{
     /**
      * @dataProvider provideUndefinedMethodData
      */
-    public function testUndefinedMethod($error, $translatedMessage) {
+    public function testUndefinedMethod($error, $translatedMessage)
+    {
         $handler = new UndefinedMethodFatalErrorHandler();
         $exception = $handler->handleError($error, new FatalErrorException('', 0, $error['type'], $error['file'], $error['line']));
 
@@ -31,7 +32,8 @@ class UndefinedMethodFatalErrorHandlerTest extends TestCase {
         $this->assertSame($error['line'], $exception->getLine());
     }
 
-    public function provideUndefinedMethodData() {
+    public function provideUndefinedMethodData()
+    {
         return array(
             array(
                 array(
@@ -62,14 +64,13 @@ class UndefinedMethodFatalErrorHandlerTest extends TestCase {
             ),
             array(
                 array(
-                    'type' => 1,
-                    'message' => 'Call to undefined method class@anonymous::test()',
-                    'file' => '/home/possum/work/symfony/test.php',
-                    'line' => 11,
+                  'type' => 1,
+                  'message' => 'Call to undefined method class@anonymous::test()',
+                  'file' => '/home/possum/work/symfony/test.php',
+                  'line' => 11,
                 ),
                 'Attempted to call an undefined method named "test" of class "class@anonymous".',
             ),
         );
     }
-
 }

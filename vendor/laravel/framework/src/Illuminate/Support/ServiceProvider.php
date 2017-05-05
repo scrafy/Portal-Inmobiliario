@@ -4,8 +4,8 @@ namespace Illuminate\Support;
 
 use Illuminate\Console\Application as Artisan;
 
-abstract class ServiceProvider {
-
+abstract class ServiceProvider
+{
     /**
      * The application instance.
      *
@@ -40,7 +40,8 @@ abstract class ServiceProvider {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function __construct($app) {
+    public function __construct($app)
+    {
         $this->app = $app;
     }
 
@@ -51,7 +52,8 @@ abstract class ServiceProvider {
      * @param  string  $key
      * @return void
      */
-    protected function mergeConfigFrom($path, $key) {
+    protected function mergeConfigFrom($path, $key)
+    {
         $config = $this->app['config']->get($key, []);
 
         $this->app['config']->set($key, array_merge(require $path, $config));
@@ -63,8 +65,9 @@ abstract class ServiceProvider {
      * @param  string  $path
      * @return void
      */
-    protected function loadRoutesFrom($path) {
-        if (!$this->app->routesAreCached()) {
+    protected function loadRoutesFrom($path)
+    {
+        if (! $this->app->routesAreCached()) {
             require $path;
         }
     }
@@ -76,8 +79,9 @@ abstract class ServiceProvider {
      * @param  string  $namespace
      * @return void
      */
-    protected function loadViewsFrom($path, $namespace) {
-        if (is_dir($appPath = $this->app->resourcePath() . '/views/vendor/' . $namespace)) {
+    protected function loadViewsFrom($path, $namespace)
+    {
+        if (is_dir($appPath = $this->app->resourcePath().'/views/vendor/'.$namespace)) {
             $this->app['view']->addNamespace($namespace, $appPath);
         }
 
@@ -91,7 +95,8 @@ abstract class ServiceProvider {
      * @param  string  $namespace
      * @return void
      */
-    protected function loadTranslationsFrom($path, $namespace) {
+    protected function loadTranslationsFrom($path, $namespace)
+    {
         $this->app['translator']->addNamespace($namespace, $path);
     }
 
@@ -101,7 +106,8 @@ abstract class ServiceProvider {
      * @param  array|string  $paths
      * @return void
      */
-    protected function loadMigrationsFrom($paths) {
+    protected function loadMigrationsFrom($paths)
+    {
         $this->app->afterResolving('migrator', function ($migrator) use ($paths) {
             foreach ((array) $paths as $path) {
                 $migrator->path($path);
@@ -116,7 +122,8 @@ abstract class ServiceProvider {
      * @param  string  $group
      * @return void
      */
-    protected function publishes(array $paths, $group = null) {
+    protected function publishes(array $paths, $group = null)
+    {
         $this->ensurePublishArrayInitialized($class = static::class);
 
         static::$publishes[$class] = array_merge(static::$publishes[$class], $paths);
@@ -132,8 +139,9 @@ abstract class ServiceProvider {
      * @param  string  $class
      * @return void
      */
-    protected function ensurePublishArrayInitialized($class) {
-        if (!array_key_exists($class, static::$publishes)) {
+    protected function ensurePublishArrayInitialized($class)
+    {
+        if (! array_key_exists($class, static::$publishes)) {
             static::$publishes[$class] = [];
         }
     }
@@ -145,13 +153,14 @@ abstract class ServiceProvider {
      * @param  array  $paths
      * @return void
      */
-    protected function addPublishGroup($group, $paths) {
-        if (!array_key_exists($group, static::$publishGroups)) {
+    protected function addPublishGroup($group, $paths)
+    {
+        if (! array_key_exists($group, static::$publishGroups)) {
             static::$publishGroups[$group] = [];
         }
 
         static::$publishGroups[$group] = array_merge(
-                static::$publishGroups[$group], $paths
+            static::$publishGroups[$group], $paths
         );
     }
 
@@ -162,14 +171,15 @@ abstract class ServiceProvider {
      * @param  string  $group
      * @return array
      */
-    public static function pathsToPublish($provider = null, $group = null) {
-        if (!is_null($paths = static::pathsForProviderOrGroup($provider, $group))) {
+    public static function pathsToPublish($provider = null, $group = null)
+    {
+        if (! is_null($paths = static::pathsForProviderOrGroup($provider, $group))) {
             return $paths;
         }
 
         return collect(static::$publishes)->reduce(function ($paths, $p) {
-                    return array_merge($paths, $p);
-                }, []);
+            return array_merge($paths, $p);
+        }, []);
     }
 
     /**
@@ -179,7 +189,8 @@ abstract class ServiceProvider {
      * @param  string|null  $group
      * @return array
      */
-    protected static function pathsForProviderOrGroup($provider, $group) {
+    protected static function pathsForProviderOrGroup($provider, $group)
+    {
         if ($provider && $group) {
             return static::pathsForProviderAndGroup($provider, $group);
         } elseif ($group && array_key_exists($group, static::$publishGroups)) {
@@ -198,8 +209,9 @@ abstract class ServiceProvider {
      * @param  string  $group
      * @return array
      */
-    protected static function pathsForProviderAndGroup($provider, $group) {
-        if (!empty(static::$publishes[$provider]) && !empty(static::$publishGroups[$group])) {
+    protected static function pathsForProviderAndGroup($provider, $group)
+    {
+        if (! empty(static::$publishes[$provider]) && ! empty(static::$publishGroups[$group])) {
             return array_intersect_key(static::$publishes[$provider], static::$publishGroups[$group]);
         }
 
@@ -212,7 +224,8 @@ abstract class ServiceProvider {
      * @param  array|mixed  $commands
      * @return void
      */
-    public function commands($commands) {
+    public function commands($commands)
+    {
         $commands = is_array($commands) ? $commands : func_get_args();
 
         Artisan::starting(function ($artisan) use ($commands) {
@@ -225,7 +238,8 @@ abstract class ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [];
     }
 
@@ -234,7 +248,8 @@ abstract class ServiceProvider {
      *
      * @return array
      */
-    public function when() {
+    public function when()
+    {
         return [];
     }
 
@@ -243,7 +258,8 @@ abstract class ServiceProvider {
      *
      * @return bool
      */
-    public function isDeferred() {
+    public function isDeferred()
+    {
         return $this->defer;
     }
 
@@ -254,8 +270,8 @@ abstract class ServiceProvider {
      *
      * @return array
      */
-    public static function compiles() {
+    public static function compiles()
+    {
         return [];
     }
-
 }

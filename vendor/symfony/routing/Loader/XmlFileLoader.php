@@ -23,8 +23,8 @@ use Symfony\Component\Config\Util\XmlUtils;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Tobias Schultze <http://tobion.de>
  */
-class XmlFileLoader extends FileLoader {
-
+class XmlFileLoader extends FileLoader
+{
     const NAMESPACE_URI = 'http://symfony.com/schema/routing';
     const SCHEME_PATH = '/schema/routing/routing-1.0.xsd';
 
@@ -39,7 +39,8 @@ class XmlFileLoader extends FileLoader {
      * @throws \InvalidArgumentException When the file cannot be loaded or when the XML cannot be
      *                                   parsed because it does not validate against the scheme.
      */
-    public function load($file, $type = null) {
+    public function load($file, $type = null)
+    {
         $path = $this->locator->locate($file);
 
         $xml = $this->loadFile($path);
@@ -69,7 +70,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When the XML is invalid
      */
-    protected function parseNode(RouteCollection $collection, \DOMElement $node, $path, $file) {
+    protected function parseNode(RouteCollection $collection, \DOMElement $node, $path, $file)
+    {
         if (self::NAMESPACE_URI !== $node->namespaceURI) {
             return;
         }
@@ -89,7 +91,8 @@ class XmlFileLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return is_string($resource) && 'xml' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'xml' === $type);
     }
 
@@ -102,7 +105,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When the XML is invalid
      */
-    protected function parseRoute(RouteCollection $collection, \DOMElement $node, $path) {
+    protected function parseRoute(RouteCollection $collection, \DOMElement $node, $path)
+    {
         if ('' === ($id = $node->getAttribute('id')) || !$node->hasAttribute('path')) {
             throw new \InvalidArgumentException(sprintf('The <route> element in file "%s" must have an "id" and a "path" attribute.', $path));
         }
@@ -126,7 +130,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When the XML is invalid
      */
-    protected function parseImport(RouteCollection $collection, \DOMElement $node, $path, $file) {
+    protected function parseImport(RouteCollection $collection, \DOMElement $node, $path, $file)
+    {
         if ('' === $resource = $node->getAttribute('resource')) {
             throw new \InvalidArgumentException(sprintf('The <import> element in file "%s" must have a "resource" attribute.', $path));
         }
@@ -174,8 +179,9 @@ class XmlFileLoader extends FileLoader {
      *                                   or when the XML structure is not as expected by the scheme -
      *                                   see validate()
      */
-    protected function loadFile($file) {
-        return XmlUtils::loadFile($file, __DIR__ . static::SCHEME_PATH);
+    protected function loadFile($file)
+    {
+        return XmlUtils::loadFile($file, __DIR__.static::SCHEME_PATH);
     }
 
     /**
@@ -188,7 +194,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When the XML is invalid
      */
-    private function parseConfigs(\DOMElement $node, $path) {
+    private function parseConfigs(\DOMElement $node, $path)
+    {
         $defaults = array();
         $requirements = array();
         $options = array();
@@ -233,7 +240,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @return array|bool|float|int|string|null The parsed value of the "default" element
      */
-    private function parseDefaultsConfig(\DOMElement $element, $path) {
+    private function parseDefaultsConfig(\DOMElement $element, $path)
+    {
         if ($this->isElementValueNull($element)) {
             return;
         }
@@ -269,7 +277,8 @@ class XmlFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException when the XML is invalid
      */
-    private function parseDefaultNode(\DOMElement $node, $path) {
+    private function parseDefaultNode(\DOMElement $node, $path)
+    {
         if ($this->isElementValueNull($node)) {
             return;
         }
@@ -320,7 +329,8 @@ class XmlFileLoader extends FileLoader {
         }
     }
 
-    private function isElementValueNull(\DOMElement $element) {
+    private function isElementValueNull(\DOMElement $element)
+    {
         $namespaceUri = 'http://www.w3.org/2001/XMLSchema-instance';
 
         if (!$element->hasAttributeNS($namespaceUri, 'nil')) {
@@ -329,5 +339,4 @@ class XmlFileLoader extends FileLoader {
 
         return 'true' === $element->getAttributeNS($namespaceUri, 'nil') || '1' === $element->getAttributeNS($namespaceUri, 'nil');
     }
-
 }

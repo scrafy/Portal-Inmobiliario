@@ -4,8 +4,8 @@ namespace League\Flysystem;
 
 use BadMethodCallException;
 
-abstract class Handler {
-
+abstract class Handler
+{
     /**
      * @var string
      */
@@ -22,7 +22,8 @@ abstract class Handler {
      * @param FilesystemInterface $filesystem
      * @param string              $path
      */
-    public function __construct(FilesystemInterface $filesystem = null, $path = null) {
+    public function __construct(FilesystemInterface $filesystem = null, $path = null)
+    {
         $this->path = $path;
         $this->filesystem = $filesystem;
     }
@@ -32,7 +33,8 @@ abstract class Handler {
      *
      * @return bool
      */
-    public function isDir() {
+    public function isDir()
+    {
         return $this->getType() === 'dir';
     }
 
@@ -41,7 +43,8 @@ abstract class Handler {
      *
      * @return bool
      */
-    public function isFile() {
+    public function isFile()
+    {
         return $this->getType() === 'file';
     }
 
@@ -50,7 +53,8 @@ abstract class Handler {
      *
      * @return string file or dir
      */
-    public function getType() {
+    public function getType()
+    {
         $metadata = $this->filesystem->getMetadata($this->path);
 
         return $metadata['type'];
@@ -63,18 +67,20 @@ abstract class Handler {
      *
      * @return $this
      */
-    public function setFilesystem(FilesystemInterface $filesystem) {
+    public function setFilesystem(FilesystemInterface $filesystem)
+    {
         $this->filesystem = $filesystem;
 
         return $this;
     }
-
+    
     /**
      * Retrieve the Filesystem object.
      *
      * @return FilesystemInterface
      */
-    public function getFilesystem() {
+    public function getFilesystem()
+    {
         return $this->filesystem;
     }
 
@@ -85,7 +91,8 @@ abstract class Handler {
      *
      * @return $this
      */
-    public function setPath($path) {
+    public function setPath($path)
+    {
         $this->path = $path;
 
         return $this;
@@ -96,7 +103,8 @@ abstract class Handler {
      *
      * @return string path
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
@@ -108,7 +116,8 @@ abstract class Handler {
      *
      * @return mixed
      */
-    public function __call($method, array $arguments) {
+    public function __call($method, array $arguments)
+    {
         array_unshift($arguments, $this->path);
         $callback = [$this->filesystem, $method];
 
@@ -116,11 +125,10 @@ abstract class Handler {
             return call_user_func_array($callback, $arguments);
         } catch (BadMethodCallException $e) {
             throw new BadMethodCallException(
-            'Call to undefined method '
-            . get_called_class()
-            . '::' . $method
+                'Call to undefined method '
+                . get_called_class()
+                . '::' . $method
             );
         }
     }
-
 }

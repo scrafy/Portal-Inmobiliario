@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,8 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class AnyOf extends MatcherAbstract {
-
+class AnyOf extends MatcherAbstract
+{
     /**
      * Check if the actual value does not match the expected (in this
      * case it's specifically NOT expected).
@@ -30,7 +29,8 @@ class AnyOf extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         foreach ($this->_expected as $exp) {
             if ($actual === $exp || $actual == $exp) {
                 return true;
@@ -44,8 +44,8 @@ class AnyOf extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<AnyOf>';
     }
-
 }

@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 
-class TokenGuard implements Guard {
-
+class TokenGuard implements Guard
+{
     use GuardHelpers;
 
     /**
@@ -38,7 +38,8 @@ class TokenGuard implements Guard {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function __construct(UserProvider $provider, Request $request) {
+    public function __construct(UserProvider $provider, Request $request)
+    {
         $this->request = $request;
         $this->provider = $provider;
         $this->inputKey = 'api_token';
@@ -50,11 +51,12 @@ class TokenGuard implements Guard {
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    public function user() {
+    public function user()
+    {
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-        if (!is_null($this->user)) {
+        if (! is_null($this->user)) {
             return $this->user;
         }
 
@@ -62,9 +64,9 @@ class TokenGuard implements Guard {
 
         $token = $this->getTokenForRequest();
 
-        if (!empty($token)) {
+        if (! empty($token)) {
             $user = $this->provider->retrieveByCredentials(
-                    [$this->storageKey => $token]
+                [$this->storageKey => $token]
             );
         }
 
@@ -76,7 +78,8 @@ class TokenGuard implements Guard {
      *
      * @return string
      */
-    public function getTokenForRequest() {
+    public function getTokenForRequest()
+    {
         $token = $this->request->query($this->inputKey);
 
         if (empty($token)) {
@@ -100,7 +103,8 @@ class TokenGuard implements Guard {
      * @param  array  $credentials
      * @return bool
      */
-    public function validate(array $credentials = []) {
+    public function validate(array $credentials = [])
+    {
         if (empty($credentials[$this->inputKey])) {
             return false;
         }
@@ -120,10 +124,10 @@ class TokenGuard implements Guard {
      * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
 
         return $this;
     }
-
 }

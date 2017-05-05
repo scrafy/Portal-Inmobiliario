@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHP_Timer package.
  *
@@ -12,15 +11,15 @@
 /**
  * Utility class for timing.
  */
-class PHP_Timer {
-
+class PHP_Timer
+{
     /**
      * @var array
      */
     private static $times = array(
-        'hour' => 3600000,
-        'minute' => 60000,
-        'second' => 1000
+      'hour'   => 3600000,
+      'minute' => 60000,
+      'second' => 1000
     );
 
     /**
@@ -36,7 +35,8 @@ class PHP_Timer {
     /**
      * Starts the timer.
      */
-    public static function start() {
+    public static function start()
+    {
         array_push(self::$startTimes, microtime(true));
     }
 
@@ -45,7 +45,8 @@ class PHP_Timer {
      *
      * @return float
      */
-    public static function stop() {
+    public static function stop()
+    {
         return microtime(true) - array_pop(self::$startTimes);
     }
 
@@ -55,7 +56,8 @@ class PHP_Timer {
      * @param  float  $time
      * @return string
      */
-    public static function secondsToTimeString($time) {
+    public static function secondsToTimeString($time)
+    {
         $ms = round($time * 1000);
 
         foreach (self::$times as $unit => $value) {
@@ -74,7 +76,8 @@ class PHP_Timer {
      *
      * @return string
      */
-    public static function timeSinceStartOfRequest() {
+    public static function timeSinceStartOfRequest()
+    {
         return self::secondsToTimeString(microtime(true) - self::$requestTime);
     }
 
@@ -83,12 +86,14 @@ class PHP_Timer {
      *
      * @return string
      */
-    public static function resourceUsage() {
+    public static function resourceUsage()
+    {
         return sprintf(
-                'Time: %s, Memory: %4.2fMB', self::timeSinceStartOfRequest(), memory_get_peak_usage(true) / 1048576
+            'Time: %s, Memory: %4.2fMB',
+            self::timeSinceStartOfRequest(),
+            memory_get_peak_usage(true) / 1048576
         );
     }
-
 }
 
 if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {

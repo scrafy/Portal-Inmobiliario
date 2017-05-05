@@ -22,11 +22,12 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class LintCommandTest extends TestCase {
-
+class LintCommandTest extends TestCase
+{
     private $files;
 
-    public function testLintCorrectFile() {
+    public function testLintCorrectFile()
+    {
         $tester = $this->createCommandTester();
         $filename = $this->createFile('foo: bar');
 
@@ -36,7 +37,8 @@ class LintCommandTest extends TestCase {
         $this->assertRegExp('/^\/\/ OK in /', trim($tester->getDisplay()));
     }
 
-    public function testLintIncorrectFile() {
+    public function testLintIncorrectFile()
+    {
         $incorrectContent = '
 foo:
 bar';
@@ -52,7 +54,8 @@ bar';
     /**
      * @expectedException \RuntimeException
      */
-    public function testLintFileNotReadable() {
+    public function testLintFileNotReadable()
+    {
         $tester = $this->createCommandTester();
         $filename = $this->createFile('');
         unlink($filename);
@@ -63,8 +66,9 @@ bar';
     /**
      * @return string Path to the new file
      */
-    private function createFile($content) {
-        $filename = tempnam(sys_get_temp_dir() . '/framework-yml-lint-test', 'sf-');
+    private function createFile($content)
+    {
+        $filename = tempnam(sys_get_temp_dir().'/framework-yml-lint-test', 'sf-');
         file_put_contents($filename, $content);
 
         $this->files[] = $filename;
@@ -75,7 +79,8 @@ bar';
     /**
      * @return CommandTester
      */
-    protected function createCommandTester() {
+    protected function createCommandTester()
+    {
         $application = new Application();
         $application->add(new LintCommand());
         $command = $application->find('lint:yaml');
@@ -83,19 +88,20 @@ bar';
         return new CommandTester($command);
     }
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->files = array();
-        @mkdir(sys_get_temp_dir() . '/framework-yml-lint-test');
+        @mkdir(sys_get_temp_dir().'/framework-yml-lint-test');
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         foreach ($this->files as $file) {
             if (file_exists($file)) {
                 unlink($file);
             }
         }
 
-        rmdir(sys_get_temp_dir() . '/framework-yml-lint-test');
+        rmdir(sys_get_temp_dir().'/framework-yml-lint-test');
     }
-
 }

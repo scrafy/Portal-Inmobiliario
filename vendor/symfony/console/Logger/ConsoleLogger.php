@@ -24,8 +24,8 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
  *
  * @see http://www.php-fig.org/psr/psr-3/
  */
-class ConsoleLogger extends AbstractLogger {
-
+class ConsoleLogger extends AbstractLogger
+{
     const INFO = 'info';
     const ERROR = 'error';
 
@@ -33,7 +33,6 @@ class ConsoleLogger extends AbstractLogger {
      * @var OutputInterface
      */
     private $output;
-
     /**
      * @var array
      */
@@ -47,7 +46,6 @@ class ConsoleLogger extends AbstractLogger {
         LogLevel::INFO => OutputInterface::VERBOSITY_VERY_VERBOSE,
         LogLevel::DEBUG => OutputInterface::VERBOSITY_DEBUG,
     );
-
     /**
      * @var array
      */
@@ -68,7 +66,8 @@ class ConsoleLogger extends AbstractLogger {
      * @param array           $verbosityLevelMap
      * @param array           $formatLevelMap
      */
-    public function __construct(OutputInterface $output, array $verbosityLevelMap = array(), array $formatLevelMap = array()) {
+    public function __construct(OutputInterface $output, array $verbosityLevelMap = array(), array $formatLevelMap = array())
+    {
         $this->output = $output;
         $this->verbosityLevelMap = $verbosityLevelMap + $this->verbosityLevelMap;
         $this->formatLevelMap = $formatLevelMap + $this->formatLevelMap;
@@ -77,7 +76,8 @@ class ConsoleLogger extends AbstractLogger {
     /**
      * {@inheritdoc}
      */
-    public function log($level, $message, array $context = array()) {
+    public function log($level, $message, array $context = array())
+    {
         if (!isset($this->verbosityLevelMap[$level])) {
             throw new InvalidArgumentException(sprintf('The log level "%s" does not exist.', $level));
         }
@@ -102,7 +102,8 @@ class ConsoleLogger extends AbstractLogger {
     /**
      * Returns true when any messages have been logged at error levels.
      */
-    public function hasErrored() {
+    public function hasErrored()
+    {
         return $this->errored;
     }
 
@@ -116,7 +117,8 @@ class ConsoleLogger extends AbstractLogger {
      *
      * @return string
      */
-    private function interpolate($message, array $context) {
+    private function interpolate($message, array $context)
+    {
         // build a replacement array with braces around the context keys
         $replace = array();
         foreach ($context as $key => $val) {
@@ -128,5 +130,4 @@ class ConsoleLogger extends AbstractLogger {
         // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }
-
 }

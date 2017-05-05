@@ -10,8 +10,8 @@ use Illuminate\Database\Query\Processors\SqlServerProcessor;
 use Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use Illuminate\Database\Schema\Grammars\SqlServerGrammar as SchemaGrammar;
 
-class SqlServerConnection extends Connection {
-
+class SqlServerConnection extends Connection
+{
     /**
      * Execute a Closure within a transaction.
      *
@@ -21,7 +21,8 @@ class SqlServerConnection extends Connection {
      *
      * @throws \Exception|\Throwable
      */
-    public function transaction(Closure $callback, $attempts = 1) {
+    public function transaction(Closure $callback, $attempts = 1)
+    {
         for ($a = 1; $a <= $attempts; $a++) {
             if ($this->getDriverName() == 'sqlsrv') {
                 return parent::transaction($callback);
@@ -60,7 +61,8 @@ class SqlServerConnection extends Connection {
      *
      * @return \Illuminate\Database\Query\Grammars\SqlServerGrammar
      */
-    protected function getDefaultQueryGrammar() {
+    protected function getDefaultQueryGrammar()
+    {
         return $this->withTablePrefix(new QueryGrammar);
     }
 
@@ -69,7 +71,8 @@ class SqlServerConnection extends Connection {
      *
      * @return \Illuminate\Database\Schema\Grammars\SqlServerGrammar
      */
-    protected function getDefaultSchemaGrammar() {
+    protected function getDefaultSchemaGrammar()
+    {
         return $this->withTablePrefix(new SchemaGrammar);
     }
 
@@ -78,7 +81,8 @@ class SqlServerConnection extends Connection {
      *
      * @return \Illuminate\Database\Query\Processors\SqlServerProcessor
      */
-    protected function getDefaultPostProcessor() {
+    protected function getDefaultPostProcessor()
+    {
         return new SqlServerProcessor;
     }
 
@@ -87,8 +91,8 @@ class SqlServerConnection extends Connection {
      *
      * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver
      */
-    protected function getDoctrineDriver() {
+    protected function getDoctrineDriver()
+    {
         return new DoctrineDriver;
     }
-
 }

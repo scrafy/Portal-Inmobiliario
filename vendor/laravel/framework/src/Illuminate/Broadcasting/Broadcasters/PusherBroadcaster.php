@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Broadcasting\BroadcastException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class PusherBroadcaster extends Broadcaster {
-
+class PusherBroadcaster extends Broadcaster
+{
     /**
      * The Pusher SDK instance.
      *
@@ -23,7 +23,8 @@ class PusherBroadcaster extends Broadcaster {
      * @param  \Pusher  $pusher
      * @return void
      */
-    public function __construct(Pusher $pusher) {
+    public function __construct(Pusher $pusher)
+    {
         $this->pusher = $pusher;
     }
 
@@ -33,16 +34,19 @@ class PusherBroadcaster extends Broadcaster {
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function auth($request) {
+    public function auth($request)
+    {
         if (Str::startsWith($request->channel_name, ['private-', 'presence-']) &&
-                !$request->user()) {
+            ! $request->user()) {
             throw new HttpException(403);
         }
 
-        $channelName = Str::startsWith($request->channel_name, 'private-') ? Str::replaceFirst('private-', '', $request->channel_name) : Str::replaceFirst('presence-', '', $request->channel_name);
+        $channelName = Str::startsWith($request->channel_name, 'private-')
+                            ? Str::replaceFirst('private-', '', $request->channel_name)
+                            : Str::replaceFirst('presence-', '', $request->channel_name);
 
         return parent::verifyUserCanAccessChannel(
-                        $request, $channelName
+            $request, $channelName
         );
     }
 
@@ -53,15 +57,16 @@ class PusherBroadcaster extends Broadcaster {
      * @param  mixed  $result
      * @return mixed
      */
-    public function validAuthenticationResponse($request, $result) {
+    public function validAuthenticationResponse($request, $result)
+    {
         if (Str::startsWith($request->channel_name, 'private')) {
             return $this->decodePusherResponse(
-                            $this->pusher->socket_auth($request->channel_name, $request->socket_id)
+                $this->pusher->socket_auth($request->channel_name, $request->socket_id)
             );
         } else {
             return $this->decodePusherResponse(
-                            $this->pusher->presence_auth(
-                                    $request->channel_name, $request->socket_id, $request->user()->getKey(), $result)
+                $this->pusher->presence_auth(
+                    $request->channel_name, $request->socket_id, $request->user()->getKey(), $result)
             );
         }
     }
@@ -72,7 +77,8 @@ class PusherBroadcaster extends Broadcaster {
      * @param  mixed  $response
      * @return array
      */
-    protected function decodePusherResponse($response) {
+    protected function decodePusherResponse($response)
+    {
         return json_decode($response, true);
     }
 
@@ -84,19 +90,21 @@ class PusherBroadcaster extends Broadcaster {
      * @param  array  $payload
      * @return void
      */
-    public function broadcast(array $channels, $event, array $payload = []) {
+    public function broadcast(array $channels, $event, array $payload = [])
+    {
         $socket = Arr::pull($payload, 'socket');
 
         $response = $this->pusher->trigger(
-                $this->formatChannels($channels), $event, $payload, $socket, true
+            $this->formatChannels($channels), $event, $payload, $socket, true
         );
 
-        if ((is_array($response) && $response['status'] >= 200 && $response['status'] <= 299) || $response === true) {
+        if ((is_array($response) && $response['status'] >= 200 && $response['status'] <= 299)
+            || $response === true) {
             return;
         }
 
         throw new BroadcastException(
-        is_bool($response) ? 'Failed to connect to Pusher.' : $response['body']
+            is_bool($response) ? 'Failed to connect to Pusher.' : $response['body']
         );
     }
 
@@ -105,8 +113,8 @@ class PusherBroadcaster extends Broadcaster {
      *
      * @return \Pusher
      */
-    public function getPusher() {
+    public function getPusher()
+    {
         return $this->pusher;
     }
-
 }

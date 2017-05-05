@@ -22,8 +22,8 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class StringInput extends ArgvInput {
-
+class StringInput extends ArgvInput
+{
     const REGEX_STRING = '([^\s]+?)(?:\s|(?<!\\\\)"|(?<!\\\\)\'|$)';
     const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"|\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\')';
 
@@ -32,7 +32,8 @@ class StringInput extends ArgvInput {
      *
      * @param string $input An array of parameters from the CLI (in the argv format)
      */
-    public function __construct($input) {
+    public function __construct($input)
+    {
         parent::__construct(array());
 
         $this->setTokens($this->tokenize($input));
@@ -47,18 +48,18 @@ class StringInput extends ArgvInput {
      *
      * @throws InvalidArgumentException When unable to parse input (should never happen)
      */
-    private function tokenize($input) {
+    private function tokenize($input)
+    {
         $tokens = array();
         $length = strlen($input);
         $cursor = 0;
         while ($cursor < $length) {
             if (preg_match('/\s+/A', $input, $match, null, $cursor)) {
-                
-            } elseif (preg_match('/([^="\'\s]+?)(=?)(' . self::REGEX_QUOTED_STRING . '+)/A', $input, $match, null, $cursor)) {
-                $tokens[] = $match[1] . $match[2] . stripcslashes(str_replace(array('"\'', '\'"', '\'\'', '""'), '', substr($match[3], 1, strlen($match[3]) - 2)));
-            } elseif (preg_match('/' . self::REGEX_QUOTED_STRING . '/A', $input, $match, null, $cursor)) {
+            } elseif (preg_match('/([^="\'\s]+?)(=?)('.self::REGEX_QUOTED_STRING.'+)/A', $input, $match, null, $cursor)) {
+                $tokens[] = $match[1].$match[2].stripcslashes(str_replace(array('"\'', '\'"', '\'\'', '""'), '', substr($match[3], 1, strlen($match[3]) - 2)));
+            } elseif (preg_match('/'.self::REGEX_QUOTED_STRING.'/A', $input, $match, null, $cursor)) {
                 $tokens[] = stripcslashes(substr($match[0], 1, strlen($match[0]) - 2));
-            } elseif (preg_match('/' . self::REGEX_STRING . '/A', $input, $match, null, $cursor)) {
+            } elseif (preg_match('/'.self::REGEX_STRING.'/A', $input, $match, null, $cursor)) {
                 $tokens[] = stripcslashes($match[1]);
             } else {
                 // should never happen
@@ -70,5 +71,4 @@ class StringInput extends ArgvInput {
 
         return $tokens;
     }
-
 }

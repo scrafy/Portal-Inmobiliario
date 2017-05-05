@@ -19,8 +19,8 @@ use Psr\Log\LoggerInterface;
  *
  * @author Michael Moussa <michael.moussa@gmail.com>
  */
-class PsrHandler extends AbstractHandler {
-
+class PsrHandler extends AbstractHandler
+{
     /**
      * PSR-3 compliant logger
      *
@@ -33,7 +33,8 @@ class PsrHandler extends AbstractHandler {
      * @param int             $level  The minimum logging level at which this handler will be triggered
      * @param Boolean         $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(LoggerInterface $logger, $level = Logger::DEBUG, $bubble = true) {
+    public function __construct(LoggerInterface $logger, $level = Logger::DEBUG, $bubble = true)
+    {
         parent::__construct($level, $bubble);
 
         $this->logger = $logger;
@@ -42,7 +43,8 @@ class PsrHandler extends AbstractHandler {
     /**
      * {@inheritDoc}
      */
-    public function handle(array $record) {
+    public function handle(array $record)
+    {
         if (!$this->isHandling($record)) {
             return false;
         }
@@ -51,5 +53,4 @@ class PsrHandler extends AbstractHandler {
 
         return false === $this->bubble;
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Queue\Jobs;
 
 use Illuminate\Queue\InteractsWithTime;
 
-class DatabaseJobRecord {
-
+class DatabaseJobRecord
+{
     use InteractsWithTime;
 
     /**
@@ -21,7 +21,8 @@ class DatabaseJobRecord {
      * @param  \StdClass  $record
      * @return void
      */
-    public function __construct($record) {
+    public function __construct($record)
+    {
         $this->record = $record;
     }
 
@@ -30,7 +31,8 @@ class DatabaseJobRecord {
      *
      * @return int
      */
-    public function increment() {
+    public function increment()
+    {
         $this->record->attempts++;
 
         return $this->record->attempts;
@@ -41,7 +43,8 @@ class DatabaseJobRecord {
      *
      * @return int
      */
-    public function touch() {
+    public function touch()
+    {
         $this->record->reserved_at = $this->currentTime();
 
         return $this->record->reserved_at;
@@ -53,8 +56,8 @@ class DatabaseJobRecord {
      * @param  string  $key
      * @return mixed
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->record->{$key};
     }
-
 }

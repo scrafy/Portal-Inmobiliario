@@ -2,14 +2,16 @@
 
 namespace Faker\Provider\zh_TW;
 
-class Person extends \Faker\Provider\Person {
-
+class Person extends \Faker\Provider\Person
+{
     protected static $maleNameFormats = array(
         '{{lastName}}{{firstNameMale}}',
     );
+
     protected static $femaleNameFormats = array(
         '{{lastName}}{{firstNameFemale}}',
     );
+
     protected static $titleMale = array('先生', '博士', '教授');
     protected static $titleFemale = array('小姐', '太太', '博士', '教授');
 
@@ -94,6 +96,7 @@ class Person extends \Faker\Provider\Person {
         '文', '柏', '樺', '瑋', '穎', '美', '翰', '華',
         '詩', '豪', '賢', '軒', '銘', '霖',
     );
+
     protected static $characterFemale = array(
         '伶', '佩', '佳', '依', '儀', '冠', '君', '嘉',
         '如', '娟', '婉', '婷', '安', '宜', '家', '庭',
@@ -103,7 +106,8 @@ class Person extends \Faker\Provider\Person {
         '詩', '貞', '郁', '鈺', '雅', '雯', '靜', '馨',
     );
 
-    public static function randomName($pool, $n) {
+    public static function randomName($pool, $n)
+    {
         $name = '';
         for ($i = 0; $i < $n; ++$i) {
             $name .= static::randomElement($pool);
@@ -111,16 +115,18 @@ class Person extends \Faker\Provider\Person {
         return $name;
     }
 
-    public static function firstNameMale() {
+    public static function firstNameMale()
+    {
         return static::randomName(static::$characterMale, mt_rand(1, 2));
     }
 
-    public static function firstNameFemale() {
+    public static function firstNameFemale()
+    {
         return static::randomName(static::$characterFemale, mt_rand(1, 2));
     }
 
-    public static function suffix() {
+    public static function suffix()
+    {
         return '';
     }
-
 }

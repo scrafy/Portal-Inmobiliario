@@ -18,8 +18,8 @@ namespace Symfony\Component\HttpKernel\Exception;
  *
  * @see http://tools.ietf.org/html/rfc6585
  */
-class PreconditionRequiredHttpException extends HttpException {
-
+class PreconditionRequiredHttpException extends HttpException
+{
     /**
      * Constructor.
      *
@@ -27,8 +27,8 @@ class PreconditionRequiredHttpException extends HttpException {
      * @param \Exception $previous The previous exception
      * @param int        $code     The internal exception code
      */
-    public function __construct($message = null, \Exception $previous = null, $code = 0) {
+    public function __construct($message = null, \Exception $previous = null, $code = 0)
+    {
         parent::__construct(428, $message, $previous, array(), $code);
     }
-
 }

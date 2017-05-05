@@ -21,32 +21,34 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Shows and clears the buffer for the current multi-line expression.
  */
-class BufferCommand extends Command {
-
+class BufferCommand extends Command
+{
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('buffer')
-                ->setAliases(array('buf'))
-                ->setDefinition(array(
-                    new InputOption('clear', '', InputOption::VALUE_NONE, 'Clear the current buffer.'),
-                ))
-                ->setDescription('Show (or clear) the contents of the code input buffer.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('buffer')
+            ->setAliases(array('buf'))
+            ->setDefinition(array(
+                new InputOption('clear', '', InputOption::VALUE_NONE, 'Clear the current buffer.'),
+            ))
+            ->setDescription('Show (or clear) the contents of the code input buffer.')
+            ->setHelp(
+                <<<'HELP'
 Show the contents of the code buffer for the current multi-line expression.
 
 Optionally, clear the buffer by passing the <info>--clear</info> option.
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $buf = $this->getApplication()->getCodeBuffer();
         if ($input->getOption('clear')) {
             $this->getApplication()->resetCodeBuffer();
@@ -64,12 +66,12 @@ HELP
      *
      * @return array Formatted strings
      */
-    protected function formatLines(array $lines, $type = 'return') {
+    protected function formatLines(array $lines, $type = 'return')
+    {
         $template = sprintf('<%s>%%s</%s>', $type, $type);
 
         return array_map(function ($line) use ($template) {
             return sprintf($template, $line);
         }, $lines);
     }
-
 }

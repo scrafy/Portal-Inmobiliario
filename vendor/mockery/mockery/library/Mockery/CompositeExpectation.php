@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class CompositeExpectation implements ExpectationInterface {
+class CompositeExpectation implements ExpectationInterface
+{
 
     /**
      * Stores an array of all expectations for this composite
@@ -36,14 +36,16 @@ class CompositeExpectation implements ExpectationInterface {
      * @param \Mockery\Expectation|\Mockery\CompositeExpectation $expectation
      * @return void
      */
-    public function add($expectation) {
+    public function add($expectation)
+    {
         $this->_expectations[] = $expectation;
     }
 
     /**
      * @param mixed ...
      */
-    public function andReturn() {
+    public function andReturn()
+    {
         return $this->__call(__FUNCTION__, func_get_args());
     }
 
@@ -54,7 +56,8 @@ class CompositeExpectation implements ExpectationInterface {
      * @param array $args
      * @return self
      */
-    public function __call($method, array $args) {
+    public function __call($method, array $args)
+    {
         foreach ($this->_expectations as $expectation) {
             call_user_func_array(array($expectation, $method), $args);
         }
@@ -66,7 +69,8 @@ class CompositeExpectation implements ExpectationInterface {
      *
      * @return int
      */
-    public function getOrderNumber() {
+    public function getOrderNumber()
+    {
         reset($this->_expectations);
         $first = current($this->_expectations);
         return $first->getOrderNumber();
@@ -77,7 +81,8 @@ class CompositeExpectation implements ExpectationInterface {
      *
      * @return \Mockery\MockInterface
      */
-    public function getMock() {
+    public function getMock()
+    {
         reset($this->_expectations);
         $first = current($this->_expectations);
         return $first->getMock();
@@ -88,7 +93,8 @@ class CompositeExpectation implements ExpectationInterface {
      *
      * @return \Mockery\MockInterface
      */
-    public function mock() {
+    public function mock()
+    {
         return $this->getMock();
     }
 
@@ -99,7 +105,8 @@ class CompositeExpectation implements ExpectationInterface {
      * @param mixed ...
      * @return \Mockery\Expectation
      */
-    public function shouldReceive() {
+    public function shouldReceive()
+    {
         $args = func_get_args();
         reset($this->_expectations);
         $first = current($this->_expectations);
@@ -111,7 +118,8 @@ class CompositeExpectation implements ExpectationInterface {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $return = '[';
         $parts = array();
         foreach ($this->_expectations as $exp) {
@@ -120,5 +128,4 @@ class CompositeExpectation implements ExpectationInterface {
         $return .= implode(', ', $parts) . ']';
         return $return;
     }
-
 }

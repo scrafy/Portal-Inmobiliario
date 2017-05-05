@@ -19,17 +19,17 @@ use phpDocumentor\Reflection\DocBlock\Tag\MethodTag as LegacyMethodTag;
  *
  * @internal
  */
-final class LegacyClassTagRetriever implements MethodTagRetrieverInterface {
-
+final class LegacyClassTagRetriever implements MethodTagRetrieverInterface
+{
     /**
      * @param \ReflectionClass $reflectionClass
      *
      * @return LegacyMethodTag[]
      */
-    public function getTagList(\ReflectionClass $reflectionClass) {
+    public function getTagList(\ReflectionClass $reflectionClass)
+    {
         $phpdoc = new DocBlock($reflectionClass->getDocComment());
 
         return $phpdoc->getTagsByName('method');
     }
-
 }

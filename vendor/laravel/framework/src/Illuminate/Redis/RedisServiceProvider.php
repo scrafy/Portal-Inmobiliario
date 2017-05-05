@@ -5,8 +5,8 @@ namespace Illuminate\Redis;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
-class RedisServiceProvider extends ServiceProvider {
-
+class RedisServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -19,7 +19,8 @@ class RedisServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton('redis', function ($app) {
             $config = $app->make('config')->get('database.redis');
 
@@ -36,8 +37,8 @@ class RedisServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return ['redis', 'redis.connection'];
     }
-
 }

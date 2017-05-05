@@ -6,8 +6,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Migrations\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 
-class StatusCommand extends BaseCommand {
-
+class StatusCommand extends BaseCommand
+{
     /**
      * The console command name.
      *
@@ -35,7 +35,8 @@ class StatusCommand extends BaseCommand {
      * @param  \Illuminate\Database\Migrations\Migrator $migrator
      * @return \Illuminate\Database\Console\Migrations\StatusCommand
      */
-    public function __construct(Migrator $migrator) {
+    public function __construct(Migrator $migrator)
+    {
         parent::__construct();
 
         $this->migrator = $migrator;
@@ -46,10 +47,11 @@ class StatusCommand extends BaseCommand {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->migrator->setConnection($this->option('database'));
 
-        if (!$this->migrator->repositoryExists()) {
+        if (! $this->migrator->repositoryExists()) {
             return $this->error('No migrations found.');
         }
 
@@ -68,13 +70,16 @@ class StatusCommand extends BaseCommand {
      * @param  array  $ran
      * @return \Illuminate\Support\Collection
      */
-    protected function getStatusFor(array $ran) {
+    protected function getStatusFor(array $ran)
+    {
         return Collection::make($this->getAllMigrationFiles())
-                        ->map(function ($migration) use ($ran) {
-                            $migrationName = $this->migrator->getMigrationName($migration);
+                    ->map(function ($migration) use ($ran) {
+                        $migrationName = $this->migrator->getMigrationName($migration);
 
-                            return in_array($migrationName, $ran) ? ['<info>Y</info>', $migrationName] : ['<fg=red>N</fg=red>', $migrationName];
-                        });
+                        return in_array($migrationName, $ran)
+                                ? ['<info>Y</info>', $migrationName]
+                                : ['<fg=red>N</fg=red>', $migrationName];
+                    });
     }
 
     /**
@@ -82,7 +87,8 @@ class StatusCommand extends BaseCommand {
      *
      * @return array
      */
-    protected function getAllMigrationFiles() {
+    protected function getAllMigrationFiles()
+    {
         return $this->migrator->getMigrationFiles($this->getMigrationPaths());
     }
 
@@ -91,11 +97,12 @@ class StatusCommand extends BaseCommand {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
+
             ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to use.'],
         ];
     }
-
 }

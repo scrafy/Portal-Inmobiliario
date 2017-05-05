@@ -9,14 +9,15 @@ use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\Compilers\BladeCompiler;
 
-class ViewServiceProvider extends ServiceProvider {
-
+class ViewServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerFactory();
 
         $this->registerViewFinder();
@@ -29,7 +30,8 @@ class ViewServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerFactory() {
+    public function registerFactory()
+    {
         $this->app->singleton('view', function ($app) {
             // Next we need to grab the engine resolver instance that will be used by the
             // environment. The resolver will be used by an environment to get each of
@@ -56,7 +58,8 @@ class ViewServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerViewFinder() {
+    public function registerViewFinder()
+    {
         $this->app->bind('view.finder', function ($app) {
             return new FileViewFinder($app['files'], $app['config']['view.paths']);
         });
@@ -67,7 +70,8 @@ class ViewServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerEngineResolver() {
+    public function registerEngineResolver()
+    {
         $this->app->singleton('view.engine.resolver', function () {
             $resolver = new EngineResolver;
 
@@ -75,7 +79,7 @@ class ViewServiceProvider extends ServiceProvider {
             // environment will resolve the engines needed for various views based on the
             // extension of view file. We call a method for each of the view's engines.
             foreach (['file', 'php', 'blade'] as $engine) {
-                $this->{'register' . ucfirst($engine) . 'Engine'}($resolver);
+                $this->{'register'.ucfirst($engine).'Engine'}($resolver);
             }
 
             return $resolver;
@@ -88,7 +92,8 @@ class ViewServiceProvider extends ServiceProvider {
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerFileEngine($resolver) {
+    public function registerFileEngine($resolver)
+    {
         $resolver->register('file', function () {
             return new FileEngine;
         });
@@ -100,7 +105,8 @@ class ViewServiceProvider extends ServiceProvider {
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerPhpEngine($resolver) {
+    public function registerPhpEngine($resolver)
+    {
         $resolver->register('php', function () {
             return new PhpEngine;
         });
@@ -112,13 +118,14 @@ class ViewServiceProvider extends ServiceProvider {
      * @param  \Illuminate\View\Engines\EngineResolver  $resolver
      * @return void
      */
-    public function registerBladeEngine($resolver) {
+    public function registerBladeEngine($resolver)
+    {
         // The Compiler engine requires an instance of the CompilerInterface, which in
         // this case will be the Blade compiler, so we'll first create the compiler
         // instance to pass into the engine so it can compile the views properly.
         $this->app->singleton('blade.compiler', function () {
             return new BladeCompiler(
-                    $this->app['files'], $this->app['config']['view.compiled']
+                $this->app['files'], $this->app['config']['view.compiled']
             );
         });
 
@@ -126,5 +133,4 @@ class ViewServiceProvider extends ServiceProvider {
             return new CompilerEngine($this->app['blade.compiler']);
         });
     }
-
 }

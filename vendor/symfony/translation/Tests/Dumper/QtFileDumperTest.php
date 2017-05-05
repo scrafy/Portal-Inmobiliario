@@ -15,15 +15,15 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Dumper\QtFileDumper;
 
-class QtFileDumperTest extends TestCase {
-
-    public function testFormatCatalogue() {
+class QtFileDumperTest extends TestCase
+{
+    public function testFormatCatalogue()
+    {
         $catalogue = new MessageCatalogue('en');
         $catalogue->add(array('foo' => 'bar'), 'resources');
 
         $dumper = new QtFileDumper();
 
-        $this->assertStringEqualsFile(__DIR__ . '/../fixtures/resources.ts', $dumper->formatCatalogue($catalogue, 'resources'));
+        $this->assertStringEqualsFile(__DIR__.'/../fixtures/resources.ts', $dumper->formatCatalogue($catalogue, 'resources'));
     }
-
 }

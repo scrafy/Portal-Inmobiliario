@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Environment package.
  *
@@ -13,28 +12,31 @@ namespace SebastianBergmann\Environment;
 
 use PHPUnit_Framework_TestCase;
 
-class ConsoleTest extends PHPUnit_Framework_TestCase {
-
+class ConsoleTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @var \SebastianBergmann\Environment\Console
      */
     private $console;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->console = new Console;
     }
 
     /**
      * @covers \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectIfStdoutIsInteractiveByDefault() {
+    public function testCanDetectIfStdoutIsInteractiveByDefault()
+    {
         $this->assertInternalType('boolean', $this->console->isInteractive());
     }
 
     /**
      * @covers \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectIfFileDescriptorIsInteractive() {
+    public function testCanDetectIfFileDescriptorIsInteractive()
+    {
         $this->assertInternalType('boolean', $this->console->isInteractive(STDOUT));
     }
 
@@ -43,7 +45,8 @@ class ConsoleTest extends PHPUnit_Framework_TestCase {
      *
      * @uses   \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectColorSupport() {
+    public function testCanDetectColorSupport()
+    {
         $this->assertInternalType('boolean', $this->console->hasColorSupport());
     }
 
@@ -52,8 +55,8 @@ class ConsoleTest extends PHPUnit_Framework_TestCase {
      *
      * @uses   \SebastianBergmann\Environment\Console::isInteractive
      */
-    public function testCanDetectNumberOfColumns() {
+    public function testCanDetectNumberOfColumns()
+    {
         $this->assertInternalType('integer', $this->console->getNumberOfColumns());
     }
-
 }

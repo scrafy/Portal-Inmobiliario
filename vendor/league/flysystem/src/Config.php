@@ -2,8 +2,8 @@
 
 namespace League\Flysystem;
 
-class Config {
-
+class Config
+{
     /**
      * @var array
      */
@@ -19,7 +19,8 @@ class Config {
      *
      * @param array $settings
      */
-    public function __construct(array $settings = []) {
+    public function __construct(array $settings = [])
+    {
         $this->settings = $settings;
     }
 
@@ -31,8 +32,9 @@ class Config {
      *
      * @return mixed config setting or default when not found
      */
-    public function get($key, $default = null) {
-        if (!array_key_exists($key, $this->settings)) {
+    public function get($key, $default = null)
+    {
+        if ( ! array_key_exists($key, $this->settings)) {
             return $this->getDefault($key, $default);
         }
 
@@ -46,12 +48,15 @@ class Config {
      *
      * @return bool
      */
-    public function has($key) {
+    public function has($key)
+    {
         if (array_key_exists($key, $this->settings)) {
             return true;
         }
 
-        return $this->fallback instanceof Config ? $this->fallback->has($key) : false;
+        return $this->fallback instanceof Config
+            ? $this->fallback->has($key)
+            : false;
     }
 
     /**
@@ -62,8 +67,9 @@ class Config {
      *
      * @return mixed config setting or default when not found
      */
-    protected function getDefault($key, $default) {
-        if (!$this->fallback) {
+    protected function getDefault($key, $default)
+    {
+        if ( ! $this->fallback) {
             return $default;
         }
 
@@ -78,7 +84,8 @@ class Config {
      *
      * @return $this
      */
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         $this->settings[$key] = $value;
 
         return $this;
@@ -91,10 +98,10 @@ class Config {
      *
      * @return $this
      */
-    public function setFallback(Config $fallback) {
+    public function setFallback(Config $fallback)
+    {
         $this->fallback = $fallback;
 
         return $this;
     }
-
 }

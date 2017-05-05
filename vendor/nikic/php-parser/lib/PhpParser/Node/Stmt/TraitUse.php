@@ -4,11 +4,11 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class TraitUse extends Node\Stmt {
 
+class TraitUse extends Node\Stmt
+{
     /** @var Node\Name[] Traits */
     public $traits;
-
     /** @var TraitUseAdaptation[] Adaptations */
     public $adaptations;
 
@@ -28,5 +28,4 @@ class TraitUse extends Node\Stmt {
     public function getSubNodeNames() {
         return array('traits', 'adaptations');
     }
-
 }

@@ -5,15 +5,16 @@ namespace Illuminate\Support\Facades;
 /**
  * @see \Illuminate\Database\Schema\Builder
  */
-class Schema extends Facade {
-
+class Schema extends Facade
+{
     /**
      * Get a schema builder instance for a connection.
      *
      * @param  string  $name
      * @return \Illuminate\Database\Schema\Builder
      */
-    public static function connection($name) {
+    public static function connection($name)
+    {
         return static::$app['db']->connection($name)->getSchemaBuilder();
     }
 
@@ -22,8 +23,8 @@ class Schema extends Facade {
      *
      * @return \Illuminate\Database\Schema\Builder
      */
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return static::$app['db']->connection()->getSchemaBuilder();
     }
-
 }

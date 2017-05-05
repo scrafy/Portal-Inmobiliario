@@ -19,15 +19,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class TestMultipleHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface {
-
+class TestMultipleHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface
+{
     protected $bodies = array();
     protected $statuses = array();
     protected $headers = array();
     protected $called = false;
     protected $backendRequest;
 
-    public function __construct($responses) {
+    public function __construct($responses)
+    {
         foreach ($responses as $response) {
             $this->bodies[] = $response['body'];
             $this->statuses[] = $response['status'];
@@ -37,25 +38,30 @@ class TestMultipleHttpKernel extends HttpKernel implements ControllerResolverInt
         parent::__construct(new EventDispatcher(), $this, null, $this);
     }
 
-    public function getBackendRequest() {
+    public function getBackendRequest()
+    {
         return $this->backendRequest;
     }
 
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false) {
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false)
+    {
         $this->backendRequest = $request;
 
         return parent::handle($request, $type, $catch);
     }
 
-    public function getController(Request $request) {
+    public function getController(Request $request)
+    {
         return array($this, 'callController');
     }
 
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         return array($request);
     }
 
-    public function callController(Request $request) {
+    public function callController(Request $request)
+    {
         $this->called = true;
 
         $response = new Response(array_shift($this->bodies), array_shift($this->statuses), array_shift($this->headers));
@@ -63,12 +69,13 @@ class TestMultipleHttpKernel extends HttpKernel implements ControllerResolverInt
         return $response;
     }
 
-    public function hasBeenCalled() {
+    public function hasBeenCalled()
+    {
         return $this->called;
     }
 
-    public function reset() {
+    public function reset()
+    {
         $this->called = false;
     }
-
 }

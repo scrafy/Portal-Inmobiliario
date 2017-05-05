@@ -12,8 +12,8 @@ use Illuminate\Contracts\Queue\Factory as Queue;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
-class Mailable implements MailableContract {
-
+class Mailable implements MailableContract
+{
     /**
      * The person the message is from.
      *
@@ -111,15 +111,16 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function send(MailerContract $mailer) {
+    public function send(MailerContract $mailer)
+    {
         Container::getInstance()->call([$this, 'build']);
 
         $mailer->send($this->buildView(), $this->buildViewData(), function ($message) {
             $this->buildFrom($message)
-                    ->buildRecipients($message)
-                    ->buildSubject($message)
-                    ->buildAttachments($message)
-                    ->runCallbacks($message);
+                 ->buildRecipients($message)
+                 ->buildSubject($message)
+                 ->buildAttachments($message)
+                 ->runCallbacks($message);
         });
     }
 
@@ -129,13 +130,14 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Contracts\Queue\Factory  $queue
      * @return mixed
      */
-    public function queue(Queue $queue) {
+    public function queue(Queue $queue)
+    {
         $connection = property_exists($this, 'connection') ? $this->connection : null;
 
         $queueName = property_exists($this, 'queue') ? $this->queue : null;
 
         return $queue->connection($connection)->pushOn(
-                        $queueName ?: null, new SendQueuedMailable($this)
+            $queueName ?: null, new SendQueuedMailable($this)
         );
     }
 
@@ -146,13 +148,14 @@ class Mailable implements MailableContract {
      * @param  Queue  $queue
      * @return mixed
      */
-    public function later($delay, Queue $queue) {
+    public function later($delay, Queue $queue)
+    {
         $connection = property_exists($this, 'connection') ? $this->connection : null;
 
         $queueName = property_exists($this, 'queue') ? $this->queue : null;
 
         return $queue->connection($connection)->laterOn(
-                        $queueName ?: null, $delay, new SendQueuedMailable($this)
+            $queueName ?: null, $delay, new SendQueuedMailable($this)
         );
     }
 
@@ -161,7 +164,8 @@ class Mailable implements MailableContract {
      *
      * @return array|string
      */
-    protected function buildView() {
+    protected function buildView()
+    {
         if (isset($this->markdown)) {
             return $this->buildMarkdownView();
         }
@@ -180,7 +184,8 @@ class Mailable implements MailableContract {
      *
      * @return array
      */
-    protected function buildMarkdownView() {
+    protected function buildMarkdownView()
+    {
         $markdown = Container::getInstance()->make(Markdown::class);
 
         $data = $this->buildViewData();
@@ -196,7 +201,8 @@ class Mailable implements MailableContract {
      *
      * @return array
      */
-    public function buildViewData() {
+    public function buildViewData()
+    {
         $data = $this->viewData;
 
         foreach ((new ReflectionClass($this))->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
@@ -214,8 +220,9 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
      */
-    protected function buildFrom($message) {
-        if (!empty($this->from)) {
+    protected function buildFrom($message)
+    {
+        if (! empty($this->from)) {
             $message->from($this->from[0]['address'], $this->from[0]['name']);
         }
 
@@ -228,7 +235,8 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
      */
-    protected function buildRecipients($message) {
+    protected function buildRecipients($message)
+    {
         foreach (['to', 'cc', 'bcc', 'replyTo'] as $type) {
             foreach ($this->{$type} as $recipient) {
                 $message->{$type}($recipient['address'], $recipient['name']);
@@ -244,7 +252,8 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
      */
-    protected function buildSubject($message) {
+    protected function buildSubject($message)
+    {
         if ($this->subject) {
             $message->subject($this->subject);
         } else {
@@ -260,14 +269,15 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
      */
-    protected function buildAttachments($message) {
+    protected function buildAttachments($message)
+    {
         foreach ($this->attachments as $attachment) {
             $message->attach($attachment['file'], $attachment['options']);
         }
 
         foreach ($this->rawAttachments as $attachment) {
             $message->attachData(
-                    $attachment['data'], $attachment['name'], $attachment['options']
+                $attachment['data'], $attachment['name'], $attachment['options']
             );
         }
 
@@ -280,7 +290,8 @@ class Mailable implements MailableContract {
      * @param  \Illuminate\Mail\Message  $message
      * @return $this
      */
-    protected function runCallbacks($message) {
+    protected function runCallbacks($message)
+    {
         foreach ($this->callbacks as $callback) {
             $callback($message->getSwiftMessage());
         }
@@ -296,7 +307,8 @@ class Mailable implements MailableContract {
      * @param  int  $level
      * @return $this
      */
-    public function priority($level = 3) {
+    public function priority($level = 3)
+    {
         $this->callbacks[] = function ($message) use ($level) {
             $message->setPriority($level);
         };
@@ -311,7 +323,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return $this
      */
-    public function from($address, $name = null) {
+    public function from($address, $name = null)
+    {
         return $this->setAddress($address, $name, 'from');
     }
 
@@ -322,7 +335,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return $this
      */
-    public function to($address, $name = null) {
+    public function to($address, $name = null)
+    {
         return $this->setAddress($address, $name, 'to');
     }
 
@@ -333,7 +347,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return bool
      */
-    public function hasTo($address, $name = null) {
+    public function hasTo($address, $name = null)
+    {
         return $this->hasRecipient($address, $name, 'to');
     }
 
@@ -344,7 +359,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return $this
      */
-    public function cc($address, $name = null) {
+    public function cc($address, $name = null)
+    {
         return $this->setAddress($address, $name, 'cc');
     }
 
@@ -355,7 +371,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return bool
      */
-    public function hasCc($address, $name = null) {
+    public function hasCc($address, $name = null)
+    {
         return $this->hasRecipient($address, $name, 'cc');
     }
 
@@ -366,7 +383,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return $this
      */
-    public function bcc($address, $name = null) {
+    public function bcc($address, $name = null)
+    {
         return $this->setAddress($address, $name, 'bcc');
     }
 
@@ -377,7 +395,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return bool
      */
-    public function hasBcc($address, $name = null) {
+    public function hasBcc($address, $name = null)
+    {
         return $this->hasRecipient($address, $name, 'bcc');
     }
 
@@ -388,7 +407,8 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return $this
      */
-    public function replyTo($address, $name = null) {
+    public function replyTo($address, $name = null)
+    {
         return $this->setAddress($address, $name, 'replyTo');
     }
 
@@ -402,7 +422,8 @@ class Mailable implements MailableContract {
      * @param  string  $property
      * @return $this
      */
-    protected function setAddress($address, $name = null, $property = 'to') {
+    protected function setAddress($address, $name = null, $property = 'to')
+    {
         foreach ($this->addressesToArray($address, $name) as $recipient) {
             $recipient = $this->normalizeRecipient($recipient);
 
@@ -422,8 +443,9 @@ class Mailable implements MailableContract {
      * @param  string|null  $name
      * @return array
      */
-    protected function addressesToArray($address, $name) {
-        if (!is_array($address) && !$address instanceof Collection) {
+    protected function addressesToArray($address, $name)
+    {
+        if (! is_array($address) && ! $address instanceof Collection) {
             $address = is_string($name) ? [['name' => $name, 'email' => $address]] : [$address];
         }
 
@@ -436,7 +458,8 @@ class Mailable implements MailableContract {
      * @param  mixed  $recipient
      * @return object
      */
-    protected function normalizeRecipient($recipient) {
+    protected function normalizeRecipient($recipient)
+    {
         if (is_array($recipient)) {
             return (object) $recipient;
         } elseif (is_string($recipient)) {
@@ -454,9 +477,10 @@ class Mailable implements MailableContract {
      * @param  string  $property
      * @return bool
      */
-    protected function hasRecipient($address, $name = null, $property = 'to') {
+    protected function hasRecipient($address, $name = null, $property = 'to')
+    {
         $expected = $this->normalizeRecipient(
-                $this->addressesToArray($address, $name)[0]
+            $this->addressesToArray($address, $name)[0]
         );
 
         $expected = [
@@ -465,12 +489,12 @@ class Mailable implements MailableContract {
         ];
 
         return collect($this->{$property})->contains(function ($actual) use ($expected) {
-                    if (!isset($expected['name'])) {
-                        return $actual['address'] == $expected['address'];
-                    } else {
-                        return $actual == $expected;
-                    }
-                });
+            if (! isset($expected['name'])) {
+                return $actual['address'] == $expected['address'];
+            } else {
+                return $actual == $expected;
+            }
+        });
     }
 
     /**
@@ -479,7 +503,8 @@ class Mailable implements MailableContract {
      * @param  string  $subject
      * @return $this
      */
-    public function subject($subject) {
+    public function subject($subject)
+    {
         $this->subject = $subject;
 
         return $this;
@@ -492,7 +517,8 @@ class Mailable implements MailableContract {
      * @param  array  $data
      * @return $this
      */
-    public function markdown($view, array $data = []) {
+    public function markdown($view, array $data = [])
+    {
         $this->markdown = $view;
         $this->viewData = $data;
 
@@ -506,7 +532,8 @@ class Mailable implements MailableContract {
      * @param  array  $data
      * @return $this
      */
-    public function view($view, array $data = []) {
+    public function view($view, array $data = [])
+    {
         $this->view = $view;
         $this->viewData = $data;
 
@@ -520,7 +547,8 @@ class Mailable implements MailableContract {
      * @param  array  $data
      * @return $this
      */
-    public function text($textView, array $data = []) {
+    public function text($textView, array $data = [])
+    {
         $this->textView = $textView;
         $this->viewData = $data;
 
@@ -534,7 +562,8 @@ class Mailable implements MailableContract {
      * @param  mixed   $value
      * @return $this
      */
-    public function with($key, $value = null) {
+    public function with($key, $value = null)
+    {
         if (is_array($key)) {
             $this->viewData = array_merge($this->viewData, $key);
         } else {
@@ -551,7 +580,8 @@ class Mailable implements MailableContract {
      * @param  array  $options
      * @return $this
      */
-    public function attach($file, array $options = []) {
+    public function attach($file, array $options = [])
+    {
         $this->attachments[] = compact('file', 'options');
 
         return $this;
@@ -565,7 +595,8 @@ class Mailable implements MailableContract {
      * @param  array  $options
      * @return $this
      */
-    public function attachData($data, $name, array $options = []) {
+    public function attachData($data, $name, array $options = [])
+    {
         $this->rawAttachments[] = compact('data', 'name', 'options');
 
         return $this;
@@ -577,7 +608,8 @@ class Mailable implements MailableContract {
      * @param  callable  $callback
      * @return $this
      */
-    public function withSwiftMessage($callback) {
+    public function withSwiftMessage($callback)
+    {
         $this->callbacks[] = $callback;
 
         return $this;
@@ -592,12 +624,12 @@ class Mailable implements MailableContract {
      *
      * @throws \BadMethodCallException
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         if (Str::startsWith($method, 'with')) {
             return $this->with(Str::snake(substr($method, 4)), $parameters[0]);
         }
 
         throw new BadMethodCallException("Method [$method] does not exist on mailable.");
     }
-
 }

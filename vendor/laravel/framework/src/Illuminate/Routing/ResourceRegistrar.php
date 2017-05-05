@@ -4,8 +4,8 @@ namespace Illuminate\Routing;
 
 use Illuminate\Support\Str;
 
-class ResourceRegistrar {
-
+class ResourceRegistrar
+{
     /**
      * The router instance.
      *
@@ -57,7 +57,8 @@ class ResourceRegistrar {
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function __construct(Router $router) {
+    public function __construct(Router $router)
+    {
         $this->router = $router;
     }
 
@@ -69,8 +70,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return void
      */
-    public function register($name, $controller, array $options = []) {
-        if (isset($options['parameters']) && !isset($this->parameters)) {
+    public function register($name, $controller, array $options = [])
+    {
+        if (isset($options['parameters']) && ! isset($this->parameters)) {
             $this->parameters = $options['parameters'];
         }
 
@@ -91,7 +93,7 @@ class ResourceRegistrar {
         $defaults = $this->resourceDefaults;
 
         foreach ($this->getResourceMethods($defaults, $options) as $m) {
-            $this->{'addResource' . ucfirst($m)}($name, $base, $controller, $options);
+            $this->{'addResource'.ucfirst($m)}($name, $base, $controller, $options);
         }
     }
 
@@ -103,7 +105,8 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return void
      */
-    protected function prefixedResource($name, $controller, array $options) {
+    protected function prefixedResource($name, $controller, array $options)
+    {
         list($name, $prefix) = $this->getResourcePrefix($name);
 
         // We need to extract the base resource from the resource name. Nested resources
@@ -122,7 +125,8 @@ class ResourceRegistrar {
      * @param  string  $name
      * @return array
      */
-    protected function getResourcePrefix($name) {
+    protected function getResourcePrefix($name)
+    {
         $segments = explode('/', $name);
 
         // To get the prefix, we will take all of the name segments and implode them on
@@ -140,7 +144,8 @@ class ResourceRegistrar {
      * @param  array  $options
      * @return array
      */
-    protected function getResourceMethods($defaults, $options) {
+    protected function getResourceMethods($defaults, $options)
+    {
         if (isset($options['only'])) {
             return array_intersect($defaults, (array) $options['only']);
         } elseif (isset($options['except'])) {
@@ -159,7 +164,8 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceIndex($name, $base, $controller, $options) {
+    protected function addResourceIndex($name, $base, $controller, $options)
+    {
         $uri = $this->getResourceUri($name);
 
         $action = $this->getResourceAction($name, $controller, 'index', $options);
@@ -176,8 +182,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceCreate($name, $base, $controller, $options) {
-        $uri = $this->getResourceUri($name) . '/' . static::$verbs['create'];
+    protected function addResourceCreate($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/'.static::$verbs['create'];
 
         $action = $this->getResourceAction($name, $controller, 'create', $options);
 
@@ -193,7 +200,8 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceStore($name, $base, $controller, $options) {
+    protected function addResourceStore($name, $base, $controller, $options)
+    {
         $uri = $this->getResourceUri($name);
 
         $action = $this->getResourceAction($name, $controller, 'store', $options);
@@ -210,8 +218,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceShow($name, $base, $controller, $options) {
-        $uri = $this->getResourceUri($name) . '/{' . $base . '}';
+    protected function addResourceShow($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
         $action = $this->getResourceAction($name, $controller, 'show', $options);
 
@@ -227,8 +236,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceEdit($name, $base, $controller, $options) {
-        $uri = $this->getResourceUri($name) . '/{' . $base . '}/' . static::$verbs['edit'];
+    protected function addResourceEdit($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/{'.$base.'}/'.static::$verbs['edit'];
 
         $action = $this->getResourceAction($name, $controller, 'edit', $options);
 
@@ -244,8 +254,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceUpdate($name, $base, $controller, $options) {
-        $uri = $this->getResourceUri($name) . '/{' . $base . '}';
+    protected function addResourceUpdate($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
         $action = $this->getResourceAction($name, $controller, 'update', $options);
 
@@ -261,8 +272,9 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourceDestroy($name, $base, $controller, $options) {
-        $uri = $this->getResourceUri($name) . '/{' . $base . '}';
+    protected function addResourceDestroy($name, $base, $controller, $options)
+    {
+        $uri = $this->getResourceUri($name).'/{'.$base.'}';
 
         $action = $this->getResourceAction($name, $controller, 'destroy', $options);
 
@@ -275,8 +287,9 @@ class ResourceRegistrar {
      * @param  string  $resource
      * @return string
      */
-    public function getResourceUri($resource) {
-        if (!Str::contains($resource, '.')) {
+    public function getResourceUri($resource)
+    {
+        if (! Str::contains($resource, '.')) {
             return $resource;
         }
 
@@ -287,7 +300,7 @@ class ResourceRegistrar {
 
         $uri = $this->getNestedResourceUri($segments);
 
-        return str_replace('/{' . $this->getResourceWildcard(end($segments)) . '}', '', $uri);
+        return str_replace('/{'.$this->getResourceWildcard(end($segments)).'}', '', $uri);
     }
 
     /**
@@ -296,13 +309,14 @@ class ResourceRegistrar {
      * @param  array   $segments
      * @return string
      */
-    protected function getNestedResourceUri(array $segments) {
+    protected function getNestedResourceUri(array $segments)
+    {
         // We will spin through the segments and create a place-holder for each of the
         // resource segments, as well as the resource itself. Then we should get an
         // entire string for the resource URI that contains all nested resources.
         return implode('/', array_map(function ($s) {
-                    return $s . '/{' . $this->getResourceWildcard($s) . '}';
-                }, $segments));
+            return $s.'/{'.$this->getResourceWildcard($s).'}';
+        }, $segments));
     }
 
     /**
@@ -311,7 +325,8 @@ class ResourceRegistrar {
      * @param  string  $value
      * @return string
      */
-    public function getResourceWildcard($value) {
+    public function getResourceWildcard($value)
+    {
         if (isset($this->parameters[$value])) {
             $value = $this->parameters[$value];
         } elseif (isset(static::$parameterMap[$value])) {
@@ -332,10 +347,11 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return array
      */
-    protected function getResourceAction($resource, $controller, $method, $options) {
+    protected function getResourceAction($resource, $controller, $method, $options)
+    {
         $name = $this->getResourceRouteName($resource, $method, $options);
 
-        $action = ['as' => $name, 'uses' => $controller . '@' . $method];
+        $action = ['as' => $name, 'uses' => $controller.'@'.$method];
 
         if (isset($options['middleware'])) {
             $action['middleware'] = $options['middleware'];
@@ -352,7 +368,8 @@ class ResourceRegistrar {
      * @param  array   $options
      * @return string
      */
-    protected function getResourceRouteName($resource, $method, $options) {
+    protected function getResourceRouteName($resource, $method, $options)
+    {
         $name = $resource;
 
         // If the names array has been provided to us we will check for an entry in the
@@ -369,7 +386,7 @@ class ResourceRegistrar {
         // If a global prefix has been assigned to all names for this resource, we will
         // grab that so we can prepend it onto the name when we create this name for
         // the resource action. Otherwise we'll just use an empty string for here.
-        $prefix = isset($options['as']) ? $options['as'] . '.' : '';
+        $prefix = isset($options['as']) ? $options['as'].'.' : '';
 
         return trim(sprintf('%s%s.%s', $prefix, $name, $method), '.');
     }
@@ -380,7 +397,8 @@ class ResourceRegistrar {
      * @param  bool  $singular
      * @return void
      */
-    public static function singularParameters($singular = true) {
+    public static function singularParameters($singular = true)
+    {
         static::$singularParameters = (bool) $singular;
     }
 
@@ -389,7 +407,8 @@ class ResourceRegistrar {
      *
      * @return array
      */
-    public static function getParameters() {
+    public static function getParameters()
+    {
         return static::$parameterMap;
     }
 
@@ -399,7 +418,8 @@ class ResourceRegistrar {
      * @param  array $parameters
      * @return void
      */
-    public static function setParameters(array $parameters = []) {
+    public static function setParameters(array $parameters = [])
+    {
         static::$parameterMap = $parameters;
     }
 
@@ -409,12 +429,12 @@ class ResourceRegistrar {
      * @param  array  $verbs
      * @return array
      */
-    public static function verbs(array $verbs = []) {
+    public static function verbs(array $verbs = [])
+    {
         if (empty($verbs)) {
             return static::$verbs;
         } else {
             static::$verbs = array_merge(static::$verbs, $verbs);
         }
     }
-
 }

@@ -16,14 +16,15 @@ use Symfony\Component\Finder\Finder;
 /**
  * A Psy Shell Phar compiler.
  */
-class Compiler {
-
+class Compiler
+{
     /**
      * Compiles psysh into a single phar file.
      *
      * @param string $pharFile The full path to the file to create
      */
-    public function compile($pharFile = 'psysh.phar') {
+    public function compile($pharFile = 'psysh.phar')
+    {
         if (file_exists($pharFile)) {
             unlink($pharFile);
         }
@@ -36,26 +37,26 @@ class Compiler {
         $phar->startBuffering();
 
         $finder = Finder::create()
-                ->files()
-                ->ignoreVCS(true)
-                ->name('*.php')
-                ->notName('Compiler.php')
-                ->notName('Autoloader.php')
-                ->in(__DIR__ . '/..');
+            ->files()
+            ->ignoreVCS(true)
+            ->name('*.php')
+            ->notName('Compiler.php')
+            ->notName('Autoloader.php')
+            ->in(__DIR__ . '/..');
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
 
         $finder = Finder::create()
-                ->files()
-                ->ignoreVCS(true)
-                ->name('*.php')
-                ->exclude('Tests')
-                ->exclude('tests')
-                ->exclude('Test')
-                ->exclude('test')
-                ->in(__DIR__ . '/../../build-vendor');
+            ->files()
+            ->ignoreVCS(true)
+            ->name('*.php')
+            ->exclude('Tests')
+            ->exclude('tests')
+            ->exclude('Test')
+            ->exclude('test')
+            ->in(__DIR__ . '/../../build-vendor');
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
@@ -76,7 +77,8 @@ class Compiler {
      * @param \SplFileInfo $file
      * @param bool         $strip (default: true)
      */
-    private function addFile($phar, $file, $strip = true) {
+    private function addFile($phar, $file, $strip = true)
+    {
         $path = str_replace(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR, '', $file->getRealPath());
 
         $content = file_get_contents($file);
@@ -96,7 +98,8 @@ class Compiler {
      *
      * @return string The PHP string with the whitespace removed
      */
-    private function stripWhitespace($source) {
+    private function stripWhitespace($source)
+    {
         if (!function_exists('token_get_all')) {
             return $source;
         }
@@ -123,7 +126,8 @@ class Compiler {
         return $output;
     }
 
-    private static function getStubLicense() {
+    private static function getStubLicense()
+    {
         $license = file_get_contents(__DIR__ . '/../../LICENSE');
         $license = str_replace('The MIT License (MIT)', '', $license);
         $license = str_replace("\n", "\n * ", trim($license));
@@ -143,7 +147,8 @@ EOS;
      *
      * @return string
      */
-    private function getStub() {
+    private function getStub()
+    {
         $content = file_get_contents(__DIR__ . '/../../bin/psysh');
         if (version_compare(PHP_VERSION, '5.4', '<')) {
             $content = str_replace('#!/usr/bin/env php', '#!/usr/bin/env php -d detect_unicode=Off', $content);
@@ -155,5 +160,4 @@ EOS;
 
         return $content;
     }
-
 }

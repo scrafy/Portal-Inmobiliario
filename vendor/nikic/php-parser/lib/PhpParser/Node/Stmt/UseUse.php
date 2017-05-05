@@ -4,14 +4,12 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class UseUse extends Node\Stmt {
-
+class UseUse extends Node\Stmt
+{
     /** @var int One of the Stmt\Use_::TYPE_* constants. Will only differ from TYPE_UNKNOWN for mixed group uses */
     public $type;
-
     /** @var Node\Name Namespace, class, function or constant to alias */
     public $name;
-
     /** @var string Alias */
     public $alias;
 
@@ -37,5 +35,4 @@ class UseUse extends Node\Stmt {
     public function getSubNodeNames() {
         return array('type', 'name', 'alias');
     }
-
 }

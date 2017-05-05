@@ -18,22 +18,22 @@ use PhpParser\Node\Stmt\Return_ as ReturnStmt;
 /**
  * Add an implicit "return" to the last statement, provided it can be returned.
  */
-class ImplicitReturnPass extends CodeCleanerPass {
-
+class ImplicitReturnPass extends CodeCleanerPass
+{
     /**
      * @param array $nodes
      */
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         $last = end($nodes);
 
         if ($last instanceof Expr && !($last instanceof Exit_)) {
             $nodes[count($nodes) - 1] = new ReturnStmt($last, array(
                 'startLine' => $last->getLine(),
-                'endLine' => $last->getLine(),
+                'endLine'   => $last->getLine(),
             ));
         }
 
         return $nodes;
     }
-
 }

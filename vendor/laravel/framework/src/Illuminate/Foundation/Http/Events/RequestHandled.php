@@ -2,8 +2,8 @@
 
 namespace Illuminate\Foundation\Http\Events;
 
-class RequestHandled {
-
+class RequestHandled
+{
     /**
      * The request instance.
      *
@@ -25,9 +25,9 @@ class RequestHandled {
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    public function __construct($request, $response) {
+    public function __construct($request, $response)
+    {
         $this->request = $request;
         $this->response = $response;
     }
-
 }

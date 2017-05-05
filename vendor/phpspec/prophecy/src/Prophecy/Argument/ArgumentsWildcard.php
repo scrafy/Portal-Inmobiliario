@@ -16,8 +16,8 @@ namespace Prophecy\Argument;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class ArgumentsWildcard {
-
+class ArgumentsWildcard
+{
     /**
      * @var Token\TokenInterface[]
      */
@@ -29,7 +29,8 @@ class ArgumentsWildcard {
      *
      * @param array $arguments Array of argument tokens or values
      */
-    public function __construct(array $arguments) {
+    public function __construct(array $arguments)
+    {
         foreach ($arguments as $argument) {
             if (!$argument instanceof Token\TokenInterface) {
                 $argument = new Token\ExactValueToken($argument);
@@ -46,12 +47,13 @@ class ArgumentsWildcard {
      *
      * @return false|int False OR integer score (higher - better)
      */
-    public function scoreArguments(array $arguments) {
+    public function scoreArguments(array $arguments)
+    {
         if (0 == count($arguments) && 0 == count($this->tokens)) {
             return 1;
         }
 
-        $arguments = array_values($arguments);
+        $arguments  = array_values($arguments);
         $totalScore = 0;
         foreach ($this->tokens as $i => $token) {
             $argument = isset($arguments[$i]) ? $arguments[$i] : null;
@@ -78,11 +80,12 @@ class ArgumentsWildcard {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         if (null === $this->string) {
             $this->string = implode(', ', array_map(function ($token) {
-                        return (string) $token;
-                    }, $this->tokens));
+                return (string) $token;
+            }, $this->tokens));
         }
 
         return $this->string;
@@ -91,8 +94,8 @@ class ArgumentsWildcard {
     /**
      * @return array
      */
-    public function getTokens() {
+    public function getTokens()
+    {
         return $this->tokens;
     }
-
 }

@@ -16,7 +16,7 @@ $docComment = <<<DOCCOMMENT
  */
 DOCCOMMENT;
 
-$factory = DocBlockFactory::createInstance();
+$factory  = DocBlockFactory::createInstance();
 $docblock = $factory->create($docComment);
 
 // Create the serializer that will reconstitute the DocBlock back to its original form.

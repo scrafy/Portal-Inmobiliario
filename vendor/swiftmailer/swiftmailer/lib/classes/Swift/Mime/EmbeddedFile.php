@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment {
-
+class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment
+{
     /**
      * Creates a new Attachment with $headers and $encoder.
      *
@@ -24,7 +24,8 @@ class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment {
      * @param Swift_Mime_Grammar        $grammar
      * @param array                     $mimeTypes optional
      */
-    public function __construct(Swift_Mime_HeaderSet $headers, Swift_Mime_ContentEncoder $encoder, Swift_KeyCache $cache, Swift_Mime_Grammar $grammar, $mimeTypes = array()) {
+    public function __construct(Swift_Mime_HeaderSet $headers, Swift_Mime_ContentEncoder $encoder, Swift_KeyCache $cache, Swift_Mime_Grammar $grammar, $mimeTypes = array())
+    {
         parent::__construct($headers, $encoder, $cache, $grammar, $mimeTypes);
         $this->setDisposition('inline');
         $this->setId($this->getId());
@@ -37,8 +38,8 @@ class Swift_Mime_EmbeddedFile extends Swift_Mime_Attachment {
      *
      * @return int
      */
-    public function getNestingLevel() {
+    public function getNestingLevel()
+    {
         return self::LEVEL_RELATED;
     }
-
 }

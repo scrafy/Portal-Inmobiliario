@@ -16,8 +16,8 @@ namespace Symfony\Component\Routing\Matcher;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface RedirectableUrlMatcherInterface {
-
+interface RedirectableUrlMatcherInterface
+{
     /**
      * Redirects the user to another URL.
      *

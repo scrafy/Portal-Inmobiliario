@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -15,8 +14,8 @@ namespace phpDocumentor\Reflection;
 /**
  * Interface for project. Since the definition of a project can be different per factory this interface will be small.
  */
-interface Project {
-
+interface Project
+{
     /**
      * Returns the name of the project.
      *

@@ -2,15 +2,14 @@
 
 namespace Illuminate\Cache;
 
-class RedisTaggedCache extends TaggedCache {
-
+class RedisTaggedCache extends TaggedCache
+{
     /**
      * Forever reference key.
      *
      * @var string
      */
     const REFERENCE_KEY_FOREVER = 'forever_ref';
-
     /**
      * Standard reference key.
      *
@@ -26,7 +25,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  \DateTime|float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes = null) {
+    public function put($key, $value, $minutes = null)
+    {
         $this->pushStandardKeys($this->tags->getNamespace(), $key);
 
         parent::put($key, $value, $minutes);
@@ -39,7 +39,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         $this->pushForeverKeys($this->tags->getNamespace(), $key);
 
         parent::forever($key, $value);
@@ -50,7 +51,8 @@ class RedisTaggedCache extends TaggedCache {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->deleteForeverKeys();
         $this->deleteStandardKeys();
 
@@ -64,7 +66,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $key
      * @return void
      */
-    protected function pushStandardKeys($namespace, $key) {
+    protected function pushStandardKeys($namespace, $key)
+    {
         $this->pushKeys($namespace, $key, self::REFERENCE_KEY_STANDARD);
     }
 
@@ -75,7 +78,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $key
      * @return void
      */
-    protected function pushForeverKeys($namespace, $key) {
+    protected function pushForeverKeys($namespace, $key)
+    {
         $this->pushKeys($namespace, $key, self::REFERENCE_KEY_FOREVER);
     }
 
@@ -87,8 +91,9 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $reference
      * @return void
      */
-    protected function pushKeys($namespace, $key, $reference) {
-        $fullKey = $this->store->getPrefix() . sha1($namespace) . ':' . $key;
+    protected function pushKeys($namespace, $key, $reference)
+    {
+        $fullKey = $this->store->getPrefix().sha1($namespace).':'.$key;
 
         foreach (explode('|', $namespace) as $segment) {
             $this->store->connection()->sadd($this->referenceKey($segment, $reference), $fullKey);
@@ -100,7 +105,8 @@ class RedisTaggedCache extends TaggedCache {
      *
      * @return void
      */
-    protected function deleteForeverKeys() {
+    protected function deleteForeverKeys()
+    {
         $this->deleteKeysByReference(self::REFERENCE_KEY_FOREVER);
     }
 
@@ -109,7 +115,8 @@ class RedisTaggedCache extends TaggedCache {
      *
      * @return void
      */
-    protected function deleteStandardKeys() {
+    protected function deleteStandardKeys()
+    {
         $this->deleteKeysByReference(self::REFERENCE_KEY_STANDARD);
     }
 
@@ -119,7 +126,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $reference
      * @return void
      */
-    protected function deleteKeysByReference($reference) {
+    protected function deleteKeysByReference($reference)
+    {
         foreach (explode('|', $this->tags->getNamespace()) as $segment) {
             $this->deleteValues($segment = $this->referenceKey($segment, $reference));
 
@@ -133,7 +141,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $referenceKey
      * @return void
      */
-    protected function deleteValues($referenceKey) {
+    protected function deleteValues($referenceKey)
+    {
         $values = array_unique($this->store->connection()->smembers($referenceKey));
 
         if (count($values) > 0) {
@@ -150,8 +159,8 @@ class RedisTaggedCache extends TaggedCache {
      * @param  string  $suffix
      * @return string
      */
-    protected function referenceKey($segment, $suffix) {
-        return $this->store->getPrefix() . $segment . ':' . $suffix;
+    protected function referenceKey($segment, $suffix)
+    {
+        return $this->store->getPrefix().$segment.':'.$suffix;
     }
-
 }

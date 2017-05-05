@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Pipeline\Hub as HubContract;
 
-class Hub implements HubContract {
-
+class Hub implements HubContract
+{
     /**
      * The container implementation.
      *
@@ -28,7 +28,8 @@ class Hub implements HubContract {
      * @param  \Illuminate\Contracts\Container\Container|null  $container
      * @return void
      */
-    public function __construct(Container $container = null) {
+    public function __construct(Container $container = null)
+    {
         $this->container = $container;
     }
 
@@ -38,7 +39,8 @@ class Hub implements HubContract {
      * @param  \Closure  $callback
      * @return void
      */
-    public function defaults(Closure $callback) {
+    public function defaults(Closure $callback)
+    {
         return $this->pipeline('default', $callback);
     }
 
@@ -49,7 +51,8 @@ class Hub implements HubContract {
      * @param  \Closure  $callback
      * @return void
      */
-    public function pipeline($name, Closure $callback) {
+    public function pipeline($name, Closure $callback)
+    {
         $this->pipelines[$name] = $callback;
     }
 
@@ -60,12 +63,12 @@ class Hub implements HubContract {
      * @param  string|null  $pipeline
      * @return mixed
      */
-    public function pipe($object, $pipeline = null) {
+    public function pipe($object, $pipeline = null)
+    {
         $pipeline = $pipeline ?: 'default';
 
         return call_user_func(
-                $this->pipelines[$pipeline], new Pipeline($this->container), $object
+            $this->pipelines[$pipeline], new Pipeline($this->container), $object
         );
     }
-
 }

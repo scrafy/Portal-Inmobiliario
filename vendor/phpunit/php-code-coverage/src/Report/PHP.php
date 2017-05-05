@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -16,19 +15,20 @@ use SebastianBergmann\CodeCoverage\CodeCoverage;
 /**
  * Uses var_export() to write a SebastianBergmann\CodeCoverage\CodeCoverage object to a file.
  */
-class PHP {
-
+class PHP
+{
     /**
      * @param CodeCoverage $coverage
      * @param string       $target
      *
      * @return string
      */
-    public function process(CodeCoverage $coverage, $target = null) {
+    public function process(CodeCoverage $coverage, $target = null)
+    {
         $filter = $coverage->filter();
 
         $output = sprintf(
-                '<?php
+            '<?php
 $coverage = new SebastianBergmann\CodeCoverage\CodeCoverage;
 $coverage->setData(%s);
 $coverage->setTests(%s);
@@ -36,7 +36,10 @@ $coverage->setTests(%s);
 $filter = $coverage->filter();
 $filter->setWhitelistedFiles(%s);
 
-return $coverage;', var_export($coverage->getData(true), 1), var_export($coverage->getTests(), 1), var_export($filter->getWhitelistedFiles(), 1)
+return $coverage;',
+            var_export($coverage->getData(true), 1),
+            var_export($coverage->getTests(), 1),
+            var_export($filter->getWhitelistedFiles(), 1)
         );
 
         if ($target !== null) {
@@ -45,5 +48,4 @@ return $coverage;', var_export($coverage->getData(true), 1), var_export($coverag
             return $output;
         }
     }
-
 }

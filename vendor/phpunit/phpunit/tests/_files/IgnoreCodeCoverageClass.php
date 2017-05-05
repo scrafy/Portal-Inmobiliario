@@ -1,16 +1,16 @@
 <?php
-
 /**
  * @codeCoverageIgnore
  */
-class IgnoreCodeCoverageClass {
-
-    public function returnTrue() {
+class IgnoreCodeCoverageClass
+{
+    public function returnTrue()
+    {
         return true;
     }
 
-    public function returnFalse() {
+    public function returnFalse()
+    {
         return false;
     }
-
 }

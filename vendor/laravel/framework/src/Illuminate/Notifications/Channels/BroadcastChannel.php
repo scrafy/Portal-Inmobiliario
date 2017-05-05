@@ -8,8 +8,8 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Events\BroadcastNotificationCreated;
 
-class BroadcastChannel {
-
+class BroadcastChannel
+{
     /**
      * The event dispatcher.
      *
@@ -23,7 +23,8 @@ class BroadcastChannel {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function __construct(Dispatcher $events) {
+    public function __construct(Dispatcher $events)
+    {
         $this->events = $events;
     }
 
@@ -34,16 +35,17 @@ class BroadcastChannel {
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return array|null
      */
-    public function send($notifiable, Notification $notification) {
+    public function send($notifiable, Notification $notification)
+    {
         $message = $this->getData($notifiable, $notification);
 
         $event = new BroadcastNotificationCreated(
-                $notifiable, $notification, is_array($message) ? $message : $message->data
+            $notifiable, $notification, is_array($message) ? $message : $message->data
         );
 
         if ($message instanceof BroadcastMessage) {
             $event->onConnection($message->connection)
-                    ->onQueue($message->queue);
+                  ->onQueue($message->queue);
         }
 
         return $this->events->dispatch($event);
@@ -58,7 +60,8 @@ class BroadcastChannel {
      *
      * @throws \RuntimeException
      */
-    protected function getData($notifiable, Notification $notification) {
+    protected function getData($notifiable, Notification $notification)
+    {
         if (method_exists($notification, 'toBroadcast')) {
             return $notification->toBroadcast($notifiable);
         }
@@ -68,8 +71,7 @@ class BroadcastChannel {
         }
 
         throw new RuntimeException(
-        'Notification is missing toArray method.'
+            'Notification is missing toArray method.'
         );
     }
-
 }

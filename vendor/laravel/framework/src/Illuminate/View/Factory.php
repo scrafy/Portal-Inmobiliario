@@ -11,8 +11,8 @@ use Illuminate\View\Engines\EngineResolver;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\View\Factory as FactoryContract;
 
-class Factory implements FactoryContract {
-
+class Factory implements FactoryContract
+{
     use Concerns\ManagesComponents,
         Concerns\ManagesEvents,
         Concerns\ManagesLayouts,
@@ -88,7 +88,8 @@ class Factory implements FactoryContract {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function __construct(EngineResolver $engines, ViewFinderInterface $finder, Dispatcher $events) {
+    public function __construct(EngineResolver $engines, ViewFinderInterface $finder, Dispatcher $events)
+    {
         $this->finder = $finder;
         $this->events = $events;
         $this->engines = $engines;
@@ -104,7 +105,8 @@ class Factory implements FactoryContract {
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
-    public function file($path, $data = [], $mergeData = []) {
+    public function file($path, $data = [], $mergeData = [])
+    {
         $data = array_merge($mergeData, $this->parseData($data));
 
         return tap($this->viewInstance($path, $path, $data), function ($view) {
@@ -120,9 +122,10 @@ class Factory implements FactoryContract {
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
-    public function make($view, $data = [], $mergeData = []) {
+    public function make($view, $data = [], $mergeData = [])
+    {
         $path = $this->finder->find(
-                $view = $this->normalizeName($view)
+            $view = $this->normalizeName($view)
         );
 
         // Next, we will create the view instance and call the view creator for the view
@@ -144,7 +147,8 @@ class Factory implements FactoryContract {
      * @param  string  $empty
      * @return string
      */
-    public function renderEach($view, $data, $iterator, $empty = 'raw|') {
+    public function renderEach($view, $data, $iterator, $empty = 'raw|')
+    {
         $result = '';
 
         // If is actually data in the array, we will loop through the data and append
@@ -153,8 +157,8 @@ class Factory implements FactoryContract {
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
                 $result .= $this->make(
-                                $view, ['key' => $key, $iterator => $value]
-                        )->render();
+                    $view, ['key' => $key, $iterator => $value]
+                )->render();
             }
         }
 
@@ -162,7 +166,9 @@ class Factory implements FactoryContract {
         // view. Alternatively, the "empty view" could be a raw string that begins
         // with "raw|" for convenience and to let this know that it is a string.
         else {
-            $result = Str::startsWith($empty, 'raw|') ? substr($empty, 4) : $this->make($empty)->render();
+            $result = Str::startsWith($empty, 'raw|')
+                        ? substr($empty, 4)
+                        : $this->make($empty)->render();
         }
 
         return $result;
@@ -174,7 +180,8 @@ class Factory implements FactoryContract {
      * @param  string $name
      * @return string
      */
-    protected function normalizeName($name) {
+    protected function normalizeName($name)
+    {
         return ViewName::normalize($name);
     }
 
@@ -184,7 +191,8 @@ class Factory implements FactoryContract {
      * @param  mixed  $data
      * @return array
      */
-    protected function parseData($data) {
+    protected function parseData($data)
+    {
         return $data instanceof Arrayable ? $data->toArray() : $data;
     }
 
@@ -196,7 +204,8 @@ class Factory implements FactoryContract {
      * @param  array  $data
      * @return \Illuminate\Contracts\View\View
      */
-    protected function viewInstance($view, $path, $data) {
+    protected function viewInstance($view, $path, $data)
+    {
         return new View($this, $this->getEngineFromPath($path), $view, $path, $data);
     }
 
@@ -206,7 +215,8 @@ class Factory implements FactoryContract {
      * @param  string  $view
      * @return bool
      */
-    public function exists($view) {
+    public function exists($view)
+    {
         try {
             $this->finder->find($view);
         } catch (InvalidArgumentException $e) {
@@ -224,8 +234,9 @@ class Factory implements FactoryContract {
      *
      * @throws \InvalidArgumentException
      */
-    public function getEngineFromPath($path) {
-        if (!$extension = $this->getExtension($path)) {
+    public function getEngineFromPath($path)
+    {
+        if (! $extension = $this->getExtension($path)) {
             throw new InvalidArgumentException("Unrecognized extension in file: $path");
         }
 
@@ -240,12 +251,13 @@ class Factory implements FactoryContract {
      * @param  string  $path
      * @return string
      */
-    protected function getExtension($path) {
+    protected function getExtension($path)
+    {
         $extensions = array_keys($this->extensions);
 
         return Arr::first($extensions, function ($value) use ($path) {
-                    return Str::endsWith($path, '.' . $value);
-                });
+            return Str::endsWith($path, '.'.$value);
+        });
     }
 
     /**
@@ -255,7 +267,8 @@ class Factory implements FactoryContract {
      * @param  mixed  $value
      * @return mixed
      */
-    public function share($key, $value = null) {
+    public function share($key, $value = null)
+    {
         $keys = is_array($key) ? $key : [$key => $value];
 
         foreach ($keys as $key => $value) {
@@ -270,7 +283,8 @@ class Factory implements FactoryContract {
      *
      * @return void
      */
-    public function incrementRender() {
+    public function incrementRender()
+    {
         $this->renderCount++;
     }
 
@@ -279,7 +293,8 @@ class Factory implements FactoryContract {
      *
      * @return void
      */
-    public function decrementRender() {
+    public function decrementRender()
+    {
         $this->renderCount--;
     }
 
@@ -288,7 +303,8 @@ class Factory implements FactoryContract {
      *
      * @return bool
      */
-    public function doneRendering() {
+    public function doneRendering()
+    {
         return $this->renderCount == 0;
     }
 
@@ -298,7 +314,8 @@ class Factory implements FactoryContract {
      * @param  string  $location
      * @return void
      */
-    public function addLocation($location) {
+    public function addLocation($location)
+    {
         $this->finder->addLocation($location);
     }
 
@@ -309,7 +326,8 @@ class Factory implements FactoryContract {
      * @param  string|array  $hints
      * @return $this
      */
-    public function addNamespace($namespace, $hints) {
+    public function addNamespace($namespace, $hints)
+    {
         $this->finder->addNamespace($namespace, $hints);
 
         return $this;
@@ -322,7 +340,8 @@ class Factory implements FactoryContract {
      * @param  string|array  $hints
      * @return $this
      */
-    public function prependNamespace($namespace, $hints) {
+    public function prependNamespace($namespace, $hints)
+    {
         $this->finder->prependNamespace($namespace, $hints);
 
         return $this;
@@ -335,7 +354,8 @@ class Factory implements FactoryContract {
      * @param  string|array  $hints
      * @return $this
      */
-    public function replaceNamespace($namespace, $hints) {
+    public function replaceNamespace($namespace, $hints)
+    {
         $this->finder->replaceNamespace($namespace, $hints);
 
         return $this;
@@ -349,7 +369,8 @@ class Factory implements FactoryContract {
      * @param  \Closure  $resolver
      * @return void
      */
-    public function addExtension($extension, $engine, $resolver = null) {
+    public function addExtension($extension, $engine, $resolver = null)
+    {
         $this->finder->addExtension($extension);
 
         if (isset($resolver)) {
@@ -366,7 +387,8 @@ class Factory implements FactoryContract {
      *
      * @return void
      */
-    public function flushState() {
+    public function flushState()
+    {
         $this->renderCount = 0;
 
         $this->flushSections();
@@ -378,7 +400,8 @@ class Factory implements FactoryContract {
      *
      * @return void
      */
-    public function flushStateIfDoneRendering() {
+    public function flushStateIfDoneRendering()
+    {
         if ($this->doneRendering()) {
             $this->flushState();
         }
@@ -389,7 +412,8 @@ class Factory implements FactoryContract {
      *
      * @return array
      */
-    public function getExtensions() {
+    public function getExtensions()
+    {
         return $this->extensions;
     }
 
@@ -398,7 +422,8 @@ class Factory implements FactoryContract {
      *
      * @return \Illuminate\View\Engines\EngineResolver
      */
-    public function getEngineResolver() {
+    public function getEngineResolver()
+    {
         return $this->engines;
     }
 
@@ -407,7 +432,8 @@ class Factory implements FactoryContract {
      *
      * @return \Illuminate\View\ViewFinderInterface
      */
-    public function getFinder() {
+    public function getFinder()
+    {
         return $this->finder;
     }
 
@@ -417,7 +443,8 @@ class Factory implements FactoryContract {
      * @param  \Illuminate\View\ViewFinderInterface  $finder
      * @return void
      */
-    public function setFinder(ViewFinderInterface $finder) {
+    public function setFinder(ViewFinderInterface $finder)
+    {
         $this->finder = $finder;
     }
 
@@ -426,7 +453,8 @@ class Factory implements FactoryContract {
      *
      * @return void
      */
-    public function flushFinderCache() {
+    public function flushFinderCache()
+    {
         $this->getFinder()->flush();
     }
 
@@ -435,7 +463,8 @@ class Factory implements FactoryContract {
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
-    public function getDispatcher() {
+    public function getDispatcher()
+    {
         return $this->events;
     }
 
@@ -445,7 +474,8 @@ class Factory implements FactoryContract {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function setDispatcher(Dispatcher $events) {
+    public function setDispatcher(Dispatcher $events)
+    {
         $this->events = $events;
     }
 
@@ -454,7 +484,8 @@ class Factory implements FactoryContract {
      *
      * @return \Illuminate\Contracts\Container\Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container;
     }
 
@@ -464,7 +495,8 @@ class Factory implements FactoryContract {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function setContainer(Container $container) {
+    public function setContainer(Container $container)
+    {
         $this->container = $container;
     }
 
@@ -475,7 +507,8 @@ class Factory implements FactoryContract {
      * @param  mixed   $default
      * @return mixed
      */
-    public function shared($key, $default = null) {
+    public function shared($key, $default = null)
+    {
         return Arr::get($this->shared, $key, $default);
     }
 
@@ -484,8 +517,8 @@ class Factory implements FactoryContract {
      *
      * @return array
      */
-    public function getShared() {
+    public function getShared()
+    {
         return $this->shared;
     }
-
 }

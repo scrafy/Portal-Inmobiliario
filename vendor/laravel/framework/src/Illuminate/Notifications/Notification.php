@@ -4,8 +4,8 @@ namespace Illuminate\Notifications;
 
 use Illuminate\Queue\SerializesModels;
 
-class Notification {
-
+class Notification
+{
     use SerializesModels;
 
     /**
@@ -20,8 +20,8 @@ class Notification {
      *
      * @return array
      */
-    public function broadcastOn() {
+    public function broadcastOn()
+    {
         return [];
     }
-
 }

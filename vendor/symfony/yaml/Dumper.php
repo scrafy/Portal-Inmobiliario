@@ -16,8 +16,8 @@ namespace Symfony\Component\Yaml;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Dumper {
-
+class Dumper
+{
     /**
      * The amount of spaces to use for indentation of nested nodes.
      *
@@ -28,7 +28,8 @@ class Dumper {
     /**
      * @param int $indentation
      */
-    public function __construct($indentation = 4) {
+    public function __construct($indentation = 4)
+    {
         if ($indentation < 1) {
             throw new \InvalidArgumentException('The indentation must be greater than zero.');
         }
@@ -41,8 +42,9 @@ class Dumper {
      *
      * @param int $num The amount of spaces to use for indentation of nested nodes
      */
-    public function setIndentation($num) {
-        @trigger_error('The ' . __METHOD__ . ' method is deprecated since version 3.1 and will be removed in 4.0. Pass the indentation to the constructor instead.', E_USER_DEPRECATED);
+    public function setIndentation($num)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 3.1 and will be removed in 4.0. Pass the indentation to the constructor instead.', E_USER_DEPRECATED);
 
         $this->indentation = (int) $num;
     }
@@ -57,7 +59,8 @@ class Dumper {
      *
      * @return string The YAML representation of the PHP value
      */
-    public function dump($input, $inline = 0, $indent = 0, $flags = 0) {
+    public function dump($input, $inline = 0, $indent = 0, $flags = 0)
+    {
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
@@ -80,13 +83,13 @@ class Dumper {
         $prefix = $indent ? str_repeat(' ', $indent) : '';
 
         if ($inline <= 0 || !is_array($input) || empty($input)) {
-            $output .= $prefix . Inline::dump($input, $flags);
+            $output .= $prefix.Inline::dump($input, $flags);
         } else {
             $isAHash = Inline::isHash($input);
 
             foreach ($input as $key => $value) {
                 if ($inline >= 1 && Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK & $flags && is_string($value) && false !== strpos($value, "\n")) {
-                    $output .= sprintf("%s%s%s |\n", $prefix, $isAHash ? Inline::dump($key, $flags) . ':' : '-', '');
+                    $output .= sprintf("%s%s%s |\n", $prefix, $isAHash ? Inline::dump($key, $flags).':' : '-', '');
 
                     foreach (preg_split('/\n|\r\n/', $value) as $row) {
                         $output .= sprintf("%s%s%s\n", $prefix, str_repeat(' ', $this->indentation), $row);
@@ -97,12 +100,15 @@ class Dumper {
 
                 $willBeInlined = $inline - 1 <= 0 || !is_array($value) || empty($value);
 
-                $output .= sprintf('%s%s%s%s', $prefix, $isAHash ? Inline::dump($key, $flags) . ':' : '-', $willBeInlined ? ' ' : "\n", $this->dump($value, $inline - 1, $willBeInlined ? 0 : $indent + $this->indentation, $flags)
-                        ) . ($willBeInlined ? "\n" : '');
+                $output .= sprintf('%s%s%s%s',
+                    $prefix,
+                    $isAHash ? Inline::dump($key, $flags).':' : '-',
+                    $willBeInlined ? ' ' : "\n",
+                    $this->dump($value, $inline - 1, $willBeInlined ? 0 : $indent + $this->indentation, $flags)
+                ).($willBeInlined ? "\n" : '');
             }
         }
 
         return $output;
     }
-
 }

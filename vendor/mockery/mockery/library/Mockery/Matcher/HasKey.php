@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class HasKey extends MatcherAbstract {
+class HasKey extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,7 +29,8 @@ class HasKey extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         return in_array($this->_expected, array_keys($actual));
     }
 
@@ -38,9 +39,9 @@ class HasKey extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $return = '<HasKey[' . (string) $this->_expected . ']>';
         return $return;
     }
-
 }

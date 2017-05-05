@@ -19,18 +19,21 @@ use phpDocumentor\Reflection\DocBlock\Tags\Method;
  *
  * @internal
  */
-final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface {
-
+final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
+{
     private $classRetriever;
 
-    public function __construct(MethodTagRetrieverInterface $classRetriever = null) {
+    public function __construct(MethodTagRetrieverInterface $classRetriever = null)
+    {
         if (null !== $classRetriever) {
             $this->classRetriever = $classRetriever;
 
             return;
         }
 
-        $this->classRetriever = class_exists('phpDocumentor\Reflection\DocBlockFactory') && class_exists('phpDocumentor\Reflection\Types\ContextFactory') ? new ClassTagRetriever() : new LegacyClassTagRetriever()
+        $this->classRetriever = class_exists('phpDocumentor\Reflection\DocBlockFactory') && class_exists('phpDocumentor\Reflection\Types\ContextFactory')
+            ? new ClassTagRetriever()
+            : new LegacyClassTagRetriever()
         ;
     }
 
@@ -39,9 +42,11 @@ final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
      *
      * @return LegacyMethodTag[]|Method[]
      */
-    public function getTagList(\ReflectionClass $reflectionClass) {
+    public function getTagList(\ReflectionClass $reflectionClass)
+    {
         return array_merge(
-                $this->classRetriever->getTagList($reflectionClass), $this->getInterfacesTagList($reflectionClass)
+            $this->classRetriever->getTagList($reflectionClass),
+            $this->getInterfacesTagList($reflectionClass)
         );
     }
 
@@ -50,15 +55,15 @@ final class ClassAndInterfaceTagRetriever implements MethodTagRetrieverInterface
      *
      * @return LegacyMethodTag[]|Method[]
      */
-    private function getInterfacesTagList(\ReflectionClass $reflectionClass) {
+    private function getInterfacesTagList(\ReflectionClass $reflectionClass)
+    {
         $interfaces = $reflectionClass->getInterfaces();
         $tagList = array();
 
-        foreach ($interfaces as $interface) {
+        foreach($interfaces as $interface) {
             $tagList = array_merge($tagList, $this->classRetriever->getTagList($interface));
         }
 
         return $tagList;
     }
-
 }

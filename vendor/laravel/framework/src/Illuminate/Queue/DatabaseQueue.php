@@ -8,8 +8,8 @@ use Illuminate\Queue\Jobs\DatabaseJob;
 use Illuminate\Queue\Jobs\DatabaseJobRecord;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 
-class DatabaseQueue extends Queue implements QueueContract {
-
+class DatabaseQueue extends Queue implements QueueContract
+{
     /**
      * The database connection instance.
      *
@@ -47,7 +47,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  int  $retryAfter
      * @return void
      */
-    public function __construct(Connection $database, $table, $default = 'default', $retryAfter = 60) {
+    public function __construct(Connection $database, $table, $default = 'default', $retryAfter = 60)
+    {
         $this->table = $table;
         $this->default = $default;
         $this->database = $database;
@@ -60,10 +61,11 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return int
      */
-    public function size($queue = null) {
+    public function size($queue = null)
+    {
         return $this->database->table($this->table)
-                        ->where('queue', $this->getQueue($queue))
-                        ->count();
+                    ->where('queue', $this->getQueue($queue))
+                    ->count();
     }
 
     /**
@@ -74,7 +76,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function push($job, $data = '', $queue = null) {
+    public function push($job, $data = '', $queue = null)
+    {
         return $this->pushToDatabase($queue, $this->createPayload($job, $data));
     }
 
@@ -86,7 +89,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  array   $options
      * @return mixed
      */
-    public function pushRaw($payload, $queue = null, array $options = []) {
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
         return $this->pushToDatabase($queue, $payload);
     }
 
@@ -99,7 +103,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return void
      */
-    public function later($delay, $job, $data = '', $queue = null) {
+    public function later($delay, $job, $data = '', $queue = null)
+    {
         return $this->pushToDatabase($queue, $this->createPayload($job, $data), $delay);
     }
 
@@ -111,16 +116,17 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function bulk($jobs, $data = '', $queue = null) {
+    public function bulk($jobs, $data = '', $queue = null)
+    {
         $queue = $this->getQueue($queue);
 
         $availableAt = $this->availableAt();
 
         return $this->database->table($this->table)->insert(collect((array) $jobs)->map(
-                                function ($job) use ($queue, $data, $availableAt) {
-                            return $this->buildDatabaseRecord($queue, $this->createPayload($job, $data), $availableAt);
-                        }
-                        )->all());
+            function ($job) use ($queue, $data, $availableAt) {
+                return $this->buildDatabaseRecord($queue, $this->createPayload($job, $data), $availableAt);
+            }
+        )->all());
     }
 
     /**
@@ -131,7 +137,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  int  $delay
      * @return mixed
      */
-    public function release($queue, $job, $delay) {
+    public function release($queue, $job, $delay)
+    {
         return $this->pushToDatabase($queue, $job->payload, $delay, $job->attempts);
     }
 
@@ -144,9 +151,10 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  int  $attempts
      * @return mixed
      */
-    protected function pushToDatabase($queue, $payload, $delay = 0, $attempts = 0) {
+    protected function pushToDatabase($queue, $payload, $delay = 0, $attempts = 0)
+    {
         return $this->database->table($this->table)->insertGetId($this->buildDatabaseRecord(
-                                $this->getQueue($queue), $payload, $this->availableAt($delay), $attempts
+            $this->getQueue($queue), $payload, $this->availableAt($delay), $attempts
         ));
     }
 
@@ -159,7 +167,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  int  $attempts
      * @return array
      */
-    protected function buildDatabaseRecord($queue, $payload, $availableAt, $attempts = 0) {
+    protected function buildDatabaseRecord($queue, $payload, $availableAt, $attempts = 0)
+    {
         return [
             'queue' => $queue,
             'payload' => $payload,
@@ -176,7 +185,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
-    public function pop($queue = null) {
+    public function pop($queue = null)
+    {
         $queue = $this->getQueue($queue);
 
         $this->database->beginTransaction();
@@ -194,16 +204,17 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string|null  $queue
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord|null
      */
-    protected function getNextAvailableJob($queue) {
+    protected function getNextAvailableJob($queue)
+    {
         $job = $this->database->table($this->table)
-                ->lockForUpdate()
-                ->where('queue', $this->getQueue($queue))
-                ->where(function ($query) {
-                    $this->isAvailable($query);
-                    $this->isReservedButExpired($query);
-                })
-                ->orderBy('id', 'asc')
-                ->first();
+                    ->lockForUpdate()
+                    ->where('queue', $this->getQueue($queue))
+                    ->where(function ($query) {
+                        $this->isAvailable($query);
+                        $this->isReservedButExpired($query);
+                    })
+                    ->orderBy('id', 'asc')
+                    ->first();
 
         return $job ? new DatabaseJobRecord((object) $job) : null;
     }
@@ -214,10 +225,11 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
      */
-    protected function isAvailable($query) {
+    protected function isAvailable($query)
+    {
         $query->where(function ($query) {
             $query->whereNull('reserved_at')
-                    ->where('available_at', '<=', $this->currentTime());
+                  ->where('available_at', '<=', $this->currentTime());
         });
     }
 
@@ -227,7 +239,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return void
      */
-    protected function isReservedButExpired($query) {
+    protected function isReservedButExpired($query)
+    {
         $expiration = Carbon::now()->subSeconds($this->retryAfter)->getTimestamp();
 
         $query->orWhere(function ($query) use ($expiration) {
@@ -242,13 +255,14 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
      * @return \Illuminate\Queue\Jobs\DatabaseJob
      */
-    protected function marshalJob($queue, $job) {
+    protected function marshalJob($queue, $job)
+    {
         $job = $this->markJobAsReserved($job);
 
         $this->database->commit();
 
         return new DatabaseJob(
-                $this->container, $this, $job, $this->connectionName, $queue
+            $this->container, $this, $job, $this->connectionName, $queue
         );
     }
 
@@ -258,7 +272,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  \Illuminate\Queue\Jobs\DatabaseJobRecord  $job
      * @return \Illuminate\Queue\Jobs\DatabaseJobRecord
      */
-    protected function markJobAsReserved($job) {
+    protected function markJobAsReserved($job)
+    {
         $this->database->table($this->table)->where('id', $job->id)->update([
             'reserved_at' => $job->touch(),
             'attempts' => $job->increment(),
@@ -274,7 +289,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string  $id
      * @return void
      */
-    public function deleteReserved($queue, $id) {
+    public function deleteReserved($queue, $id)
+    {
         $this->database->beginTransaction();
 
         if ($this->database->table($this->table)->lockForUpdate()->find($id)) {
@@ -290,7 +306,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      * @param  string|null  $queue
      * @return string
      */
-    protected function getQueue($queue) {
+    protected function getQueue($queue)
+    {
         return $queue ?: $this->default;
     }
 
@@ -299,8 +316,8 @@ class DatabaseQueue extends Queue implements QueueContract {
      *
      * @return \Illuminate\Database\Connection
      */
-    public function getDatabase() {
+    public function getDatabase()
+    {
         return $this->database;
     }
-
 }

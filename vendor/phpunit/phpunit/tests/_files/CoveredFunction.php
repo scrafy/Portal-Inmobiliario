@@ -1,5 +1,4 @@
 <?php
-
-function globalFunction() {
-    
+function globalFunction()
+{
 }

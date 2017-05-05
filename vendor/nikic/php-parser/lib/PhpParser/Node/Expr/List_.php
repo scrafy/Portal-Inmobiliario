@@ -4,8 +4,8 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class List_ extends Expr {
-
+class List_ extends Expr
+{
     /** @var ArrayItem[] List of items to assign to */
     public $items;
 
@@ -23,5 +23,4 @@ class List_ extends Expr {
     public function getSubNodeNames() {
         return array('items');
     }
-
 }

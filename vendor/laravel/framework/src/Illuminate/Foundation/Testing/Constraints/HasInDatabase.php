@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Testing\Constraints;
 use PHPUnit_Framework_Constraint;
 use Illuminate\Database\Connection;
 
-class HasInDatabase extends PHPUnit_Framework_Constraint {
-
+class HasInDatabase extends PHPUnit_Framework_Constraint
+{
     /**
      * Number of records that will be shown in the console in case of failure.
      *
@@ -35,7 +35,8 @@ class HasInDatabase extends PHPUnit_Framework_Constraint {
      * @param  array  $data
      * @return void
      */
-    public function __construct(Connection $database, array $data) {
+    public function __construct(Connection $database, array $data)
+    {
         $this->data = $data;
 
         $this->database = $database;
@@ -47,7 +48,8 @@ class HasInDatabase extends PHPUnit_Framework_Constraint {
      * @param  string  $table
      * @return bool
      */
-    public function matches($table) {
+    public function matches($table)
+    {
         return $this->database->table($table)->where($this->data)->count() > 0;
     }
 
@@ -57,9 +59,11 @@ class HasInDatabase extends PHPUnit_Framework_Constraint {
      * @param  string  $table
      * @return string
      */
-    public function failureDescription($table) {
+    public function failureDescription($table)
+    {
         return sprintf(
-                "a row in the table [%s] matches the attributes %s.\n\n%s", $table, $this->toString(), $this->getAdditionalInfo($table)
+            "a row in the table [%s] matches the attributes %s.\n\n%s",
+            $table, $this->toString(), $this->getAdditionalInfo($table)
         );
     }
 
@@ -69,14 +73,15 @@ class HasInDatabase extends PHPUnit_Framework_Constraint {
      * @param  string  $table
      * @return string
      */
-    protected function getAdditionalInfo($table) {
+    protected function getAdditionalInfo($table)
+    {
         $results = $this->database->table($table)->get();
 
         if ($results->isEmpty()) {
             return 'The table is empty';
         }
 
-        $description = 'Found: ' . json_encode($results->take($this->show), JSON_PRETTY_PRINT);
+        $description = 'Found: '.json_encode($results->take($this->show), JSON_PRETTY_PRINT);
 
         if ($results->count() > $this->show) {
             $description .= sprintf(' and %s others', $results->count() - $this->show);
@@ -90,8 +95,8 @@ class HasInDatabase extends PHPUnit_Framework_Constraint {
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return json_encode($this->data);
     }
-
 }

@@ -7,8 +7,8 @@ use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Database\Migrations\DatabaseMigrationRepository;
 
-class MigrationServiceProvider extends ServiceProvider {
-
+class MigrationServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -21,7 +21,8 @@ class MigrationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerRepository();
 
         $this->registerMigrator();
@@ -34,7 +35,8 @@ class MigrationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerRepository() {
+    protected function registerRepository()
+    {
         $this->app->singleton('migration.repository', function ($app) {
             $table = $app['config']['database.migrations'];
 
@@ -47,7 +49,8 @@ class MigrationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerMigrator() {
+    protected function registerMigrator()
+    {
         // The migrator is responsible for actually running and rollback the migration
         // files in the application. We'll pass in our database connection resolver
         // so the migrator can resolve any of these connections when it needs to.
@@ -63,7 +66,8 @@ class MigrationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerCreator() {
+    protected function registerCreator()
+    {
         $this->app->singleton('migration.creator', function ($app) {
             return new MigrationCreator($app['files']);
         });
@@ -74,10 +78,10 @@ class MigrationServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'migrator', 'migration.repository', 'migration.creator',
         ];
     }
-
 }

@@ -10,8 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Bus\QueueingDispatcher;
 
-class Dispatcher implements QueueingDispatcher {
-
+class Dispatcher implements QueueingDispatcher
+{
     /**
      * The container implementation.
      *
@@ -54,7 +54,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  \Closure|null  $queueResolver
      * @return void
      */
-    public function __construct(Container $container, Closure $queueResolver = null) {
+    public function __construct(Container $container, Closure $queueResolver = null)
+    {
         $this->container = $container;
         $this->queueResolver = $queueResolver;
         $this->pipeline = new Pipeline($container);
@@ -66,7 +67,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $command
      * @return mixed
      */
-    public function dispatch($command) {
+    public function dispatch($command)
+    {
         if ($this->queueResolver && $this->commandShouldBeQueued($command)) {
             return $this->dispatchToQueue($command);
         } else {
@@ -81,7 +83,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $handler
      * @return mixed
      */
-    public function dispatchNow($command, $handler = null) {
+    public function dispatchNow($command, $handler = null)
+    {
         if ($handler || $handler = $this->getCommandHandler($command)) {
             $callback = function ($command) use ($handler) {
                 return $handler->handle($command);
@@ -101,7 +104,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $command
      * @return bool
      */
-    public function hasCommandHandler($command) {
+    public function hasCommandHandler($command)
+    {
         return array_key_exists(get_class($command), $this->handlers);
     }
 
@@ -111,7 +115,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $command
      * @return bool|mixed
      */
-    public function getCommandHandler($command) {
+    public function getCommandHandler($command)
+    {
         if ($this->hasCommandHandler($command)) {
             return $this->container->make($this->handlers[get_class($command)]);
         }
@@ -125,7 +130,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $command
      * @return bool
      */
-    protected function commandShouldBeQueued($command) {
+    protected function commandShouldBeQueued($command)
+    {
         return $command instanceof ShouldQueue;
     }
 
@@ -137,12 +143,13 @@ class Dispatcher implements QueueingDispatcher {
      *
      * @throws \RuntimeException
      */
-    public function dispatchToQueue($command) {
+    public function dispatchToQueue($command)
+    {
         $connection = isset($command->connection) ? $command->connection : null;
 
         $queue = call_user_func($this->queueResolver, $connection);
 
-        if (!$queue instanceof Queue) {
+        if (! $queue instanceof Queue) {
             throw new RuntimeException('Queue resolver did not return a Queue implementation.');
         }
 
@@ -160,7 +167,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  mixed  $command
      * @return mixed
      */
-    protected function pushCommandToQueue($queue, $command) {
+    protected function pushCommandToQueue($queue, $command)
+    {
         if (isset($command->queue, $command->delay)) {
             return $queue->laterOn($command->queue, $command->delay, $command);
         }
@@ -182,7 +190,8 @@ class Dispatcher implements QueueingDispatcher {
      * @param  array  $pipes
      * @return $this
      */
-    public function pipeThrough(array $pipes) {
+    public function pipeThrough(array $pipes)
+    {
         $this->pipes = $pipes;
 
         return $this;
@@ -194,10 +203,10 @@ class Dispatcher implements QueueingDispatcher {
      * @param  array  $map
      * @return $this
      */
-    public function map(array $map) {
+    public function map(array $map)
+    {
         $this->handlers = array_merge($this->handlers, $map);
 
         return $this;
     }
-
 }

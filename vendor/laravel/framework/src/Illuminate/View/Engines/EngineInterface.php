@@ -2,8 +2,8 @@
 
 namespace Illuminate\View\Engines;
 
-interface EngineInterface {
-
+interface EngineInterface
+{
     /**
      * Get the evaluated contents of the view.
      *

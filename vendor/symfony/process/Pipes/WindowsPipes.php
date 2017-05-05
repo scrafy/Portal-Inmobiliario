@@ -24,24 +24,22 @@ use Symfony\Component\Process\Exception\RuntimeException;
  *
  * @internal
  */
-class WindowsPipes extends AbstractPipes {
-
+class WindowsPipes extends AbstractPipes
+{
     /** @var array */
     private $files = array();
-
     /** @var array */
     private $fileHandles = array();
-
     /** @var array */
     private $readBytes = array(
         Process::STDOUT => 0,
         Process::STDERR => 0,
     );
-
     /** @var bool */
     private $haveReadSupport;
 
-    public function __construct($input, $haveReadSupport) {
+    public function __construct($input, $haveReadSupport)
+    {
         $this->haveReadSupport = (bool) $haveReadSupport;
 
         if ($this->haveReadSupport) {
@@ -56,9 +54,7 @@ class WindowsPipes extends AbstractPipes {
             $tmpCheck = false;
             $tmpDir = sys_get_temp_dir();
             $lastError = 'unknown reason';
-            set_error_handler(function ($type, $msg) use (&$lastError) {
-                $lastError = $msg;
-            });
+            set_error_handler(function ($type, $msg) use (&$lastError) { $lastError = $msg; });
             for ($i = 0;; ++$i) {
                 foreach ($pipes as $pipe => $name) {
                     $file = sprintf('%s\\sf_proc_%02X.%s', $tmpDir, $i, $name);
@@ -90,7 +86,8 @@ class WindowsPipes extends AbstractPipes {
         parent::__construct($input);
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->close();
         $this->removeFiles();
     }
@@ -98,7 +95,8 @@ class WindowsPipes extends AbstractPipes {
     /**
      * {@inheritdoc}
      */
-    public function getDescriptors() {
+    public function getDescriptors()
+    {
         if (!$this->haveReadSupport) {
             $nullstream = fopen('NUL', 'c');
 
@@ -122,14 +120,16 @@ class WindowsPipes extends AbstractPipes {
     /**
      * {@inheritdoc}
      */
-    public function getFiles() {
+    public function getFiles()
+    {
         return $this->files;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function readAndWrite($blocking, $close = false) {
+    public function readAndWrite($blocking, $close = false)
+    {
         $this->unblock();
         $w = $this->write();
         $read = $r = $e = array();
@@ -160,21 +160,24 @@ class WindowsPipes extends AbstractPipes {
     /**
      * {@inheritdoc}
      */
-    public function haveReadSupport() {
+    public function haveReadSupport()
+    {
         return $this->haveReadSupport;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function areOpen() {
+    public function areOpen()
+    {
         return $this->pipes && $this->fileHandles;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         parent::close();
         foreach ($this->fileHandles as $handle) {
             fclose($handle);
@@ -185,7 +188,8 @@ class WindowsPipes extends AbstractPipes {
     /**
      * Removes temporary files.
      */
-    private function removeFiles() {
+    private function removeFiles()
+    {
         foreach ($this->files as $filename) {
             if (file_exists($filename)) {
                 @unlink($filename);
@@ -193,5 +197,4 @@ class WindowsPipes extends AbstractPipes {
         }
         $this->files = array();
     }
-
 }

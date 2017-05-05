@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,18 +8,20 @@
  * file that was distributed with this source code.
  */
 
-class Framework_AssertTest extends PHPUnit_Framework_TestCase {
-
+class Framework_AssertTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @var string
      */
     private $filesDirectory;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->filesDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
     }
 
-    public function testFail() {
+    public function testFail()
+    {
         try {
             $this->fail();
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -30,7 +31,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         throw new PHPUnit_Framework_AssertionFailedError('Fail did not throw fail exception');
     }
 
-    public function testAssertSplObjectStorageContainsObject() {
+    public function testAssertSplObjectStorageContainsObject()
+    {
         $a = new stdClass;
         $b = new stdClass;
         $c = new SplObjectStorage;
@@ -47,7 +49,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayContainsObject() {
+    public function testAssertArrayContainsObject()
+    {
         $a = new stdClass;
         $b = new stdClass;
 
@@ -62,7 +65,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayContainsString() {
+    public function testAssertArrayContainsString()
+    {
         $this->assertContains('foo', ['foo']);
 
         try {
@@ -74,7 +78,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayContainsNonObject() {
+    public function testAssertArrayContainsNonObject()
+    {
         $this->assertContains('foo', [true]);
 
         try {
@@ -86,7 +91,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertContainsOnlyInstancesOf() {
+    public function testAssertContainsOnlyInstancesOf()
+    {
         $test = [
             new Book(),
             new Book
@@ -108,18 +114,21 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument() {
+    public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument()
+    {
         $this->assertArrayHasKey(null, []);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument() {
+    public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument()
+    {
         $this->assertArrayHasKey(0, null);
     }
 
-    public function testAssertArrayHasIntegerKey() {
+    public function testAssertArrayHasIntegerKey()
+    {
         $this->assertArrayHasKey(0, ['foo']);
 
         try {
@@ -131,7 +140,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArraySubset() {
+    public function testAssertArraySubset()
+    {
         $array = [
             'a' => 'item a',
             'b' => 'item b',
@@ -150,7 +160,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         try {
             $this->assertArraySubset(['a' => 'bad value'], $array);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            
         }
 
         try {
@@ -162,7 +171,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArraySubsetWithDeepNestedArrays() {
+    public function testAssertArraySubsetWithDeepNestedArrays()
+    {
         $array = [
             'path' => [
                 'to' => [
@@ -187,19 +197,21 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArraySubsetWithNoStrictCheckAndObjects() {
-        $obj = new \stdClass;
+    public function testAssertArraySubsetWithNoStrictCheckAndObjects()
+    {
+        $obj       = new \stdClass;
         $reference = &$obj;
-        $array = ['a' => $obj];
+        $array     = ['a' => $obj];
 
         $this->assertArraySubset(['a' => $reference], $array);
         $this->assertArraySubset(['a' => new \stdClass], $array);
     }
 
-    public function testAssertArraySubsetWithStrictCheckAndObjects() {
-        $obj = new \stdClass;
+    public function testAssertArraySubsetWithStrictCheckAndObjects()
+    {
+        $obj       = new \stdClass;
         $reference = &$obj;
-        $array = ['a' => $obj];
+        $array     = ['a' => $obj];
 
         $this->assertArraySubset(['a' => $reference], $array, true);
 
@@ -217,14 +229,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
      * @expectedExceptionMessage array or ArrayAccess
      * @dataProvider assertArraySubsetInvalidArgumentProvider
      */
-    public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject) {
+    public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
+    {
         $this->assertArraySubset($partial, $subject);
     }
 
     /**
      * @return array
      */
-    public function assertArraySubsetInvalidArgumentProvider() {
+    public function assertArraySubsetInvalidArgumentProvider()
+    {
         return [
             [false, []],
             [[], false],
@@ -234,18 +248,21 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument() {
+    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument()
+    {
         $this->assertArrayNotHasKey(null, []);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument() {
+    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument()
+    {
         $this->assertArrayNotHasKey(0, null);
     }
 
-    public function testAssertArrayNotHasIntegerKey() {
+    public function testAssertArrayNotHasIntegerKey()
+    {
         $this->assertArrayNotHasKey(1, ['foo']);
 
         try {
@@ -257,7 +274,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayHasStringKey() {
+    public function testAssertArrayHasStringKey()
+    {
         $this->assertArrayHasKey('foo', ['foo' => 'bar']);
 
         try {
@@ -269,7 +287,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotHasStringKey() {
+    public function testAssertArrayNotHasStringKey()
+    {
         $this->assertArrayNotHasKey('bar', ['foo' => 'bar']);
 
         try {
@@ -281,8 +300,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayHasKeyAcceptsArrayObjectValue() {
-        $array = new ArrayObject();
+    public function testAssertArrayHasKeyAcceptsArrayObjectValue()
+    {
+        $array        = new ArrayObject();
         $array['foo'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -290,14 +310,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue() {
-        $array = new ArrayObject();
+    public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue()
+    {
+        $array        = new ArrayObject();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
 
-    public function testAssertArrayHasKeyAcceptsArrayAccessValue() {
-        $array = new SampleArrayAccess();
+    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    {
+        $array        = new SampleArrayAccess();
         $array['foo'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -305,14 +327,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue() {
-        $array = new SampleArrayAccess();
+    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    {
+        $array        = new SampleArrayAccess();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
 
-    public function testAssertArrayNotHasKeyAcceptsArrayAccessValue() {
-        $array = new ArrayObject();
+    public function testAssertArrayNotHasKeyAcceptsArrayAccessValue()
+    {
+        $array        = new ArrayObject();
         $array['foo'] = 'bar';
         $this->assertArrayNotHasKey('bar', $array);
     }
@@ -320,8 +344,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue() {
-        $array = new ArrayObject();
+    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    {
+        $array        = new ArrayObject();
         $array['bar'] = 'bar';
         $this->assertArrayNotHasKey('bar', $array);
     }
@@ -329,11 +354,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertContainsThrowsException() {
+    public function testAssertContainsThrowsException()
+    {
         $this->assertContains(null, null);
     }
 
-    public function testAssertIteratorContainsObject() {
+    public function testAssertIteratorContainsObject()
+    {
         $foo = new stdClass;
 
         $this->assertContains($foo, new TestIterator([$foo]));
@@ -347,7 +374,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertIteratorContainsString() {
+    public function testAssertIteratorContainsString()
+    {
         $this->assertContains('foo', new TestIterator(['foo']));
 
         try {
@@ -359,7 +387,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringContainsString() {
+    public function testAssertStringContainsString()
+    {
         $this->assertContains('foo', 'foobar');
 
         try {
@@ -371,7 +400,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringContainsStringForUtf8() {
+    public function testAssertStringContainsStringForUtf8()
+    {
         $this->assertContains('oryginał', 'oryginał');
 
         try {
@@ -383,7 +413,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringContainsStringForUtf8WhenIgnoreCase() {
+    public function testAssertStringContainsStringForUtf8WhenIgnoreCase()
+    {
         $this->assertContains('oryginał', 'oryginał', '', true);
         $this->assertContains('ORYGINAŁ', 'oryginał', '', true);
 
@@ -399,11 +430,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotContainsThrowsException() {
+    public function testAssertNotContainsThrowsException()
+    {
         $this->assertNotContains(null, null);
     }
 
-    public function testAssertSplObjectStorageNotContainsObject() {
+    public function testAssertSplObjectStorageNotContainsObject()
+    {
         $a = new stdClass;
         $b = new stdClass;
         $c = new SplObjectStorage;
@@ -420,7 +453,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotContainsObject() {
+    public function testAssertArrayNotContainsObject()
+    {
         $a = new stdClass;
         $b = new stdClass;
 
@@ -435,7 +469,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotContainsString() {
+    public function testAssertArrayNotContainsString()
+    {
         $this->assertNotContains('foo', ['bar']);
 
         try {
@@ -447,7 +482,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotContainsNonObject() {
+    public function testAssertArrayNotContainsNonObject()
+    {
         $this->assertNotContains('foo', [true], '', false, true, true);
 
         try {
@@ -459,7 +495,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringNotContainsString() {
+    public function testAssertStringNotContainsString()
+    {
         $this->assertNotContains('foo', 'bar');
 
         try {
@@ -471,7 +508,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringNotContainsStringForUtf8() {
+    public function testAssertStringNotContainsStringForUtf8()
+    {
         $this->assertNotContains('ORYGINAŁ', 'oryginał');
 
         try {
@@ -483,7 +521,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertStringNotContainsStringForUtf8WhenIgnoreCase() {
+    public function testAssertStringNotContainsStringForUtf8WhenIgnoreCase()
+    {
         try {
             $this->assertNotContains('ORYGINAŁ', 'oryginał', '', true);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -496,25 +535,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertContainsOnlyThrowsException() {
+    public function testAssertContainsOnlyThrowsException()
+    {
         $this->assertContainsOnly(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotContainsOnlyThrowsException() {
+    public function testAssertNotContainsOnlyThrowsException()
+    {
         $this->assertNotContainsOnly(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertContainsOnlyInstancesOfThrowsException() {
+    public function testAssertContainsOnlyInstancesOfThrowsException()
+    {
         $this->assertContainsOnlyInstancesOf(null, null);
     }
 
-    public function testAssertArrayContainsOnlyIntegers() {
+    public function testAssertArrayContainsOnlyIntegers()
+    {
         $this->assertContainsOnly('integer', [1, 2, 3]);
 
         try {
@@ -526,7 +569,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotContainsOnlyIntegers() {
+    public function testAssertArrayNotContainsOnlyIntegers()
+    {
         $this->assertNotContainsOnly('integer', ['1', 2, 3]);
 
         try {
@@ -538,7 +582,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayContainsOnlyStdClass() {
+    public function testAssertArrayContainsOnlyStdClass()
+    {
         $this->assertContainsOnly('StdClass', [new stdClass]);
 
         try {
@@ -550,7 +595,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertArrayNotContainsOnlyStdClass() {
+    public function testAssertArrayNotContainsOnlyStdClass()
+    {
         $this->assertNotContainsOnly('StdClass', ['StdClass']);
 
         try {
@@ -562,11 +608,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    protected function sameValues() {
+    protected function sameValues()
+    {
         $object = new SampleClass(4, 8, 15);
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
+        $file     = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
         $resource = fopen($file, 'r');
 
         return [
@@ -592,27 +639,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         ];
     }
 
-    protected function notEqualValues() {
+    protected function notEqualValues()
+    {
         // cyclic dependencies
-        $book1 = new Book;
-        $book1->author = new Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2 = new Book;
-        $book2->author = new Author('Terry Pratch');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratch');
         $book2->author->books[] = $book2;
 
-        $book3 = new Book;
+        $book3         = new Book;
         $book3->author = 'Terry Pratchett';
-        $book4 = new stdClass;
+        $book4         = new stdClass;
         $book4->author = 'Terry Pratchett';
 
-        $object1 = new SampleClass(4, 8, 15);
-        $object2 = new SampleClass(16, 23, 42);
-        $object3 = new SampleClass(4, 8, 15);
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(16, 23, 42);
+        $object3  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
         $storage2->attach($object3); // same content, different object
+
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
         $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
@@ -622,7 +671,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
             ['a', 'b'],
             ['a', 'A'],
             // https://github.com/sebastianbergmann/phpunit/issues/1023
-            ['9E6666666', '9E7777777'],
+            ['9E6666666','9E7777777'],
             // integers
             [1, 2],
             [2, 1],
@@ -637,9 +686,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
             [NAN, NAN],
             // arrays
             [[], [0 => 1]],
-            [[0 => 1], []],
-            [[0 => null], []],
-            [[0 => 1, 1 => 2], [0 => 1, 1 => 3]],
+            [[0     => 1], []],
+            [[0     => null], []],
+            [[0     => 1, 1 => 2], [0     => 1, 1 => 3]],
             [['a', 'b' => [1, 2]], ['a', 'b' => [2, 1]]],
             // objects
             [new SampleClass(4, 8, 15), new SampleClass(16, 23, 42)],
@@ -720,7 +769,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
             // different types
             [new SampleClass(4, 8, 15), false],
             [false, new SampleClass(4, 8, 15)],
-            [[0 => 1, 1 => 2], false],
+            [[0        => 1, 1 => 2], false],
             [false, [0 => 1, 1 => 2]],
             [[], new stdClass],
             [new stdClass, []],
@@ -733,17 +782,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         ];
     }
 
-    protected function equalValues() {
+    protected function equalValues()
+    {
         // cyclic dependencies
-        $book1 = new Book;
-        $book1->author = new Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2 = new Book;
-        $book2->author = new Author('Terry Pratchett');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratchett');
         $book2->author->books[] = $book2;
 
-        $object1 = new SampleClass(4, 8, 15);
-        $object2 = new SampleClass(4, 8, 15);
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
@@ -844,20 +894,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function equalProvider() {
+    public function equalProvider()
+    {
         // same |= equal
         return array_merge($this->equalValues(), $this->sameValues());
     }
 
-    public function notEqualProvider() {
+    public function notEqualProvider()
+    {
         return $this->notEqualValues();
     }
 
-    public function sameProvider() {
+    public function sameProvider()
+    {
         return $this->sameValues();
     }
 
-    public function notSameProvider() {
+    public function notSameProvider()
+    {
         // not equal |= not same
         // equal, ¬same |= not same
         return array_merge($this->notEqualValues(), $this->equalValues());
@@ -866,14 +920,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider equalProvider
      */
-    public function testAssertEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false) {
+    public function testAssertEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
         $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
 
     /**
      * @dataProvider notEqualProvider
      */
-    public function testAssertEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false) {
+    public function testAssertEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
         try {
             $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -886,14 +942,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider notEqualProvider
      */
-    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false) {
+    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
         $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
 
     /**
      * @dataProvider equalProvider
      */
-    public function testAssertNotEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false) {
+    public function testAssertNotEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
         try {
             $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -906,14 +964,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider sameProvider
      */
-    public function testAssertSameSucceeds($a, $b) {
+    public function testAssertSameSucceeds($a, $b)
+    {
         $this->assertSame($a, $b);
     }
 
     /**
      * @dataProvider notSameProvider
      */
-    public function testAssertSameFails($a, $b) {
+    public function testAssertSameFails($a, $b)
+    {
         try {
             $this->assertSame($a, $b);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -926,14 +986,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider notSameProvider
      */
-    public function testAssertNotSameSucceeds($a, $b) {
+    public function testAssertNotSameSucceeds($a, $b)
+    {
         $this->assertNotSame($a, $b);
     }
 
     /**
      * @dataProvider sameProvider
      */
-    public function testAssertNotSameFails($a, $b) {
+    public function testAssertNotSameFails($a, $b)
+    {
         try {
             $this->assertNotSame($a, $b);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -943,14 +1005,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertXmlFileEqualsXmlFile() {
+    public function testAssertXmlFileEqualsXmlFile()
+    {
         $this->assertXmlFileEqualsXmlFile(
-                $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'foo.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'foo.xml'
         );
 
         try {
             $this->assertXmlFileEqualsXmlFile(
-                    $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'bar.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'bar.xml'
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -959,14 +1024,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertXmlFileNotEqualsXmlFile() {
+    public function testAssertXmlFileNotEqualsXmlFile()
+    {
         $this->assertXmlFileNotEqualsXmlFile(
-                $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'bar.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'bar.xml'
         );
 
         try {
             $this->assertXmlFileNotEqualsXmlFile(
-                    $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'foo.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'foo.xml'
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -975,14 +1043,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertXmlStringEqualsXmlFile() {
+    public function testAssertXmlStringEqualsXmlFile()
+    {
         $this->assertXmlStringEqualsXmlFile(
-                $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'foo.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         try {
             $this->assertXmlStringEqualsXmlFile(
-                    $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'bar.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'bar.xml')
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -991,14 +1062,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testXmlStringNotEqualsXmlFile() {
+    public function testXmlStringNotEqualsXmlFile()
+    {
         $this->assertXmlStringNotEqualsXmlFile(
-                $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'bar.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         try {
             $this->assertXmlStringNotEqualsXmlFile(
-                    $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'foo.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'foo.xml')
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1007,7 +1081,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
         $this->fail();
     }
 
-    public function testAssertXmlStringEqualsXmlString() {
+    public function testAssertXmlStringEqualsXmlString()
+    {
         $this->assertXmlStringEqualsXmlString('<root/>', '<root/>');
 
         try {
@@ -1023,14 +1098,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase {
      * @expectedException PHPUnit_Framework_Exception
      * @ticket            1860
      */
-    public function testAssertXmlStringEqualsXmlString2() {
+    public function testAssertXmlStringEqualsXmlString2()
+    {
         $this->assertXmlStringEqualsXmlString('<a></b>', '<c></d>');
     }
 
     /**
      * @ticket 1860
      */
-    public function testAssertXmlStringEqualsXmlString3() {
+    public function testAssertXmlStringEqualsXmlString3()
+    {
         $expected = <<<XML
 <?xml version="1.0"?>
 <root>
@@ -1048,7 +1125,8 @@ XML;
         $this->assertXmlStringEqualsXmlString($expected, $actual);
     }
 
-    public function testAssertXmlStringNotEqualsXmlString() {
+    public function testAssertXmlStringNotEqualsXmlString()
+    {
         $this->assertXmlStringNotEqualsXmlString('<foo/>', '<bar/>');
 
         try {
@@ -1060,7 +1138,8 @@ XML;
         $this->fail();
     }
 
-    public function testXMLStructureIsSame() {
+    public function testXMLStructureIsSame()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1068,14 +1147,15 @@ XML;
         $actual->load($this->filesDirectory . 'structureExpected.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
     /**
      * @expectedException PHPUnit_Framework_ExpectationFailedException
      */
-    public function testXMLStructureWrongNumberOfAttributes() {
+    public function testXMLStructureWrongNumberOfAttributes()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1083,14 +1163,15 @@ XML;
         $actual->load($this->filesDirectory . 'structureWrongNumberOfAttributes.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
     /**
      * @expectedException PHPUnit_Framework_ExpectationFailedException
      */
-    public function testXMLStructureWrongNumberOfNodes() {
+    public function testXMLStructureWrongNumberOfNodes()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1098,11 +1179,12 @@ XML;
         $actual->load($this->filesDirectory . 'structureWrongNumberOfNodes.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
-    public function testXMLStructureIsSameButDataIsNot() {
+    public function testXMLStructureIsSameButDataIsNot()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1110,11 +1192,12 @@ XML;
         $actual->load($this->filesDirectory . 'structureIsSameButDataIsNot.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
-    public function testXMLStructureAttributesAreSameButValuesAreNot() {
+    public function testXMLStructureAttributesAreSameButValuesAreNot()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1122,11 +1205,12 @@ XML;
         $actual->load($this->filesDirectory . 'structureAttributesAreSameButValuesAreNot.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
-    public function testXMLStructureIgnoreTextNodes() {
+    public function testXMLStructureIgnoreTextNodes()
+    {
         $expected = new DOMDocument;
         $expected->load($this->filesDirectory . 'structureExpected.xml');
 
@@ -1134,11 +1218,12 @@ XML;
         $actual->load($this->filesDirectory . 'structureIgnoreTextNodes.xml');
 
         $this->assertEqualXMLStructure(
-                $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
-    public function testAssertStringEqualsNumeric() {
+    public function testAssertStringEqualsNumeric()
+    {
         $this->assertEquals('0', 0);
 
         try {
@@ -1150,18 +1235,21 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringEqualsNumeric2() {
+    public function testAssertStringEqualsNumeric2()
+    {
         $this->assertNotEquals('A', 0);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertIsReadableThrowsException() {
+    public function testAssertIsReadableThrowsException()
+    {
         $this->assertIsReadable(null);
     }
 
-    public function testAssertIsReadable() {
+    public function testAssertIsReadable()
+    {
         $this->assertIsReadable(__FILE__);
 
         try {
@@ -1176,11 +1264,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotIsReadableThrowsException() {
+    public function testAssertNotIsReadableThrowsException()
+    {
         $this->assertNotIsReadable(null);
     }
 
-    public function testAssertNotIsReadable() {
+    public function testAssertNotIsReadable()
+    {
         try {
             $this->assertNotIsReadable(__FILE__);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -1193,11 +1283,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertIsWritableThrowsException() {
+    public function testAssertIsWritableThrowsException()
+    {
         $this->assertIsWritable(null);
     }
 
-    public function testAssertIsWritable() {
+    public function testAssertIsWritable()
+    {
         $this->assertIsWritable(__FILE__);
 
         try {
@@ -1212,11 +1304,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotIsWritableThrowsException() {
+    public function testAssertNotIsWritableThrowsException()
+    {
         $this->assertNotIsWritable(null);
     }
 
-    public function testAssertNotIsWritable() {
+    public function testAssertNotIsWritable()
+    {
         try {
             $this->assertNotIsWritable(__FILE__);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -1229,11 +1323,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryExistsThrowsException() {
+    public function testAssertDirectoryExistsThrowsException()
+    {
         $this->assertDirectoryExists(null);
     }
 
-    public function testAssertDirectoryExists() {
+    public function testAssertDirectoryExists()
+    {
         $this->assertDirectoryExists(__DIR__);
 
         try {
@@ -1248,11 +1344,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryNotExistsThrowsException() {
+    public function testAssertDirectoryNotExistsThrowsException()
+    {
         $this->assertDirectoryNotExists(null);
     }
 
-    public function testAssertDirectoryNotExists() {
+    public function testAssertDirectoryNotExists()
+    {
         $this->assertDirectoryNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         try {
@@ -1267,11 +1365,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryIsReadableThrowsException() {
+    public function testAssertDirectoryIsReadableThrowsException()
+    {
         $this->assertDirectoryIsReadable(null);
     }
 
-    public function testAssertDirectoryIsReadable() {
+    public function testAssertDirectoryIsReadable()
+    {
         $this->assertDirectoryIsReadable(__DIR__);
 
         try {
@@ -1286,18 +1386,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryNotIsReadableThrowsException() {
+    public function testAssertDirectoryNotIsReadableThrowsException()
+    {
         $this->assertDirectoryNotIsReadable(null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryIsWritableThrowsException() {
+    public function testAssertDirectoryIsWritableThrowsException()
+    {
         $this->assertDirectoryIsWritable(null);
     }
 
-    public function testAssertDirectoryIsWritable() {
+    public function testAssertDirectoryIsWritable()
+    {
         $this->assertDirectoryIsWritable(__DIR__);
 
         try {
@@ -1312,18 +1415,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertDirectoryNotIsWritableThrowsException() {
+    public function testAssertDirectoryNotIsWritableThrowsException()
+    {
         $this->assertDirectoryNotIsWritable(null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileExistsThrowsException() {
+    public function testAssertFileExistsThrowsException()
+    {
         $this->assertFileExists(null);
     }
 
-    public function testAssertFileExists() {
+    public function testAssertFileExists()
+    {
         $this->assertFileExists(__FILE__);
 
         try {
@@ -1338,11 +1444,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileNotExistsThrowsException() {
+    public function testAssertFileNotExistsThrowsException()
+    {
         $this->assertFileNotExists(null);
     }
 
-    public function testAssertFileNotExists() {
+    public function testAssertFileNotExists()
+    {
         $this->assertFileNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         try {
@@ -1357,11 +1465,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileIsReadableThrowsException() {
+    public function testAssertFileIsReadableThrowsException()
+    {
         $this->assertFileIsReadable(null);
     }
 
-    public function testAssertFileIsReadable() {
+    public function testAssertFileIsReadable()
+    {
         $this->assertFileIsReadable(__FILE__);
 
         try {
@@ -1376,18 +1486,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileNotIsReadableThrowsException() {
+    public function testAssertFileNotIsReadableThrowsException()
+    {
         $this->assertFileNotIsReadable(null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileIsWritableThrowsException() {
+    public function testAssertFileIsWritableThrowsException()
+    {
         $this->assertFileIsWritable(null);
     }
 
-    public function testAssertFileIsWritable() {
+    public function testAssertFileIsWritable()
+    {
         $this->assertFileIsWritable(__FILE__);
 
         try {
@@ -1402,11 +1515,13 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertFileNotIsWritableThrowsException() {
+    public function testAssertFileNotIsWritableThrowsException()
+    {
         $this->assertFileNotIsWritable(null);
     }
 
-    public function testAssertObjectHasAttribute() {
+    public function testAssertObjectHasAttribute()
+    {
         $o = new Author('Terry Pratchett');
 
         $this->assertObjectHasAttribute('name', $o);
@@ -1420,7 +1535,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertObjectNotHasAttribute() {
+    public function testAssertObjectNotHasAttribute()
+    {
         $o = new Author('Terry Pratchett');
 
         $this->assertObjectNotHasAttribute('foo', $o);
@@ -1434,7 +1550,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertFinite() {
+    public function testAssertFinite()
+    {
         $this->assertFinite(1);
 
         try {
@@ -1446,7 +1563,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertInfinite() {
+    public function testAssertInfinite()
+    {
         $this->assertInfinite(INF);
 
         try {
@@ -1458,7 +1576,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNan() {
+    public function testAssertNan()
+    {
         $this->assertNan(NAN);
 
         try {
@@ -1470,7 +1589,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNull() {
+    public function testAssertNull()
+    {
         $this->assertNull(null);
 
         try {
@@ -1482,7 +1602,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotNull() {
+    public function testAssertNotNull()
+    {
         $this->assertNotNull(new stdClass);
 
         try {
@@ -1494,7 +1615,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertTrue() {
+    public function testAssertTrue()
+    {
         $this->assertTrue(true);
 
         try {
@@ -1506,7 +1628,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotTrue() {
+    public function testAssertNotTrue()
+    {
         $this->assertNotTrue(false);
         $this->assertNotTrue(1);
         $this->assertNotTrue('true');
@@ -1520,7 +1643,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertFalse() {
+    public function testAssertFalse()
+    {
         $this->assertFalse(false);
 
         try {
@@ -1532,7 +1656,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotFalse() {
+    public function testAssertNotFalse()
+    {
         $this->assertNotFalse(true);
         $this->assertNotFalse(0);
         $this->assertNotFalse('');
@@ -1549,32 +1674,37 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertRegExpThrowsException() {
+    public function testAssertRegExpThrowsException()
+    {
         $this->assertRegExp(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertRegExpThrowsException2() {
+    public function testAssertRegExpThrowsException2()
+    {
         $this->assertRegExp('', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotRegExpThrowsException() {
+    public function testAssertNotRegExpThrowsException()
+    {
         $this->assertNotRegExp(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotRegExpThrowsException2() {
+    public function testAssertNotRegExpThrowsException2()
+    {
         $this->assertNotRegExp('', null);
     }
 
-    public function testAssertRegExp() {
+    public function testAssertRegExp()
+    {
         $this->assertRegExp('/foo/', 'foobar');
 
         try {
@@ -1586,7 +1716,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotRegExp() {
+    public function testAssertNotRegExp()
+    {
         $this->assertNotRegExp('/foo/', 'bar');
 
         try {
@@ -1598,14 +1729,16 @@ XML;
         $this->fail();
     }
 
-    public function testAssertSame() {
+    public function testAssertSame()
+    {
         $o = new stdClass;
 
         $this->assertSame($o, $o);
 
         try {
             $this->assertSame(
-                    new stdClass, new stdClass
+                new stdClass,
+                new stdClass
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1614,7 +1747,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertSame2() {
+    public function testAssertSame2()
+    {
         $this->assertSame(true, true);
         $this->assertSame(false, false);
 
@@ -1627,17 +1761,21 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotSame() {
+    public function testAssertNotSame()
+    {
         $this->assertNotSame(
-                new stdClass, null
+            new stdClass,
+            null
         );
 
         $this->assertNotSame(
-                null, new stdClass
+            null,
+            new stdClass
         );
 
         $this->assertNotSame(
-                new stdClass, new stdClass
+            new stdClass,
+            new stdClass
         );
 
         $o = new stdClass;
@@ -1651,7 +1789,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotSame2() {
+    public function testAssertNotSame2()
+    {
         $this->assertNotSame(true, false);
         $this->assertNotSame(false, true);
 
@@ -1664,7 +1803,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotSameFailsNull() {
+    public function testAssertNotSameFailsNull()
+    {
         try {
             $this->assertNotSame(null, null);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -1674,7 +1814,8 @@ XML;
         $this->fail();
     }
 
-    public function testGreaterThan() {
+    public function testGreaterThan()
+    {
         $this->assertGreaterThan(1, 2);
 
         try {
@@ -1686,14 +1827,15 @@ XML;
         $this->fail();
     }
 
-    public function testAttributeGreaterThan() {
+    public function testAttributeGreaterThan()
+    {
         $this->assertAttributeGreaterThan(
-                1, 'bar', new ClassWithNonPublicAttributes
+            1, 'bar', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeGreaterThan(
-                    1, 'foo', new ClassWithNonPublicAttributes
+                1, 'foo', new ClassWithNonPublicAttributes
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1702,7 +1844,8 @@ XML;
         $this->fail();
     }
 
-    public function testGreaterThanOrEqual() {
+    public function testGreaterThanOrEqual()
+    {
         $this->assertGreaterThanOrEqual(1, 2);
 
         try {
@@ -1714,14 +1857,15 @@ XML;
         $this->fail();
     }
 
-    public function testAttributeGreaterThanOrEqual() {
+    public function testAttributeGreaterThanOrEqual()
+    {
         $this->assertAttributeGreaterThanOrEqual(
-                1, 'bar', new ClassWithNonPublicAttributes
+            1, 'bar', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeGreaterThanOrEqual(
-                    2, 'foo', new ClassWithNonPublicAttributes
+                2, 'foo', new ClassWithNonPublicAttributes
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1730,7 +1874,8 @@ XML;
         $this->fail();
     }
 
-    public function testLessThan() {
+    public function testLessThan()
+    {
         $this->assertLessThan(2, 1);
 
         try {
@@ -1742,14 +1887,15 @@ XML;
         $this->fail();
     }
 
-    public function testAttributeLessThan() {
+    public function testAttributeLessThan()
+    {
         $this->assertAttributeLessThan(
-                2, 'foo', new ClassWithNonPublicAttributes
+            2, 'foo', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeLessThan(
-                    1, 'bar', new ClassWithNonPublicAttributes
+                1, 'bar', new ClassWithNonPublicAttributes
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1758,7 +1904,8 @@ XML;
         $this->fail();
     }
 
-    public function testLessThanOrEqual() {
+    public function testLessThanOrEqual()
+    {
         $this->assertLessThanOrEqual(2, 1);
 
         try {
@@ -1770,14 +1917,15 @@ XML;
         $this->fail();
     }
 
-    public function testAttributeLessThanOrEqual() {
+    public function testAttributeLessThanOrEqual()
+    {
         $this->assertAttributeLessThanOrEqual(
-                2, 'foo', new ClassWithNonPublicAttributes
+            2, 'foo', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeLessThanOrEqual(
-                    1, 'bar', new ClassWithNonPublicAttributes
+                1, 'bar', new ClassWithNonPublicAttributes
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -1786,7 +1934,8 @@ XML;
         $this->fail();
     }
 
-    public function testReadAttribute() {
+    public function testReadAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertEquals('foo', $this->readAttribute($obj, 'publicAttribute'));
@@ -1796,7 +1945,8 @@ XML;
         //$this->assertEquals('bar', $this->readAttribute($obj, 'privateParentAttribute'));
     }
 
-    public function testReadAttribute2() {
+    public function testReadAttribute2()
+    {
         $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
         $this->assertEquals('bar', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
         $this->assertEquals('baz', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
@@ -1807,101 +1957,117 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testReadAttribute3() {
+    public function testReadAttribute3()
+    {
         $this->readAttribute('StdClass', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testReadAttribute4() {
+    public function testReadAttribute4()
+    {
         $this->readAttribute('NotExistingClass', 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testReadAttribute5() {
+    public function testReadAttribute5()
+    {
         $this->readAttribute(null, 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testReadAttributeIfAttributeNameIsNotValid() {
+    public function testReadAttributeIfAttributeNameIsNotValid()
+    {
         $this->readAttribute('StdClass', '2');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument() {
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
+    {
         $this->getStaticAttribute(null, 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2() {
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
+    {
         $this->getStaticAttribute('NotExistingClass', 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument() {
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
+    {
         $this->getStaticAttribute('stdClass', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2() {
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
         $this->getStaticAttribute('stdClass', '0');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3() {
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
         $this->getStaticAttribute('stdClass', 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument() {
+    public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument()
+    {
         $this->getObjectAttribute(null, 'foo');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument() {
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
+    {
         $this->getObjectAttribute(new stdClass, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2() {
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
         $this->getObjectAttribute(new stdClass, '0');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3() {
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
         $this->getObjectAttribute(new stdClass, 'foo');
     }
 
-    public function testGetObjectAttributeWorksForInheritedAttributes() {
+    public function testGetObjectAttributeWorksForInheritedAttributes()
+    {
         $this->assertEquals(
-                'bar', $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
+            'bar',
+            $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
         );
     }
 
-    public function testAssertPublicAttributeContains() {
+    public function testAssertPublicAttributeContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeContains('foo', 'publicArray', $obj);
@@ -1915,7 +2081,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeContainsOnly() {
+    public function testAssertPublicAttributeContainsOnly()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeContainsOnly('string', 'publicArray', $obj);
@@ -1929,7 +2096,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeNotContains() {
+    public function testAssertPublicAttributeNotContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotContains('bar', 'publicArray', $obj);
@@ -1943,7 +2111,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeNotContainsOnly() {
+    public function testAssertPublicAttributeNotContainsOnly()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotContainsOnly('integer', 'publicArray', $obj);
@@ -1957,7 +2126,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedAttributeContains() {
+    public function testAssertProtectedAttributeContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeContains('bar', 'protectedArray', $obj);
@@ -1971,7 +2141,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedAttributeNotContains() {
+    public function testAssertProtectedAttributeNotContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotContains('foo', 'protectedArray', $obj);
@@ -1985,7 +2156,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateAttributeContains() {
+    public function testAssertPrivateAttributeContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeContains('baz', 'privateArray', $obj);
@@ -1999,7 +2171,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateAttributeNotContains() {
+    public function testAssertPrivateAttributeNotContains()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotContains('foo', 'privateArray', $obj);
@@ -2013,7 +2186,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertAttributeContainsNonObject() {
+    public function testAssertAttributeContainsNonObject()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeContains(true, 'privateArray', $obj);
@@ -2027,7 +2201,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertAttributeNotContainsNonObject() {
+    public function testAssertAttributeNotContainsNonObject()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotContains(true, 'privateArray', $obj, '', false, true, true);
@@ -2041,7 +2216,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeEquals() {
+    public function testAssertPublicAttributeEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeEquals('foo', 'publicAttribute', $obj);
@@ -2055,7 +2231,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeNotEquals() {
+    public function testAssertPublicAttributeNotEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotEquals('bar', 'publicAttribute', $obj);
@@ -2069,7 +2246,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeSame() {
+    public function testAssertPublicAttributeSame()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeSame('foo', 'publicAttribute', $obj);
@@ -2083,7 +2261,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicAttributeNotSame() {
+    public function testAssertPublicAttributeNotSame()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotSame('bar', 'publicAttribute', $obj);
@@ -2097,7 +2276,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedAttributeEquals() {
+    public function testAssertProtectedAttributeEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeEquals('bar', 'protectedAttribute', $obj);
@@ -2111,7 +2291,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedAttributeNotEquals() {
+    public function testAssertProtectedAttributeNotEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotEquals('foo', 'protectedAttribute', $obj);
@@ -2125,7 +2306,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateAttributeEquals() {
+    public function testAssertPrivateAttributeEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeEquals('baz', 'privateAttribute', $obj);
@@ -2139,7 +2321,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateAttributeNotEquals() {
+    public function testAssertPrivateAttributeNotEquals()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertAttributeNotEquals('foo', 'privateAttribute', $obj);
@@ -2153,7 +2336,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicStaticAttributeEquals() {
+    public function testAssertPublicStaticAttributeEquals()
+    {
         $this->assertAttributeEquals('foo', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2165,7 +2349,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPublicStaticAttributeNotEquals() {
+    public function testAssertPublicStaticAttributeNotEquals()
+    {
         $this->assertAttributeNotEquals('bar', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2177,7 +2362,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedStaticAttributeEquals() {
+    public function testAssertProtectedStaticAttributeEquals()
+    {
         $this->assertAttributeEquals('bar', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2189,7 +2375,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertProtectedStaticAttributeNotEquals() {
+    public function testAssertProtectedStaticAttributeNotEquals()
+    {
         $this->assertAttributeNotEquals('foo', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2201,7 +2388,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateStaticAttributeEquals() {
+    public function testAssertPrivateStaticAttributeEquals()
+    {
         $this->assertAttributeEquals('baz', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2213,7 +2401,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertPrivateStaticAttributeNotEquals() {
+    public function testAssertPrivateStaticAttributeNotEquals()
+    {
         $this->assertAttributeNotEquals('foo', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2228,130 +2417,149 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasAttributeThrowsException() {
+    public function testAssertClassHasAttributeThrowsException()
+    {
         $this->assertClassHasAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasAttributeThrowsException2() {
+    public function testAssertClassHasAttributeThrowsException2()
+    {
         $this->assertClassHasAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertClassHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasAttributeThrowsException() {
+    public function testAssertClassNotHasAttributeThrowsException()
+    {
         $this->assertClassNotHasAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasAttributeThrowsException2() {
+    public function testAssertClassNotHasAttributeThrowsException2()
+    {
         $this->assertClassNotHasAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertClassNotHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasStaticAttributeThrowsException() {
+    public function testAssertClassHasStaticAttributeThrowsException()
+    {
         $this->assertClassHasStaticAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasStaticAttributeThrowsException2() {
+    public function testAssertClassHasStaticAttributeThrowsException2()
+    {
         $this->assertClassHasStaticAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertClassHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasStaticAttributeThrowsException() {
+    public function testAssertClassNotHasStaticAttributeThrowsException()
+    {
         $this->assertClassNotHasStaticAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasStaticAttributeThrowsException2() {
+    public function testAssertClassNotHasStaticAttributeThrowsException2()
+    {
         $this->assertClassNotHasStaticAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertClassNotHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectHasAttributeThrowsException() {
+    public function testAssertObjectHasAttributeThrowsException()
+    {
         $this->assertObjectHasAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectHasAttributeThrowsException2() {
+    public function testAssertObjectHasAttributeThrowsException2()
+    {
         $this->assertObjectHasAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertObjectHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectNotHasAttributeThrowsException() {
+    public function testAssertObjectNotHasAttributeThrowsException()
+    {
         $this->assertObjectNotHasAttribute(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectNotHasAttributeThrowsException2() {
+    public function testAssertObjectNotHasAttributeThrowsException2()
+    {
         $this->assertObjectNotHasAttribute('foo', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertObjectNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid() {
+    public function testAssertObjectNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
         $this->assertObjectNotHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
-    public function testClassHasPublicAttribute() {
+    public function testClassHasPublicAttribute()
+    {
         $this->assertClassHasAttribute('publicAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2363,7 +2571,8 @@ XML;
         $this->fail();
     }
 
-    public function testClassNotHasPublicAttribute() {
+    public function testClassNotHasPublicAttribute()
+    {
         $this->assertClassNotHasAttribute('attribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2375,7 +2584,8 @@ XML;
         $this->fail();
     }
 
-    public function testClassHasPublicStaticAttribute() {
+    public function testClassHasPublicStaticAttribute()
+    {
         $this->assertClassHasStaticAttribute('publicStaticAttribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2387,7 +2597,8 @@ XML;
         $this->fail();
     }
 
-    public function testClassNotHasPublicStaticAttribute() {
+    public function testClassNotHasPublicStaticAttribute()
+    {
         $this->assertClassNotHasStaticAttribute('attribute', 'ClassWithNonPublicAttributes');
 
         try {
@@ -2399,7 +2610,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectHasPublicAttribute() {
+    public function testObjectHasPublicAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('publicAttribute', $obj);
@@ -2413,7 +2625,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectNotHasPublicAttribute() {
+    public function testObjectNotHasPublicAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
@@ -2427,8 +2640,9 @@ XML;
         $this->fail();
     }
 
-    public function testObjectHasOnTheFlyAttribute() {
-        $obj = new stdClass;
+    public function testObjectHasOnTheFlyAttribute()
+    {
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectHasAttribute('foo', $obj);
@@ -2442,8 +2656,9 @@ XML;
         $this->fail();
     }
 
-    public function testObjectNotHasOnTheFlyAttribute() {
-        $obj = new stdClass;
+    public function testObjectNotHasOnTheFlyAttribute()
+    {
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectNotHasAttribute('bar', $obj);
@@ -2457,7 +2672,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectHasProtectedAttribute() {
+    public function testObjectHasProtectedAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('protectedAttribute', $obj);
@@ -2471,7 +2687,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectNotHasProtectedAttribute() {
+    public function testObjectNotHasProtectedAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
@@ -2485,7 +2702,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectHasPrivateAttribute() {
+    public function testObjectHasPrivateAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('privateAttribute', $obj);
@@ -2499,7 +2717,8 @@ XML;
         $this->fail();
     }
 
-    public function testObjectNotHasPrivateAttribute() {
+    public function testObjectNotHasPrivateAttribute()
+    {
         $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
@@ -2513,176 +2732,223 @@ XML;
         $this->fail();
     }
 
-    public function testAssertThatAttributeEquals() {
+    public function testAssertThatAttributeEquals()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->attribute(
-                        $this->equalTo('foo'), 'publicAttribute'
-                )
+            new ClassWithNonPublicAttributes,
+            $this->attribute(
+                $this->equalTo('foo'),
+                'publicAttribute'
+            )
         );
     }
 
     /**
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertThatAttributeEquals2() {
+    public function testAssertThatAttributeEquals2()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->attribute(
-                        $this->equalTo('bar'), 'publicAttribute'
-                )
+            new ClassWithNonPublicAttributes,
+            $this->attribute(
+                $this->equalTo('bar'),
+                'publicAttribute'
+            )
         );
     }
 
-    public function testAssertThatAttributeEqualTo() {
+    public function testAssertThatAttributeEqualTo()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->attributeEqualTo('publicAttribute', 'foo')
+            new ClassWithNonPublicAttributes,
+            $this->attributeEqualTo('publicAttribute', 'foo')
         );
     }
 
-    public function testAssertThatAnything() {
+    public function testAssertThatAnything()
+    {
         $this->assertThat('anything', $this->anything());
     }
 
-    public function testAssertThatIsTrue() {
+    public function testAssertThatIsTrue()
+    {
         $this->assertThat(true, $this->isTrue());
     }
 
-    public function testAssertThatIsFalse() {
+    public function testAssertThatIsFalse()
+    {
         $this->assertThat(false, $this->isFalse());
     }
 
-    public function testAssertThatIsJson() {
+    public function testAssertThatIsJson()
+    {
         $this->assertThat('{}', $this->isJson());
     }
 
-    public function testAssertThatAnythingAndAnything() {
+    public function testAssertThatAnythingAndAnything()
+    {
         $this->assertThat(
-                'anything', $this->logicalAnd(
-                        $this->anything(), $this->anything()
-                )
+            'anything',
+            $this->logicalAnd(
+                $this->anything(), $this->anything()
+            )
         );
     }
 
-    public function testAssertThatAnythingOrAnything() {
+    public function testAssertThatAnythingOrAnything()
+    {
         $this->assertThat(
-                'anything', $this->logicalOr(
-                        $this->anything(), $this->anything()
-                )
+            'anything',
+            $this->logicalOr(
+                $this->anything(), $this->anything()
+            )
         );
     }
 
-    public function testAssertThatAnythingXorNotAnything() {
+    public function testAssertThatAnythingXorNotAnything()
+    {
         $this->assertThat(
-                'anything', $this->logicalXor(
-                        $this->anything(), $this->logicalNot($this->anything())
-                )
+            'anything',
+            $this->logicalXor(
+                $this->anything(),
+                $this->logicalNot($this->anything())
+            )
         );
     }
 
-    public function testAssertThatContains() {
+    public function testAssertThatContains()
+    {
         $this->assertThat(['foo'], $this->contains('foo'));
     }
 
-    public function testAssertThatStringContains() {
+    public function testAssertThatStringContains()
+    {
         $this->assertThat('barfoobar', $this->stringContains('foo'));
     }
 
-    public function testAssertThatContainsOnly() {
+    public function testAssertThatContainsOnly()
+    {
         $this->assertThat(['foo'], $this->containsOnly('string'));
     }
 
-    public function testAssertThatContainsOnlyInstancesOf() {
+    public function testAssertThatContainsOnlyInstancesOf()
+    {
         $this->assertThat([new Book], $this->containsOnlyInstancesOf('Book'));
     }
 
-    public function testAssertThatArrayHasKey() {
+    public function testAssertThatArrayHasKey()
+    {
         $this->assertThat(['foo' => 'bar'], $this->arrayHasKey('foo'));
     }
 
-    public function testAssertThatClassHasAttribute() {
+    public function testAssertThatClassHasAttribute()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->classHasAttribute('publicAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->classHasAttribute('publicAttribute')
         );
     }
 
-    public function testAssertThatClassHasStaticAttribute() {
+    public function testAssertThatClassHasStaticAttribute()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->classHasStaticAttribute('publicStaticAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->classHasStaticAttribute('publicStaticAttribute')
         );
     }
 
-    public function testAssertThatObjectHasAttribute() {
+    public function testAssertThatObjectHasAttribute()
+    {
         $this->assertThat(
-                new ClassWithNonPublicAttributes, $this->objectHasAttribute('publicAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->objectHasAttribute('publicAttribute')
         );
     }
 
-    public function testAssertThatEqualTo() {
+    public function testAssertThatEqualTo()
+    {
         $this->assertThat('foo', $this->equalTo('foo'));
     }
 
-    public function testAssertThatIdenticalTo() {
-        $value = new stdClass;
+    public function testAssertThatIdenticalTo()
+    {
+        $value      = new stdClass;
         $constraint = $this->identicalTo($value);
 
         $this->assertThat($value, $constraint);
     }
 
-    public function testAssertThatIsInstanceOf() {
+    public function testAssertThatIsInstanceOf()
+    {
         $this->assertThat(new stdClass, $this->isInstanceOf('StdClass'));
     }
 
-    public function testAssertThatIsType() {
+    public function testAssertThatIsType()
+    {
         $this->assertThat('string', $this->isType('string'));
     }
 
-    public function testAssertThatIsEmpty() {
+    public function testAssertThatIsEmpty()
+    {
         $this->assertThat([], $this->isEmpty());
     }
 
-    public function testAssertThatFileExists() {
+    public function testAssertThatFileExists()
+    {
         $this->assertThat(__FILE__, $this->fileExists());
     }
 
-    public function testAssertThatGreaterThan() {
+    public function testAssertThatGreaterThan()
+    {
         $this->assertThat(2, $this->greaterThan(1));
     }
 
-    public function testAssertThatGreaterThanOrEqual() {
+    public function testAssertThatGreaterThanOrEqual()
+    {
         $this->assertThat(2, $this->greaterThanOrEqual(1));
     }
 
-    public function testAssertThatLessThan() {
+    public function testAssertThatLessThan()
+    {
         $this->assertThat(1, $this->lessThan(2));
     }
 
-    public function testAssertThatLessThanOrEqual() {
+    public function testAssertThatLessThanOrEqual()
+    {
         $this->assertThat(1, $this->lessThanOrEqual(2));
     }
 
-    public function testAssertThatMatchesRegularExpression() {
+    public function testAssertThatMatchesRegularExpression()
+    {
         $this->assertThat('foobar', $this->matchesRegularExpression('/foo/'));
     }
 
-    public function testAssertThatCallback() {
+    public function testAssertThatCallback()
+    {
         $this->assertThat(
-                null, $this->callback(function ($other) {
-                    return true;
-                })
+            null,
+            $this->callback(function ($other) {
+                return true;
+            })
         );
     }
 
-    public function testAssertThatCountOf() {
+    public function testAssertThatCountOf()
+    {
         $this->assertThat([1], $this->countOf(1));
     }
 
-    public function testAssertFileEquals() {
+    public function testAssertFileEquals()
+    {
         $this->assertFileEquals(
-                $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'foo.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'foo.xml'
         );
 
         try {
             $this->assertFileEquals(
-                    $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'bar.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'bar.xml'
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -2691,14 +2957,17 @@ XML;
         $this->fail();
     }
 
-    public function testAssertFileNotEquals() {
+    public function testAssertFileNotEquals()
+    {
         $this->assertFileNotEquals(
-                $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'bar.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'bar.xml'
         );
 
         try {
             $this->assertFileNotEquals(
-                    $this->filesDirectory . 'foo.xml', $this->filesDirectory . 'foo.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'foo.xml'
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -2707,14 +2976,17 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringEqualsFile() {
+    public function testAssertStringEqualsFile()
+    {
         $this->assertStringEqualsFile(
-                $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'foo.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         try {
             $this->assertStringEqualsFile(
-                    $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'bar.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'bar.xml')
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -2723,14 +2995,17 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringNotEqualsFile() {
+    public function testAssertStringNotEqualsFile()
+    {
         $this->assertStringNotEqualsFile(
-                $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'bar.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         try {
             $this->assertStringNotEqualsFile(
-                    $this->filesDirectory . 'foo.xml', file_get_contents($this->filesDirectory . 'foo.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'foo.xml')
             );
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -2742,60 +3017,69 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringStartsWithThrowsException() {
+    public function testAssertStringStartsWithThrowsException()
+    {
         $this->assertStringStartsWith(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringStartsWithThrowsException2() {
+    public function testAssertStringStartsWithThrowsException2()
+    {
         $this->assertStringStartsWith('', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringStartsNotWithThrowsException() {
+    public function testAssertStringStartsNotWithThrowsException()
+    {
         $this->assertStringStartsNotWith(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringStartsNotWithThrowsException2() {
+    public function testAssertStringStartsNotWithThrowsException2()
+    {
         $this->assertStringStartsNotWith('', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringEndsWithThrowsException() {
+    public function testAssertStringEndsWithThrowsException()
+    {
         $this->assertStringEndsWith(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringEndsWithThrowsException2() {
+    public function testAssertStringEndsWithThrowsException2()
+    {
         $this->assertStringEndsWith('', null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringEndsNotWithThrowsException() {
+    public function testAssertStringEndsNotWithThrowsException()
+    {
         $this->assertStringEndsNotWith(null, null);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringEndsNotWithThrowsException2() {
+    public function testAssertStringEndsNotWithThrowsException2()
+    {
         $this->assertStringEndsNotWith('', null);
     }
 
-    public function testAssertStringStartsWith() {
+    public function testAssertStringStartsWith()
+    {
         $this->assertStringStartsWith('prefix', 'prefixfoo');
 
         try {
@@ -2807,7 +3091,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringStartsNotWith() {
+    public function testAssertStringStartsNotWith()
+    {
         $this->assertStringStartsNotWith('prefix', 'foo');
 
         try {
@@ -2819,7 +3104,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringEndsWith() {
+    public function testAssertStringEndsWith()
+    {
         $this->assertStringEndsWith('suffix', 'foosuffix');
 
         try {
@@ -2831,7 +3117,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertStringEndsNotWith() {
+    public function testAssertStringEndsNotWith()
+    {
         $this->assertStringEndsNotWith('suffix', 'foo');
 
         try {
@@ -2846,43 +3133,50 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument() {
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
         $this->assertStringMatchesFormat(null, '');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument() {
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
         $this->assertStringMatchesFormat('', null);
     }
 
-    public function testAssertStringMatchesFormat() {
+    public function testAssertStringMatchesFormat()
+    {
         $this->assertStringMatchesFormat('*%s*', '***');
     }
 
     /**
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertStringMatchesFormatFailure() {
+    public function testAssertStringMatchesFormatFailure()
+    {
         $this->assertStringMatchesFormat('*%s*', '**');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument() {
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
         $this->assertStringNotMatchesFormat(null, '');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument() {
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
         $this->assertStringNotMatchesFormat('', null);
     }
 
-    public function testAssertStringNotMatchesFormat() {
+    public function testAssertStringNotMatchesFormat()
+    {
         $this->assertStringNotMatchesFormat('*%s*', '**');
 
         try {
@@ -2894,7 +3188,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertEmpty() {
+    public function testAssertEmpty()
+    {
         $this->assertEmpty([]);
 
         try {
@@ -2906,7 +3201,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotEmpty() {
+    public function testAssertNotEmpty()
+    {
         $this->assertNotEmpty(['foo']);
 
         try {
@@ -2918,8 +3214,9 @@ XML;
         $this->fail();
     }
 
-    public function testAssertAttributeEmpty() {
-        $o = new stdClass;
+    public function testAssertAttributeEmpty()
+    {
+        $o    = new stdClass;
         $o->a = [];
 
         $this->assertAttributeEmpty('a', $o);
@@ -2934,8 +3231,9 @@ XML;
         $this->fail();
     }
 
-    public function testAssertAttributeNotEmpty() {
-        $o = new stdClass;
+    public function testAssertAttributeNotEmpty()
+    {
+        $o    = new stdClass;
         $o->a = ['b'];
 
         $this->assertAttributeNotEmpty('a', $o);
@@ -2950,7 +3248,8 @@ XML;
         $this->fail();
     }
 
-    public function testMarkTestIncomplete() {
+    public function testMarkTestIncomplete()
+    {
         try {
             $this->markTestIncomplete('incomplete');
         } catch (PHPUnit_Framework_IncompleteTestError $e) {
@@ -2962,7 +3261,8 @@ XML;
         $this->fail();
     }
 
-    public function testMarkTestSkipped() {
+    public function testMarkTestSkipped()
+    {
         try {
             $this->markTestSkipped('skipped');
         } catch (PHPUnit_Framework_SkippedTestError $e) {
@@ -2974,7 +3274,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertCount() {
+    public function testAssertCount()
+    {
         $this->assertCount(2, [1, 2]);
 
         try {
@@ -2986,7 +3287,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertCountTraversable() {
+    public function testAssertCountTraversable()
+    {
         $this->assertCount(2, new ArrayIterator([1, 2]));
 
         try {
@@ -2998,7 +3300,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger() {
+    public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
+    {
         try {
             $this->assertCount('a', []);
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3010,7 +3313,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertCountThrowsExceptionIfElementIsNotCountable() {
+    public function testAssertCountThrowsExceptionIfElementIsNotCountable()
+    {
         try {
             $this->assertCount(2, '');
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3022,14 +3326,16 @@ XML;
         $this->fail();
     }
 
-    public function testAssertAttributeCount() {
-        $o = new stdClass;
+    public function testAssertAttributeCount()
+    {
+        $o    = new stdClass;
         $o->a = [];
 
         $this->assertAttributeCount(0, 'a', $o);
     }
 
-    public function testAssertNotCount() {
+    public function testAssertNotCount()
+    {
         $this->assertNotCount(2, [1, 2, 3]);
 
         try {
@@ -3044,25 +3350,29 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger() {
+    public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger()
+    {
         $this->assertNotCount('a', []);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable() {
+    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
+    {
         $this->assertNotCount(2, '');
     }
 
-    public function testAssertAttributeNotCount() {
-        $o = new stdClass;
+    public function testAssertAttributeNotCount()
+    {
+        $o    = new stdClass;
         $o->a = [];
 
         $this->assertAttributeNotCount(1, 'a', $o);
     }
 
-    public function testAssertSameSize() {
+    public function testAssertSameSize()
+    {
         $this->assertSameSize([1, 2], [3, 4]);
 
         try {
@@ -3074,7 +3384,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable() {
+    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable()
+    {
         try {
             $this->assertSameSize('a', []);
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3086,7 +3397,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable() {
+    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable()
+    {
         try {
             $this->assertSameSize([], '');
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3098,7 +3410,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertNotSameSize() {
+    public function testAssertNotSameSize()
+    {
         $this->assertNotSameSize([1, 2], [1, 2, 3]);
 
         try {
@@ -3113,32 +3426,37 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable() {
+    public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable()
+    {
         $this->assertNotSameSize('a', []);
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable() {
+    public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable()
+    {
         $this->assertNotSameSize([], '');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertJsonRaisesExceptionForInvalidArgument() {
+    public function testAssertJsonRaisesExceptionForInvalidArgument()
+    {
         $this->assertJson(null);
     }
 
-    public function testAssertJson() {
+    public function testAssertJson()
+    {
         $this->assertJson('{}');
     }
 
-    public function testAssertJsonStringEqualsJsonString() {
+    public function testAssertJsonStringEqualsJsonString()
+    {
         $expected = '{"Mascott" : "Tux"}';
-        $actual = '{"Mascott" : "Tux"}';
-        $message = 'Given Json strings do not match';
+        $actual   = '{"Mascott" : "Tux"}';
+        $message  = 'Given Json strings do not match';
 
         $this->assertJsonStringEqualsJsonString($expected, $actual, $message);
     }
@@ -3146,7 +3464,8 @@ XML;
     /**
      * @dataProvider validInvalidJsonDataprovider
      */
-    public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual) {
+    public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual)
+    {
         try {
             $this->assertJsonStringEqualsJsonString($expected, $actual);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -3155,10 +3474,11 @@ XML;
         $this->fail('Expected exception not found');
     }
 
-    public function testAssertJsonStringNotEqualsJsonString() {
+    public function testAssertJsonStringNotEqualsJsonString()
+    {
         $expected = '{"Mascott" : "Beastie"}';
-        $actual = '{"Mascott" : "Tux"}';
-        $message = 'Given Json strings do match';
+        $actual   = '{"Mascott" : "Tux"}';
+        $message  = 'Given Json strings do match';
 
         $this->assertJsonStringNotEqualsJsonString($expected, $actual, $message);
     }
@@ -3166,7 +3486,8 @@ XML;
     /**
      * @dataProvider validInvalidJsonDataprovider
      */
-    public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual) {
+    public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual)
+    {
         try {
             $this->assertJsonStringNotEqualsJsonString($expected, $actual);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -3175,22 +3496,25 @@ XML;
         $this->fail('Expected exception not found');
     }
 
-    public function testAssertJsonStringEqualsJsonFile() {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(['Mascott' => 'Tux']);
+    public function testAssertJsonStringEqualsJsonFile()
+    {
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(['Mascott' => 'Tux']);
         $message = '';
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
     }
 
-    public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException() {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(['Mascott' => 'Beastie']);
+    public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
+    {
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(['Mascott' => 'Beastie']);
         $message = '';
         try {
             $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-                    'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".', $e->getMessage()
+                'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".',
+                $e->getMessage()
             );
 
             return;
@@ -3199,7 +3523,8 @@ XML;
         $this->fail('Expected Exception not thrown.');
     }
 
-    public function testAssertJsonStringEqualsJsonFileExpectingException() {
+    public function testAssertJsonStringEqualsJsonFileExpectingException()
+    {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         try {
             $this->assertJsonStringEqualsJsonFile($file, null);
@@ -3209,14 +3534,16 @@ XML;
         $this->fail('Expected Exception not thrown.');
     }
 
-    public function testAssertJsonStringNotEqualsJsonFile() {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(['Mascott' => 'Beastie']);
+    public function testAssertJsonStringNotEqualsJsonFile()
+    {
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(['Mascott' => 'Beastie']);
         $message = '';
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
     }
 
-    public function testAssertJsonStringNotEqualsJsonFileExpectingException() {
+    public function testAssertJsonStringNotEqualsJsonFileExpectingException()
+    {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         try {
             $this->assertJsonStringNotEqualsJsonFile($file, null);
@@ -3226,20 +3553,23 @@ XML;
         $this->fail('Expected exception not found.');
     }
 
-    public function testAssertJsonFileNotEqualsJsonFile() {
+    public function testAssertJsonFileNotEqualsJsonFile()
+    {
         $fileExpected = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $fileActual = __DIR__ . '/../_files/JsonData/arrayObject.json';
-        $message = '';
+        $fileActual   = __DIR__ . '/../_files/JsonData/arrayObject.json';
+        $message      = '';
         $this->assertJsonFileNotEqualsJsonFile($fileExpected, $fileActual, $message);
     }
 
-    public function testAssertJsonFileEqualsJsonFile() {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
+    public function testAssertJsonFileEqualsJsonFile()
+    {
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $message = '';
         $this->assertJsonFileEqualsJsonFile($file, $file, $message);
     }
 
-    public function testAssertInstanceOf() {
+    public function testAssertInstanceOf()
+    {
         $this->assertInstanceOf('stdClass', new stdClass);
 
         try {
@@ -3254,18 +3584,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertInstanceOfThrowsExceptionForInvalidArgument() {
+    public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
+    {
         $this->assertInstanceOf(null, new stdClass);
     }
 
-    public function testAssertAttributeInstanceOf() {
-        $o = new stdClass;
+    public function testAssertAttributeInstanceOf()
+    {
+        $o    = new stdClass;
         $o->a = new stdClass;
 
         $this->assertAttributeInstanceOf('stdClass', 'a', $o);
     }
 
-    public function testAssertNotInstanceOf() {
+    public function testAssertNotInstanceOf()
+    {
         $this->assertNotInstanceOf('Exception', new stdClass);
 
         try {
@@ -3280,18 +3613,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument() {
+    public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
+    {
         $this->assertNotInstanceOf(null, new stdClass);
     }
 
-    public function testAssertAttributeNotInstanceOf() {
-        $o = new stdClass;
+    public function testAssertAttributeNotInstanceOf()
+    {
+        $o    = new stdClass;
         $o->a = new stdClass;
 
         $this->assertAttributeNotInstanceOf('Exception', 'a', $o);
     }
 
-    public function testAssertInternalType() {
+    public function testAssertInternalType()
+    {
         $this->assertInternalType('integer', 1);
 
         try {
@@ -3303,7 +3639,8 @@ XML;
         $this->fail();
     }
 
-    public function testAssertInternalTypeDouble() {
+    public function testAssertInternalTypeDouble()
+    {
         $this->assertInternalType('double', 1.0);
 
         try {
@@ -3318,18 +3655,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertInternalTypeThrowsExceptionForInvalidArgument() {
+    public function testAssertInternalTypeThrowsExceptionForInvalidArgument()
+    {
         $this->assertInternalType(null, 1);
     }
 
-    public function testAssertAttributeInternalType() {
-        $o = new stdClass;
+    public function testAssertAttributeInternalType()
+    {
+        $o    = new stdClass;
         $o->a = 1;
 
         $this->assertAttributeInternalType('integer', 'a', $o);
     }
 
-    public function testAssertNotInternalType() {
+    public function testAssertNotInternalType()
+    {
         $this->assertNotInternalType('string', 1);
 
         try {
@@ -3344,12 +3684,14 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument() {
+    public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
+    {
         $this->assertNotInternalType(null, 1);
     }
 
-    public function testAssertAttributeNotInternalType() {
-        $o = new stdClass;
+    public function testAssertAttributeNotInternalType()
+    {
+        $o    = new stdClass;
         $o->a = 1;
 
         $this->assertAttributeNotInternalType('string', 'a', $o);
@@ -3358,18 +3700,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument() {
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument()
+    {
         $this->assertStringMatchesFormatFile('not_existing_file', '');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2() {
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
+    {
         $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
-    public function testAssertStringMatchesFormatFile() {
+    public function testAssertStringMatchesFormatFile()
+    {
         $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
 
         try {
@@ -3384,18 +3729,21 @@ XML;
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument() {
+    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument()
+    {
         $this->assertStringNotMatchesFormatFile('not_existing_file', '');
     }
 
     /**
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2() {
+    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2()
+    {
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
-    public function testAssertStringNotMatchesFormatFile() {
+    public function testAssertStringNotMatchesFormatFile()
+    {
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "BAR\n");
 
         try {
@@ -3410,11 +3758,11 @@ XML;
     /**
      * @return array
      */
-    public static function validInvalidJsonDataprovider() {
+    public static function validInvalidJsonDataprovider()
+    {
         return [
             'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
-            'error UTF-8 in actual JSON' => ['{"Mascott" : "Tux"}', '{"Mascott" : :}'],
+            'error UTF-8 in actual JSON'    => ['{"Mascott" : "Tux"}', '{"Mascott" : :}'],
         ];
     }
-
 }

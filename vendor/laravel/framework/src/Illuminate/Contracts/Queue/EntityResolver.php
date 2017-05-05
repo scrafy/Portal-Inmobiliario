@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Queue;
 
-interface EntityResolver {
-
+interface EntityResolver
+{
     /**
      * Resolve the entity for the given ID.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -13,6 +12,6 @@ namespace SebastianBergmann\GlobalState;
 
 /**
  */
-class RuntimeException extends \RuntimeException implements Exception {
-    
+class RuntimeException extends \RuntimeException implements Exception
+{
 }

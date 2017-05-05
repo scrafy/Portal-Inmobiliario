@@ -23,8 +23,8 @@ use Symfony\Component\CssSelector\Parser\Token;
  *
  * @internal
  */
-class FunctionNode extends AbstractNode {
-
+class FunctionNode extends AbstractNode
+{
     /**
      * @var NodeInterface
      */
@@ -45,7 +45,8 @@ class FunctionNode extends AbstractNode {
      * @param string        $name
      * @param Token[]       $arguments
      */
-    public function __construct(NodeInterface $selector, $name, array $arguments = array()) {
+    public function __construct(NodeInterface $selector, $name, array $arguments = array())
+    {
         $this->selector = $selector;
         $this->name = strtolower($name);
         $this->arguments = $arguments;
@@ -54,40 +55,44 @@ class FunctionNode extends AbstractNode {
     /**
      * @return NodeInterface
      */
-    public function getSelector() {
+    public function getSelector()
+    {
         return $this->selector;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * @return Token[]
      */
-    public function getArguments() {
+    public function getArguments()
+    {
         return $this->arguments;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSpecificity() {
+    public function getSpecificity()
+    {
         return $this->selector->getSpecificity()->plus(new Specificity(0, 1, 0));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString() {
+    public function __toString()
+    {
         $arguments = implode(', ', array_map(function (Token $token) {
-                    return "'" . $token->getValue() . "'";
-                }, $this->arguments));
+            return "'".$token->getValue()."'";
+        }, $this->arguments));
 
-        return sprintf('%s[%s:%s(%s)]', $this->getNodeName(), $this->selector, $this->name, $arguments ? '[' . $arguments . ']' : '');
+        return sprintf('%s[%s:%s(%s)]', $this->getNodeName(), $this->selector, $this->name, $arguments ? '['.$arguments.']' : '');
     }
-
 }

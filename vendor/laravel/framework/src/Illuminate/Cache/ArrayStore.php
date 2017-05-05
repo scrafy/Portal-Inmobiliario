@@ -4,8 +4,8 @@ namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\Store;
 
-class ArrayStore extends TaggableStore implements Store {
-
+class ArrayStore extends TaggableStore implements Store
+{
     use RetrievesMultipleKeys;
 
     /**
@@ -21,7 +21,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  string|array  $key
      * @return mixed
      */
-    public function get($key) {
+    public function get($key)
+    {
         if (array_key_exists($key, $this->storage)) {
             return $this->storage[$key];
         }
@@ -35,7 +36,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes) {
+    public function put($key, $value, $minutes)
+    {
         $this->storage[$key] = $value;
     }
 
@@ -46,7 +48,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         $this->storage[$key] = ((int) $this->storage[$key]) + $value;
 
         return $this->storage[$key];
@@ -59,7 +62,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return int
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         return $this->increment($key, $value * -1);
     }
 
@@ -70,7 +74,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         $this->put($key, $value, 0);
     }
 
@@ -80,7 +85,8 @@ class ArrayStore extends TaggableStore implements Store {
      * @param  string  $key
      * @return bool
      */
-    public function forget($key) {
+    public function forget($key)
+    {
         unset($this->storage[$key]);
 
         return true;
@@ -91,7 +97,8 @@ class ArrayStore extends TaggableStore implements Store {
      *
      * @return bool
      */
-    public function flush() {
+    public function flush()
+    {
         $this->storage = [];
 
         return true;
@@ -102,8 +109,8 @@ class ArrayStore extends TaggableStore implements Store {
      *
      * @return string
      */
-    public function getPrefix() {
+    public function getPrefix()
+    {
         return '';
     }
-
 }

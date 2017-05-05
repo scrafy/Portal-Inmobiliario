@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -16,8 +15,8 @@ namespace phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 
-class PassthroughFormatter implements Formatter {
-
+class PassthroughFormatter implements Formatter
+{
     /**
      * Formats the given tag to return a simple plain text version.
      *
@@ -25,8 +24,8 @@ class PassthroughFormatter implements Formatter {
      *
      * @return string
      */
-    public function format(Tag $tag) {
-        return '@' . $tag->getName() . ' ' . (string) $tag;
+    public function format(Tag $tag)
+    {
+        return '@' . $tag->getName() . ' ' . (string)$tag;
     }
-
 }

@@ -18,8 +18,8 @@ namespace Symfony\Component\Routing\Matcher\Dumper;
  *
  * @internal
  */
-class DumperCollection implements \IteratorAggregate {
-
+class DumperCollection implements \IteratorAggregate
+{
     /**
      * @var DumperCollection|null
      */
@@ -40,7 +40,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return self[]|DumperRoute[]
      */
-    public function all() {
+    public function all()
+    {
         return $this->children;
     }
 
@@ -49,7 +50,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @param DumperRoute|DumperCollection The route or collection
      */
-    public function add($child) {
+    public function add($child)
+    {
         if ($child instanceof self) {
             $child->setParent($this);
         }
@@ -61,7 +63,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @param array $children The children
      */
-    public function setAll(array $children) {
+    public function setAll(array $children)
+    {
         foreach ($children as $child) {
             if ($child instanceof self) {
                 $child->setParent($this);
@@ -75,7 +78,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return \Iterator|DumperCollection[]|DumperRoute[] The iterator
      */
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \ArrayIterator($this->children);
     }
 
@@ -84,7 +88,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return self The root collection
      */
-    public function getRoot() {
+    public function getRoot()
+    {
         return (null !== $this->parent) ? $this->parent->getRoot() : $this;
     }
 
@@ -93,7 +98,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return self|null The parent collection or null if the collection has no parent
      */
-    protected function getParent() {
+    protected function getParent()
+    {
         return $this->parent;
     }
 
@@ -102,7 +108,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @param DumperCollection $parent The parent collection
      */
-    protected function setParent(DumperCollection $parent) {
+    protected function setParent(DumperCollection $parent)
+    {
         $this->parent = $parent;
     }
 
@@ -113,7 +120,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return bool true if the attribute is defined, false otherwise
      */
-    public function hasAttribute($name) {
+    public function hasAttribute($name)
+    {
         return array_key_exists($name, $this->attributes);
     }
 
@@ -125,7 +133,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @return mixed The attribute value
      */
-    public function getAttribute($name, $default = null) {
+    public function getAttribute($name, $default = null)
+    {
         return $this->hasAttribute($name) ? $this->attributes[$name] : $default;
     }
 
@@ -135,7 +144,8 @@ class DumperCollection implements \IteratorAggregate {
      * @param string $name  The attribute name
      * @param mixed  $value The attribute value
      */
-    public function setAttribute($name, $value) {
+    public function setAttribute($name, $value)
+    {
         $this->attributes[$name] = $value;
     }
 
@@ -144,8 +154,8 @@ class DumperCollection implements \IteratorAggregate {
      *
      * @param array $attributes The attributes
      */
-    public function setAttributes($attributes) {
+    public function setAttributes($attributes)
+    {
         $this->attributes = $attributes;
     }
-
 }

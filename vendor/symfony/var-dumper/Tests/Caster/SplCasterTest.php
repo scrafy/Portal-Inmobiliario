@@ -17,11 +17,12 @@ use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 /**
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
-class SplCasterTest extends TestCase {
-
+class SplCasterTest extends TestCase
+{
     use VarDumperTestTrait;
 
-    public function getCastFileInfoTests() {
+    public function getCastFileInfoTests()
+    {
         return array(
             array(__FILE__, <<<'EOTXT'
 SplFileInfo {
@@ -64,11 +65,13 @@ EOTXT
     }
 
     /** @dataProvider getCastFileInfoTests */
-    public function testCastFileInfo($file, $dump) {
+    public function testCastFileInfo($file, $dump)
+    {
         $this->assertDumpMatchesFormat($dump, new \SplFileInfo($file));
     }
 
-    public function testCastFileObject() {
+    public function testCastFileObject()
+    {
         $var = new \SplFileObject(__FILE__);
         $var->setFlags(\SplFileObject::DROP_NEW_LINE | \SplFileObject::SKIP_EMPTY);
         $dump = <<<'EOTXT'
@@ -119,7 +122,8 @@ EOTXT;
     /**
      * @dataProvider provideCastSplDoublyLinkedList
      */
-    public function testCastSplDoublyLinkedList($modeValue, $modeDump) {
+    public function testCastSplDoublyLinkedList($modeValue, $modeDump)
+    {
         $var = new \SplDoublyLinkedList();
         $var->setIteratorMode($modeValue);
         $dump = <<<EOTXT
@@ -131,7 +135,8 @@ EOTXT;
         $this->assertDumpMatchesFormat($dump, $var);
     }
 
-    public function provideCastSplDoublyLinkedList() {
+    public function provideCastSplDoublyLinkedList()
+    {
         return array(
             array(\SplDoublyLinkedList::IT_MODE_FIFO, 'IT_MODE_FIFO | IT_MODE_KEEP'),
             array(\SplDoublyLinkedList::IT_MODE_LIFO, 'IT_MODE_LIFO | IT_MODE_KEEP'),
@@ -139,5 +144,4 @@ EOTXT;
             array(\SplDoublyLinkedList::IT_MODE_LIFO | \SplDoublyLinkedList::IT_MODE_DELETE, 'IT_MODE_LIFO | IT_MODE_DELETE'),
         );
     }
-
 }

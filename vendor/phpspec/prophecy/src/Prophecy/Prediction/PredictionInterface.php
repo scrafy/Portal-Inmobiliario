@@ -21,8 +21,8 @@ use Prophecy\Prophecy\MethodProphecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface PredictionInterface {
-
+interface PredictionInterface
+{
     /**
      * Tests that double fulfilled prediction.
      *

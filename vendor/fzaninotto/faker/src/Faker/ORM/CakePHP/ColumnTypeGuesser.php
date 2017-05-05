@@ -2,18 +2,20 @@
 
 namespace Faker\ORM\CakePHP;
 
-class ColumnTypeGuesser {
-
+class ColumnTypeGuesser
+{
     protected $generator;
 
-    public function __construct(\Faker\Generator $generator) {
+    public function __construct(\Faker\Generator $generator)
+    {
         $this->generator = $generator;
     }
 
     /**
      * @return \Closure|null
      */
-    public function guessFormat($column, $table) {
+    public function guessFormat($column, $table)
+    {
         $generator = $this->generator;
         $schema = $table->schema();
 
@@ -62,5 +64,4 @@ class ColumnTypeGuesser {
                 return null;
         }
     }
-
 }

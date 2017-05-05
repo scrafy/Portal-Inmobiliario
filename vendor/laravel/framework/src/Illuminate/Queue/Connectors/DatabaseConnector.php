@@ -6,8 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Queue\DatabaseQueue;
 use Illuminate\Database\ConnectionResolverInterface;
 
-class DatabaseConnector implements ConnectorInterface {
-
+class DatabaseConnector implements ConnectorInterface
+{
     /**
      * Database connections.
      *
@@ -21,7 +21,8 @@ class DatabaseConnector implements ConnectorInterface {
      * @param  \Illuminate\Database\ConnectionResolverInterface  $connections
      * @return void
      */
-    public function __construct(ConnectionResolverInterface $connections) {
+    public function __construct(ConnectionResolverInterface $connections)
+    {
         $this->connections = $connections;
     }
 
@@ -31,10 +32,13 @@ class DatabaseConnector implements ConnectorInterface {
      * @param  array  $config
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         return new DatabaseQueue(
-                $this->connections->connection(Arr::get($config, 'connection')), $config['table'], $config['queue'], Arr::get($config, 'retry_after', 60)
+            $this->connections->connection(Arr::get($config, 'connection')),
+            $config['table'],
+            $config['queue'],
+            Arr::get($config, 'retry_after', 60)
         );
     }
-
 }

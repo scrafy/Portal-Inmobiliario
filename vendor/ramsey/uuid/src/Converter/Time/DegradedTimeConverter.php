@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -23,8 +22,8 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
  * if attempting to use time conversion functionality in an environment that
  * does not support large integers (i.e. when moontoast/math is not available)
  */
-class DegradedTimeConverter implements TimeConverterInterface {
-
+class DegradedTimeConverter implements TimeConverterInterface
+{
     /**
      * Throws an `UnsatisfiedDependencyException`
      *
@@ -33,11 +32,11 @@ class DegradedTimeConverter implements TimeConverterInterface {
      * @return void
      * @throws UnsatisfiedDependencyException
      */
-    public function calculateTime($seconds, $microSeconds) {
+    public function calculateTime($seconds, $microSeconds)
+    {
         throw new UnsatisfiedDependencyException(
-        'When calling ' . __METHOD__ . ' on a 32-bit system, '
-        . 'Moontoast\Math\BigNumber must be present.'
+            'When calling ' . __METHOD__ . ' on a 32-bit system, '
+            . 'Moontoast\Math\BigNumber must be present.'
         );
     }
-
 }

@@ -17,8 +17,8 @@ namespace Prophecy\Exception;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface Exception {
-
+interface Exception
+{
     /**
      * @return string
      */

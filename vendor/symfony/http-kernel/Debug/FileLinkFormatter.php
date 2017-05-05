@@ -19,14 +19,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *
  * @author Jérémy Romey <jeremy@free-agent.fr>
  */
-class FileLinkFormatter implements \Serializable {
-
+class FileLinkFormatter implements \Serializable
+{
     private $fileLinkFormat;
     private $requestStack;
     private $baseDir;
     private $urlFormat;
 
-    public function __construct($fileLinkFormat = null, RequestStack $requestStack = null, $baseDir = null, $urlFormat = null) {
+    public function __construct($fileLinkFormat = null, RequestStack $requestStack = null, $baseDir = null, $urlFormat = null)
+    {
         $fileLinkFormat = $fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
         if ($fileLinkFormat && !is_array($fileLinkFormat)) {
             $i = strpos($f = $fileLinkFormat, '&', max(strrpos($f, '%f'), strrpos($f, '%l'))) ?: strlen($f);
@@ -39,7 +40,8 @@ class FileLinkFormatter implements \Serializable {
         $this->urlFormat = $urlFormat;
     }
 
-    public function format($file, $line) {
+    public function format($file, $line)
+    {
         if ($fmt = $this->getFileLinkFormat()) {
             for ($i = 1; isset($fmt[$i]); ++$i) {
                 if (0 === strpos($file, $k = $fmt[$i++])) {
@@ -54,15 +56,18 @@ class FileLinkFormatter implements \Serializable {
         return false;
     }
 
-    public function serialize() {
+    public function serialize()
+    {
         return serialize($this->getFileLinkFormat());
     }
 
-    public function unserialize($serialized) {
+    public function unserialize($serialized)
+    {
         $this->fileLinkFormat = unserialize($serialized);
     }
 
-    private function getFileLinkFormat() {
+    private function getFileLinkFormat()
+    {
         if ($this->fileLinkFormat) {
             return $this->fileLinkFormat;
         }
@@ -70,11 +75,10 @@ class FileLinkFormatter implements \Serializable {
             $request = $this->requestStack->getMasterRequest();
             if ($request instanceof Request) {
                 return array(
-                    $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $this->urlFormat,
-                    $this->baseDir . DIRECTORY_SEPARATOR, '',
+                    $request->getSchemeAndHttpHost().$request->getBaseUrl().$this->urlFormat,
+                    $this->baseDir.DIRECTORY_SEPARATOR, '',
                 );
             }
         }
     }
-
 }

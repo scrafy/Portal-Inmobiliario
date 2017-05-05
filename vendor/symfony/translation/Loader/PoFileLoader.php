@@ -15,8 +15,8 @@ namespace Symfony\Component\Translation\Loader;
  * @copyright Copyright (c) 2010, Union of RAD http://union-of-rad.org (http://lithify.me/)
  * @copyright Copyright (c) 2012, Clemens Tolboom
  */
-class PoFileLoader extends FileLoader {
-
+class PoFileLoader extends FileLoader
+{
     /**
      * Parses portable object (PO) format.
      *
@@ -60,7 +60,8 @@ class PoFileLoader extends FileLoader {
      *
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         $stream = fopen($resource, 'r');
 
         $defaults = array(
@@ -126,7 +127,8 @@ class PoFileLoader extends FileLoader {
      * @param array $messages
      * @param array $item
      */
-    private function addMessage(array &$messages, array $item) {
+    private function addMessage(array &$messages, array $item)
+    {
         if (is_array($item['translated'])) {
             $messages[stripcslashes($item['ids']['singular'])] = stripcslashes($item['translated'][0]);
             if (isset($item['ids']['plural'])) {
@@ -146,5 +148,4 @@ class PoFileLoader extends FileLoader {
             $messages[stripcslashes($item['ids']['singular'])] = stripcslashes($item['translated']);
         }
     }
-
 }

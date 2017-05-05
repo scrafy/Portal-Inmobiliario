@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Default utility for PHP sub-processes.
  */
-class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
-
+class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
+{
     /**
      * @var string
      */
@@ -34,12 +33,13 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, array $settings = []) {
+    public function runJob($job, array $settings = [])
+    {
         if ($this->useTempFile || $this->stdin) {
             if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-                    file_put_contents($this->tempFile, $job) === false) {
+                file_put_contents($this->tempFile, $job) === false) {
                 throw new PHPUnit_Framework_Exception(
-                'Unable to write temporary file'
+                    'Unable to write temporary file'
                 );
             }
 
@@ -54,7 +54,8 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
      *
      * @return array
      */
-    protected function getHandles() {
+    protected function getHandles()
+    {
         return [];
     }
 
@@ -68,7 +69,8 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
      *
      * @throws PHPUnit_Framework_Exception
      */
-    protected function runProcess($job, $settings) {
+    protected function runProcess($job, $settings)
+    {
         $handles = $this->getHandles();
 
         $env = null;
@@ -90,12 +92,16 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
             2 => isset($handles[2]) ? $handles[2] : ['pipe', 'w'],
         ];
         $process = proc_open(
-                $this->getCommand($settings, $this->tempFile), $pipeSpec, $pipes, null, $env
+            $this->getCommand($settings, $this->tempFile),
+            $pipeSpec,
+            $pipes,
+            null,
+            $env
         );
 
         if (!is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
-            'Unable to spawn worker process'
+                'Unable to spawn worker process'
             );
         }
 
@@ -188,14 +194,15 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP {
      *
      * @throws PHPUnit_Framework_Exception
      */
-    protected function process($pipe, $job) {
+    protected function process($pipe, $job)
+    {
         fwrite($pipe, $job);
     }
 
-    protected function cleanup() {
+    protected function cleanup()
+    {
         if ($this->tempFile) {
             unlink($this->tempFile);
         }
     }
-
 }

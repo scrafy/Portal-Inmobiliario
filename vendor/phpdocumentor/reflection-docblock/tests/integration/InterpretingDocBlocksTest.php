@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,9 +20,10 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 /**
  * @coversNothing
  */
-class InterpretingDocBlocksTest extends \PHPUnit_Framework_TestCase {
-
-    public function testInterpretingASimpleDocBlock() {
+class InterpretingDocBlocksTest extends \PHPUnit_Framework_TestCase
+{
+    public function testInterpretingASimpleDocBlock()
+    {
         /**
          * @var DocBlock    $docblock
          * @var string      $summary
@@ -45,7 +45,8 @@ DESCRIPTION;
         $this->assertEmpty($docblock->getTags());
     }
 
-    public function testInterpretingTags() {
+    public function testInterpretingTags()
+    {
         /**
          * @var DocBlock $docblock
          * @var boolean  $hasSeeTag
@@ -62,11 +63,12 @@ DESCRIPTION;
         $this->assertInstanceOf(See::class, $seeTags[0]);
 
         $seeTag = $seeTags[0];
-        $this->assertSame('\\' . StandardTagFactory::class, (string) $seeTag->getReference());
-        $this->assertSame('', (string) $seeTag->getDescription());
+        $this->assertSame('\\' . StandardTagFactory::class, (string)$seeTag->getReference());
+        $this->assertSame('', (string)$seeTag->getDescription());
     }
 
-    public function testDescriptionsCanEscapeAtSignsAndClosingBraces() {
+    public function testDescriptionsCanEscapeAtSignsAndClosingBraces()
+    {
         /**
          * @var string      $docComment
          * @var DocBlock    $docblock
@@ -74,6 +76,7 @@ DESCRIPTION;
          * @var string      $receivedDocComment
          * @var string      $foundDescription
          */
+
         include(__DIR__ . '/../../examples/playing-with-descriptions/02-escaping.php');
         $this->assertSame(<<<'DESCRIPTION'
 You can escape the @-sign by surrounding it with braces, for example: @. And escape a closing brace within an
@@ -86,9 +89,9 @@ Here are example texts where you can see how they could be used in a real life s
 
 Do note that an {@internal inline tag that has an opening brace ({) does not break out}.
 DESCRIPTION
-                , $foundDescription
+            ,
+            $foundDescription
         )
         ;
     }
-
 }

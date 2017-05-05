@@ -17,12 +17,13 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TraceableArgumentResolver implements ArgumentResolverInterface {
-
+class TraceableArgumentResolver implements ArgumentResolverInterface
+{
     private $resolver;
     private $stopwatch;
 
-    public function __construct(ArgumentResolverInterface $resolver, Stopwatch $stopwatch) {
+    public function __construct(ArgumentResolverInterface $resolver, Stopwatch $stopwatch)
+    {
         $this->resolver = $resolver;
         $this->stopwatch = $stopwatch;
     }
@@ -30,7 +31,8 @@ class TraceableArgumentResolver implements ArgumentResolverInterface {
     /**
      * {@inheritdoc}
      */
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         $e = $this->stopwatch->start('controller.get_arguments');
 
         $ret = $this->resolver->getArguments($request, $controller);
@@ -39,5 +41,4 @@ class TraceableArgumentResolver implements ArgumentResolverInterface {
 
         return $ret;
     }
-
 }

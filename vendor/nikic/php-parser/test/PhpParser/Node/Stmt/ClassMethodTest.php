@@ -2,8 +2,8 @@
 
 namespace PhpParser\Node\Stmt;
 
-class ClassMethodTest extends \PHPUnit_Framework_TestCase {
-
+class ClassMethodTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider provideModifiers
      */
@@ -44,7 +44,8 @@ class ClassMethodTest extends \PHPUnit_Framework_TestCase {
      *
      * @param integer $modifier Node type modifier
      */
-    public function testImplicitPublic($modifier) {
+    public function testImplicitPublic($modifier)
+    {
         $node = new ClassMethod('foo', array(
             'type' => constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier))
         ));
@@ -59,5 +60,4 @@ class ClassMethodTest extends \PHPUnit_Framework_TestCase {
             array('static'),
         );
     }
-
 }

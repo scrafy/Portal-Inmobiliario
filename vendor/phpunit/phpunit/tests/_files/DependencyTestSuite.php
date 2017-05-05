@@ -1,8 +1,8 @@
 <?php
-
-class DependencyTestSuite {
-
-    public static function suite() {
+class DependencyTestSuite
+{
+    public static function suite()
+    {
         $suite = new PHPUnit_Framework_TestSuite('Test Dependencies');
 
         $suite->addTestSuite('DependencySuccessTest');
@@ -10,5 +10,4 @@ class DependencyTestSuite {
 
         return $suite;
     }
-
 }

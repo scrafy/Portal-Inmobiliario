@@ -4,8 +4,8 @@ namespace Illuminate\Redis\Connections;
 
 use Closure;
 
-abstract class Connection {
-
+abstract class Connection
+{
     /**
      * The Predis client.
      *
@@ -28,7 +28,8 @@ abstract class Connection {
      *
      * @return mixed
      */
-    public function client() {
+    public function client()
+    {
         return $this->client;
     }
 
@@ -39,7 +40,8 @@ abstract class Connection {
      * @param  \Closure  $callback
      * @return void
      */
-    public function subscribe($channels, Closure $callback) {
+    public function subscribe($channels, Closure $callback)
+    {
         return $this->createSubscription($channels, $callback, __FUNCTION__);
     }
 
@@ -50,7 +52,8 @@ abstract class Connection {
      * @param  \Closure  $callback
      * @return void
      */
-    public function psubscribe($channels, Closure $callback) {
+    public function psubscribe($channels, Closure $callback)
+    {
         return $this->createSubscription($channels, $callback, __FUNCTION__);
     }
 
@@ -61,7 +64,8 @@ abstract class Connection {
      * @param  array   $parameters
      * @return mixed
      */
-    public function command($method, array $parameters = []) {
+    public function command($method, array $parameters = [])
+    {
         return $this->client->{$method}(...$parameters);
     }
 
@@ -72,8 +76,8 @@ abstract class Connection {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->command($method, $parameters);
     }
-
 }

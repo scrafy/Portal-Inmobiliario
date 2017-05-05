@@ -4,8 +4,8 @@ namespace Illuminate\View\Concerns;
 
 use InvalidArgumentException;
 
-trait ManagesStacks {
-
+trait ManagesStacks
+{
     /**
      * All of the finished, captured push sections.
      *
@@ -34,7 +34,8 @@ trait ManagesStacks {
      * @param  string  $content
      * @return void
      */
-    public function startPush($section, $content = '') {
+    public function startPush($section, $content = '')
+    {
         if ($content === '') {
             if (ob_start()) {
                 $this->pushStack[] = $section;
@@ -50,7 +51,8 @@ trait ManagesStacks {
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function stopPush() {
+    public function stopPush()
+    {
         if (empty($this->pushStack)) {
             throw new InvalidArgumentException('Cannot end a push stack without first starting one.');
         }
@@ -67,12 +69,13 @@ trait ManagesStacks {
      * @param  string  $content
      * @return void
      */
-    protected function extendPush($section, $content) {
-        if (!isset($this->pushes[$section])) {
+    protected function extendPush($section, $content)
+    {
+        if (! isset($this->pushes[$section])) {
             $this->pushes[$section] = [];
         }
 
-        if (!isset($this->pushes[$section][$this->renderCount])) {
+        if (! isset($this->pushes[$section][$this->renderCount])) {
             $this->pushes[$section][$this->renderCount] = $content;
         } else {
             $this->pushes[$section][$this->renderCount] .= $content;
@@ -86,7 +89,8 @@ trait ManagesStacks {
      * @param  string  $content
      * @return void
      */
-    public function startPrepend($section, $content = '') {
+    public function startPrepend($section, $content = '')
+    {
         if ($content === '') {
             if (ob_start()) {
                 $this->pushStack[] = $section;
@@ -102,7 +106,8 @@ trait ManagesStacks {
      * @return string
      * @throws \InvalidArgumentException
      */
-    public function stopPrepend() {
+    public function stopPrepend()
+    {
         if (empty($this->pushStack)) {
             throw new InvalidArgumentException('Cannot end a prepend operation without first starting one.');
         }
@@ -119,15 +124,16 @@ trait ManagesStacks {
      * @param  string  $content
      * @return void
      */
-    protected function extendPrepend($section, $content) {
-        if (!isset($this->prepends[$section])) {
+    protected function extendPrepend($section, $content)
+    {
+        if (! isset($this->prepends[$section])) {
             $this->prepends[$section] = [];
         }
 
-        if (!isset($this->prepends[$section][$this->renderCount])) {
+        if (! isset($this->prepends[$section][$this->renderCount])) {
             $this->prepends[$section][$this->renderCount] = $content;
         } else {
-            $this->prepends[$section][$this->renderCount] = $content . $this->prepends[$section][$this->renderCount];
+            $this->prepends[$section][$this->renderCount] = $content.$this->prepends[$section][$this->renderCount];
         }
     }
 
@@ -138,8 +144,9 @@ trait ManagesStacks {
      * @param  string  $default
      * @return string
      */
-    public function yieldPushContent($section, $default = '') {
-        if (!isset($this->pushes[$section]) && !isset($this->prepends[$section])) {
+    public function yieldPushContent($section, $default = '')
+    {
+        if (! isset($this->pushes[$section]) && ! isset($this->prepends[$section])) {
             return $default;
         }
 
@@ -161,10 +168,10 @@ trait ManagesStacks {
      *
      * @return void
      */
-    public function flushStacks() {
+    public function flushStacks()
+    {
         $this->pushes = [];
         $this->prepends = [];
         $this->pushStack = [];
     }
-
 }

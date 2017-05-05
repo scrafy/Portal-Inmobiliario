@@ -22,8 +22,8 @@ use Symfony\Component\Config\FileLocatorInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class AnnotationFileLoader extends FileLoader {
-
+class AnnotationFileLoader extends FileLoader
+{
     protected $loader;
 
     /**
@@ -34,7 +34,8 @@ class AnnotationFileLoader extends FileLoader {
      *
      * @throws \RuntimeException
      */
-    public function __construct(FileLocatorInterface $locator, AnnotationClassLoader $loader) {
+    public function __construct(FileLocatorInterface $locator, AnnotationClassLoader $loader)
+    {
         if (!function_exists('token_get_all')) {
             throw new \RuntimeException('The Tokenizer extension is required for the routing annotation loaders.');
         }
@@ -54,7 +55,8 @@ class AnnotationFileLoader extends FileLoader {
      *
      * @throws \InvalidArgumentException When the file does not exist or its routes cannot be parsed
      */
-    public function load($file, $type = null) {
+    public function load($file, $type = null)
+    {
         $path = $this->locator->locate($file);
 
         $collection = new RouteCollection();
@@ -73,7 +75,8 @@ class AnnotationFileLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'annotation' === $type);
     }
 
@@ -84,7 +87,8 @@ class AnnotationFileLoader extends FileLoader {
      *
      * @return string|false Full class name if found, false otherwise
      */
-    protected function findClass($file) {
+    protected function findClass($file)
+    {
         $class = false;
         $namespace = false;
         $tokens = token_get_all(file_get_contents($file));
@@ -101,7 +105,7 @@ class AnnotationFileLoader extends FileLoader {
             }
 
             if (true === $class && T_STRING === $token[0]) {
-                return $namespace . '\\' . $token[1];
+                return $namespace.'\\'.$token[1];
             }
 
             if (true === $namespace && T_STRING === $token[0]) {
@@ -140,5 +144,4 @@ class AnnotationFileLoader extends FileLoader {
 
         return false;
     }
-
 }

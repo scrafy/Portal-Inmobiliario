@@ -7,8 +7,8 @@ use Psy\Configuration;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
-class TinkerCommand extends Command {
-
+class TinkerCommand extends Command
+{
     /**
      * artisan commands to include in the tinker shell.
      *
@@ -37,13 +37,14 @@ class TinkerCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->getApplication()->setCatchExceptions(false);
 
         $config = new Configuration;
 
         $config->getPresenter()->addCasters(
-                $this->getCasters()
+            $this->getCasters()
         );
 
         $shell = new Shell($config);
@@ -58,7 +59,8 @@ class TinkerCommand extends Command {
      *
      * @return array
      */
-    protected function getCommands() {
+    protected function getCommands()
+    {
         $commands = [];
 
         foreach ($this->getApplication()->all() as $name => $command) {
@@ -75,7 +77,8 @@ class TinkerCommand extends Command {
      *
      * @return array
      */
-    protected function getCasters() {
+    protected function getCasters()
+    {
         $casters = [
             'Illuminate\Support\Collection' => 'Laravel\Tinker\TinkerCaster::castCollection',
         ];
@@ -96,10 +99,10 @@ class TinkerCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             ['include', InputArgument::IS_ARRAY, 'Include file(s) before starting tinker'],
         ];
     }
-
 }

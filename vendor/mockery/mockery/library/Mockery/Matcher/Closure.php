@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Closure extends MatcherAbstract {
+class Closure extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,7 +29,8 @@ class Closure extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         $closure = $this->_expected;
         $result = $closure($actual);
         return $result === true;
@@ -40,8 +41,8 @@ class Closure extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<Closure===true>';
     }
-
 }

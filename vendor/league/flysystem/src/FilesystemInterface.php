@@ -2,8 +2,8 @@
 
 namespace League\Flysystem;
 
-interface FilesystemInterface {
-
+interface FilesystemInterface
+{
     /**
      * Check whether a file exists.
      *

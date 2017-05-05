@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Queue;
 
-interface Queue {
-
+interface Queue
+{
     /**
      * Get the size of the queue.
      *

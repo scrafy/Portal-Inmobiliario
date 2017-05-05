@@ -2,10 +2,9 @@
 
 namespace Fixtures\Prophecy;
 
-class WithVariadicArgument {
-
-    function methodWithArgs(...$args) {
-        
+class WithVariadicArgument
+{
+    function methodWithArgs(...$args)
+    {
     }
-
 }

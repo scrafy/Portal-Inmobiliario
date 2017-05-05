@@ -5,11 +5,10 @@ namespace PhpParser\Node\Expr;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Name;
 
-class Instanceof_ extends Expr {
-
+class Instanceof_ extends Expr
+{
     /** @var Expr Expression */
     public $expr;
-
     /** @var Name|Expr Class name */
     public $class;
 
@@ -29,5 +28,4 @@ class Instanceof_ extends Expr {
     public function getSubNodeNames() {
         return array('expr', 'class');
     }
-
 }

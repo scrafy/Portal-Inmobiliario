@@ -21,8 +21,8 @@ use Closure;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class CallbackPromise implements PromiseInterface {
-
+class CallbackPromise implements PromiseInterface
+{
     private $callback;
 
     /**
@@ -32,10 +32,12 @@ class CallbackPromise implements PromiseInterface {
      *
      * @throws \Prophecy\Exception\InvalidArgumentException
      */
-    public function __construct($callback) {
+    public function __construct($callback)
+    {
         if (!is_callable($callback)) {
             throw new InvalidArgumentException(sprintf(
-                    'Callable expected as an argument to CallbackPromise, but got %s.', gettype($callback)
+                'Callable expected as an argument to CallbackPromise, but got %s.',
+                gettype($callback)
             ));
         }
 
@@ -51,7 +53,8 @@ class CallbackPromise implements PromiseInterface {
      *
      * @return mixed
      */
-    public function execute(array $args, ObjectProphecy $object, MethodProphecy $method) {
+    public function execute(array $args, ObjectProphecy $object, MethodProphecy $method)
+    {
         $callback = $this->callback;
 
         if ($callback instanceof Closure && method_exists('Closure', 'bind')) {
@@ -60,5 +63,4 @@ class CallbackPromise implements PromiseInterface {
 
         return call_user_func($callback, $args, $object, $method);
     }
-
 }

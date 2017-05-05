@@ -21,27 +21,28 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TraceableUrlMatcher extends UrlMatcher {
-
+class TraceableUrlMatcher extends UrlMatcher
+{
     const ROUTE_DOES_NOT_MATCH = 0;
     const ROUTE_ALMOST_MATCHES = 1;
     const ROUTE_MATCHES = 2;
 
     protected $traces;
 
-    public function getTraces($pathinfo) {
+    public function getTraces($pathinfo)
+    {
         $this->traces = array();
 
         try {
             $this->match($pathinfo);
         } catch (ExceptionInterface $e) {
-            
         }
 
         return $this->traces;
     }
 
-    public function getTracesForRequest(Request $request) {
+    public function getTracesForRequest(Request $request)
+    {
         $this->request = $request;
         $traces = $this->getTraces($request->getPathInfo());
         $this->request = null;
@@ -49,7 +50,8 @@ class TraceableUrlMatcher extends UrlMatcher {
         return $traces;
     }
 
-    protected function matchCollection($pathinfo, RouteCollection $routes) {
+    protected function matchCollection($pathinfo, RouteCollection $routes)
+    {
         foreach ($routes as $name => $route) {
             $compiledRoute = $route->compile();
 
@@ -127,7 +129,8 @@ class TraceableUrlMatcher extends UrlMatcher {
         }
     }
 
-    private function addTrace($log, $level = self::ROUTE_DOES_NOT_MATCH, $name = null, $route = null) {
+    private function addTrace($log, $level = self::ROUTE_DOES_NOT_MATCH, $name = null, $route = null)
+    {
         $this->traces[] = array(
             'log' => $log,
             'name' => $name,
@@ -135,5 +138,4 @@ class TraceableUrlMatcher extends UrlMatcher {
             'path' => null !== $route ? $route->getPath() : null,
         );
     }
-
 }

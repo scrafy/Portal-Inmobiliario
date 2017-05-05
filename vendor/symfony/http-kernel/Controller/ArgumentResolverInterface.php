@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface ArgumentResolverInterface {
-
+interface ArgumentResolverInterface
+{
     /**
      * Returns the arguments to pass to the controller.
      *

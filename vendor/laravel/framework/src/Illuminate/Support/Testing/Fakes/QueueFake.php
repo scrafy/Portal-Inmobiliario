@@ -5,8 +5,8 @@ namespace Illuminate\Support\Testing\Fakes;
 use Illuminate\Contracts\Queue\Queue;
 use PHPUnit_Framework_Assert as PHPUnit;
 
-class QueueFake implements Queue {
-
+class QueueFake implements Queue
+{
     /**
      * All of the jobs that have been pushed.
      *
@@ -21,9 +21,11 @@ class QueueFake implements Queue {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertPushed($job, $callback = null) {
+    public function assertPushed($job, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->pushed($job, $callback)->count() > 0, "The expected [{$job}] job was not pushed."
+            $this->pushed($job, $callback)->count() > 0,
+            "The expected [{$job}] job was not pushed."
         );
     }
 
@@ -35,14 +37,15 @@ class QueueFake implements Queue {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertPushedOn($queue, $job, $callback = null) {
+    public function assertPushedOn($queue, $job, $callback = null)
+    {
         return $this->assertPushed($job, function ($job, $pushedQueue) use ($callback, $queue) {
-                    if ($pushedQueue !== $queue) {
-                        return false;
-                    }
+            if ($pushedQueue !== $queue) {
+                return false;
+            }
 
-                    return $callback ? $callback(...func_get_args()) : true;
-                });
+            return $callback ? $callback(...func_get_args()) : true;
+        });
     }
 
     /**
@@ -52,9 +55,11 @@ class QueueFake implements Queue {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertNotPushed($job, $callback = null) {
+    public function assertNotPushed($job, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->pushed($job, $callback)->count() === 0, "The unexpected [{$job}] job was pushed."
+            $this->pushed($job, $callback)->count() === 0,
+            "The unexpected [{$job}] job was pushed."
         );
     }
 
@@ -65,8 +70,9 @@ class QueueFake implements Queue {
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function pushed($job, $callback = null) {
-        if (!$this->hasPushed($job)) {
+    public function pushed($job, $callback = null)
+    {
+        if (! $this->hasPushed($job)) {
             return collect();
         }
 
@@ -75,8 +81,8 @@ class QueueFake implements Queue {
         };
 
         return collect($this->jobs[$job])->filter(function ($data) use ($callback) {
-                    return $callback($data['job'], $data['queue']);
-                })->pluck('job');
+            return $callback($data['job'], $data['queue']);
+        })->pluck('job');
     }
 
     /**
@@ -85,8 +91,9 @@ class QueueFake implements Queue {
      * @param  string  $job
      * @return bool
      */
-    public function hasPushed($job) {
-        return isset($this->jobs[$job]) && !empty($this->jobs[$job]);
+    public function hasPushed($job)
+    {
+        return isset($this->jobs[$job]) && ! empty($this->jobs[$job]);
     }
 
     /**
@@ -95,7 +102,8 @@ class QueueFake implements Queue {
      * @param  mixed  $value
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public function connection($value = null) {
+    public function connection($value = null)
+    {
         return $this;
     }
 
@@ -105,7 +113,8 @@ class QueueFake implements Queue {
      * @param  string  $queue
      * @return int
      */
-    public function size($queue = null) {
+    public function size($queue = null)
+    {
         return 0;
     }
 
@@ -117,7 +126,8 @@ class QueueFake implements Queue {
      * @param  string  $queue
      * @return mixed
      */
-    public function push($job, $data = '', $queue = null) {
+    public function push($job, $data = '', $queue = null)
+    {
         $this->jobs[get_class($job)][] = [
             'job' => $job,
             'queue' => $queue,
@@ -132,7 +142,8 @@ class QueueFake implements Queue {
      * @param  array   $options
      * @return mixed
      */
-    public function pushRaw($payload, $queue = null, array $options = []) {
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
         //
     }
 
@@ -145,7 +156,8 @@ class QueueFake implements Queue {
      * @param  string  $queue
      * @return mixed
      */
-    public function later($delay, $job, $data = '', $queue = null) {
+    public function later($delay, $job, $data = '', $queue = null)
+    {
         return $this->push($job, $data, $queue);
     }
 
@@ -157,7 +169,8 @@ class QueueFake implements Queue {
      * @param  mixed   $data
      * @return mixed
      */
-    public function pushOn($queue, $job, $data = '') {
+    public function pushOn($queue, $job, $data = '')
+    {
         return $this->push($job, $data, $queue);
     }
 
@@ -170,7 +183,8 @@ class QueueFake implements Queue {
      * @param  mixed   $data
      * @return mixed
      */
-    public function laterOn($queue, $delay, $job, $data = '') {
+    public function laterOn($queue, $delay, $job, $data = '')
+    {
         return $this->push($job, $data, $queue);
     }
 
@@ -180,7 +194,8 @@ class QueueFake implements Queue {
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
-    public function pop($queue = null) {
+    public function pop($queue = null)
+    {
         //
     }
 
@@ -192,7 +207,8 @@ class QueueFake implements Queue {
      * @param  string $queue
      * @return mixed
      */
-    public function bulk($jobs, $data = '', $queue = null) {
+    public function bulk($jobs, $data = '', $queue = null)
+    {
         foreach ($this->jobs as $job) {
             $this->push($job);
         }
@@ -203,7 +219,8 @@ class QueueFake implements Queue {
      *
      * @return string
      */
-    public function getConnectionName() {
+    public function getConnectionName()
+    {
         //
     }
 
@@ -213,8 +230,8 @@ class QueueFake implements Queue {
      * @param  string $name
      * @return $this
      */
-    public function setConnectionName($name) {
+    public function setConnectionName($name)
+    {
         return $this;
     }
-
 }

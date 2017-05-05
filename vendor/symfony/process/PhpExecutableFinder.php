@@ -17,11 +17,12 @@ namespace Symfony\Component\Process;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class PhpExecutableFinder {
-
+class PhpExecutableFinder
+{
     private $executableFinder;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->executableFinder = new ExecutableFinder();
     }
 
@@ -32,18 +33,19 @@ class PhpExecutableFinder {
      *
      * @return string|false The PHP executable path or false if it cannot be found
      */
-    public function find($includeArgs = true) {
+    public function find($includeArgs = true)
+    {
         $args = $this->findArguments();
-        $args = $includeArgs && $args ? ' ' . implode(' ', $args) : '';
+        $args = $includeArgs && $args ? ' '.implode(' ', $args) : '';
 
         // HHVM support
         if (defined('HHVM_VERSION')) {
-            return (getenv('PHP_BINARY') ?: PHP_BINARY) . $args;
+            return (getenv('PHP_BINARY') ?: PHP_BINARY).$args;
         }
 
         // PHP_BINARY return the current sapi executable
         if (PHP_BINARY && in_array(PHP_SAPI, array('cli', 'cli-server', 'phpdbg')) && is_file(PHP_BINARY)) {
-            return PHP_BINARY . $args;
+            return PHP_BINARY.$args;
         }
 
         if ($php = getenv('PHP_PATH')) {
@@ -73,7 +75,8 @@ class PhpExecutableFinder {
      *
      * @return array The PHP executable arguments
      */
-    public function findArguments() {
+    public function findArguments()
+    {
         $arguments = array();
 
         if (defined('HHVM_VERSION')) {
@@ -84,5 +87,4 @@ class PhpExecutableFinder {
 
         return $arguments;
     }
-
 }

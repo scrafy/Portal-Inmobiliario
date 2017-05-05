@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Namespace_ extends Node\Stmt {
-
+class Namespace_ extends Node\Stmt
+{
     /** @var null|Node\Name Name */
     public $name;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -28,5 +27,4 @@ class Namespace_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('name', 'stmts');
     }
-
 }

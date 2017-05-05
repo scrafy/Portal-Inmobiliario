@@ -16,8 +16,8 @@ use Illuminate\Cache\Events\KeyForgotten;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 
-class Repository implements CacheContract, ArrayAccess {
-
+class Repository implements CacheContract, ArrayAccess
+{
     use Macroable {
         __call as macroCall;
     }
@@ -49,7 +49,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \Illuminate\Contracts\Cache\Store  $store
      * @return void
      */
-    public function __construct(Store $store) {
+    public function __construct(Store $store)
+    {
         $this->store = $store;
     }
 
@@ -59,8 +60,9 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return bool
      */
-    public function has($key) {
-        return !is_null($this->get($key));
+    public function has($key)
+    {
+        return ! is_null($this->get($key));
     }
 
     /**
@@ -70,7 +72,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed   $default
      * @return mixed
      */
-    public function get($key, $default = null) {
+    public function get($key, $default = null)
+    {
         if (is_array($key)) {
             return $this->many($key);
         }
@@ -99,14 +102,15 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  array  $keys
      * @return array
      */
-    public function many(array $keys) {
+    public function many(array $keys)
+    {
         $values = $this->store->many(collect($keys)->map(function ($value, $key) {
-                    return is_string($key) ? $key : $value;
-                })->values()->all());
+            return is_string($key) ? $key : $value;
+        })->values()->all());
 
         return collect($values)->map(function ($value, $key) use ($keys) {
-                    return $this->handleManyResult($keys, $key, $value);
-                })->all();
+            return $this->handleManyResult($keys, $key, $value);
+        })->all();
     }
 
     /**
@@ -117,7 +121,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function handleManyResult($keys, $key, $value) {
+    protected function handleManyResult($keys, $key, $value)
+    {
         // If we could not find the cache value, we will fire the missed event and get
         // the default value for this cache value. This default could be a callback
         // so we will execute the value function which will resolve it if needed.
@@ -142,7 +147,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed   $default
      * @return mixed
      */
-    public function pull($key, $default = null) {
+    public function pull($key, $default = null)
+    {
         return tap($this->get($key, $default), function ($value) use ($key) {
             $this->forget($key);
         });
@@ -156,12 +162,13 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \DateTime|float|int  $minutes
      * @return void
      */
-    public function put($key, $value, $minutes = null) {
+    public function put($key, $value, $minutes = null)
+    {
         if (is_array($key)) {
             return $this->putMany($key, $value);
         }
 
-        if (!is_null($minutes = $this->getMinutes($minutes))) {
+        if (! is_null($minutes = $this->getMinutes($minutes))) {
             $this->store->put($this->itemKey($key), $value, $minutes);
 
             $this->event(new KeyWritten($key, $value, $minutes));
@@ -175,8 +182,9 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  float|int  $minutes
      * @return void
      */
-    public function putMany(array $values, $minutes) {
-        if (!is_null($minutes = $this->getMinutes($minutes))) {
+    public function putMany(array $values, $minutes)
+    {
+        if (! is_null($minutes = $this->getMinutes($minutes))) {
             $this->store->putMany($values, $minutes);
 
             foreach ($values as $key => $value) {
@@ -193,7 +201,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \DateTime|float|int  $minutes
      * @return bool
      */
-    public function add($key, $value, $minutes) {
+    public function add($key, $value, $minutes)
+    {
         if (is_null($minutes = $this->getMinutes($minutes))) {
             return false;
         }
@@ -203,7 +212,7 @@ class Repository implements CacheContract, ArrayAccess {
         // this operation should work with a total "atomic" implementation of it.
         if (method_exists($this->store, 'add')) {
             return $this->store->add(
-                            $this->itemKey($key), $value, $minutes
+                $this->itemKey($key), $value, $minutes
             );
         }
 
@@ -226,7 +235,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed  $value
      * @return int|bool
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         return $this->store->increment($key, $value);
     }
 
@@ -237,7 +247,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed  $value
      * @return int|bool
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         return $this->store->decrement($key, $value);
     }
 
@@ -248,7 +259,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed   $value
      * @return void
      */
-    public function forever($key, $value) {
+    public function forever($key, $value)
+    {
         $this->store->forever($this->itemKey($key), $value);
 
         $this->event(new KeyWritten($key, $value, 0));
@@ -262,13 +274,14 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \Closure  $callback
      * @return mixed
      */
-    public function remember($key, $minutes, Closure $callback) {
+    public function remember($key, $minutes, Closure $callback)
+    {
         $value = $this->get($key);
 
         // If the item exists in the cache we will just return this immediately and if
         // not we will execute the given Closure and cache the result of that for a
         // given number of minutes so it's available for all subsequent requests.
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             return $value;
         }
 
@@ -284,7 +297,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \Closure  $callback
      * @return mixed
      */
-    public function sear($key, Closure $callback) {
+    public function sear($key, Closure $callback)
+    {
         return $this->rememberForever($key, $callback);
     }
 
@@ -295,13 +309,14 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \Closure  $callback
      * @return mixed
      */
-    public function rememberForever($key, Closure $callback) {
+    public function rememberForever($key, Closure $callback)
+    {
         $value = $this->get($key);
 
         // If the item exists in the cache we will just return this immediately and if
         // not we will execute the given Closure and cache the result of that for a
         // given number of minutes so it's available for all subsequent requests.
-        if (!is_null($value)) {
+        if (! is_null($value)) {
             return $value;
         }
 
@@ -316,7 +331,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return bool
      */
-    public function forget($key) {
+    public function forget($key)
+    {
         return tap($this->store->forget($this->itemKey($key)), function () use ($key) {
             $this->event(new KeyForgotten($key));
         });
@@ -330,14 +346,15 @@ class Repository implements CacheContract, ArrayAccess {
      *
      * @throws \BadMethodCallException
      */
-    public function tags($names) {
-        if (!method_exists($this->store, 'tags')) {
+    public function tags($names)
+    {
+        if (! method_exists($this->store, 'tags')) {
             throw new BadMethodCallException('This cache store does not support tagging.');
         }
 
         $cache = $this->store->tags($names);
 
-        if (!is_null($this->events)) {
+        if (! is_null($this->events)) {
             $cache->setEventDispatcher($this->events);
         }
 
@@ -350,7 +367,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return string
      */
-    protected function itemKey($key) {
+    protected function itemKey($key)
+    {
         return $key;
     }
 
@@ -359,7 +377,8 @@ class Repository implements CacheContract, ArrayAccess {
      *
      * @return float|int
      */
-    public function getDefaultCacheTime() {
+    public function getDefaultCacheTime()
+    {
         return $this->default;
     }
 
@@ -369,7 +388,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  float|int  $minutes
      * @return $this
      */
-    public function setDefaultCacheTime($minutes) {
+    public function setDefaultCacheTime($minutes)
+    {
         $this->default = $minutes;
 
         return $this;
@@ -380,7 +400,8 @@ class Repository implements CacheContract, ArrayAccess {
      *
      * @return \Illuminate\Contracts\Cache\Store
      */
-    public function getStore() {
+    public function getStore()
+    {
         return $this->store;
     }
 
@@ -390,7 +411,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $event
      * @return void
      */
-    protected function event($event) {
+    protected function event($event)
+    {
         if (isset($this->events)) {
             $this->events->dispatch($event);
         }
@@ -402,7 +424,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function setEventDispatcher(Dispatcher $events) {
+    public function setEventDispatcher(Dispatcher $events)
+    {
         $this->events = $events;
     }
 
@@ -412,7 +435,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return bool
      */
-    public function offsetExists($key) {
+    public function offsetExists($key)
+    {
         return $this->has($key);
     }
 
@@ -422,7 +446,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return mixed
      */
-    public function offsetGet($key) {
+    public function offsetGet($key)
+    {
         return $this->get($key);
     }
 
@@ -433,7 +458,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  mixed   $value
      * @return void
      */
-    public function offsetSet($key, $value) {
+    public function offsetSet($key, $value)
+    {
         $this->put($key, $value, $this->default);
     }
 
@@ -443,7 +469,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  string  $key
      * @return void
      */
-    public function offsetUnset($key) {
+    public function offsetUnset($key)
+    {
         $this->forget($key);
     }
 
@@ -453,7 +480,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  \DateTime|float|int  $duration
      * @return float|int|null
      */
-    protected function getMinutes($duration) {
+    protected function getMinutes($duration)
+    {
         if ($duration instanceof DateTime) {
             $duration = Carbon::now()->diffInSeconds(Carbon::instance($duration), false) / 60;
         }
@@ -468,7 +496,8 @@ class Repository implements CacheContract, ArrayAccess {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
         }
@@ -481,8 +510,8 @@ class Repository implements CacheContract, ArrayAccess {
      *
      * @return void
      */
-    public function __clone() {
+    public function __clone()
+    {
         $this->store = clone $this->store;
     }
-
 }

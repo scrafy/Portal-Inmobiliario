@@ -7,6 +7,6 @@ namespace Symfony\Component\Debug\Tests\Fixtures;
  *             deprecation notice.
  * @foobar
  */
-class DeprecatedClass {
-    
+class DeprecatedClass
+{
 }

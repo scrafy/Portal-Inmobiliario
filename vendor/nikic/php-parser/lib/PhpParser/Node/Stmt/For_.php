@@ -4,17 +4,14 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class For_ extends Node\Stmt {
-
+class For_ extends Node\Stmt
+{
     /** @var Node\Expr[] Init expressions */
     public $init;
-
     /** @var Node\Expr[] Loop conditions */
     public $cond;
-
     /** @var Node\Expr[] Loop expressions */
     public $loop;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -39,5 +36,4 @@ class For_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('init', 'cond', 'loop', 'stmts');
     }
-
 }

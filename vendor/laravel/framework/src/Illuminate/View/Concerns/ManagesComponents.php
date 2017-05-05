@@ -4,8 +4,8 @@ namespace Illuminate\View\Concerns;
 
 use Illuminate\Support\HtmlString;
 
-trait ManagesComponents {
-
+trait ManagesComponents
+{
     /**
      * The components being rendered.
      *
@@ -41,7 +41,8 @@ trait ManagesComponents {
      * @param  array  $data
      * @return void
      */
-    public function startComponent($name, array $data = []) {
+    public function startComponent($name, array $data = [])
+    {
         if (ob_start()) {
             $this->componentStack[] = $name;
 
@@ -56,7 +57,8 @@ trait ManagesComponents {
      *
      * @return string
      */
-    public function renderComponent() {
+    public function renderComponent()
+    {
         $name = array_pop($this->componentStack);
 
         return $this->make($name, $this->componentData($name))->render();
@@ -68,9 +70,12 @@ trait ManagesComponents {
      * @param  string  $name
      * @return array
      */
-    protected function componentData($name) {
+    protected function componentData($name)
+    {
         return array_merge(
-                $this->componentData[count($this->componentStack)], ['slot' => new HtmlString(trim(ob_get_clean()))], $this->slots[count($this->componentStack)]
+            $this->componentData[count($this->componentStack)],
+            ['slot' => new HtmlString(trim(ob_get_clean()))],
+            $this->slots[count($this->componentStack)]
         );
     }
 
@@ -81,7 +86,8 @@ trait ManagesComponents {
      * @param  string|null  $content
      * @return void
      */
-    public function slot($name, $content = null) {
+    public function slot($name, $content = null)
+    {
         if ($content !== null) {
             $this->slots[$this->currentComponent()][$name] = $content;
         } else {
@@ -98,15 +104,16 @@ trait ManagesComponents {
      *
      * @return void
      */
-    public function endSlot() {
+    public function endSlot()
+    {
         last($this->componentStack);
 
         $currentSlot = array_pop(
-                $this->slotStack[$this->currentComponent()]
+            $this->slotStack[$this->currentComponent()]
         );
 
         $this->slots[$this->currentComponent()]
-                [$currentSlot] = new HtmlString(trim(ob_get_clean()));
+                    [$currentSlot] = new HtmlString(trim(ob_get_clean()));
     }
 
     /**
@@ -114,8 +121,8 @@ trait ManagesComponents {
      *
      * @return int
      */
-    protected function currentComponent() {
+    protected function currentComponent()
+    {
         return count($this->componentStack) - 1;
     }
-
 }

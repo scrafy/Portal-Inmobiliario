@@ -24,8 +24,8 @@ use Symfony\Component\CssSelector\Parser\TokenStream;
  *
  * @internal
  */
-interface HandlerInterface {
-
+interface HandlerInterface
+{
     /**
      * @param Reader      $reader
      * @param TokenStream $stream

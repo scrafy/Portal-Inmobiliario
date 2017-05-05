@@ -17,14 +17,15 @@ use JakubOnderka\PhpConsoleHighlighter\Highlighter;
 /**
  * Builds `ConsoleColor` instances configured according to the given color mode.
  */
-class ConsoleColorFactory {
-
+class ConsoleColorFactory
+{
     private $colorMode;
 
     /**
      * @param string $colorMode
      */
-    public function __construct($colorMode) {
+    public function __construct($colorMode)
+    {
         $this->colorMode = $colorMode;
     }
 
@@ -34,7 +35,8 @@ class ConsoleColorFactory {
      *
      * @return ConsoleColor
      */
-    public function getConsoleColor() {
+    public function getConsoleColor()
+    {
         if ($this->colorMode === Configuration::COLOR_MODE_AUTO) {
             return $this->getDefaultConsoleColor();
         } elseif ($this->colorMode === Configuration::COLOR_MODE_FORCED) {
@@ -44,21 +46,24 @@ class ConsoleColorFactory {
         }
     }
 
-    private function getDefaultConsoleColor() {
+    private function getDefaultConsoleColor()
+    {
         $color = new ConsoleColor();
         $color->addTheme(Highlighter::LINE_NUMBER, array('blue'));
 
         return $color;
     }
 
-    private function getForcedConsoleColor() {
+    private function getForcedConsoleColor()
+    {
         $color = $this->getDefaultConsoleColor();
         $color->setForceStyle(true);
 
         return $color;
     }
 
-    private function getDisabledConsoleColor() {
+    private function getDisabledConsoleColor()
+    {
         $color = new ConsoleColor();
 
         $color->addTheme(Highlighter::TOKEN_STRING, array('none'));
@@ -71,5 +76,4 @@ class ConsoleColorFactory {
 
         return $color;
     }
-
 }

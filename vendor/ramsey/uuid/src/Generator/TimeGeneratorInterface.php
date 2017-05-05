@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -20,8 +19,8 @@ namespace Ramsey\Uuid\Generator;
  * data for version 1 UUIDs based on a host ID, sequence number, and the current
  * time
  */
-interface TimeGeneratorInterface {
-
+interface TimeGeneratorInterface
+{
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time
      *

@@ -4,8 +4,8 @@ namespace Illuminate\Routing;
 
 use Illuminate\Support\Arr;
 
-class RouteGroup {
-
+class RouteGroup
+{
     /**
      * Merge route groups into a new array.
      *
@@ -13,7 +13,8 @@ class RouteGroup {
      * @param  array  $old
      * @return array
      */
-    public static function merge($new, $old) {
+    public static function merge($new, $old)
+    {
         if (isset($new['domain'])) {
             unset($old['domain']);
         }
@@ -25,8 +26,8 @@ class RouteGroup {
         ]);
 
         return array_merge_recursive(Arr::except(
-                        $old, ['namespace', 'prefix', 'where', 'as']
-                ), $new);
+            $old, ['namespace', 'prefix', 'where', 'as']
+        ), $new);
     }
 
     /**
@@ -36,9 +37,12 @@ class RouteGroup {
      * @param  array  $old
      * @return string|null
      */
-    protected static function formatNamespace($new, $old) {
+    protected static function formatNamespace($new, $old)
+    {
         if (isset($new['namespace'])) {
-            return isset($old['namespace']) ? trim($old['namespace'], '\\') . '\\' . trim($new['namespace'], '\\') : trim($new['namespace'], '\\');
+            return isset($old['namespace'])
+                    ? trim($old['namespace'], '\\').'\\'.trim($new['namespace'], '\\')
+                    : trim($new['namespace'], '\\');
         }
 
         return isset($old['namespace']) ? $old['namespace'] : null;
@@ -51,10 +55,11 @@ class RouteGroup {
      * @param  array  $old
      * @return string|null
      */
-    protected static function formatPrefix($new, $old) {
+    protected static function formatPrefix($new, $old)
+    {
         $old = Arr::get($old, 'prefix');
 
-        return isset($new['prefix']) ? trim($old, '/') . '/' . trim($new['prefix'], '/') : $old;
+        return isset($new['prefix']) ? trim($old, '/').'/'.trim($new['prefix'], '/') : $old;
     }
 
     /**
@@ -64,9 +69,11 @@ class RouteGroup {
      * @param  array  $old
      * @return array
      */
-    protected static function formatWhere($new, $old) {
+    protected static function formatWhere($new, $old)
+    {
         return array_merge(
-                isset($old['where']) ? $old['where'] : [], isset($new['where']) ? $new['where'] : []
+            isset($old['where']) ? $old['where'] : [],
+            isset($new['where']) ? $new['where'] : []
         );
     }
 
@@ -77,12 +84,12 @@ class RouteGroup {
      * @param  array  $old
      * @return array
      */
-    protected static function formatAs($new, $old) {
+    protected static function formatAs($new, $old)
+    {
         if (isset($old['as'])) {
-            $new['as'] = $old['as'] . Arr::get($new, 'as', '');
+            $new['as'] = $old['as'].Arr::get($new, 'as', '');
         }
 
         return $new;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -19,6 +18,7 @@
  * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
+
 /*
  * Set error reporting to the level to which Mockery code must comply.
  */
@@ -28,17 +28,17 @@ error_reporting(E_ALL);
  * Determine the root, library, and tests directories of the framework
  * distribution.
  */
-$root = realpath(dirname(dirname(__FILE__)));
+$root    = realpath(dirname(dirname(__FILE__)));
 $library = "$root/library";
-$tests = "$root/tests";
+$tests   = "$root/tests";
 
 /**
  * Check that --dev composer installation was done
  */
 if (!file_exists($root . '/vendor/autoload.php')) {
     throw new Exception(
-    'Please run "php composer.phar install --dev" in root directory '
-    . 'to setup unit test dependencies before running the tests'
+        'Please run "php composer.phar install --dev" in root directory '
+        . 'to setup unit test dependencies before running the tests'
     );
 }
 
@@ -57,7 +57,7 @@ set_include_path(implode(PATH_SEPARATOR, $path));
 require_once "$root/vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php";
 
 if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
-        version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
+    version_compare(PHPUnit_Runner_Version::id(), '3.1.6', '>=')) {
 
     /*
      * Add Mutateme library/ directory to the PHPUnit code coverage
@@ -77,7 +77,7 @@ if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true &&
     PHPUnit_Util_Filter::addDirectoryToFilter(PHP_LIBDIR);
 }
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
  * Unset global variables that are no longer needed.

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Eloquent;
 
-interface Scope {
-
+interface Scope
+{
     /**
      * Apply the scope to a given Eloquent query builder.
      *

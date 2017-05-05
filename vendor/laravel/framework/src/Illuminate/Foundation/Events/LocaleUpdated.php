@@ -2,8 +2,8 @@
 
 namespace Illuminate\Foundation\Events;
 
-class LocaleUpdated {
-
+class LocaleUpdated
+{
     /**
      * The new locale.
      *
@@ -17,8 +17,8 @@ class LocaleUpdated {
      * @param  string  $locale
      * @return void
      */
-    public function __construct($locale) {
+    public function __construct($locale)
+    {
         $this->locale = $locale;
     }
-
 }

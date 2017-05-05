@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Matcher\RedirectableUrlMatcherInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class RedirectableUrlMatcher extends UrlMatcher implements RedirectableUrlMatcherInterface {
-
-    public function redirect($path, $route, $scheme = null) {
+class RedirectableUrlMatcher extends UrlMatcher implements RedirectableUrlMatcherInterface
+{
+    public function redirect($path, $route, $scheme = null)
+    {
         return array(
             '_controller' => 'Some controller reference...',
             'path' => $path,
             'scheme' => $scheme,
         );
     }
-
 }

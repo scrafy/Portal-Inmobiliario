@@ -6,8 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 
-class ConfigCacheCommand extends Command {
-
+class ConfigCacheCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -35,7 +35,8 @@ class ConfigCacheCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files) {
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -46,13 +47,14 @@ class ConfigCacheCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->call('config:clear');
 
         $config = $this->getFreshConfiguration();
 
         $this->files->put(
-                $this->laravel->getCachedConfigPath(), '<?php return ' . var_export($config, true) . ';' . PHP_EOL
+            $this->laravel->getCachedConfigPath(), '<?php return '.var_export($config, true).';'.PHP_EOL
         );
 
         $this->info('Configuration cached successfully!');
@@ -63,12 +65,12 @@ class ConfigCacheCommand extends Command {
      *
      * @return array
      */
-    protected function getFreshConfiguration() {
-        $app = require $this->laravel->bootstrapPath() . '/app.php';
+    protected function getFreshConfiguration()
+    {
+        $app = require $this->laravel->bootstrapPath().'/app.php';
 
         $app->make(ConsoleKernelContract::class)->bootstrap();
 
         return $app['config']->all();
     }
-
 }

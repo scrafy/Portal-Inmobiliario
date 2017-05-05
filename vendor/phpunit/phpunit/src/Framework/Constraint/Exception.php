@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constraint
+{
     /**
      * @var string
      */
@@ -19,7 +18,8 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
     /**
      * @param string $className
      */
-    public function __construct($className) {
+    public function __construct($className)
+    {
         parent::__construct();
         $this->className = $className;
     }
@@ -32,7 +32,8 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return $other instanceof $this->className;
     }
 
@@ -46,7 +47,8 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         if ($other !== null) {
             $message = '';
             if ($other instanceof Exception || $other instanceof Throwable) {
@@ -55,12 +57,16 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
             }
 
             return sprintf(
-                    'exception of type "%s" matches expected exception "%s"%s', get_class($other), $this->className, $message
+                'exception of type "%s" matches expected exception "%s"%s',
+                get_class($other),
+                $this->className,
+                $message
             );
         }
 
         return sprintf(
-                'exception of type "%s" is thrown', $this->className
+            'exception of type "%s" is thrown',
+            $this->className
         );
     }
 
@@ -69,10 +75,11 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return sprintf(
-                'exception of type "%s"', $this->className
+            'exception of type "%s"',
+            $this->className
         );
     }
-
 }

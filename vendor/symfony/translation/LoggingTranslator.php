@@ -17,8 +17,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
-
+class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface
+{
     /**
      * @var TranslatorInterface|TranslatorBagInterface
      */
@@ -33,7 +33,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
      * @param TranslatorInterface $translator The translator must implement TranslatorBagInterface
      * @param LoggerInterface     $logger
      */
-    public function __construct(TranslatorInterface $translator, LoggerInterface $logger) {
+    public function __construct(TranslatorInterface $translator, LoggerInterface $logger)
+    {
         if (!$translator instanceof TranslatorBagInterface) {
             throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
         }
@@ -45,7 +46,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null) {
+    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
         $trans = $this->translator->trans($id, $parameters, $domain, $locale);
         $this->log($id, $domain, $locale);
 
@@ -55,7 +57,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
+    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    {
         $trans = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
         $this->log($id, $domain, $locale);
 
@@ -65,21 +68,24 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale) {
+    public function setLocale($locale)
+    {
         $this->translator->setLocale($locale);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLocale() {
+    public function getLocale()
+    {
         return $this->translator->getLocale();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCatalogue($locale = null) {
+    public function getCatalogue($locale = null)
+    {
         return $this->translator->getCatalogue($locale);
     }
 
@@ -88,7 +94,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
      *
      * @return array $locales The fallback locales
      */
-    public function getFallbackLocales() {
+    public function getFallbackLocales()
+    {
         if ($this->translator instanceof Translator) {
             return $this->translator->getFallbackLocales();
         }
@@ -99,7 +106,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
     /**
      * Passes through all unknown calls onto the translator object.
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         return call_user_func_array(array($this->translator, $method), $args);
     }
 
@@ -110,7 +118,8 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
      * @param string|null $domain
      * @param string|null $locale
      */
-    private function log($id, $domain, $locale) {
+    private function log($id, $domain, $locale)
+    {
         if (null === $domain) {
             $domain = 'messages';
         }
@@ -127,5 +136,4 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface {
             $this->logger->warning('Translation not found.', array('id' => $id, 'domain' => $domain, 'locale' => $catalogue->getLocale()));
         }
     }
-
 }

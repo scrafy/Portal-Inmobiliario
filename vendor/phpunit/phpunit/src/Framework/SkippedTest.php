@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +11,6 @@
 /**
  * A marker interface for marking a unit test as being skipped.
  */
-interface PHPUnit_Framework_SkippedTest {
-    
+interface PHPUnit_Framework_SkippedTest
+{
 }

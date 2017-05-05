@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Prints TestDox documentation in HTML format.
  */
-class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_ResultPrinter {
-
+class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_ResultPrinter
+{
     /**
      * @var string
      */
@@ -79,7 +78,8 @@ EOT;
     /**
      * Handler for 'start run' event.
      */
-    protected function startRun() {
+    protected function startRun()
+    {
         $this->write($this->pageHeader);
     }
 
@@ -88,11 +88,14 @@ EOT;
      *
      * @param string $name
      */
-    protected function startClass($name) {
+    protected function startClass($name)
+    {
         $this->write(
-                sprintf(
-                        $this->classHeader, $name, $this->currentTestClassPrettified
-                )
+            sprintf(
+                $this->classHeader,
+                $name,
+                $this->currentTestClassPrettified
+            )
         );
     }
 
@@ -102,11 +105,15 @@ EOT;
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true) {
+    protected function onTest($name, $success = true)
+    {
         $this->write(
-                sprintf(
-                        "            <li style=\"color: %s;\">%s %s</li>\n", $success ? '#555753' : '#ef2929', $success ? '✓' : '❌', $name
-                )
+            sprintf(
+                "            <li style=\"color: %s;\">%s %s</li>\n",
+                $success ? '#555753' : '#ef2929',
+                $success ? '✓' : '❌',
+                $name
+            )
         );
     }
 
@@ -115,15 +122,16 @@ EOT;
      *
      * @param string $name
      */
-    protected function endClass($name) {
+    protected function endClass($name)
+    {
         $this->write($this->classFooter);
     }
 
     /**
      * Handler for 'end run' event.
      */
-    protected function endRun() {
+    protected function endRun()
+    {
         $this->write($this->pageFooter);
     }
-
 }

@@ -11,15 +11,15 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector\Util;
 
-@trigger_error('The ' . __NAMESPACE__ . '\ValueExporter class is deprecated since version 3.2 and will be removed in 4.0. Use the VarDumper component instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\ValueExporter class is deprecated since version 3.2 and will be removed in 4.0. Use the VarDumper component instead.', E_USER_DEPRECATED);
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @deprecated since version 3.2, to be removed in 4.0. Use the VarDumper component instead.
  */
-class ValueExporter {
-
+class ValueExporter
+{
     /**
      * Converts a PHP value to a string.
      *
@@ -29,7 +29,8 @@ class ValueExporter {
      *
      * @return string The string representation of the given value
      */
-    public function exportValue($value, $depth = 1, $deep = false) {
+    public function exportValue($value, $depth = 1, $deep = false)
+    {
         if ($value instanceof \__PHP_Incomplete_Class) {
             return sprintf('__PHP_Incomplete_Class(%s)', $this->getClassNameFromIncomplete($value));
         }
@@ -89,10 +90,10 @@ class ValueExporter {
         return (string) $value;
     }
 
-    private function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value) {
+    private function getClassNameFromIncomplete(\__PHP_Incomplete_Class $value)
+    {
         $array = new \ArrayObject($value);
 
         return $array['__PHP_Incomplete_Class_Name'];
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -16,16 +15,18 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Framework_MockObject_Stub {
-
+class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Framework_MockObject_Stub
+{
     protected $stack;
     protected $value;
 
-    public function __construct($stack) {
+    public function __construct($stack)
+    {
         $this->stack = $stack;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation) {
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
         $this->value = array_shift($this->stack);
 
         if ($this->value instanceof PHPUnit_Framework_MockObject_Stub) {
@@ -35,12 +36,13 @@ class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Fram
         return $this->value;
     }
 
-    public function toString() {
+    public function toString()
+    {
         $exporter = new Exporter;
 
         return sprintf(
-                'return user-specified value %s', $exporter->export($this->value)
+            'return user-specified value %s',
+            $exporter->export($this->value)
         );
     }
-
 }

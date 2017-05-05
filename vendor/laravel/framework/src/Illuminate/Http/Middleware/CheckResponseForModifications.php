@@ -5,8 +5,8 @@ namespace Illuminate\Http\Middleware;
 use Closure;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckResponseForModifications {
-
+class CheckResponseForModifications
+{
     /**
      * Handle an incoming request.
      *
@@ -14,7 +14,8 @@ class CheckResponseForModifications {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next) {
+    public function handle($request, Closure $next)
+    {
         $response = $next($request);
 
         if ($response instanceof Response) {
@@ -23,5 +24,4 @@ class CheckResponseForModifications {
 
         return $response;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -16,8 +15,8 @@ use ReflectionProperty;
 /**
  * Restorer of snapshots of global state.
  */
-class Restorer {
-
+class Restorer
+{
     /**
      * Deletes function definitions that are not defined in a snapshot.
      *
@@ -25,7 +24,8 @@ class Restorer {
      * @throws RuntimeException when the uopz_delete() function is not available
      * @see    https://github.com/krakjoe/uopz
      */
-    public function restoreFunctions(Snapshot $snapshot) {
+    public function restoreFunctions(Snapshot $snapshot)
+    {
         if (!function_exists('uopz_delete')) {
             throw new RuntimeException('The uopz_delete() function is required for this operation');
         }
@@ -42,7 +42,8 @@ class Restorer {
      *
      * @param Snapshot $snapshot
      */
-    public function restoreGlobalVariables(Snapshot $snapshot) {
+    public function restoreGlobalVariables(Snapshot $snapshot)
+    {
         $superGlobalArrays = $snapshot->superGlobalArrays();
 
         foreach ($superGlobalArrays as $superGlobalArray) {
@@ -53,8 +54,8 @@ class Restorer {
 
         foreach (array_keys($GLOBALS) as $key) {
             if ($key != 'GLOBALS' &&
-                    !in_array($key, $superGlobalArrays) &&
-                    !$snapshot->blacklist()->isGlobalVariableBlacklisted($key)) {
+                !in_array($key, $superGlobalArrays) &&
+                !$snapshot->blacklist()->isGlobalVariableBlacklisted($key)) {
                 if (isset($globalVariables[$key])) {
                     $GLOBALS[$key] = $globalVariables[$key];
                 } else {
@@ -69,8 +70,9 @@ class Restorer {
      *
      * @param Snapshot $snapshot
      */
-    public function restoreStaticAttributes(Snapshot $snapshot) {
-        $current = new Snapshot($snapshot->blacklist(), false, false, false, false, true, false, false, false, false);
+    public function restoreStaticAttributes(Snapshot $snapshot)
+    {
+        $current    = new Snapshot($snapshot->blacklist(), false, false, false, false, true, false, false, false, false);
         $newClasses = array_diff($current->classes(), $snapshot->classes());
         unset($current);
 
@@ -83,7 +85,7 @@ class Restorer {
         }
 
         foreach ($newClasses as $className) {
-            $class = new \ReflectionClass($className);
+            $class    = new \ReflectionClass($className);
             $defaults = $class->getDefaultProperties();
 
             foreach ($class->getProperties() as $attribute) {
@@ -113,16 +115,18 @@ class Restorer {
      * @param Snapshot $snapshot
      * @param $superGlobalArray
      */
-    private function restoreSuperGlobalArray(Snapshot $snapshot, $superGlobalArray) {
+    private function restoreSuperGlobalArray(Snapshot $snapshot, $superGlobalArray)
+    {
         $superGlobalVariables = $snapshot->superGlobalVariables();
 
         if (isset($GLOBALS[$superGlobalArray]) &&
-                is_array($GLOBALS[$superGlobalArray]) &&
-                isset($superGlobalVariables[$superGlobalArray])) {
+            is_array($GLOBALS[$superGlobalArray]) &&
+            isset($superGlobalVariables[$superGlobalArray])) {
             $keys = array_keys(
-                    array_merge(
-                            $GLOBALS[$superGlobalArray], $superGlobalVariables[$superGlobalArray]
-                    )
+                array_merge(
+                    $GLOBALS[$superGlobalArray],
+                    $superGlobalVariables[$superGlobalArray]
+                )
             );
 
             foreach ($keys as $key) {
@@ -134,5 +138,4 @@ class Restorer {
             }
         }
     }
-
 }

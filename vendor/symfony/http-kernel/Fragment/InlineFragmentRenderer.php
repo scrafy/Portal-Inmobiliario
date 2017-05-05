@@ -24,8 +24,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class InlineFragmentRenderer extends RoutableFragmentRenderer {
-
+class InlineFragmentRenderer extends RoutableFragmentRenderer
+{
     private $kernel;
     private $dispatcher;
 
@@ -35,7 +35,8 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer {
      * @param HttpKernelInterface      $kernel     A HttpKernelInterface instance
      * @param EventDispatcherInterface $dispatcher A EventDispatcherInterface instance
      */
-    public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null) {
+    public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null)
+    {
         $this->kernel = $kernel;
         $this->dispatcher = $dispatcher;
     }
@@ -47,7 +48,8 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer {
      *
      *  * alt: an alternative URI to render in case of an error
      */
-    public function render($uri, Request $request, array $options = array()) {
+    public function render($uri, Request $request, array $options = array())
+    {
         $reference = null;
         if ($uri instanceof ControllerReference) {
             $reference = $uri;
@@ -108,7 +110,8 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer {
         }
     }
 
-    protected function createSubRequest($uri, Request $request) {
+    protected function createSubRequest($uri, Request $request)
+    {
         $cookies = $request->cookies->all();
         $server = $request->server->all();
 
@@ -119,7 +122,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer {
             if ($trustedHeaderName = Request::getTrustedHeaderName(Request::HEADER_CLIENT_IP)) {
                 $currentXForwardedFor = $request->headers->get($trustedHeaderName, '');
 
-                $server['HTTP_' . $trustedHeaderName] = ($currentXForwardedFor ? $currentXForwardedFor . ', ' : '') . $request->getClientIp();
+                $server['HTTP_'.$trustedHeaderName] = ($currentXForwardedFor ? $currentXForwardedFor.', ' : '').$request->getClientIp();
             }
         } catch (\InvalidArgumentException $e) {
             // Do nothing
@@ -144,8 +147,8 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer {
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'inline';
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
+{
     /**
      * @var int
      */
@@ -19,7 +18,8 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
     /**
      * @param int $expected
      */
-    public function __construct($expected) {
+    public function __construct($expected)
+    {
         parent::__construct();
         $this->expectedCount = $expected;
     }
@@ -32,7 +32,8 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return $this->expectedCount === $this->getCountOf($other);
     }
 
@@ -41,7 +42,8 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
      *
      * @return bool
      */
-    protected function getCountOf($other) {
+    protected function getCountOf($other)
+    {
         if ($other instanceof Countable || is_array($other)) {
             return count($other);
         } elseif ($other instanceof Traversable) {
@@ -55,7 +57,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
                 return $this->getCountOfGenerator($iterator);
             }
 
-            $key = $iterator->key();
+            $key   = $iterator->key();
             $count = iterator_count($iterator);
 
             // Manually rewind $iterator to previous key, since iterator_count
@@ -79,7 +81,8 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
      *
      * @return int
      */
-    protected function getCountOfGenerator(Generator $generator) {
+    protected function getCountOfGenerator(Generator $generator)
+    {
         for ($count = 0; $generator->valid(); $generator->next()) {
             $count += 1;
         }
@@ -97,19 +100,23 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint {
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return sprintf(
-                'actual size %d matches expected size %d', $this->getCountOf($other), $this->expectedCount
+            'actual size %d matches expected size %d',
+            $this->getCountOf($other),
+            $this->expectedCount
         );
     }
 
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return sprintf(
-                'count matches %d', $this->expectedCount
+            'count matches %d',
+            $this->expectedCount
         );
     }
-
 }

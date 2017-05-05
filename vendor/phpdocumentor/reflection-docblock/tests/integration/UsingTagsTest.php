@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,9 +20,10 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 /**
  * @coversNothing
  */
-class UsingTagsTest extends \PHPUnit_Framework_TestCase {
-
-    public function testAddingYourOwnTagUsingAStaticMethodAsFactory() {
+class UsingTagsTest extends \PHPUnit_Framework_TestCase
+{
+    public function testAddingYourOwnTagUsingAStaticMethodAsFactory()
+    {
         /**
          * @var object[] $customTagObjects
          * @var string   $docComment
@@ -33,8 +33,7 @@ class UsingTagsTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf(\MyTag::class, $customTagObjects[0]);
         $this->assertSame('my-tag', $customTagObjects[0]->getName());
-        $this->assertSame('I have a description', (string) $customTagObjects[0]->getDescription());
+        $this->assertSame('I have a description', (string)$customTagObjects[0]->getDescription());
         $this->assertSame($docComment, $reconstitutedDocComment);
     }
-
 }

@@ -18,20 +18,23 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
-class ExceptionCasterTest extends TestCase {
-
+class ExceptionCasterTest extends TestCase
+{
     use VarDumperTestTrait;
 
-    private function getTestException($msg, &$ref = null) {
-        return new \Exception('' . $msg);
+    private function getTestException($msg, &$ref = null)
+    {
+        return new \Exception(''.$msg);
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         ExceptionCaster::$srcContext = 1;
         ExceptionCaster::$traceArgs = true;
     }
 
-    public function testDefaultSettings() {
+    public function testDefaultSettings()
+    {
         $ref = array('foo');
         $e = $this->getTestException('foo', $ref);
 
@@ -63,7 +66,8 @@ EODUMP;
         $this->assertSame(array('foo'), $ref);
     }
 
-    public function testSeek() {
+    public function testSeek()
+    {
         $e = $this->getTestException(2);
 
         $expectedDump = <<<'EODUMP'
@@ -87,7 +91,8 @@ EODUMP;
         $this->assertStringMatchesFormat($expectedDump, $this->getDump($e, 'trace'));
     }
 
-    public function testNoArgs() {
+    public function testNoArgs()
+    {
         $e = $this->getTestException(1);
         ExceptionCaster::$traceArgs = false;
 
@@ -114,7 +119,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $e);
     }
 
-    public function testNoSrcContext() {
+    public function testNoSrcContext()
+    {
         $e = $this->getTestException(1);
         ExceptionCaster::$srcContext = -1;
 
@@ -133,7 +139,8 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $e);
     }
 
-    public function testHtmlDump() {
+    public function testHtmlDump()
+    {
         $e = $this->getTestException(1);
         ExceptionCaster::$srcContext = -1;
 
@@ -166,21 +173,22 @@ EODUMP;
     /**
      * @requires function Twig_Template::getSourceContext
      */
-    public function testFrameWithTwig() {
-        require_once dirname(__DIR__) . '/Fixtures/Twig.php';
+    public function testFrameWithTwig()
+    {
+        require_once dirname(__DIR__).'/Fixtures/Twig.php';
 
         $f = array(
             new FrameStub(array(
-                'file' => dirname(__DIR__) . '/Fixtures/Twig.php',
+                'file' => dirname(__DIR__).'/Fixtures/Twig.php',
                 'line' => 20,
                 'class' => '__TwigTemplate_VarDumperFixture_u75a09',
-                    )),
+            )),
             new FrameStub(array(
-                'file' => dirname(__DIR__) . '/Fixtures/Twig.php',
+                'file' => dirname(__DIR__).'/Fixtures/Twig.php',
                 'line' => 21,
                 'class' => '__TwigTemplate_VarDumperFixture_u75a09',
                 'object' => new \__TwigTemplate_VarDumperFixture_u75a09(null, __FILE__),
-                    )),
+            )),
         );
 
         $expectedDump = <<<'EODUMP'
@@ -214,5 +222,4 @@ EODUMP;
 
         $this->assertDumpMatchesFormat($expectedDump, $f);
     }
-
 }

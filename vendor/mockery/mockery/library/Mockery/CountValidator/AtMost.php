@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -23,7 +22,8 @@ namespace Mockery\CountValidator;
 
 use Mockery;
 
-class AtMost extends CountValidatorAbstract {
+class AtMost extends CountValidatorAbstract
+{
 
     /**
      * Validate the call count against this validator
@@ -31,22 +31,22 @@ class AtMost extends CountValidatorAbstract {
      * @param int $n
      * @return bool
      */
-    public function validate($n) {
+    public function validate($n)
+    {
         if ($this->_limit < $n) {
             $exception = new Mockery\Exception\InvalidCountException(
-                    'Method ' . (string) $this->_expectation
-                    . ' from ' . $this->_expectation->getMock()->mockery_getName()
-                    . ' should be called' . PHP_EOL
-                    . ' at most ' . $this->_limit . ' times but called ' . $n
-                    . ' times.'
+                'Method ' . (string) $this->_expectation
+                . ' from ' . $this->_expectation->getMock()->mockery_getName()
+                . ' should be called' . PHP_EOL
+                . ' at most ' . $this->_limit . ' times but called ' . $n
+                . ' times.'
             );
             $exception->setMock($this->_expectation->getMock())
-                    ->setMethodName((string) $this->_expectation)
-                    ->setExpectedCountComparative('<=')
-                    ->setExpectedCount($this->_limit)
-                    ->setActualCount($n);
+                ->setMethodName((string) $this->_expectation)
+                ->setExpectedCountComparative('<=')
+                ->setExpectedCount($this->_limit)
+                ->setActualCount($n);
             throw $exception;
         }
     }
-
 }

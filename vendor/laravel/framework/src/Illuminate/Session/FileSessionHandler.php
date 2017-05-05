@@ -7,8 +7,8 @@ use SessionHandlerInterface;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Filesystem\Filesystem;
 
-class FileSessionHandler implements SessionHandlerInterface {
-
+class FileSessionHandler implements SessionHandlerInterface
+{
     /**
      * The filesystem instance.
      *
@@ -38,7 +38,8 @@ class FileSessionHandler implements SessionHandlerInterface {
      * @param  int  $minutes
      * @return void
      */
-    public function __construct(Filesystem $files, $path, $minutes) {
+    public function __construct(Filesystem $files, $path, $minutes)
+    {
         $this->path = $path;
         $this->files = $files;
         $this->minutes = $minutes;
@@ -47,22 +48,25 @@ class FileSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId) {
-        if ($this->files->exists($path = $this->path . '/' . $sessionId)) {
+    public function read($sessionId)
+    {
+        if ($this->files->exists($path = $this->path.'/'.$sessionId)) {
             if (filemtime($path) >= Carbon::now()->subMinutes($this->minutes)->getTimestamp()) {
                 return $this->files->get($path, true);
             }
@@ -74,8 +78,9 @@ class FileSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data) {
-        $this->files->put($this->path . '/' . $sessionId, $data, true);
+    public function write($sessionId, $data)
+    {
+        $this->files->put($this->path.'/'.$sessionId, $data, true);
 
         return true;
     }
@@ -83,8 +88,9 @@ class FileSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId) {
-        $this->files->delete($this->path . '/' . $sessionId);
+    public function destroy($sessionId)
+    {
+        $this->files->delete($this->path.'/'.$sessionId);
 
         return true;
     }
@@ -92,16 +98,16 @@ class FileSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function gc($lifetime) {
+    public function gc($lifetime)
+    {
         $files = Finder::create()
-                ->in($this->path)
-                ->files()
-                ->ignoreDotFiles(true)
-                ->date('<= now - ' . $lifetime . ' seconds');
+                    ->in($this->path)
+                    ->files()
+                    ->ignoreDotFiles(true)
+                    ->date('<= now - '.$lifetime.' seconds');
 
         foreach ($files as $file) {
             $this->files->delete($file->getRealPath());
         }
     }
-
 }

@@ -5,14 +5,15 @@ namespace Illuminate\Log;
 use Monolog\Logger as Monolog;
 use Illuminate\Support\ServiceProvider;
 
-class LogServiceProvider extends ServiceProvider {
-
+class LogServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton('log', function () {
             return $this->createLogger();
         });
@@ -23,9 +24,10 @@ class LogServiceProvider extends ServiceProvider {
      *
      * @return \Illuminate\Log\Writer
      */
-    public function createLogger() {
+    public function createLogger()
+    {
         $log = new Writer(
-                new Monolog($this->channel()), $this->app['events']
+            new Monolog($this->channel()), $this->app['events']
         );
 
         if ($this->app->hasMonologConfigurator()) {
@@ -42,7 +44,8 @@ class LogServiceProvider extends ServiceProvider {
      *
      * @return string
      */
-    protected function channel() {
+    protected function channel()
+    {
         return $this->app->bound('env') ? $this->app->environment() : 'production';
     }
 
@@ -52,8 +55,9 @@ class LogServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Log\Writer  $log
      * @return void
      */
-    protected function configureHandler(Writer $log) {
-        $this->{'configure' . ucfirst($this->handler()) . 'Handler'}($log);
+    protected function configureHandler(Writer $log)
+    {
+        $this->{'configure'.ucfirst($this->handler()).'Handler'}($log);
     }
 
     /**
@@ -62,9 +66,11 @@ class LogServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Log\Writer  $log
      * @return void
      */
-    protected function configureSingleHandler(Writer $log) {
+    protected function configureSingleHandler(Writer $log)
+    {
         $log->useFiles(
-                $this->app->storagePath() . '/logs/laravel.log', $this->logLevel()
+            $this->app->storagePath().'/logs/laravel.log',
+            $this->logLevel()
         );
     }
 
@@ -74,9 +80,11 @@ class LogServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Log\Writer  $log
      * @return void
      */
-    protected function configureDailyHandler(Writer $log) {
+    protected function configureDailyHandler(Writer $log)
+    {
         $log->useDailyFiles(
-                $this->app->storagePath() . '/logs/laravel.log', $this->maxFiles(), $this->logLevel()
+            $this->app->storagePath().'/logs/laravel.log', $this->maxFiles(),
+            $this->logLevel()
         );
     }
 
@@ -86,7 +94,8 @@ class LogServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Log\Writer  $log
      * @return void
      */
-    protected function configureSyslogHandler(Writer $log) {
+    protected function configureSyslogHandler(Writer $log)
+    {
         $log->useSyslog('laravel', $this->logLevel());
     }
 
@@ -96,7 +105,8 @@ class LogServiceProvider extends ServiceProvider {
      * @param  \Illuminate\Log\Writer  $log
      * @return void
      */
-    protected function configureErrorlogHandler(Writer $log) {
+    protected function configureErrorlogHandler(Writer $log)
+    {
         $log->useErrorLog($this->logLevel());
     }
 
@@ -105,7 +115,8 @@ class LogServiceProvider extends ServiceProvider {
      *
      * @return string
      */
-    protected function handler() {
+    protected function handler()
+    {
         if ($this->app->bound('config')) {
             return $this->app->make('config')->get('app.log');
         }
@@ -118,7 +129,8 @@ class LogServiceProvider extends ServiceProvider {
      *
      * @return string
      */
-    protected function logLevel() {
+    protected function logLevel()
+    {
         if ($this->app->bound('config')) {
             return $this->app->make('config')->get('app.log_level', 'debug');
         }
@@ -131,12 +143,12 @@ class LogServiceProvider extends ServiceProvider {
      *
      * @return int
      */
-    protected function maxFiles() {
+    protected function maxFiles()
+    {
         if ($this->app->bound('config')) {
             return $this->app->make('config')->get('app.log_max_files', 5);
         }
 
         return 0;
     }
-
 }

@@ -22,8 +22,8 @@ namespace Symfony\Component\Debug;
  * @author Christophe Coevoet <stof@notk.org>
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class DebugClassLoader {
-
+class DebugClassLoader
+{
     private $classLoader;
     private $isFinder;
     private static $caseCheck;
@@ -36,7 +36,8 @@ class DebugClassLoader {
      *
      * @param callable $classLoader A class loader
      */
-    public function __construct(callable $classLoader) {
+    public function __construct(callable $classLoader)
+    {
         $this->classLoader = $classLoader;
         $this->isFinder = is_array($classLoader) && method_exists($classLoader[0], 'findFile');
 
@@ -46,7 +47,7 @@ class DebugClassLoader {
             $dir = substr($file, 0, 1 + $i);
             $file = substr($file, 1 + $i);
             $test = strtoupper($file) === $file ? strtolower($file) : strtoupper($file);
-            $test = realpath($dir . $test);
+            $test = realpath($dir.$test);
 
             if (false === $test || false === $i) {
                 // filesystem is case sensitive
@@ -69,14 +70,16 @@ class DebugClassLoader {
      *
      * @return callable The wrapped class loader
      */
-    public function getClassLoader() {
+    public function getClassLoader()
+    {
         return $this->classLoader;
     }
 
     /**
      * Wraps all autoloaders.
      */
-    public static function enable() {
+    public static function enable()
+    {
         // Ensures we don't hit https://bugs.php.net/42098
         class_exists('Symfony\Component\Debug\ErrorHandler');
         class_exists('Psr\Log\LogLevel');
@@ -101,7 +104,8 @@ class DebugClassLoader {
     /**
      * Disables the wrapping.
      */
-    public static function disable() {
+    public static function disable()
+    {
         if (!is_array($functions = spl_autoload_functions())) {
             return;
         }
@@ -128,7 +132,8 @@ class DebugClassLoader {
      *
      * @throws \RuntimeException
      */
-    public function loadClass($class) {
+    public function loadClass($class)
+    {
         ErrorHandler::stackErrors();
 
         try {
@@ -218,7 +223,7 @@ class DebugClassLoader {
                 throw new \RuntimeException(sprintf('The autoloader expected class "%s" to be defined in file "%s". The file was found but the class was not in it, the class name or namespace probably has a typo.', $class, $file));
             }
             if (self::$caseCheck) {
-                $real = explode('\\', $class . strrchr($file, '.'));
+                $real = explode('\\', $class.strrchr($file, '.'));
                 $tail = explode(DIRECTORY_SEPARATOR, str_replace('/', DIRECTORY_SEPARATOR, $file));
 
                 $i = count($tail) - 1;
@@ -232,7 +237,7 @@ class DebugClassLoader {
                 array_splice($tail, 0, $i + 1);
             }
             if (self::$caseCheck && $tail) {
-                $tail = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $tail);
+                $tail = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $tail);
                 $tailLen = strlen($tail);
                 $real = $refl->getFileName();
 
@@ -253,7 +258,7 @@ class DebugClassLoader {
                         } else {
                             $dir = getcwd();
                             chdir($real);
-                            $real = getcwd() . '/';
+                            $real = getcwd().'/';
                             chdir($dir);
 
                             $dir = $real;
@@ -264,7 +269,6 @@ class DebugClassLoader {
                                 self::$darwinCache[$dir] = &self::$darwinCache[$k];
 
                                 while ('/' !== $dir[--$i]) {
-                                    
                                 }
                                 $k = substr($k, 0, ++$i);
                                 $dir = substr($dir, 0, $i--);
@@ -297,7 +301,8 @@ class DebugClassLoader {
                     $real .= $dirFiles[$kFile];
                 }
 
-                if (0 === substr_compare($real, $tail, -$tailLen, $tailLen, true) && 0 !== substr_compare($real, $tail, -$tailLen, $tailLen, false)
+                if (0 === substr_compare($real, $tail, -$tailLen, $tailLen, true)
+                  && 0 !== substr_compare($real, $tail, -$tailLen, $tailLen, false)
                 ) {
                     throw new \RuntimeException(sprintf('Case mismatch between class and real file names: %s vs %s in %s', substr($tail, -$tailLen + 1), substr($real, -$tailLen + 1), substr($real, 0, -$tailLen + 1)));
                 }
@@ -306,5 +311,4 @@ class DebugClassLoader {
             return true;
         }
     }
-
 }

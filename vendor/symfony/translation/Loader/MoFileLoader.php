@@ -16,8 +16,8 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
 /**
  * @copyright Copyright (c) 2010, Union of RAD http://union-of-rad.org (http://lithify.me/)
  */
-class MoFileLoader extends FileLoader {
-
+class MoFileLoader extends FileLoader
+{
     /**
      * Magic used for validating the format of a MO file as well as
      * detecting if the machine used to create that file was little endian.
@@ -47,7 +47,8 @@ class MoFileLoader extends FileLoader {
      *
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         $stream = fopen($resource, 'r');
 
         $stat = fstat($stream);
@@ -143,11 +144,11 @@ class MoFileLoader extends FileLoader {
      *
      * @return int
      */
-    private function readLong($stream, $isBigEndian) {
+    private function readLong($stream, $isBigEndian)
+    {
         $result = unpack($isBigEndian ? 'N1' : 'V1', fread($stream, 4));
         $result = current($result);
 
         return (int) substr($result, -8);
     }
-
 }

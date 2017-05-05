@@ -6,8 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Queue\RedisQueue;
 use Illuminate\Contracts\Redis\Factory as Redis;
 
-class RedisConnector implements ConnectorInterface {
-
+class RedisConnector implements ConnectorInterface
+{
     /**
      * The Redis database instance.
      *
@@ -29,7 +29,8 @@ class RedisConnector implements ConnectorInterface {
      * @param  string|null  $connection
      * @return void
      */
-    public function __construct(Redis $redis, $connection = null) {
+    public function __construct(Redis $redis, $connection = null)
+    {
         $this->redis = $redis;
         $this->connection = $connection;
     }
@@ -40,10 +41,12 @@ class RedisConnector implements ConnectorInterface {
      * @param  array  $config
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         return new RedisQueue(
-                $this->redis, $config['queue'], Arr::get($config, 'connection', $this->connection), Arr::get($config, 'retry_after', 60)
+            $this->redis, $config['queue'],
+            Arr::get($config, 'connection', $this->connection),
+            Arr::get($config, 'retry_after', 60)
         );
     }
-
 }

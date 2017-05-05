@@ -4,8 +4,8 @@ namespace Illuminate\Routing\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class MiddlewareMakeCommand extends GeneratorCommand {
-
+class MiddlewareMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -32,8 +32,9 @@ class MiddlewareMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/middleware.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/middleware.stub';
     }
 
     /**
@@ -42,8 +43,8 @@ class MiddlewareMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Http\Middleware';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Http\Middleware';
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Session;
 
-interface Session {
-
+interface Session
+{
     /**
      * Get the name of the session.
      *

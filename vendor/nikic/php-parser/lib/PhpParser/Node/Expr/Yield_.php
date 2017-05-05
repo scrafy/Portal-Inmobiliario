@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class Yield_ extends Expr {
-
+class Yield_ extends Expr
+{
     /** @var null|Expr Key expression */
     public $key;
-
     /** @var null|Expr Value expression */
     public $value;
 
@@ -28,5 +27,4 @@ class Yield_ extends Expr {
     public function getSubNodeNames() {
         return array('key', 'value');
     }
-
 }

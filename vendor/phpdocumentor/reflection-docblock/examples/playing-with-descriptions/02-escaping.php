@@ -20,7 +20,7 @@ $docComment = <<<DOCCOMMENT
  */
 DOCCOMMENT;
 
-$factory = DocBlockFactory::createInstance();
+$factory  = DocBlockFactory::createInstance();
 $docblock = $factory->create($docComment);
 
 // Escaping is automatic so this happens in the DescriptionFactory.

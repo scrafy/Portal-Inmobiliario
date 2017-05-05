@@ -5,14 +5,15 @@ namespace Illuminate\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Session\Middleware\StartSession;
 
-class SessionServiceProvider extends ServiceProvider {
-
+class SessionServiceProvider extends ServiceProvider
+{
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerSessionManager();
 
         $this->registerSessionDriver();
@@ -25,7 +26,8 @@ class SessionServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerSessionManager() {
+    protected function registerSessionManager()
+    {
         $this->app->singleton('session', function ($app) {
             return new SessionManager($app);
         });
@@ -36,7 +38,8 @@ class SessionServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerSessionDriver() {
+    protected function registerSessionDriver()
+    {
         $this->app->singleton('session.store', function ($app) {
             // First, we will create the session manager which is responsible for the
             // creation of the various session drivers when they are needed by the
@@ -44,5 +47,4 @@ class SessionServiceProvider extends ServiceProvider {
             return $app->make('session')->driver();
         });
     }
-
 }

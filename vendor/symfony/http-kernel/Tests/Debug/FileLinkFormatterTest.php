@@ -16,24 +16,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 
-class FileLinkFormatterTest extends TestCase {
-
-    public function testWhenNoFileLinkFormatAndNoRequest() {
+class FileLinkFormatterTest extends TestCase
+{
+    public function testWhenNoFileLinkFormatAndNoRequest()
+    {
         $sut = new FileLinkFormatter();
 
         $this->assertFalse($sut->format('/kernel/root/src/my/very/best/file.php', 3));
     }
 
-    public function testWhenFileLinkFormatAndNoRequest() {
-        $file = __DIR__ . DIRECTORY_SEPARATOR . 'file.php';
+    public function testWhenFileLinkFormatAndNoRequest()
+    {
+        $file = __DIR__.DIRECTORY_SEPARATOR.'file.php';
 
         $sut = new FileLinkFormatter('debug://open?url=file://%f&line=%l', new RequestStack());
 
         $this->assertSame("debug://open?url=file://$file&line=3", $sut->format($file, 3));
     }
 
-    public function testWhenFileLinkFormatAndRequest() {
-        $file = __DIR__ . DIRECTORY_SEPARATOR . 'file.php';
+    public function testWhenFileLinkFormatAndRequest()
+    {
+        $file = __DIR__.DIRECTORY_SEPARATOR.'file.php';
         $baseDir = __DIR__;
         $requestStack = new RequestStack();
         $request = new Request();
@@ -44,8 +47,9 @@ class FileLinkFormatterTest extends TestCase {
         $this->assertSame("debug://open?url=file://$file&line=3", $sut->format($file, 3));
     }
 
-    public function testWhenNoFileLinkFormatAndRequest() {
-        $file = __DIR__ . DIRECTORY_SEPARATOR . 'file.php';
+    public function testWhenNoFileLinkFormatAndRequest()
+    {
+        $file = __DIR__.DIRECTORY_SEPARATOR.'file.php';
         $requestStack = new RequestStack();
         $request = new Request();
         $requestStack->push($request);
@@ -60,5 +64,4 @@ class FileLinkFormatterTest extends TestCase {
 
         $this->assertSame('http://www.example.org/app.php/_profiler/open?file=file.php&line=3#line3', $sut->format($file, 3));
     }
-
 }

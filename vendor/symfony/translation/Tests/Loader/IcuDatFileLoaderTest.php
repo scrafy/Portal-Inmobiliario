@@ -17,45 +17,48 @@ use Symfony\Component\Config\Resource\FileResource;
 /**
  * @requires extension intl
  */
-class IcuDatFileLoaderTest extends LocalizedTestCase {
-
+class IcuDatFileLoaderTest extends LocalizedTestCase
+{
     /**
      * @expectedException \Symfony\Component\Translation\Exception\InvalidResourceException
      */
-    public function testLoadInvalidResource() {
+    public function testLoadInvalidResource()
+    {
         $loader = new IcuDatFileLoader();
-        $loader->load(__DIR__ . '/../fixtures/resourcebundle/corrupted/resources', 'es', 'domain2');
+        $loader->load(__DIR__.'/../fixtures/resourcebundle/corrupted/resources', 'es', 'domain2');
     }
 
-    public function testDatEnglishLoad() {
+    public function testDatEnglishLoad()
+    {
         // bundled resource is build using pkgdata command which at least in ICU 4.2 comes in extremely! buggy form
         // you must specify an temporary build directory which is not the same as current directory and
         // MUST reside on the same partition. pkgdata -p resources -T /srv -d.packagelist.txt
         $loader = new IcuDatFileLoader();
-        $resource = __DIR__ . '/../fixtures/resourcebundle/dat/resources';
+        $resource = __DIR__.'/../fixtures/resourcebundle/dat/resources';
         $catalogue = $loader->load($resource, 'en', 'domain1');
 
         $this->assertEquals(array('symfony' => 'Symfony 2 is great'), $catalogue->all('domain1'));
         $this->assertEquals('en', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource . '.dat')), $catalogue->getResources());
+        $this->assertEquals(array(new FileResource($resource.'.dat')), $catalogue->getResources());
     }
 
-    public function testDatFrenchLoad() {
+    public function testDatFrenchLoad()
+    {
         $loader = new IcuDatFileLoader();
-        $resource = __DIR__ . '/../fixtures/resourcebundle/dat/resources';
+        $resource = __DIR__.'/../fixtures/resourcebundle/dat/resources';
         $catalogue = $loader->load($resource, 'fr', 'domain1');
 
         $this->assertEquals(array('symfony' => 'Symfony 2 est génial'), $catalogue->all('domain1'));
         $this->assertEquals('fr', $catalogue->getLocale());
-        $this->assertEquals(array(new FileResource($resource . '.dat')), $catalogue->getResources());
+        $this->assertEquals(array(new FileResource($resource.'.dat')), $catalogue->getResources());
     }
 
     /**
      * @expectedException \Symfony\Component\Translation\Exception\NotFoundResourceException
      */
-    public function testLoadNonExistingResource() {
+    public function testLoadNonExistingResource()
+    {
         $loader = new IcuDatFileLoader();
-        $loader->load(__DIR__ . '/../fixtures/non-existing.txt', 'en', 'domain1');
+        $loader->load(__DIR__.'/../fixtures/non-existing.txt', 'en', 'domain1');
     }
-
 }

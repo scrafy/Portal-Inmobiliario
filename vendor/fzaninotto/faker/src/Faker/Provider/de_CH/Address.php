@@ -2,15 +2,17 @@
 
 namespace Faker\Provider\de_CH;
 
-class Address extends \Faker\Provider\Address {
-
+class Address extends \Faker\Provider\Address
+{
     protected static $buildingNumber = array('###', '##', '#', '#a', '#b', '#c');
+
     protected static $streetSuffixLong = array(
         'Gasse', 'Platz', 'Ring', 'Strasse', 'Weg', 'Allee'
     );
     protected static $streetSuffixShort = array(
         'gasse', 'platz', 'ring', 'strasse', 'str.', 'weg', 'allee'
     );
+
     protected static $postcode = array('####');
 
     /**
@@ -72,6 +74,7 @@ class Address extends \Faker\Provider\Address {
         array('ZG' => 'Zug'),
         array('ZH' => 'Zürich')
     );
+
     protected static $country = array(
         'Afghanistan', 'Alandinseln', 'Albanien', 'Algerien', 'Amerikanisch-Ozeanien', 'Amerikanisch-Samoa', 'Amerikanische Jungferninseln', 'Andorra', 'Angola', 'Anguilla', 'Antarktis', 'Antigua und Barbuda', 'Argentinien', 'Armenien', 'Aruba', 'Aserbaidschan', 'Australien', 'Ägypten', 'Äquatorialguinea', 'Äthiopien', 'Äusseres Ozeanien',
         'Bahamas', 'Bahrain', 'Bangladesch', 'Barbados', 'Belarus', 'Belgien', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivien', 'Bosnien und Herzegowina', 'Botsuana', 'Bouvetinsel', 'Brasilien', 'Britische Jungferninseln', 'Britisches Territorium im Indischen Ozean', 'Brunei Darussalam', 'Bulgarien', 'Burkina Faso', 'Burundi',
@@ -97,14 +100,17 @@ class Address extends \Faker\Provider\Address {
         'Wallis und Futuna', 'Weihnachtsinsel', 'Westsahara',
         'Zentralafrikanische Republik', 'Zypern',
     );
+
     protected static $cityFormats = array(
         '{{cityName}}',
     );
+
     protected static $streetNameFormats = array(
         '{{lastName}}{{streetSuffixShort}}',
         '{{cityName}}{{streetSuffixShort}}',
         '{{firstName}}-{{lastName}}-{{streetSuffixLong}}'
     );
+
     protected static $streetAddressFormats = array(
         '{{streetName}} {{buildingNumber}}',
     );
@@ -117,7 +123,8 @@ class Address extends \Faker\Provider\Address {
      * @example Luzern
      * @return string
      */
-    public function cityName() {
+    public function cityName()
+    {
         return static::randomElement(static::$cityNames);
     }
 
@@ -126,7 +133,8 @@ class Address extends \Faker\Provider\Address {
      * @example str.
      * @return string
      */
-    public function streetSuffixShort() {
+    public function streetSuffixShort()
+    {
         return static::randomElement(static::$streetSuffixShort);
     }
 
@@ -135,7 +143,8 @@ class Address extends \Faker\Provider\Address {
      * @example Strasse
      * @return string
      */
-    public function streetSuffixLong() {
+    public function streetSuffixLong()
+    {
         return static::randomElement(static::$streetSuffixLong);
     }
 
@@ -144,7 +153,8 @@ class Address extends \Faker\Provider\Address {
      * @example array('BE' => 'Bern')
      * @return array
      */
-    public static function canton() {
+    public static function canton()
+    {
         return static::randomElement(static::$canton);
     }
 
@@ -152,7 +162,8 @@ class Address extends \Faker\Provider\Address {
      * Returns the abbreviation of a canton.
      * @return string
      */
-    public static function cantonShort() {
+    public static function cantonShort()
+    {
         $canton = static::canton();
         return key($canton);
     }
@@ -161,9 +172,9 @@ class Address extends \Faker\Provider\Address {
      * Returns the name of canton.
      * @return string
      */
-    public static function cantonName() {
+    public static function cantonName()
+    {
         $canton = static::canton();
         return current($canton);
     }
-
 }

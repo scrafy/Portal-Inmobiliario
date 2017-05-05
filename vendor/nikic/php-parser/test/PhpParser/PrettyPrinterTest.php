@@ -15,8 +15,8 @@ use PhpParser\PrettyPrinter\Standard;
 
 require_once __DIR__ . '/CodeTestAbstract.php';
 
-class PrettyPrinterTest extends CodeTestAbstract {
-
+class PrettyPrinterTest extends CodeTestAbstract
+{
     protected function doTestPrettyPrintMethod($method, $name, $code, $expected, $modeLine) {
         $lexer = new Lexer\Emulative;
         $parser5 = new Parser\Php5($lexer);
@@ -82,7 +82,8 @@ class PrettyPrinterTest extends CodeTestAbstract {
     public function testPrettyPrintExpr() {
         $prettyPrinter = new Standard;
         $expr = new Expr\BinaryOp\Mul(
-                new Expr\BinaryOp\Plus(new Expr\Variable('a'), new Expr\Variable('b')), new Expr\Variable('c')
+            new Expr\BinaryOp\Plus(new Expr\Variable('a'), new Expr\Variable('b')),
+            new Expr\Variable('c')
         );
         $this->assertEquals('($a + $b) * $c', $prettyPrinter->prettyPrintExpr($expr));
 
@@ -203,5 +204,4 @@ class PrettyPrinterTest extends CodeTestAbstract {
         $prettyPrinter = new PrettyPrinter\Standard;
         $prettyPrinter->prettyPrint($stmts);
     }
-
 }

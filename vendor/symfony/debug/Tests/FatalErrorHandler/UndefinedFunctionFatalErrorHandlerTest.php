@@ -15,12 +15,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\FatalErrorHandler\UndefinedFunctionFatalErrorHandler;
 
-class UndefinedFunctionFatalErrorHandlerTest extends TestCase {
-
+class UndefinedFunctionFatalErrorHandlerTest extends TestCase
+{
     /**
      * @dataProvider provideUndefinedFunctionData
      */
-    public function testUndefinedFunction($error, $translatedMessage) {
+    public function testUndefinedFunction($error, $translatedMessage)
+    {
         $handler = new UndefinedFunctionFatalErrorHandler();
         $exception = $handler->handleError($error, new FatalErrorException('', 0, $error['type'], $error['file'], $error['line']));
 
@@ -32,7 +33,8 @@ class UndefinedFunctionFatalErrorHandlerTest extends TestCase {
         $this->assertSame($error['line'], $exception->getLine());
     }
 
-    public function provideUndefinedFunctionData() {
+    public function provideUndefinedFunctionData()
+    {
         return array(
             array(
                 array(
@@ -72,9 +74,8 @@ class UndefinedFunctionFatalErrorHandlerTest extends TestCase {
             ),
         );
     }
-
 }
 
-function test_namespaced_function() {
-    
+function test_namespaced_function()
+{
 }

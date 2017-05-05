@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -16,8 +15,8 @@ use ReflectionClass;
 /**
  * A blacklist for global state elements that should not be snapshotted.
  */
-class Blacklist {
-
+class Blacklist
+{
     /**
      * @var array
      */
@@ -51,35 +50,40 @@ class Blacklist {
     /**
      * @param string $variableName
      */
-    public function addGlobalVariable($variableName) {
+    public function addGlobalVariable($variableName)
+    {
         $this->globalVariables[$variableName] = true;
     }
 
     /**
      * @param string $className
      */
-    public function addClass($className) {
+    public function addClass($className)
+    {
         $this->classes[] = $className;
     }
 
     /**
      * @param string $className
      */
-    public function addSubclassesOf($className) {
+    public function addSubclassesOf($className)
+    {
         $this->parentClasses[] = $className;
     }
 
     /**
      * @param string $interfaceName
      */
-    public function addImplementorsOf($interfaceName) {
+    public function addImplementorsOf($interfaceName)
+    {
         $this->interfaces[] = $interfaceName;
     }
 
     /**
      * @param string $classNamePrefix
      */
-    public function addClassNamePrefix($classNamePrefix) {
+    public function addClassNamePrefix($classNamePrefix)
+    {
         $this->classNamePrefixes[] = $classNamePrefix;
     }
 
@@ -87,7 +91,8 @@ class Blacklist {
      * @param string $className
      * @param string $attributeName
      */
-    public function addStaticAttribute($className, $attributeName) {
+    public function addStaticAttribute($className, $attributeName)
+    {
         if (!isset($this->staticAttributes[$className])) {
             $this->staticAttributes[$className] = array();
         }
@@ -99,7 +104,8 @@ class Blacklist {
      * @param  string $variableName
      * @return bool
      */
-    public function isGlobalVariableBlacklisted($variableName) {
+    public function isGlobalVariableBlacklisted($variableName)
+    {
         return isset($this->globalVariables[$variableName]);
     }
 
@@ -108,7 +114,8 @@ class Blacklist {
      * @param  string $attributeName
      * @return bool
      */
-    public function isStaticAttributeBlacklisted($className, $attributeName) {
+    public function isStaticAttributeBlacklisted($className, $attributeName)
+    {
         if (in_array($className, $this->classes)) {
             return true;
         }
@@ -139,5 +146,4 @@ class Blacklist {
 
         return false;
     }
-
 }

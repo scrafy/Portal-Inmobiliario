@@ -11,13 +11,14 @@
 
 namespace Symfony\Component\Finder\Tests\Iterator;
 
-abstract class RealIteratorTestCase extends IteratorTestCase {
-
+abstract class RealIteratorTestCase extends IteratorTestCase
+{
     protected static $tmpDir;
     protected static $files;
 
-    public static function setUpBeforeClass() {
-        self::$tmpDir = realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . 'symfony_finder';
+    public static function setUpBeforeClass()
+    {
+        self::$tmpDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'symfony_finder';
 
         self::$files = array(
             '.git/',
@@ -57,7 +58,8 @@ abstract class RealIteratorTestCase extends IteratorTestCase {
         touch(self::toAbsolute('test.php'), strtotime('2005-10-15'));
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
         foreach (array_reverse(self::$files) as $file) {
             if (DIRECTORY_SEPARATOR === $file[strlen($file) - 1]) {
                 @rmdir($file);
@@ -67,12 +69,13 @@ abstract class RealIteratorTestCase extends IteratorTestCase {
         }
     }
 
-    protected static function toAbsolute($files = null) {
+    protected static function toAbsolute($files = null)
+    {
         /*
          * Without the call to setUpBeforeClass() property can be null.
          */
         if (!self::$tmpDir) {
-            self::$tmpDir = realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . 'symfony_finder';
+            self::$tmpDir = realpath(sys_get_temp_dir()).DIRECTORY_SEPARATOR.'symfony_finder';
         }
 
         if (is_array($files)) {
@@ -81,7 +84,7 @@ abstract class RealIteratorTestCase extends IteratorTestCase {
                 if (is_array($file)) {
                     $f[] = self::toAbsolute($file);
                 } else {
-                    $f[] = self::$tmpDir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file);
+                    $f[] = self::$tmpDir.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $file);
                 }
             }
 
@@ -89,19 +92,19 @@ abstract class RealIteratorTestCase extends IteratorTestCase {
         }
 
         if (is_string($files)) {
-            return self::$tmpDir . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $files);
+            return self::$tmpDir.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $files);
         }
 
         return self::$tmpDir;
     }
 
-    protected static function toAbsoluteFixtures($files) {
+    protected static function toAbsoluteFixtures($files)
+    {
         $f = array();
         foreach ($files as $file) {
-            $f[] = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . $file);
+            $f[] = realpath(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR.$file);
         }
 
         return $f;
     }
-
 }

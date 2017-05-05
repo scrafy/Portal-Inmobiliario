@@ -2,7 +2,7 @@
 
 namespace Fixtures\Prophecy;
 
-interface Named {
-
+interface Named
+{
     public function getName();
 }

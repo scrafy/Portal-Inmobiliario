@@ -4,8 +4,8 @@ namespace Illuminate\Routing;
 
 use Closure;
 
-class MiddlewareNameResolver {
-
+class MiddlewareNameResolver
+{
     /**
      * Resolve the middleware name to a class name(s) preserving passed parameters.
      *
@@ -14,7 +14,8 @@ class MiddlewareNameResolver {
      * @param  array  $middlewareGroups
      * @return string|array
      */
-    public static function resolve($name, $map, $middlewareGroups) {
+    public static function resolve($name, $map, $middlewareGroups)
+    {
         // When the middleware is simply a Closure, we will return this Closure instance
         // directly so that Closures can be registered as middleware inline, which is
         // convenient on occasions when the developers are experimenting with them.
@@ -23,22 +24,22 @@ class MiddlewareNameResolver {
         } elseif (isset($map[$name]) && $map[$name] instanceof Closure) {
             return $map[$name];
 
-            // If the middleware is the name of a middleware group, we will return the array
-            // of middlewares that belong to the group. This allows developers to group a
-            // set of middleware under single keys that can be conveniently referenced.
+        // If the middleware is the name of a middleware group, we will return the array
+        // of middlewares that belong to the group. This allows developers to group a
+        // set of middleware under single keys that can be conveniently referenced.
         } elseif (isset($middlewareGroups[$name])) {
             return static::parseMiddlewareGroup(
-                            $name, $map, $middlewareGroups
+                $name, $map, $middlewareGroups
             );
 
-            // Finally, when the middleware is simply a string mapped to a class name the
-            // middleware name will get parsed into the full class name and parameters
-            // which may be run using the Pipeline which accepts this string format.
+        // Finally, when the middleware is simply a string mapped to a class name the
+        // middleware name will get parsed into the full class name and parameters
+        // which may be run using the Pipeline which accepts this string format.
         } else {
             list($name, $parameters) = array_pad(explode(':', $name, 2), 2, null);
 
-            return (isset($map[$name]) ? $map[$name] : $name) .
-                    (!is_null($parameters) ? ':' . $parameters : '');
+            return (isset($map[$name]) ? $map[$name] : $name).
+                   (! is_null($parameters) ? ':'.$parameters : '');
         }
     }
 
@@ -50,7 +51,8 @@ class MiddlewareNameResolver {
      * @param  array  $middlewareGroups
      * @return array
      */
-    protected static function parseMiddlewareGroup($name, $map, $middlewareGroups) {
+    protected static function parseMiddlewareGroup($name, $map, $middlewareGroups)
+    {
         $results = [];
 
         foreach ($middlewareGroups[$name] as $middleware) {
@@ -59,14 +61,14 @@ class MiddlewareNameResolver {
             // reference other groups without needing to repeat all their middlewares.
             if (isset($middlewareGroups[$middleware])) {
                 $results = array_merge($results, static::parseMiddlewareGroup(
-                                $middleware, $map, $middlewareGroups
+                    $middleware, $map, $middlewareGroups
                 ));
 
                 continue;
             }
 
             list($middleware, $parameters) = array_pad(
-                    explode(':', $middleware, 2), 2, null
+                explode(':', $middleware, 2), 2, null
             );
 
             // If this middleware is actually a route middleware, we will extract the full
@@ -76,10 +78,9 @@ class MiddlewareNameResolver {
                 $middleware = $map[$middleware];
             }
 
-            $results[] = $middleware . ($parameters ? ':' . $parameters : '');
+            $results[] = $middleware.($parameters ? ':'.$parameters : '');
         }
 
         return $results;
     }
-
 }

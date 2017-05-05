@@ -7,15 +7,16 @@ use Illuminate\Contracts\Database\ModelIdentifier;
 use Illuminate\Contracts\Queue\QueueableCollection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
-trait SerializesAndRestoresModelIdentifiers {
-
+trait SerializesAndRestoresModelIdentifiers
+{
     /**
      * Get the property value prepared for serialization.
      *
      * @param  mixed  $value
      * @return mixed
      */
-    protected function getSerializedPropertyValue($value) {
+    protected function getSerializedPropertyValue($value)
+    {
         if ($value instanceof QueueableCollection) {
             return new ModelIdentifier($value->getQueueableClass(), $value->getQueueableIds());
         }
@@ -33,13 +34,16 @@ trait SerializesAndRestoresModelIdentifiers {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function getRestoredPropertyValue($value) {
-        if (!$value instanceof ModelIdentifier) {
+    protected function getRestoredPropertyValue($value)
+    {
+        if (! $value instanceof ModelIdentifier) {
             return $value;
         }
 
-        return is_array($value->id) ? $this->restoreCollection($value) : $this->getQueryForModelRestoration(new $value->class)
-                        ->useWritePdo()->findOrFail($value->id);
+        return is_array($value->id)
+                ? $this->restoreCollection($value)
+                : $this->getQueryForModelRestoration(new $value->class)
+                            ->useWritePdo()->findOrFail($value->id);
     }
 
     /**
@@ -48,15 +52,16 @@ trait SerializesAndRestoresModelIdentifiers {
      * @param  \Illuminate\Contracts\Database\ModelIdentifier  $value
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    protected function restoreCollection($value) {
-        if (!$value->class || count($value->id) === 0) {
+    protected function restoreCollection($value)
+    {
+        if (! $value->class || count($value->id) === 0) {
             return new EloquentCollection;
         }
 
         $model = new $value->class;
 
         return $this->getQueryForModelRestoration($model)->useWritePdo()
-                        ->whereIn($model->getQualifiedKeyName(), $value->id)->get();
+                    ->whereIn($model->getQualifiedKeyName(), $value->id)->get();
     }
 
     /**
@@ -65,8 +70,8 @@ trait SerializesAndRestoresModelIdentifiers {
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getQueryForModelRestoration($model) {
+    protected function getQueryForModelRestoration($model)
+    {
         return $model->newQueryWithoutScopes();
     }
-
 }

@@ -14,12 +14,13 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 use Symfony\Component\Finder\Iterator\DateRangeFilterIterator;
 use Symfony\Component\Finder\Comparator\DateComparator;
 
-class DateRangeFilterIteratorTest extends RealIteratorTestCase {
-
+class DateRangeFilterIteratorTest extends RealIteratorTestCase
+{
     /**
      * @dataProvider getAcceptData
      */
-    public function testAccept($size, $expected) {
+    public function testAccept($size, $expected)
+    {
         $files = self::$files;
         $files[] = self::toAbsolute('doesnotexist');
         $inner = new Iterator($files);
@@ -29,7 +30,8 @@ class DateRangeFilterIteratorTest extends RealIteratorTestCase {
         $this->assertIterator($expected, $iterator);
     }
 
-    public function getAcceptData() {
+    public function getAcceptData()
+    {
         $since20YearsAgo = array(
             '.git',
             'test.py',
@@ -69,5 +71,4 @@ class DateRangeFilterIteratorTest extends RealIteratorTestCase {
             array(array(new DateComparator('until last month')), $this->toAbsolute($untilLastMonth)),
         );
     }
-
 }

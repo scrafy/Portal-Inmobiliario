@@ -4,8 +4,8 @@ namespace Illuminate\Translation;
 
 use Illuminate\Support\Str;
 
-class MessageSelector {
-
+class MessageSelector
+{
     /**
      * Select a proper translation string based on the given number.
      *
@@ -14,7 +14,8 @@ class MessageSelector {
      * @param  string  $locale
      * @return mixed
      */
-    public function choose($line, $number, $locale) {
+    public function choose($line, $number, $locale)
+    {
         $segments = explode('|', $line);
 
         if (($value = $this->extract($segments, $number)) !== null) {
@@ -25,7 +26,7 @@ class MessageSelector {
 
         $pluralIndex = $this->getPluralIndex($locale, $number);
 
-        if (count($segments) == 1 || !isset($segments[$pluralIndex])) {
+        if (count($segments) == 1 || ! isset($segments[$pluralIndex])) {
             return $segments[0];
         }
 
@@ -39,9 +40,10 @@ class MessageSelector {
      * @param  int  $number
      * @return mixed
      */
-    private function extract($segments, $number) {
+    private function extract($segments, $number)
+    {
         foreach ($segments as $part) {
-            if (!is_null($line = $this->extractFromString($part, $number))) {
+            if (! is_null($line = $this->extractFromString($part, $number))) {
                 return $line;
             }
         }
@@ -54,7 +56,8 @@ class MessageSelector {
      * @param  int  $number
      * @return mixed
      */
-    private function extractFromString($part, $number) {
+    private function extractFromString($part, $number)
+    {
         preg_match('/^[\{\[]([^\[\]\{\}]*)[\}\]](.*)/s', $part, $matches);
 
         if (count($matches) != 3) {
@@ -86,10 +89,11 @@ class MessageSelector {
      * @param  array  $segments
      * @return array
      */
-    private function stripConditions($segments) {
+    private function stripConditions($segments)
+    {
         return collect($segments)->map(function ($part) {
-                    return preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part);
-                })->all();
+            return preg_replace('/^[\{\[]([^\[\]\{\}]*)[\}\]]/', '', $part);
+        })->all();
     }
 
     /**
@@ -103,7 +107,8 @@ class MessageSelector {
      * @param  int  $number
      * @return int
      */
-    public function getPluralIndex($locale, $number) {
+    public function getPluralIndex($locale, $number)
+    {
         switch ($locale) {
             case 'az':
             case 'bo':
@@ -221,5 +226,4 @@ class MessageSelector {
                 return 0;
         }
     }
-
 }

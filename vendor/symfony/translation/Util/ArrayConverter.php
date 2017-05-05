@@ -23,8 +23,8 @@ namespace Symfony\Component\Translation\Util;
  *
  * @author Gennady Telegin <gtelegin@gmail.com>
  */
-class ArrayConverter {
-
+class ArrayConverter
+{
     /**
      * Converts linear messages array to tree-like array.
      * For example this rray('foo.bar' => 'value') will be converted to array('foo' => array('bar' => 'value')).
@@ -33,7 +33,8 @@ class ArrayConverter {
      *
      * @return array Tree-like messages array
      */
-    public static function expandToTree(array $messages) {
+    public static function expandToTree(array $messages)
+    {
         $tree = array();
 
         foreach ($messages as $id => $value) {
@@ -47,7 +48,8 @@ class ArrayConverter {
         return $tree;
     }
 
-    private static function &getElementByPath(array &$tree, array $parts) {
+    private static function &getElementByPath(array &$tree, array $parts)
+    {
         $elem = &$tree;
         $parentOfElem = null;
 
@@ -82,16 +84,16 @@ class ArrayConverter {
         return $elem;
     }
 
-    private static function cancelExpand(array &$tree, $prefix, array $node) {
+    private static function cancelExpand(array &$tree, $prefix, array $node)
+    {
         $prefix .= '.';
 
         foreach ($node as $id => $value) {
             if (is_string($value)) {
-                $tree[$prefix . $id] = $value;
+                $tree[$prefix.$id] = $value;
             } else {
-                self::cancelExpand($tree, $prefix . $id, $value);
+                self::cancelExpand($tree, $prefix.$id, $value);
             }
         }
     }
-
 }

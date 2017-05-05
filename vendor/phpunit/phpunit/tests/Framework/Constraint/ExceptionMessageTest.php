@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,13 +8,14 @@
  * file that was distributed with this source code.
  */
 
-class ExceptionMessageTest extends PHPUnit_Framework_TestCase {
-
+class ExceptionMessageTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage A literal exception message
      */
-    public function testLiteralMessage() {
+    public function testLiteralMessage()
+    {
         throw new Exception('A literal exception message');
     }
 
@@ -23,7 +23,8 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase {
      * @expectedException \Exception
      * @expectedExceptionMessage A partial
      */
-    public function testPartialMessageBegin() {
+    public function testPartialMessageBegin()
+    {
         throw new Exception('A partial exception message');
     }
 
@@ -31,7 +32,8 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase {
      * @expectedException \Exception
      * @expectedExceptionMessage partial exception
      */
-    public function testPartialMessageMiddle() {
+    public function testPartialMessageMiddle()
+    {
         throw new Exception('A partial exception message');
     }
 
@@ -39,8 +41,8 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase {
      * @expectedException \Exception
      * @expectedExceptionMessage exception message
      */
-    public function testPartialMessageEnd() {
+    public function testPartialMessageEnd()
+    {
         throw new Exception('A partial exception message');
     }
-
 }

@@ -16,8 +16,8 @@ namespace Symfony\Component\Finder\Iterator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SortableIterator implements \IteratorAggregate {
-
+class SortableIterator implements \IteratorAggregate
+{
     const SORT_BY_NAME = 1;
     const SORT_BY_TYPE = 2;
     const SORT_BY_ACCESSED_TIME = 3;
@@ -35,7 +35,8 @@ class SortableIterator implements \IteratorAggregate {
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(\Traversable $iterator, $sort) {
+    public function __construct(\Traversable $iterator, $sort)
+    {
         $this->iterator = $iterator;
 
         if (self::SORT_BY_NAME === $sort) {
@@ -71,11 +72,11 @@ class SortableIterator implements \IteratorAggregate {
         }
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         $array = iterator_to_array($this->iterator, true);
         uasort($array, $this->sort);
 
         return new \ArrayIterator($array);
     }
-
 }

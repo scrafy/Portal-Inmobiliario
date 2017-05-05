@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Translation;
 
-interface Translator {
-
+interface Translator
+{
     /**
      * Get the translation for a given key.
      *

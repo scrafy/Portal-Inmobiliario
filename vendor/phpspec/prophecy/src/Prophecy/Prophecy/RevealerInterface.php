@@ -16,8 +16,8 @@ namespace Prophecy\Prophecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface RevealerInterface {
-
+interface RevealerInterface
+{
     /**
      * Unwraps value(s).
      *

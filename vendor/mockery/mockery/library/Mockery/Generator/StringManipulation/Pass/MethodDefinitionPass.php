@@ -5,9 +5,10 @@ namespace Mockery\Generator\StringManipulation\Pass;
 use Mockery\Generator\Method;
 use Mockery\Generator\MockConfiguration;
 
-class MethodDefinitionPass implements Pass {
-
-    public function apply($code, MockConfiguration $config) {
+class MethodDefinitionPass implements Pass
+{
+    public function apply($code, MockConfiguration $config)
+    {
         foreach ($config->getMethodsToMock() as $method) {
             if ($method->isPublic()) {
                 $methodDef = 'public';
@@ -34,7 +35,8 @@ class MethodDefinitionPass implements Pass {
         return $code;
     }
 
-    protected function renderParams(Method $method, $config) {
+    protected function renderParams(Method $method, $config)
+    {
         $class = $method->getDeclaringClass();
         if ($class->isInternal()) {
             $overrides = $config->getParameterOverrides();
@@ -65,18 +67,21 @@ class MethodDefinitionPass implements Pass {
         return '(' . implode(', ', $methodParams) . ')';
     }
 
-    protected function renderReturnType(Method $method) {
+    protected function renderReturnType(Method $method)
+    {
         $type = $method->getReturnType();
         return $type ? sprintf(': %s', $type) : '';
     }
 
-    protected function appendToClass($class, $code) {
+    protected function appendToClass($class, $code)
+    {
         $lastBrace = strrpos($class, "}");
         $class = substr($class, 0, $lastBrace) . $code . "\n    }\n";
         return $class;
     }
 
-    private function renderMethodBody($method, $config) {
+    private function renderMethodBody($method, $config)
+    {
         $invoke = $method->isStatic() ? 'static::_mockery_handleStaticMethodCall' : '$this->_mockery_handleMethodCall';
         $body = <<<BODY
 {
@@ -127,7 +132,8 @@ BODY;
         return $body;
     }
 
-    private function getReturnStatement($method, $invoke) {
+    private function getReturnStatement($method, $invoke)
+    {
         if ($method->getReturnType() === 'void') {
             return <<<BODY
 {$invoke}(__FUNCTION__, \$argv);
@@ -141,5 +147,4 @@ return \$ret;
 }
 BODY;
     }
-
 }

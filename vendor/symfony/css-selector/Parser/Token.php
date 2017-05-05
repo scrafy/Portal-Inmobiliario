@@ -21,8 +21,8 @@ namespace Symfony\Component\CssSelector\Parser;
  *
  * @internal
  */
-class Token {
-
+class Token
+{
     const TYPE_FILE_END = 'eof';
     const TYPE_DELIMITER = 'delimiter';
     const TYPE_WHITESPACE = 'whitespace';
@@ -51,7 +51,8 @@ class Token {
      * @param string $value
      * @param int    $position
      */
-    public function __construct($type, $value, $position) {
+    public function __construct($type, $value, $position)
+    {
         $this->type = $type;
         $this->value = $value;
         $this->position = $position;
@@ -60,28 +61,32 @@ class Token {
     /**
      * @return int
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
     /**
      * @return string
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
     /**
      * @return int
      */
-    public function getPosition() {
+    public function getPosition()
+    {
         return $this->position;
     }
 
     /**
      * @return bool
      */
-    public function isFileEnd() {
+    public function isFileEnd()
+    {
         return self::TYPE_FILE_END === $this->type;
     }
 
@@ -90,7 +95,8 @@ class Token {
      *
      * @return bool
      */
-    public function isDelimiter(array $values = array()) {
+    public function isDelimiter(array $values = array())
+    {
         if (self::TYPE_DELIMITER !== $this->type) {
             return false;
         }
@@ -105,47 +111,52 @@ class Token {
     /**
      * @return bool
      */
-    public function isWhitespace() {
+    public function isWhitespace()
+    {
         return self::TYPE_WHITESPACE === $this->type;
     }
 
     /**
      * @return bool
      */
-    public function isIdentifier() {
+    public function isIdentifier()
+    {
         return self::TYPE_IDENTIFIER === $this->type;
     }
 
     /**
      * @return bool
      */
-    public function isHash() {
+    public function isHash()
+    {
         return self::TYPE_HASH === $this->type;
     }
 
     /**
      * @return bool
      */
-    public function isNumber() {
+    public function isNumber()
+    {
         return self::TYPE_NUMBER === $this->type;
     }
 
     /**
      * @return bool
      */
-    public function isString() {
+    public function isString()
+    {
         return self::TYPE_STRING === $this->type;
     }
 
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         if ($this->value) {
             return sprintf('<%s "%s" at %s>', $this->type, $this->value, $this->position);
         }
 
         return sprintf('<%s at %s>', $this->type, $this->position);
     }
-
 }

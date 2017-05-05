@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder implements Swift_Mime_ContentEncoder {
-
+class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder implements Swift_Mime_ContentEncoder
+{
     protected $_dotEscape;
 
     /**
@@ -24,20 +24,24 @@ class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder
      * @param Swift_StreamFilter    $filter     if canonicalization should occur
      * @param bool                  $dotEscape  if dot stuffing workaround must be enabled
      */
-    public function __construct(Swift_CharacterStream $charStream, Swift_StreamFilter $filter = null, $dotEscape = false) {
+    public function __construct(Swift_CharacterStream $charStream, Swift_StreamFilter $filter = null, $dotEscape = false)
+    {
         $this->_dotEscape = $dotEscape;
         parent::__construct($charStream, $filter);
     }
 
-    public function __sleep() {
+    public function __sleep()
+    {
         return array('_charStream', '_filter', '_dotEscape');
     }
 
-    protected function getSafeMapShareId() {
-        return get_class($this) . ($this->_dotEscape ? '.dotEscape' : '');
+    protected function getSafeMapShareId()
+    {
+        return get_class($this).($this->_dotEscape ? '.dotEscape' : '');
     }
 
-    protected function initSafeMap() {
+    protected function initSafeMap()
+    {
         parent::initSafeMap();
         if ($this->_dotEscape) {
             /* Encode . as =2e for buggy remote servers */
@@ -57,7 +61,8 @@ class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder
      * @param int                    $firstLineOffset
      * @param int                    $maxLineLength
      */
-    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0) {
+    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
+    {
         if ($maxLineLength > 76 || $maxLineLength <= 0) {
             $maxLineLength = 76;
         }
@@ -95,7 +100,7 @@ class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder
             $newLineLength = $lineLen + ($i === false ? $size : $i);
 
             if ($currentLine && $newLineLength >= $thisLineLength) {
-                $is->write($prepend . $this->_standardize($currentLine));
+                $is->write($prepend.$this->_standardize($currentLine));
                 $currentLine = '';
                 $prepend = "=\r\n";
                 $thisLineLength = $maxLineLength;
@@ -112,7 +117,7 @@ class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder
             }
         }
         if (strlen($currentLine)) {
-            $is->write($prepend . $this->_standardize($currentLine));
+            $is->write($prepend.$this->_standardize($currentLine));
         }
     }
 
@@ -122,8 +127,8 @@ class Swift_Mime_ContentEncoder_QpContentEncoder extends Swift_Encoder_QpEncoder
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'quoted-printable';
     }
-
 }

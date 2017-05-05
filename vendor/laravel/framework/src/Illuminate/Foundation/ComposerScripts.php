@@ -4,16 +4,17 @@ namespace Illuminate\Foundation;
 
 use Composer\Script\Event;
 
-class ComposerScripts {
-
+class ComposerScripts
+{
     /**
      * Handle the post-install Composer event.
      *
      * @param  \Composer\Script\Event  $event
      * @return void
      */
-    public static function postInstall(Event $event) {
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
+    public static function postInstall(Event $event)
+    {
+        require_once $event->getComposer()->getConfig()->get('vendor-dir').'/autoload.php';
 
         static::clearCompiled();
     }
@@ -24,8 +25,9 @@ class ComposerScripts {
      * @param  \Composer\Script\Event  $event
      * @return void
      */
-    public static function postUpdate(Event $event) {
-        require_once $event->getComposer()->getConfig()->get('vendor-dir') . '/autoload.php';
+    public static function postUpdate(Event $event)
+    {
+        require_once $event->getComposer()->getConfig()->get('vendor-dir').'/autoload.php';
 
         static::clearCompiled();
     }
@@ -35,12 +37,12 @@ class ComposerScripts {
      *
      * @return void
      */
-    protected static function clearCompiled() {
+    protected static function clearCompiled()
+    {
         $laravel = new Application(getcwd());
 
         if (file_exists($servicesPath = $laravel->getCachedServicesPath())) {
             @unlink($servicesPath);
         }
     }
-
 }

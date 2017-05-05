@@ -9,10 +9,18 @@ use Prophecy\Doubler\Generator\Node\ArgumentNode;
 use Prophecy\Doubler\Generator\Node\ClassNode;
 use Prophecy\Doubler\Generator\Node\MethodNode;
 
-class ClassCodeGeneratorSpec extends ObjectBehavior {
-
+class ClassCodeGeneratorSpec extends ObjectBehavior
+{
     function it_generates_proper_php_code_for_specific_ClassNode(
-    ClassNode $class, MethodNode $method1, MethodNode $method2, MethodNode $method3, MethodNode $method4, ArgumentNode $argument11, ArgumentNode $argument12, ArgumentNode $argument21, ArgumentNode $argument31
+        ClassNode $class,
+        MethodNode $method1,
+        MethodNode $method2,
+        MethodNode $method3,
+        MethodNode $method4,
+        ArgumentNode $argument11,
+        ArgumentNode $argument12,
+        ArgumentNode $argument21,
+        ArgumentNode $argument31
     ) {
         $class->getParentClass()->willReturn('RuntimeException');
         $class->getInterfaces()->willReturn(array(
@@ -168,7 +176,15 @@ PHP;
     }
 
     function it_generates_proper_php_code_for_variadics(
-    ClassNode $class, MethodNode $method1, MethodNode $method2, MethodNode $method3, MethodNode $method4, ArgumentNode $argument1, ArgumentNode $argument2, ArgumentNode $argument3, ArgumentNode $argument4
+        ClassNode $class,
+        MethodNode $method1,
+        MethodNode $method2,
+        MethodNode $method3,
+        MethodNode $method4,
+        ArgumentNode $argument1,
+        ArgumentNode $argument2,
+        ArgumentNode $argument3,
+        ArgumentNode $argument4
     ) {
         $class->getParentClass()->willReturn('stdClass');
         $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
@@ -263,7 +279,9 @@ PHP;
     }
 
     function it_overrides_properly_methods_with_args_passed_by_reference(
-    ClassNode $class, MethodNode $method, ArgumentNode $argument
+        ClassNode $class,
+        MethodNode $method,
+        ArgumentNode $argument
     ) {
         $class->getParentClass()->willReturn('RuntimeException');
         $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
@@ -287,7 +305,7 @@ PHP;
         $argument->isNullable()->willReturn(false);
 
         $code = $this->generate('CustomClass', $class);
-        $expected = <<<'PHP'
+        $expected =<<<'PHP'
 namespace  {
 class CustomClass extends \RuntimeException implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -302,14 +320,15 @@ PHP;
         $code->shouldBe($expected);
     }
 
-    function it_generates_empty_class_for_empty_ClassNode(ClassNode $class) {
+    function it_generates_empty_class_for_empty_ClassNode(ClassNode $class)
+    {
         $class->getParentClass()->willReturn('stdClass');
         $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
         $class->getProperties()->willReturn(array());
         $class->getMethods()->willReturn(array());
 
         $code = $this->generate('CustomClass', $class);
-        $expected = <<<'PHP'
+        $expected =<<<'PHP'
 namespace  {
 class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -321,14 +340,15 @@ PHP;
         $code->shouldBe($expected);
     }
 
-    function it_wraps_class_in_namespace_if_it_is_namespaced(ClassNode $class) {
+    function it_wraps_class_in_namespace_if_it_is_namespaced(ClassNode $class)
+    {
         $class->getParentClass()->willReturn('stdClass');
         $class->getInterfaces()->willReturn(array('Prophecy\Doubler\Generator\MirroredInterface'));
         $class->getProperties()->willReturn(array());
         $class->getMethods()->willReturn(array());
 
         $code = $this->generate('My\Awesome\CustomClass', $class);
-        $expected = <<<'PHP'
+        $expected =<<<'PHP'
 namespace My\Awesome {
 class CustomClass extends \stdClass implements \Prophecy\Doubler\Generator\MirroredInterface {
 
@@ -339,5 +359,4 @@ PHP;
         $expected = strtr($expected, array("\r\n" => "\n", "\r" => "\n"));
         $code->shouldBe($expected);
     }
-
 }

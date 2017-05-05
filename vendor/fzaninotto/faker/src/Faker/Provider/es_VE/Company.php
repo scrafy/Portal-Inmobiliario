@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\es_VE;
 
-class Company extends \Faker\Provider\Company {
-
+class Company extends \Faker\Provider\Company
+{
     protected static $formats = array(
         '{{companyPrefix}} {{lastName}} {{companySuffix}}',
         '{{companyPrefix}} {{lastName}}',
@@ -13,6 +13,7 @@ class Company extends \Faker\Provider\Company {
         '{{lastName}} y {{lastName}}',
         '{{lastName}} de {{lastName}}'
     );
+
     protected static $companyPrefix = array(
         'Asociación', 'Centro', 'Corporación', 'Cooperativa', 'Empresa', 'Gestora', 'Global', 'Grupo', 'Viajes',
         'Inversiones', 'Lic.', 'Dr.'
@@ -22,8 +23,8 @@ class Company extends \Faker\Provider\Company {
     /**
      * @example 'Grupo'
      */
-    public static function companyPrefix() {
+    public static function companyPrefix()
+    {
         return static::randomElement(static::$companyPrefix);
     }
-
 }

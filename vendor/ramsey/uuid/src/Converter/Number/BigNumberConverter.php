@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -22,15 +21,16 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
  * BigNumberConverter converts UUIDs from hexadecimal characters into
  * moontoast/math `BigNumber` representations of integers and vice versa
  */
-class BigNumberConverter implements NumberConverterInterface {
-
+class BigNumberConverter implements NumberConverterInterface
+{
     /**
      * Converts a hexadecimal number into a `Moontoast\Math\BigNumber` representation
      *
      * @param string $hex The hexadecimal string representation to convert
      * @return BigNumber
      */
-    public function fromHex($hex) {
+    public function fromHex($hex)
+    {
         $number = BigNumber::convertToBase10($hex, 16);
 
         return new BigNumber($number);
@@ -43,12 +43,12 @@ class BigNumberConverter implements NumberConverterInterface {
      * @param int|string|BigNumber $integer An integer or `Moontoast\Math\BigNumber`
      * @return string Hexadecimal string
      */
-    public function toHex($integer) {
+    public function toHex($integer)
+    {
         if (!$integer instanceof BigNumber) {
             $integer = new BigNumber($integer);
         }
 
         return BigNumber::convertFromBase10($integer, 16);
     }
-
 }

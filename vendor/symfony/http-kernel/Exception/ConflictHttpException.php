@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\Exception;
  *
  * @author Ben Ramsey <ben@benramsey.com>
  */
-class ConflictHttpException extends HttpException {
-
+class ConflictHttpException extends HttpException
+{
     /**
      * Constructor.
      *
@@ -25,8 +25,8 @@ class ConflictHttpException extends HttpException {
      * @param \Exception $previous The previous exception
      * @param int        $code     The internal exception code
      */
-    public function __construct($message = null, \Exception $previous = null, $code = 0) {
+    public function __construct($message = null, \Exception $previous = null, $code = 0)
+    {
         parent::__construct(409, $message, $previous, array(), $code);
     }
-
 }

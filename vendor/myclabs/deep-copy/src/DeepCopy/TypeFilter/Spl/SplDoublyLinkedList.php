@@ -5,21 +5,23 @@ namespace DeepCopy\TypeFilter\Spl;
 use DeepCopy\DeepCopy;
 use DeepCopy\TypeFilter\TypeFilter;
 
-class SplDoublyLinkedList implements TypeFilter {
-
+class SplDoublyLinkedList implements TypeFilter
+{
     /**
      * @var DeepCopy
      */
     private $deepCopy;
 
-    public function __construct(DeepCopy $deepCopy) {
+    public function __construct(DeepCopy $deepCopy)
+    {
         $this->deepCopy = $deepCopy;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function apply($element) {
+    public function apply($element)
+    {
         $newElement = clone $element;
 
         if ($element instanceof \SplDoublyLinkedList) {
@@ -30,6 +32,6 @@ class SplDoublyLinkedList implements TypeFilter {
         }
 
         return $newElement;
-    }
 
+    }
 }

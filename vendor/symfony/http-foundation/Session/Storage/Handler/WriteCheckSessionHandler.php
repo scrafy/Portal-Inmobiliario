@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  *
  * @author Adrien Brault <adrien.brault@gmail.com>
  */
-class WriteCheckSessionHandler implements \SessionHandlerInterface {
-
+class WriteCheckSessionHandler implements \SessionHandlerInterface
+{
     /**
      * @var \SessionHandlerInterface
      */
@@ -28,42 +28,48 @@ class WriteCheckSessionHandler implements \SessionHandlerInterface {
      */
     private $readSessions;
 
-    public function __construct(\SessionHandlerInterface $wrappedSessionHandler) {
+    public function __construct(\SessionHandlerInterface $wrappedSessionHandler)
+    {
         $this->wrappedSessionHandler = $wrappedSessionHandler;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         return $this->wrappedSessionHandler->close();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId) {
+    public function destroy($sessionId)
+    {
         return $this->wrappedSessionHandler->destroy($sessionId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime)
+    {
         return $this->wrappedSessionHandler->gc($maxlifetime);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName)
+    {
         return $this->wrappedSessionHandler->open($savePath, $sessionName);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId) {
+    public function read($sessionId)
+    {
         $session = $this->wrappedSessionHandler->read($sessionId);
 
         $this->readSessions[$sessionId] = $session;
@@ -74,12 +80,12 @@ class WriteCheckSessionHandler implements \SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data) {
+    public function write($sessionId, $data)
+    {
         if (isset($this->readSessions[$sessionId]) && $data === $this->readSessions[$sessionId]) {
             return true;
         }
 
         return $this->wrappedSessionHandler->write($sessionId, $data);
     }
-
 }

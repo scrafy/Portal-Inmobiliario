@@ -4,8 +4,8 @@ namespace Illuminate\Console\Scheduling;
 
 use Illuminate\Console\Command;
 
-class ScheduleFinishCommand extends Command {
-
+class ScheduleFinishCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -40,7 +40,8 @@ class ScheduleFinishCommand extends Command {
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    public function __construct(Schedule $schedule) {
+    public function __construct(Schedule $schedule)
+    {
         $this->schedule = $schedule;
 
         parent::__construct();
@@ -51,10 +52,10 @@ class ScheduleFinishCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         collect($this->schedule->events())->filter(function ($value) {
             return $value->mutexName() == $this->argument('id');
         })->each->callAfterCallbacks($this->laravel);
     }
-
 }

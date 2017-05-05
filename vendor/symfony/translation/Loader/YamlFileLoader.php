@@ -21,14 +21,15 @@ use Symfony\Component\Yaml\Exception\ParseException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class YamlFileLoader extends FileLoader {
-
+class YamlFileLoader extends FileLoader
+{
     private $yamlParser;
 
     /**
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         if (null === $this->yamlParser) {
             if (!class_exists('Symfony\Component\Yaml\Parser')) {
                 throw new LogicException('Loading translations from the YAML format requires the Symfony Yaml component.');
@@ -45,5 +46,4 @@ class YamlFileLoader extends FileLoader {
 
         return $messages;
     }
-
 }

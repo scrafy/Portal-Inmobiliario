@@ -11,7 +11,7 @@ $fqsenResolver = new FqsenResolver();
 $context = new Context('\phpDocumentor\Types');
 
 // Method named: \phpDocumentor\Types\Types\Resolver::resolveFqsen()
-var_dump((string) $fqsenResolver->resolve('Types\Resolver::resolveFqsen()', $context));
+var_dump((string)$fqsenResolver->resolve('Types\Resolver::resolveFqsen()', $context));
 
 // Property named: \phpDocumentor\Types\Types\Resolver::$keyWords
-var_dump((string) $fqsenResolver->resolve('Types\Resolver::$keyWords', $context));
+var_dump((string)$fqsenResolver->resolve('Types\Resolver::$keyWords', $context));

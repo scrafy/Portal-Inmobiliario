@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-interface ArgumentMetadataFactoryInterface {
-
+interface ArgumentMetadataFactoryInterface
+{
     /**
      * @param mixed $controller The controller to resolve the arguments for
      *

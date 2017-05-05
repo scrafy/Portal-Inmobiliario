@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base64Encoder implements Swift_Mime_ContentEncoder {
-
+class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base64Encoder implements Swift_Mime_ContentEncoder
+{
     /**
      * Encode stream $in to stream $out.
      *
@@ -23,7 +23,8 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base6
      * @param int                    $firstLineOffset
      * @param int                    $maxLineLength,  optional, 0 indicates the default of 76 bytes
      */
-    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0) {
+    public function encodeByteStream(Swift_OutputByteStream $os, Swift_InputByteStream $is, $firstLineOffset = 0, $maxLineLength = 0)
+    {
         if (0 >= $maxLineLength || 76 < $maxLineLength) {
             $maxLineLength = 76;
         }
@@ -45,7 +46,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base6
             if ($atEOF) {
                 $streamTheseBytes = $base64ReadBufferRemainderBytes;
             } else {
-                $streamTheseBytes = $base64ReadBufferRemainderBytes . $readBytes;
+                $streamTheseBytes = $base64ReadBufferRemainderBytes.$readBytes;
             }
             $base64ReadBufferRemainderBytes = null;
             $bytesLength = strlen($streamTheseBytes);
@@ -69,7 +70,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base6
             $thisMaxLineLength = $maxLineLength - $remainder - $firstLineOffset;
 
             while ($thisMaxLineLength < strlen($encoded)) {
-                $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength) . "\r\n";
+                $encodedTransformed .= substr($encoded, 0, $thisMaxLineLength)."\r\n";
                 $firstLineOffset = 0;
                 $encoded = substr($encoded, $thisMaxLineLength);
                 $thisMaxLineLength = $maxLineLength;
@@ -96,8 +97,8 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoder extends Swift_Encoder_Base6
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'base64';
     }
-
 }

@@ -4,14 +4,12 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Catch_ extends Node\Stmt {
-
+class Catch_ extends Node\Stmt
+{
     /** @var Node\Name[] Types of exceptions to catch */
     public $types;
-
     /** @var string Variable for exception */
     public $var;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -33,5 +31,4 @@ class Catch_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('types', 'var', 'stmts');
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,8 +13,8 @@
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static {
-
+class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
+{
     /**
      * @var object
      */
@@ -29,10 +28,10 @@ class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_M
      * @param object $object
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false) {
+    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false)
+    {
         parent::__construct($className, $methodName, $parameters, $returnType, $cloneObjects);
 
         $this->object = $object;
     }
-
 }

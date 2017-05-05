@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Events_SendEvent extends Swift_Events_EventObject {
-
+class Swift_Events_SendEvent extends Swift_Events_EventObject
+{
     /** Sending has yet to occur */
     const RESULT_PENDING = 0x0001;
 
@@ -57,7 +57,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      * @param Swift_Transport    $source
      * @param Swift_Mime_Message $message
      */
-    public function __construct(Swift_Transport $source, Swift_Mime_Message $message) {
+    public function __construct(Swift_Transport $source, Swift_Mime_Message $message)
+    {
         parent::__construct($source);
         $this->_message = $message;
         $this->_result = self::RESULT_PENDING;
@@ -68,7 +69,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @return Swift_Transport
      */
-    public function getTransport() {
+    public function getTransport()
+    {
         return $this->getSource();
     }
 
@@ -77,7 +79,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @return Swift_Mime_Message
      */
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->_message;
     }
 
@@ -86,7 +89,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @param array $recipients
      */
-    public function setFailedRecipients($recipients) {
+    public function setFailedRecipients($recipients)
+    {
         $this->_failedRecipients = $recipients;
     }
 
@@ -95,7 +99,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @return string[]
      */
-    public function getFailedRecipients() {
+    public function getFailedRecipients()
+    {
         return $this->_failedRecipients;
     }
 
@@ -104,7 +109,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @param int $result
      */
-    public function setResult($result) {
+    public function setResult($result)
+    {
         $this->_result = $result;
     }
 
@@ -116,8 +122,8 @@ class Swift_Events_SendEvent extends Swift_Events_EventObject {
      *
      * @return int
      */
-    public function getResult() {
+    public function getResult()
+    {
         return $this->_result;
     }
-
 }

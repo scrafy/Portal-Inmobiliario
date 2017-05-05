@@ -21,12 +21,13 @@ namespace Symfony\Component\Translation\Catalogue;
  *
  * @author Michael Lee <michael.lee@zerustech.com>
  */
-class TargetOperation extends AbstractOperation {
-
+class TargetOperation extends AbstractOperation
+{
     /**
      * {@inheritdoc}
      */
-    protected function processDomain($domain) {
+    protected function processDomain($domain)
+    {
         $this->messages[$domain] = array(
             'all' => array(),
             'new' => array(),
@@ -65,5 +66,4 @@ class TargetOperation extends AbstractOperation {
             }
         }
     }
-
 }

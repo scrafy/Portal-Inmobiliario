@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Random_* Compatibility Library 
  * for using the new PHP 7 random_* API in PHP 5 projects
@@ -26,8 +25,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-if (!is_callable('random_bytes')) {
 
+if (!is_callable('random_bytes')) {
     /**
      * If the libsodium PHP extension is loaded, we'll use it above any other
      * solution.
@@ -41,18 +40,19 @@ if (!is_callable('random_bytes')) {
      *
      * @return string
      */
-    function random_bytes($bytes) {
+    function random_bytes($bytes)
+    {
         try {
             $bytes = RandomCompat_intval($bytes);
         } catch (TypeError $ex) {
             throw new TypeError(
-            'random_bytes(): $bytes must be an integer'
+                'random_bytes(): $bytes must be an integer'
             );
         }
 
         if ($bytes < 1) {
             throw new Error(
-            'Length must be greater than 0'
+                'Length must be greater than 0'
             );
         }
 
@@ -67,7 +67,9 @@ if (!is_callable('random_bytes')) {
          */
         if ($bytes > 2147483647) {
             for ($i = 0; $i < $bytes; $i += 1073741824) {
-                $n = ($bytes - $i) > 1073741824 ? 1073741824 : $bytes - $i;
+                $n = ($bytes - $i) > 1073741824
+                    ? 1073741824
+                    : $bytes - $i;
                 $buf .= Sodium::randombytes_buf($n);
             }
         } else {
@@ -84,8 +86,7 @@ if (!is_callable('random_bytes')) {
          * If we reach here, PHP has failed us.
          */
         throw new Exception(
-        'Could not gather sufficient random data'
+            'Could not gather sufficient random data'
         );
     }
-
 }

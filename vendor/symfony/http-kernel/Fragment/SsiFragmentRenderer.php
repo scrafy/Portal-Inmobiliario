@@ -16,13 +16,13 @@ namespace Symfony\Component\HttpKernel\Fragment;
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
-class SsiFragmentRenderer extends AbstractSurrogateFragmentRenderer {
-
+class SsiFragmentRenderer extends AbstractSurrogateFragmentRenderer
+{
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'ssi';
     }
-
 }

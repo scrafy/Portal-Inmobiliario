@@ -6,8 +6,8 @@ use Exception;
 use ErrorException;
 use Illuminate\View\Compilers\CompilerInterface;
 
-class CompilerEngine extends PhpEngine {
-
+class CompilerEngine extends PhpEngine
+{
     /**
      * The Blade compiler instance.
      *
@@ -28,7 +28,8 @@ class CompilerEngine extends PhpEngine {
      * @param  \Illuminate\View\Compilers\CompilerInterface  $compiler
      * @return void
      */
-    public function __construct(CompilerInterface $compiler) {
+    public function __construct(CompilerInterface $compiler)
+    {
         $this->compiler = $compiler;
     }
 
@@ -39,7 +40,8 @@ class CompilerEngine extends PhpEngine {
      * @param  array   $data
      * @return string
      */
-    public function get($path, array $data = []) {
+    public function get($path, array $data = [])
+    {
         $this->lastCompiled[] = $path;
 
         // If this given view has expired, which means it has simply been edited since
@@ -70,7 +72,8 @@ class CompilerEngine extends PhpEngine {
      *
      * @throws $e
      */
-    protected function handleViewException(Exception $e, $obLevel) {
+    protected function handleViewException(Exception $e, $obLevel)
+    {
         $e = new ErrorException($this->getMessage($e), 0, 1, $e->getFile(), $e->getLine(), $e);
 
         parent::handleViewException($e, $obLevel);
@@ -82,8 +85,9 @@ class CompilerEngine extends PhpEngine {
      * @param  \Exception  $e
      * @return string
      */
-    protected function getMessage(Exception $e) {
-        return $e->getMessage() . ' (View: ' . realpath(last($this->lastCompiled)) . ')';
+    protected function getMessage(Exception $e)
+    {
+        return $e->getMessage().' (View: '.realpath(last($this->lastCompiled)).')';
     }
 
     /**
@@ -91,8 +95,8 @@ class CompilerEngine extends PhpEngine {
      *
      * @return \Illuminate\View\Compilers\CompilerInterface
      */
-    public function getCompiler() {
+    public function getCompiler()
+    {
         return $this->compiler;
     }
-
 }

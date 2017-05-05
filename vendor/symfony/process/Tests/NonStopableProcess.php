@@ -16,7 +16,8 @@
  *
  * @example `php NonStopableProcess.php 42` will run the script for 42 seconds
  */
-function handleSignal($signal) {
+function handleSignal($signal)
+{
     switch ($signal) {
         case SIGTERM:
             $name = 'SIGTERM';
@@ -25,7 +26,7 @@ function handleSignal($signal) {
             $name = 'SIGINT';
             break;
         default:
-            $name = $signal . ' (unknown)';
+            $name = $signal.' (unknown)';
             break;
     }
 

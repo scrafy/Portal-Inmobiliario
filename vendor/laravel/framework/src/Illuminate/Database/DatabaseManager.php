@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
-class DatabaseManager implements ConnectionResolverInterface {
-
+class DatabaseManager implements ConnectionResolverInterface
+{
     /**
      * The application instance.
      *
@@ -45,7 +45,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
      * @return void
      */
-    public function __construct($app, ConnectionFactory $factory) {
+    public function __construct($app, ConnectionFactory $factory)
+    {
         $this->app = $app;
         $this->factory = $factory;
     }
@@ -56,7 +57,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    public function connection($name = null) {
+    public function connection($name = null)
+    {
         list($database, $type) = $this->parseConnectionName($name);
 
         $name = $name ?: $database;
@@ -64,9 +66,9 @@ class DatabaseManager implements ConnectionResolverInterface {
         // If we haven't created this connection, we'll create it based on the config
         // provided in the application. Once we've created the connections we will
         // set the "fetch mode" for PDO which determines the query return types.
-        if (!isset($this->connections[$name])) {
+        if (! isset($this->connections[$name])) {
             $this->connections[$name] = $this->configure(
-                    $connection = $this->makeConnection($database), $type
+                $connection = $this->makeConnection($database), $type
             );
         }
 
@@ -79,10 +81,12 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return array
      */
-    protected function parseConnectionName($name) {
+    protected function parseConnectionName($name)
+    {
         $name = $name ?: $this->getDefaultConnection();
 
-        return Str::endsWith($name, ['::read', '::write']) ? explode('::', $name, 2) : [$name, null];
+        return Str::endsWith($name, ['::read', '::write'])
+                            ? explode('::', $name, 2) : [$name, null];
     }
 
     /**
@@ -91,7 +95,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    protected function makeConnection($name) {
+    protected function makeConnection($name)
+    {
         $config = $this->configuration($name);
 
         // First we will check by the connection name to see if an extension has been
@@ -119,7 +124,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      *
      * @throws \InvalidArgumentException
      */
-    protected function configuration($name) {
+    protected function configuration($name)
+    {
         $name = $name ?: $this->getDefaultConnection();
 
         // To get the database connection configuration, we will just pull each of the
@@ -141,7 +147,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $type
      * @return \Illuminate\Database\Connection
      */
-    protected function configure(Connection $connection, $type) {
+    protected function configure(Connection $connection, $type)
+    {
         $connection = $this->setPdoForType($connection, $type);
 
         // First we'll set the fetch mode and a few other dependencies of the database
@@ -168,7 +175,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $type
      * @return \Illuminate\Database\Connection
      */
-    protected function setPdoForType(Connection $connection, $type = null) {
+    protected function setPdoForType(Connection $connection, $type = null)
+    {
         if ($type == 'read') {
             $connection->setPdo($connection->getReadPdo());
         } elseif ($type == 'write') {
@@ -184,7 +192,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return void
      */
-    public function purge($name = null) {
+    public function purge($name = null)
+    {
         $name = $name ?: $this->getDefaultConnection();
 
         $this->disconnect($name);
@@ -198,7 +207,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return void
      */
-    public function disconnect($name = null) {
+    public function disconnect($name = null)
+    {
         if (isset($this->connections[$name = $name ?: $this->getDefaultConnection()])) {
             $this->connections[$name]->disconnect();
         }
@@ -210,10 +220,11 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    public function reconnect($name = null) {
+    public function reconnect($name = null)
+    {
         $this->disconnect($name = $name ?: $this->getDefaultConnection());
 
-        if (!isset($this->connections[$name])) {
+        if (! isset($this->connections[$name])) {
             return $this->connection($name);
         }
 
@@ -226,12 +237,13 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return \Illuminate\Database\Connection
      */
-    protected function refreshPdoConnections($name) {
+    protected function refreshPdoConnections($name)
+    {
         $fresh = $this->makeConnection($name);
 
         return $this->connections[$name]
-                        ->setPdo($fresh->getPdo())
-                        ->setReadPdo($fresh->getReadPdo());
+                                ->setPdo($fresh->getPdo())
+                                ->setReadPdo($fresh->getReadPdo());
     }
 
     /**
@@ -239,7 +251,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      *
      * @return string
      */
-    public function getDefaultConnection() {
+    public function getDefaultConnection()
+    {
         return $this->app['config']['database.default'];
     }
 
@@ -249,7 +262,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  string  $name
      * @return void
      */
-    public function setDefaultConnection($name) {
+    public function setDefaultConnection($name)
+    {
         $this->app['config']['database.default'] = $name;
     }
 
@@ -258,7 +272,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      *
      * @return array
      */
-    public function supportedDrivers() {
+    public function supportedDrivers()
+    {
         return ['mysql', 'pgsql', 'sqlite', 'sqlsrv'];
     }
 
@@ -267,9 +282,11 @@ class DatabaseManager implements ConnectionResolverInterface {
      *
      * @return array
      */
-    public function availableDrivers() {
+    public function availableDrivers()
+    {
         return array_intersect(
-                $this->supportedDrivers(), str_replace('dblib', 'sqlsrv', PDO::getAvailableDrivers())
+            $this->supportedDrivers(),
+            str_replace('dblib', 'sqlsrv', PDO::getAvailableDrivers())
         );
     }
 
@@ -280,7 +297,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  callable  $resolver
      * @return void
      */
-    public function extend($name, callable $resolver) {
+    public function extend($name, callable $resolver)
+    {
         $this->extensions[$name] = $resolver;
     }
 
@@ -289,7 +307,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      *
      * @return array
      */
-    public function getConnections() {
+    public function getConnections()
+    {
         return $this->connections;
     }
 
@@ -300,8 +319,8 @@ class DatabaseManager implements ConnectionResolverInterface {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->connection()->$method(...$parameters);
     }
-
 }

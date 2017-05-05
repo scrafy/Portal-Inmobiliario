@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class ExpectationDirector {
+class ExpectationDirector
+{
 
     /**
      * Method name the director is directing
@@ -64,7 +64,8 @@ class ExpectationDirector {
      * @param string $name
      * @param \Mockery\MockInterface $mock
      */
-    public function __construct($name, \Mockery\MockInterface $mock) {
+    public function __construct($name, \Mockery\MockInterface $mock)
+    {
         $this->_name = $name;
         $this->_mock = $mock;
     }
@@ -74,7 +75,8 @@ class ExpectationDirector {
      *
      * @param Mutateme\Expectation $expectation
      */
-    public function addExpectation(\Mockery\Expectation $expectation) {
+    public function addExpectation(\Mockery\Expectation $expectation)
+    {
         $this->_expectations[] = $expectation;
     }
 
@@ -84,21 +86,22 @@ class ExpectationDirector {
      * @param array $args
      * @return mixed
      */
-    public function call(array $args) {
+    public function call(array $args)
+    {
         $expectation = $this->findExpectation($args);
         if (is_null($expectation)) {
             $exception = new \Mockery\Exception\NoMatchingExpectationException(
-                    'No matching handler found for '
-                    . $this->_mock->mockery_getName() . '::'
-                    . \Mockery::formatArgs($this->_name, $args)
-                    . '. Either the method was unexpected or its arguments matched'
-                    . ' no expected argument list for this method'
-                    . PHP_EOL . PHP_EOL
-                    . \Mockery::formatObjects($args)
+                'No matching handler found for '
+                . $this->_mock->mockery_getName() . '::'
+                . \Mockery::formatArgs($this->_name, $args)
+                . '. Either the method was unexpected or its arguments matched'
+                . ' no expected argument list for this method'
+                . PHP_EOL . PHP_EOL
+                . \Mockery::formatObjects($args)
             );
             $exception->setMock($this->_mock)
-                    ->setMethodName($this->_name)
-                    ->setActualArguments($args);
+                ->setMethodName($this->_name)
+                ->setActualArguments($args);
             throw $exception;
         }
         return $expectation->verifyCall($args);
@@ -110,7 +113,8 @@ class ExpectationDirector {
      * @throws \Mockery\CountValidator\Exception
      * @return void
      */
-    public function verify() {
+    public function verify()
+    {
         if (!empty($this->_expectations)) {
             foreach ($this->_expectations as $exp) {
                 $exp->verify();
@@ -128,7 +132,8 @@ class ExpectationDirector {
      * @param array $args
      * @return mixed
      */
-    public function findExpectation(array $args) {
+    public function findExpectation(array $args)
+    {
         if (!empty($this->_expectations)) {
             return $this->_findExpectationIn($this->_expectations, $args);
         } else {
@@ -142,14 +147,15 @@ class ExpectationDirector {
      *
      * @param \Mockery\Expectation
      */
-    public function makeExpectationDefault(\Mockery\Expectation $expectation) {
+    public function makeExpectationDefault(\Mockery\Expectation $expectation)
+    {
         $last = end($this->_expectations);
         if ($last === $expectation) {
             array_pop($this->_expectations);
             array_unshift($this->_defaults, $expectation);
         } else {
             throw new \Mockery\Exception(
-            'Cannot turn a previously defined expectation into a default'
+                'Cannot turn a previously defined expectation into a default'
             );
         }
     }
@@ -161,7 +167,8 @@ class ExpectationDirector {
      * @param array $args
      * @return mixed
      */
-    protected function _findExpectationIn(array $expectations, array $args) {
+    protected function _findExpectationIn(array $expectations, array $args)
+    {
         foreach ($expectations as $exp) {
             if ($exp->matchArgs($args) && $exp->isEligible()) {
                 return $exp;
@@ -179,7 +186,8 @@ class ExpectationDirector {
      *
      * @return array
      */
-    public function getExpectations() {
+    public function getExpectations()
+    {
         return $this->_expectations;
     }
 
@@ -188,8 +196,8 @@ class ExpectationDirector {
      *
      * @return int
      */
-    public function getExpectationCount() {
+    public function getExpectationCount()
+    {
         return count($this->getExpectations());
     }
-
 }

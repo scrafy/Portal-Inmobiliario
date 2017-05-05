@@ -20,8 +20,8 @@
  * @method Swift_SmtpTransport setAuthMode(string $mode)     Set the auth mode to use to authenticate.
  * @method string              getAuthMode()                 Get the auth mode to use to authenticate.
  */
-class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport {
-
+class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport
+{
     /**
      * Create a new SmtpTransport, optionally with $host, $port and $security.
      *
@@ -29,11 +29,13 @@ class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport {
      * @param int    $port
      * @param string $security
      */
-    public function __construct($host = 'localhost', $port = 25, $security = null) {
+    public function __construct($host = 'localhost', $port = 25, $security = null)
+    {
         call_user_func_array(
-                array($this, 'Swift_Transport_EsmtpTransport::__construct'), Swift_DependencyContainer::getInstance()
-                        ->createDependenciesFor('transport.smtp')
-        );
+            array($this, 'Swift_Transport_EsmtpTransport::__construct'),
+            Swift_DependencyContainer::getInstance()
+                ->createDependenciesFor('transport.smtp')
+            );
 
         $this->setHost($host);
         $this->setPort($port);
@@ -49,8 +51,8 @@ class Swift_SmtpTransport extends Swift_Transport_EsmtpTransport {
      *
      * @return Swift_SmtpTransport
      */
-    public static function newInstance($host = 'localhost', $port = 25, $security = null) {
+    public static function newInstance($host = 'localhost', $port = 25, $security = null)
+    {
         return new self($host, $port, $security);
     }
-
 }

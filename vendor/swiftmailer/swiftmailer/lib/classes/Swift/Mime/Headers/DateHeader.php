@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
-
+class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader
+{
     /**
      * The UNIX timestamp value of this Header.
      *
@@ -35,7 +35,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      * @param string             $name    of Header
      * @param Swift_Mime_Grammar $grammar
      */
-    public function __construct($name, Swift_Mime_Grammar $grammar) {
+    public function __construct($name, Swift_Mime_Grammar $grammar)
+    {
         $this->setFieldName($name);
         parent::__construct($grammar);
     }
@@ -48,7 +49,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @return int
      */
-    public function getFieldType() {
+    public function getFieldType()
+    {
         return self::TYPE_DATE;
     }
 
@@ -59,7 +61,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @param int $model
      */
-    public function setFieldBodyModel($model) {
+    public function setFieldBodyModel($model)
+    {
         $this->setTimestamp($model);
     }
 
@@ -70,7 +73,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @return mixed
      */
-    public function getFieldBodyModel() {
+    public function getFieldBodyModel()
+    {
         return $this->getTimestamp();
     }
 
@@ -79,7 +83,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @return int
      */
-    public function getTimestamp() {
+    public function getTimestamp()
+    {
         return $this->_timestamp;
     }
 
@@ -88,7 +93,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @param int $timestamp
      */
-    public function setTimestamp($timestamp) {
+    public function setTimestamp($timestamp)
+    {
         if (null !== $timestamp) {
             $timestamp = (int) $timestamp;
         }
@@ -106,7 +112,8 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
      *
      * @return string
      */
-    public function getFieldBody() {
+    public function getFieldBody()
+    {
         if (!$this->getCachedValue()) {
             if (isset($this->_timestamp)) {
                 $this->setCachedValue(date('r', $this->_timestamp));
@@ -115,5 +122,4 @@ class Swift_Mime_Headers_DateHeader extends Swift_Mime_Headers_AbstractHeader {
 
         return $this->getCachedValue();
     }
-
 }

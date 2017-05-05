@@ -6,10 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendQueuedNotifications implements ShouldQueue {
-
-    use Queueable,
-        SerializesModels;
+class SendQueuedNotifications implements ShouldQueue
+{
+    use Queueable, SerializesModels;
 
     /**
      * The notifiable entities that should receive the notification.
@@ -40,7 +39,8 @@ class SendQueuedNotifications implements ShouldQueue {
      * @param  array  $channels
      * @return void
      */
-    public function __construct($notifiables, $notification, array $channels = null) {
+    public function __construct($notifiables, $notification, array $channels = null)
+    {
         $this->channels = $channels;
         $this->notifiables = $notifiables;
         $this->notification = $notification;
@@ -52,7 +52,8 @@ class SendQueuedNotifications implements ShouldQueue {
      * @param  \Illuminate\Notifications\ChannelManager  $manager
      * @return void
      */
-    public function handle(ChannelManager $manager) {
+    public function handle(ChannelManager $manager)
+    {
         $manager->sendNow($this->notifiables, $this->notification, $this->channels);
     }
 
@@ -61,8 +62,8 @@ class SendQueuedNotifications implements ShouldQueue {
      *
      * @return string
      */
-    public function displayName() {
+    public function displayName()
+    {
         return get_class($this->notification);
     }
-
 }

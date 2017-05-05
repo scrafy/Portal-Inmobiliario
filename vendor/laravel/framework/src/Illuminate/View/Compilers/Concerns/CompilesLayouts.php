@@ -4,8 +4,8 @@ namespace Illuminate\View\Compilers\Concerns;
 
 use Illuminate\View\Factory as ViewFactory;
 
-trait CompilesLayouts {
-
+trait CompilesLayouts
+{
     /**
      * The name of the last section that was started.
      *
@@ -19,7 +19,8 @@ trait CompilesLayouts {
      * @param  string  $expression
      * @return string
      */
-    protected function compileExtends($expression) {
+    protected function compileExtends($expression)
+    {
         $expression = $this->stripParentheses($expression);
 
         $echo = "<?php echo \$__env->make({$expression}, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
@@ -35,7 +36,8 @@ trait CompilesLayouts {
      * @param  string  $expression
      * @return string
      */
-    protected function compileSection($expression) {
+    protected function compileSection($expression)
+    {
         $this->lastSection = trim($expression, "()'\" ");
 
         return "<?php \$__env->startSection{$expression}; ?>";
@@ -46,7 +48,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileParent() {
+    protected function compileParent()
+    {
         return ViewFactory::parentPlaceholder($this->lastSection ?: '');
     }
 
@@ -56,7 +59,8 @@ trait CompilesLayouts {
      * @param  string  $expression
      * @return string
      */
-    protected function compileYield($expression) {
+    protected function compileYield($expression)
+    {
         return "<?php echo \$__env->yieldContent{$expression}; ?>";
     }
 
@@ -65,7 +69,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileShow() {
+    protected function compileShow()
+    {
         return '<?php echo $__env->yieldSection(); ?>';
     }
 
@@ -74,7 +79,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileAppend() {
+    protected function compileAppend()
+    {
         return '<?php $__env->appendSection(); ?>';
     }
 
@@ -83,7 +89,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileOverwrite() {
+    protected function compileOverwrite()
+    {
         return '<?php $__env->stopSection(true); ?>';
     }
 
@@ -92,7 +99,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileStop() {
+    protected function compileStop()
+    {
         return '<?php $__env->stopSection(); ?>';
     }
 
@@ -101,8 +109,8 @@ trait CompilesLayouts {
      *
      * @return string
      */
-    protected function compileEndsection() {
+    protected function compileEndsection()
+    {
         return '<?php $__env->stopSection(); ?>';
     }
-
 }

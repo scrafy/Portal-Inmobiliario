@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Filesystem helpers.
  */
-class PHPUnit_Util_Filesystem {
-
+class PHPUnit_Util_Filesystem
+{
     /**
      * @var array
      */
@@ -28,10 +27,12 @@ class PHPUnit_Util_Filesystem {
      *
      * @return string
      */
-    public static function classNameToFilename($className) {
+    public static function classNameToFilename($className)
+    {
         return str_replace(
-                        ['_', '\\'], DIRECTORY_SEPARATOR, $className
-                ) . '.php';
+            ['_', '\\'],
+            DIRECTORY_SEPARATOR,
+            $className
+        ) . '.php';
     }
-
 }

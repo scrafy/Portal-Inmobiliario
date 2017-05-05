@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,8 +12,8 @@
  * Factory for PHPUnit_Framework_Exception objects that are used to describe
  * invalid arguments passed to a function or method.
  */
-class PHPUnit_Util_InvalidArgumentHelper {
-
+class PHPUnit_Util_InvalidArgumentHelper
+{
     /**
      * @param int    $argument
      * @param string $type
@@ -22,14 +21,19 @@ class PHPUnit_Util_InvalidArgumentHelper {
      *
      * @return PHPUnit_Framework_Exception
      */
-    public static function factory($argument, $type, $value = null) {
+    public static function factory($argument, $type, $value = null)
+    {
         $stack = debug_backtrace(false);
 
         return new PHPUnit_Framework_Exception(
-                sprintf(
-                        'Argument #%d%sof %s::%s() must be a %s', $argument, $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ', $stack[1]['class'], $stack[1]['function'], $type
-                )
+            sprintf(
+                'Argument #%d%sof %s::%s() must be a %s',
+                $argument,
+                $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
+                $stack[1]['class'],
+                $stack[1]['function'],
+                $type
+            )
         );
     }
-
 }

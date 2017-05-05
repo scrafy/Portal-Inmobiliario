@@ -20,8 +20,8 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
  */
-abstract class ObjectRouteLoader extends Loader {
-
+abstract class ObjectRouteLoader extends Loader
+{
     /**
      * Returns the object that the method will be called on to load routes.
      *
@@ -42,7 +42,8 @@ abstract class ObjectRouteLoader extends Loader {
      *
      * @return RouteCollection
      */
-    public function load($resource, $type = null) {
+    public function load($resource, $type = null)
+    {
         $parts = explode(':', $resource);
         if (count($parts) != 2) {
             throw new \InvalidArgumentException(sprintf('Invalid resource "%s" passed to the "service" route loader: use the format "service_name:methodName"', $resource));
@@ -78,16 +79,17 @@ abstract class ObjectRouteLoader extends Loader {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return 'service' === $type;
     }
 
-    private function addClassResource(\ReflectionClass $class, RouteCollection $collection) {
+    private function addClassResource(\ReflectionClass $class, RouteCollection $collection)
+    {
         do {
             if (is_file($class->getFileName())) {
                 $collection->addResource(new FileResource($class->getFileName()));
             }
         } while ($class = $class->getParentClass());
     }
-
 }

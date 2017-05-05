@@ -14,8 +14,8 @@ namespace Symfony\Component\HttpKernel\HttpCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-interface SurrogateInterface {
-
+interface SurrogateInterface
+{
     /**
      * Returns surrogate name.
      *

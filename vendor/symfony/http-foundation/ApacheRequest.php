@@ -16,19 +16,21 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ApacheRequest extends Request {
-
+class ApacheRequest extends Request
+{
     /**
      * {@inheritdoc}
      */
-    protected function prepareRequestUri() {
+    protected function prepareRequestUri()
+    {
         return $this->server->get('REQUEST_URI');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function prepareBaseUrl() {
+    protected function prepareBaseUrl()
+    {
         $baseUrl = $this->server->get('SCRIPT_NAME');
 
         if (false === strpos($this->server->get('REQUEST_URI'), $baseUrl)) {
@@ -38,5 +40,4 @@ class ApacheRequest extends Request {
 
         return $baseUrl;
     }
-
 }

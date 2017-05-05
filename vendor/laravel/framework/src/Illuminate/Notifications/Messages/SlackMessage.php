@@ -4,8 +4,8 @@ namespace Illuminate\Notifications\Messages;
 
 use Closure;
 
-class SlackMessage {
-
+class SlackMessage
+{
     /**
      * The "level" of the notification (info, success, warning, error).
      *
@@ -67,7 +67,8 @@ class SlackMessage {
      *
      * @return $this
      */
-    public function success() {
+    public function success()
+    {
         $this->level = 'success';
 
         return $this;
@@ -78,7 +79,8 @@ class SlackMessage {
      *
      * @return $this
      */
-    public function warning() {
+    public function warning()
+    {
         $this->level = 'warning';
 
         return $this;
@@ -89,7 +91,8 @@ class SlackMessage {
      *
      * @return $this
      */
-    public function error() {
+    public function error()
+    {
         $this->level = 'error';
 
         return $this;
@@ -102,10 +105,11 @@ class SlackMessage {
      * @param  string|null  $icon
      * @return $this
      */
-    public function from($username, $icon = null) {
+    public function from($username, $icon = null)
+    {
         $this->username = $username;
 
-        if (!is_null($icon)) {
+        if (! is_null($icon)) {
             $this->icon = $icon;
         }
 
@@ -118,7 +122,8 @@ class SlackMessage {
      * @param  string $channel
      * @return $this
      */
-    public function image($image) {
+    public function image($image)
+    {
         $this->image = $image;
 
         return $this;
@@ -130,7 +135,8 @@ class SlackMessage {
      * @param  string $channel
      * @return $this
      */
-    public function to($channel) {
+    public function to($channel)
+    {
         $this->channel = $channel;
 
         return $this;
@@ -142,7 +148,8 @@ class SlackMessage {
      * @param  string  $content
      * @return $this
      */
-    public function content($content) {
+    public function content($content)
+    {
         $this->content = $content;
 
         return $this;
@@ -154,7 +161,8 @@ class SlackMessage {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function attachment(Closure $callback) {
+    public function attachment(Closure $callback)
+    {
         $this->attachments[] = $attachment = new SlackAttachment;
 
         $callback($attachment);
@@ -167,7 +175,8 @@ class SlackMessage {
      *
      * @return string
      */
-    public function color() {
+    public function color()
+    {
         switch ($this->level) {
             case 'success':
                 return 'good';
@@ -184,10 +193,10 @@ class SlackMessage {
      * @param  array  $options
      * @return $this
      */
-    public function http(array $options) {
+    public function http(array $options)
+    {
         $this->http = $options;
 
         return $this;
     }
-
 }

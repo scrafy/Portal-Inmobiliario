@@ -29,10 +29,8 @@
         "ext-symfony_debug": ""
     },
     "autoload": {
-        "files": ["Resources/functions/dump.php"],
-        "psr-4": {
-            "Symfony\\Component\\VarDumper\\": ""
-        },
+        "files": [ "Resources/functions/dump.php" ],
+        "psr-4": { "Symfony\\Component\\VarDumper\\": "" },
         "exclude-from-classmap": [
             "/Tests/"
         ]

@@ -19,15 +19,16 @@ use Symfony\Component\VarDumper\Tests\Fixtures\NotLoadableClass;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class ReflectionCasterTest extends TestCase {
-
+class ReflectionCasterTest extends TestCase
+{
     use VarDumperTestTrait;
 
-    public function testReflectionCaster() {
+    public function testReflectionCaster()
+    {
         $var = new \ReflectionClass('ReflectionClass');
 
         $this->assertDumpMatchesFormat(
-                <<<'EOTXT'
+            <<<'EOTXT'
 ReflectionClass {
   +name: "ReflectionClass"
 %Aimplements: array:%d [
@@ -56,18 +57,17 @@ ReflectionClass {
 %A
 }
 EOTXT
-                , $var
+            , $var
         );
     }
 
-    public function testClosureCaster() {
+    public function testClosureCaster()
+    {
         $a = $b = 123;
-        $var = function ($x) use ($a, &$b) {
-            
-        };
+        $var = function ($x) use ($a, &$b) {};
 
         $this->assertDumpMatchesFormat(
-                <<<EOTXT
+            <<<EOTXT
 Closure {
 %Aparameters: {
     \$x: {}
@@ -80,15 +80,16 @@ Closure {
   line: "67 to 67"
 }
 EOTXT
-                , $var
+            , $var
         );
     }
 
-    public function testReflectionParameter() {
-        $var = new \ReflectionParameter(__NAMESPACE__ . '\reflectionParameterFixture', 0);
+    public function testReflectionParameter()
+    {
+        $var = new \ReflectionParameter(__NAMESPACE__.'\reflectionParameterFixture', 0);
 
         $this->assertDumpMatchesFormat(
-                <<<'EOTXT'
+            <<<'EOTXT'
 ReflectionParameter {
   +name: "arg1"
   position: 0
@@ -96,38 +97,40 @@ ReflectionParameter {
   default: null
 }
 EOTXT
-                , $var
+            , $var
         );
     }
 
     /**
      * @requires PHP 7.0
      */
-    public function testReflectionParameterScalar() {
+    public function testReflectionParameterScalar()
+    {
         $f = eval('return function (int $a) {};');
         $var = new \ReflectionParameter($f, 0);
 
         $this->assertDumpMatchesFormat(
-                <<<'EOTXT'
+            <<<'EOTXT'
 ReflectionParameter {
   +name: "a"
   position: 0
   typeHint: "int"
 }
 EOTXT
-                , $var
+            , $var
         );
     }
 
     /**
      * @requires PHP 7.0
      */
-    public function testReturnType() {
+    public function testReturnType()
+    {
         $f = eval('return function ():int {};');
         $line = __LINE__ - 1;
 
         $this->assertDumpMatchesFormat(
-                <<<EOTXT
+            <<<EOTXT
 Closure {
   returnType: "int"
   class: "Symfony\Component\VarDumper\Tests\Caster\ReflectionCasterTest"
@@ -136,14 +139,15 @@ Closure {
   line: "1 to 1"
 }
 EOTXT
-                , $f
+            , $f
         );
     }
 
     /**
      * @requires PHP 7.0
      */
-    public function testGenerator() {
+    public function testGenerator()
+    {
         if (extension_loaded('xdebug')) {
             $this->markTestSkipped('xdebug is active');
         }
@@ -215,7 +219,6 @@ EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, array($r, $r->getExecutingGenerator()));
 
         foreach ($generator as $v) {
-            
         }
 
         $expectedDump = <<<'EODUMP'
@@ -225,9 +228,8 @@ Generator {
 EODUMP;
         $this->assertDumpMatchesFormat($expectedDump, $generator);
     }
-
 }
 
-function reflectionParameterFixture(NotLoadableClass $arg1 = null, $arg2) {
-    
+function reflectionParameterFixture(NotLoadableClass $arg1 = null, $arg2)
+{
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Routing;
 use BadMethodCallException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-abstract class Controller {
-
+abstract class Controller
+{
     /**
      * The middleware registered on the controller.
      *
@@ -21,7 +21,8 @@ abstract class Controller {
      * @param  array   $options
      * @return \Illuminate\Routing\ControllerMiddlewareOptions
      */
-    public function middleware($middleware, array $options = []) {
+    public function middleware($middleware, array $options = [])
+    {
         foreach ((array) $middleware as $m) {
             $this->middleware[] = [
                 'middleware' => $m,
@@ -37,7 +38,8 @@ abstract class Controller {
      *
      * @return array
      */
-    public function getMiddleware() {
+    public function getMiddleware()
+    {
         return $this->middleware;
     }
 
@@ -48,7 +50,8 @@ abstract class Controller {
      * @param  array   $parameters
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function callAction($method, $parameters) {
+    public function callAction($method, $parameters)
+    {
         return call_user_func_array([$this, $method], $parameters);
     }
 
@@ -60,7 +63,8 @@ abstract class Controller {
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function missingMethod($parameters = []) {
+    public function missingMethod($parameters = [])
+    {
         throw new NotFoundHttpException('Controller method not found.');
     }
 
@@ -73,8 +77,8 @@ abstract class Controller {
      *
      * @throws \BadMethodCallException
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         throw new BadMethodCallException("Method [{$method}] does not exist.");
     }
-
 }

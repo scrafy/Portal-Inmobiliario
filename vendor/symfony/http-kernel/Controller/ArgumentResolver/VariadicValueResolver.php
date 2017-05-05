@@ -20,19 +20,21 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-final class VariadicValueResolver implements ArgumentValueResolverInterface {
-
+final class VariadicValueResolver implements ArgumentValueResolverInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function supports(Request $request, ArgumentMetadata $argument) {
+    public function supports(Request $request, ArgumentMetadata $argument)
+    {
         return $argument->isVariadic() && $request->attributes->has($argument->getName());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resolve(Request $request, ArgumentMetadata $argument) {
+    public function resolve(Request $request, ArgumentMetadata $argument)
+    {
         $values = $request->attributes->get($argument->getName());
 
         if (!is_array($values)) {
@@ -43,5 +45,4 @@ final class VariadicValueResolver implements ArgumentValueResolverInterface {
             yield $value;
         }
     }
-
 }

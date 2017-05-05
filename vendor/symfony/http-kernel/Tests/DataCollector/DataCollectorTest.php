@@ -19,9 +19,10 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
-class DataCollectorTest extends TestCase {
-
-    public function testCloneVarStringWithScheme() {
+class DataCollectorTest extends TestCase
+{
+    public function testCloneVarStringWithScheme()
+    {
         $c = new CloneVarDataCollector('scheme://foo');
         $c->collect(new Request(), new Response());
         $cloner = new VarCloner();
@@ -29,7 +30,8 @@ class DataCollectorTest extends TestCase {
         $this->assertEquals($cloner->cloneVar('scheme://foo'), $c->getData());
     }
 
-    public function testCloneVarExistingFilePath() {
+    public function testCloneVarExistingFilePath()
+    {
         $c = new CloneVarDataCollector($filePath = tempnam(sys_get_temp_dir(), 'clone_var_data_collector_'));
         $c->collect(new Request(), new Response());
 
@@ -38,11 +40,11 @@ class DataCollectorTest extends TestCase {
         $this->assertDumpEquals("\"$filePath\"", $data);
     }
 
-    private function assertDumpEquals($dump, $data, $message = '') {
+    private function assertDumpEquals($dump, $data, $message = '')
+    {
         $dumper = new CliDumper();
         $dumper->setColors(false);
 
         $this->assertSame(rtrim($dump), rtrim($dumper->dump($data, true)), $message);
     }
-
 }

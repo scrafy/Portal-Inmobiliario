@@ -13,17 +13,19 @@ namespace Psy\VersionUpdater;
 
 use Psy\Shell;
 
-class IntervalChecker extends GitHubChecker {
-
+class IntervalChecker extends GitHubChecker
+{
     private $cacheFile;
     private $interval;
 
-    public function __construct($cacheFile, $interval) {
+    public function __construct($cacheFile, $interval)
+    {
         $this->cacheFile = $cacheFile;
         $this->interval = $interval;
     }
 
-    public function fetchLatestRelease() {
+    public function fetchLatestRelease()
+    {
         // Read the cached file
         $cached = json_decode(@file_get_contents($this->cacheFile, false));
         if ($cached && isset($cached->last_check) && isset($cached->release)) {
@@ -43,7 +45,8 @@ class IntervalChecker extends GitHubChecker {
         return $release;
     }
 
-    private function getDateInterval() {
+    private function getDateInterval()
+    {
         switch ($this->interval) {
             case Checker::DAILY:
                 return new \DateInterval('P1D');
@@ -54,13 +57,13 @@ class IntervalChecker extends GitHubChecker {
         }
     }
 
-    private function updateCache($release) {
+    private function updateCache($release)
+    {
         $data = array(
             'last_check' => date(DATE_ATOM),
-            'release' => $release,
+            'release'    => $release,
         );
 
         file_put_contents($this->cacheFile, json_encode($data));
     }
-
 }

@@ -11,8 +11,8 @@ use Doctrine\DBAL\Schema\Comparator;
 use Illuminate\Database\Schema\Blueprint;
 use Doctrine\DBAL\Schema\AbstractSchemaManager as SchemaManager;
 
-class ChangeColumn {
-
+class ChangeColumn
+{
     /**
      * Compile a change column command into a series of SQL statements.
      *
@@ -24,15 +24,17 @@ class ChangeColumn {
      *
      * @throws \RuntimeException
      */
-    public static function compile($grammar, Blueprint $blueprint, Fluent $command, Connection $connection) {
-        if (!$connection->isDoctrineAvailable()) {
+    public static function compile($grammar, Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        if (! $connection->isDoctrineAvailable()) {
             throw new RuntimeException(sprintf(
-                    'Changing columns for table "%s" requires Doctrine DBAL; install "doctrine/dbal".', $blueprint->getTable()
+                'Changing columns for table "%s" requires Doctrine DBAL; install "doctrine/dbal".',
+                $blueprint->getTable()
             ));
         }
 
         $tableDiff = static::getChangedDiff(
-                        $grammar, $blueprint, $schema = $connection->getDoctrineSchemaManager()
+            $grammar, $blueprint, $schema = $connection->getDoctrineSchemaManager()
         );
 
         if ($tableDiff !== false) {
@@ -50,11 +52,12 @@ class ChangeColumn {
      * @param  \Doctrine\DBAL\Schema\AbstractSchemaManager  $schema
      * @return \Doctrine\DBAL\Schema\TableDiff|bool
      */
-    protected static function getChangedDiff($grammar, Blueprint $blueprint, SchemaManager $schema) {
-        $current = $schema->listTableDetails($grammar->getTablePrefix() . $blueprint->getTable());
+    protected static function getChangedDiff($grammar, Blueprint $blueprint, SchemaManager $schema)
+    {
+        $current = $schema->listTableDetails($grammar->getTablePrefix().$blueprint->getTable());
 
         return (new Comparator)->diffTable(
-                        $current, static::getTableWithColumnChanges($blueprint, $current)
+            $current, static::getTableWithColumnChanges($blueprint, $current)
         );
     }
 
@@ -65,7 +68,8 @@ class ChangeColumn {
      * @param  \Doctrine\DBAL\Schema\Table  $table
      * @return \Doctrine\DBAL\Schema\Table
      */
-    protected static function getTableWithColumnChanges(Blueprint $blueprint, Table $table) {
+    protected static function getTableWithColumnChanges(Blueprint $blueprint, Table $table)
+    {
         $table = clone $table;
 
         foreach ($blueprint->getChangedColumns() as $fluent) {
@@ -75,8 +79,8 @@ class ChangeColumn {
             // Doctrine column definitions - which is necessary because Laravel and Doctrine
             // use some different terminology for various column attributes on the tables.
             foreach ($fluent->getAttributes() as $key => $value) {
-                if (!is_null($option = static::mapFluentOptionToDoctrine($key))) {
-                    if (method_exists($column, $method = 'set' . ucfirst($option))) {
+                if (! is_null($option = static::mapFluentOptionToDoctrine($key))) {
+                    if (method_exists($column, $method = 'set'.ucfirst($option))) {
                         $column->{$method}(static::mapFluentValueToDoctrine($option, $value));
                     }
                 }
@@ -93,10 +97,11 @@ class ChangeColumn {
      * @param  \Illuminate\Support\Fluent  $fluent
      * @return \Doctrine\DBAL\Schema\Column
      */
-    protected static function getDoctrineColumn(Table $table, Fluent $fluent) {
+    protected static function getDoctrineColumn(Table $table, Fluent $fluent)
+    {
         return $table->changeColumn(
-                        $fluent['name'], static::getDoctrineColumnChangeOptions($fluent)
-                )->getColumn($fluent['name']);
+            $fluent['name'], static::getDoctrineColumnChangeOptions($fluent)
+        )->getColumn($fluent['name']);
     }
 
     /**
@@ -105,7 +110,8 @@ class ChangeColumn {
      * @param  \Illuminate\Support\Fluent  $fluent
      * @return array
      */
-    protected static function getDoctrineColumnChangeOptions(Fluent $fluent) {
+    protected static function getDoctrineColumnChangeOptions(Fluent $fluent)
+    {
         $options = ['type' => static::getDoctrineColumnType($fluent['type'])];
 
         if (in_array($fluent['type'], ['text', 'mediumText', 'longText'])) {
@@ -121,7 +127,8 @@ class ChangeColumn {
      * @param  string  $type
      * @return \Doctrine\DBAL\Types\Type
      */
-    protected static function getDoctrineColumnType($type) {
+    protected static function getDoctrineColumnType($type)
+    {
         $type = strtolower($type);
 
         switch ($type) {
@@ -149,7 +156,8 @@ class ChangeColumn {
      * @param  string  $type
      * @return int
      */
-    protected static function calculateDoctrineTextLength($type) {
+    protected static function calculateDoctrineTextLength($type)
+    {
         switch ($type) {
             case 'mediumText':
                 return 65535 + 1;
@@ -166,7 +174,8 @@ class ChangeColumn {
      * @param  string  $attribute
      * @return string|null
      */
-    protected static function mapFluentOptionToDoctrine($attribute) {
+    protected static function mapFluentOptionToDoctrine($attribute)
+    {
         switch ($attribute) {
             case 'type':
             case 'name':
@@ -189,8 +198,8 @@ class ChangeColumn {
      * @param  mixed  $value
      * @return mixed
      */
-    protected static function mapFluentValueToDoctrine($option, $value) {
-        return $option == 'notnull' ? !$value : $value;
+    protected static function mapFluentValueToDoctrine($option, $value)
+    {
+        return $option == 'notnull' ? ! $value : $value;
     }
-
 }

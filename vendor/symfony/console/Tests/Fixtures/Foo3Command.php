@@ -4,16 +4,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Foo3Command extends Command {
-
-    protected function configure() {
+class Foo3Command extends Command
+{
+    protected function configure()
+    {
         $this
-                ->setName('foo3:bar')
-                ->setDescription('The foo3:bar command')
+            ->setName('foo3:bar')
+            ->setDescription('The foo3:bar command')
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         try {
             try {
                 throw new \Exception('First exception <p>this is html</p>');
@@ -24,5 +26,4 @@ class Foo3Command extends Command {
             throw new \Exception('Third exception <fg=blue;bg=red>comment</>', 404, $e);
         }
     }
-
 }

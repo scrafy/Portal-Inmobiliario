@@ -6,8 +6,8 @@ use Swift_Mime_Message;
 use Swift_Mime_MimeEntity;
 use Psr\Log\LoggerInterface;
 
-class LogTransport extends Transport {
-
+class LogTransport extends Transport
+{
     /**
      * The Logger instance.
      *
@@ -21,14 +21,16 @@ class LogTransport extends Transport {
      * @param  \Psr\Log\LoggerInterface  $logger
      * @return void
      */
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger)
+    {
         $this->logger = $logger;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $this->beforeSendPerformed($message);
 
         $this->logger->debug($this->getMimeEntityString($message));
@@ -44,14 +46,14 @@ class LogTransport extends Transport {
      * @param  \Swift_Mime_MimeEntity $entity
      * @return string
      */
-    protected function getMimeEntityString(Swift_Mime_MimeEntity $entity) {
-        $string = (string) $entity->getHeaders() . PHP_EOL . $entity->getBody();
+    protected function getMimeEntityString(Swift_Mime_MimeEntity $entity)
+    {
+        $string = (string) $entity->getHeaders().PHP_EOL.$entity->getBody();
 
         foreach ($entity->getChildren() as $children) {
-            $string .= PHP_EOL . PHP_EOL . $this->getMimeEntityString($children);
+            $string .= PHP_EOL.PHP_EOL.$this->getMimeEntityString($children);
         }
 
         return $string;
     }
-
 }

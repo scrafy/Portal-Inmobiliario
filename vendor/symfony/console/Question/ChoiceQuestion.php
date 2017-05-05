@@ -18,8 +18,8 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ChoiceQuestion extends Question {
-
+class ChoiceQuestion extends Question
+{
     private $choices;
     private $multiselect = false;
     private $prompt = ' > ';
@@ -32,7 +32,8 @@ class ChoiceQuestion extends Question {
      * @param array  $choices  The list of available choices
      * @param mixed  $default  The default answer to return
      */
-    public function __construct($question, array $choices, $default = null) {
+    public function __construct($question, array $choices, $default = null)
+    {
         parent::__construct($question, $default);
 
         $this->choices = $choices;
@@ -45,7 +46,8 @@ class ChoiceQuestion extends Question {
      *
      * @return array
      */
-    public function getChoices() {
+    public function getChoices()
+    {
         return $this->choices;
     }
 
@@ -58,7 +60,8 @@ class ChoiceQuestion extends Question {
      *
      * @return $this
      */
-    public function setMultiselect($multiselect) {
+    public function setMultiselect($multiselect)
+    {
         $this->multiselect = $multiselect;
         $this->setValidator($this->getDefaultValidator());
 
@@ -70,7 +73,8 @@ class ChoiceQuestion extends Question {
      *
      * @return bool
      */
-    public function isMultiselect() {
+    public function isMultiselect()
+    {
         return $this->multiselect;
     }
 
@@ -79,7 +83,8 @@ class ChoiceQuestion extends Question {
      *
      * @return string
      */
-    public function getPrompt() {
+    public function getPrompt()
+    {
         return $this->prompt;
     }
 
@@ -90,7 +95,8 @@ class ChoiceQuestion extends Question {
      *
      * @return $this
      */
-    public function setPrompt($prompt) {
+    public function setPrompt($prompt)
+    {
         $this->prompt = $prompt;
 
         return $this;
@@ -105,7 +111,8 @@ class ChoiceQuestion extends Question {
      *
      * @return $this
      */
-    public function setErrorMessage($errorMessage) {
+    public function setErrorMessage($errorMessage)
+    {
         $this->errorMessage = $errorMessage;
         $this->setValidator($this->getDefaultValidator());
 
@@ -117,7 +124,8 @@ class ChoiceQuestion extends Question {
      *
      * @return callable
      */
-    private function getDefaultValidator() {
+    private function getDefaultValidator()
+    {
         $choices = $this->choices;
         $errorMessage = $this->errorMessage;
         $multiselect = $this->multiselect;
@@ -176,5 +184,4 @@ class ChoiceQuestion extends Question {
             return current($multiselectChoices);
         };
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -23,8 +22,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
  *
  * @link https://en.wikipedia.org/wiki/Globally_unique_identifier#Sequential_algorithms
  */
-class CombGenerator implements RandomGeneratorInterface {
-
+class CombGenerator implements RandomGeneratorInterface
+{
     const TIMESTAMP_BYTES = 6;
 
     /**
@@ -43,7 +42,8 @@ class CombGenerator implements RandomGeneratorInterface {
      * @param RandomGeneratorInterface $generator Random-number generator for the non-time part.
      * @param NumberConverterInterface $numberConverter Instance of number converter.
      */
-    public function __construct(RandomGeneratorInterface $generator, NumberConverterInterface $numberConverter) {
+    public function __construct(RandomGeneratorInterface $generator, NumberConverterInterface $numberConverter)
+    {
         $this->converter = $numberConverter;
         $this->randomGenerator = $generator;
     }
@@ -54,7 +54,8 @@ class CombGenerator implements RandomGeneratorInterface {
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string
      */
-    public function generate($length) {
+    public function generate($length)
+    {
         if ($length < self::TIMESTAMP_BYTES || $length < 0) {
             throw new \InvalidArgumentException('Length must be a positive integer.');
         }
@@ -75,10 +76,10 @@ class CombGenerator implements RandomGeneratorInterface {
      *
      * @return string
      */
-    private function timestamp() {
+    private function timestamp()
+    {
         $time = explode(' ', microtime(false));
 
         return $time[1] . substr($time[0], 2, 5);
     }
-
 }

@@ -5,8 +5,8 @@ namespace Faker\Provider\is_IS;
 /**
  * @author Birkir Gudjonsson <birkir.gudjonsson@gmail.com>
  */
-class PhoneNumber extends \Faker\Provider\PhoneNumber {
-
+class PhoneNumber extends \Faker\Provider\PhoneNumber
+{
     /**
      * @var array Icelandic phone number formats.
      */
@@ -17,5 +17,4 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber {
         '### ####',
         '#######',
     );
-
 }

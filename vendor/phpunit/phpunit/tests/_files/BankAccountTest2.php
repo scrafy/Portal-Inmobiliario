@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -11,15 +10,17 @@
 
 use PHPUnit\Framework\TestCase;
 
-class BankAccountTest extends TestCase {
-
+class BankAccountTest extends TestCase
+{
     private $ba;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->ba = new BankAccount;
     }
 
-    public function testBalanceIsInitiallyZero() {
+    public function testBalanceIsInitiallyZero()
+    {
         $ba = new BankAccount;
 
         $balance = $ba->getBalance();
@@ -27,7 +28,8 @@ class BankAccountTest extends TestCase {
         $this->assertEquals(0, $balance);
     }
 
-    public function testBalanceCannotBecomeNegative() {
+    public function testBalanceCannotBecomeNegative()
+    {
         try {
             $this->ba->withdrawMoney(1);
         } catch (BankAccountException $e) {
@@ -39,7 +41,8 @@ class BankAccountTest extends TestCase {
         $this->fail();
     }
 
-    public function testBalanceCannotBecomeNegative2() {
+    public function testBalanceCannotBecomeNegative2()
+    {
         try {
             $this->ba->depositMoney(-1);
         } catch (BankAccountException $e) {
@@ -50,5 +53,4 @@ class BankAccountTest extends TestCase {
 
         $this->fail();
     }
-
 }

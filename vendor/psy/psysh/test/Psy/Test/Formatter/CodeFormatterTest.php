@@ -13,13 +13,15 @@ namespace Psy\Test\Formatter;
 
 use Psy\Formatter\CodeFormatter;
 
-class CodeFormatterTest extends \PHPUnit_Framework_TestCase {
-
-    private function ignoreThisMethod($arg) {
+class CodeFormatterTest extends \PHPUnit_Framework_TestCase
+{
+    private function ignoreThisMethod($arg)
+    {
         echo 'whot!';
     }
 
-    public function testFormat() {
+    public function testFormat()
+    {
         $expected = <<<'EOS'
   > 18|     private function ignoreThisMethod($arg)
     19|     {
@@ -38,21 +40,22 @@ EOS;
      * @dataProvider filenames
      * @expectedException \Psy\Exception\RuntimeException
      */
-    public function testCodeFormatterThrowsException($filename) {
+    public function testCodeFormatterThrowsException($filename)
+    {
         $reflector = $this->getMockBuilder('ReflectionClass')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $reflector
-                ->expects($this->once())
-                ->method('getFileName')
-                ->will($this->returnValue($filename));
+            ->expects($this->once())
+            ->method('getFileName')
+            ->will($this->returnValue($filename));
 
         CodeFormatter::format($reflector);
     }
 
-    public function filenames() {
+    public function filenames()
+    {
         return array(array(null), array('not a file'));
     }
-
 }

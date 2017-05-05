@@ -18,8 +18,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 /**
  * A ConsoleOutput subclass specifically for Psy Shell output.
  */
-class ShellOutput extends ConsoleOutput {
-
+class ShellOutput extends ConsoleOutput
+{
     const NUMBER_LINES = 128;
 
     private $paging = 0;
@@ -33,7 +33,8 @@ class ShellOutput extends ConsoleOutput {
      * @param OutputFormatterInterface $formatter (default: null)
      * @param null|string|OutputPager  $pager     (default: null)
      */
-    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null, $pager = null) {
+    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null, $pager = null)
+    {
         parent::__construct($verbosity, $decorated, $formatter);
 
         $this->initFormatters();
@@ -62,7 +63,8 @@ class ShellOutput extends ConsoleOutput {
      * @param string|array|\Closure $messages A string, array of strings or a callback
      * @param int                   $type     (default: 0)
      */
-    public function page($messages, $type = 0) {
+    public function page($messages, $type = 0)
+    {
         if (is_string($messages)) {
             $messages = (array) $messages;
         }
@@ -85,14 +87,16 @@ class ShellOutput extends ConsoleOutput {
     /**
      * Start sending output to the output pager.
      */
-    public function startPaging() {
+    public function startPaging()
+    {
         $this->paging++;
     }
 
     /**
      * Stop paging output and flush the output pager.
      */
-    public function stopPaging() {
+    public function stopPaging()
+    {
         $this->paging--;
         $this->closePager();
     }
@@ -109,7 +113,8 @@ class ShellOutput extends ConsoleOutput {
      * @param bool         $newline  Whether to add a newline or not
      * @param int          $type     The type of output
      */
-    public function write($messages, $newline = false, $type = 0) {
+    public function write($messages, $newline = false, $type = 0)
+    {
         if ($this->getVerbosity() === self::VERBOSITY_QUIET) {
             return;
         }
@@ -143,7 +148,8 @@ class ShellOutput extends ConsoleOutput {
      * @param string $message A message to write to the output
      * @param bool   $newline Whether to add a newline or not
      */
-    public function doWrite($message, $newline) {
+    public function doWrite($message, $newline)
+    {
         if ($this->paging > 0) {
             $this->pager->doWrite($message, $newline);
         } else {
@@ -154,7 +160,8 @@ class ShellOutput extends ConsoleOutput {
     /**
      * Flush and close the output pager.
      */
-    private function closePager() {
+    private function closePager()
+    {
         if ($this->paging <= 0) {
             $this->pager->close();
         }
@@ -163,35 +170,35 @@ class ShellOutput extends ConsoleOutput {
     /**
      * Initialize output formatter styles.
      */
-    private function initFormatters() {
+    private function initFormatters()
+    {
         $formatter = $this->getFormatter();
 
         $formatter->setStyle('warning', new OutputFormatterStyle('black', 'yellow'));
-        $formatter->setStyle('error', new OutputFormatterStyle('black', 'red', array('bold')));
-        $formatter->setStyle('aside', new OutputFormatterStyle('blue'));
-        $formatter->setStyle('strong', new OutputFormatterStyle(null, null, array('bold')));
-        $formatter->setStyle('return', new OutputFormatterStyle('cyan'));
-        $formatter->setStyle('urgent', new OutputFormatterStyle('red'));
-        $formatter->setStyle('hidden', new OutputFormatterStyle('black'));
+        $formatter->setStyle('error',   new OutputFormatterStyle('black', 'red', array('bold')));
+        $formatter->setStyle('aside',   new OutputFormatterStyle('blue'));
+        $formatter->setStyle('strong',  new OutputFormatterStyle(null, null, array('bold')));
+        $formatter->setStyle('return',  new OutputFormatterStyle('cyan'));
+        $formatter->setStyle('urgent',  new OutputFormatterStyle('red'));
+        $formatter->setStyle('hidden',  new OutputFormatterStyle('black'));
 
         // Visibility
-        $formatter->setStyle('public', new OutputFormatterStyle(null, null, array('bold')));
+        $formatter->setStyle('public',    new OutputFormatterStyle(null, null, array('bold')));
         $formatter->setStyle('protected', new OutputFormatterStyle('yellow'));
-        $formatter->setStyle('private', new OutputFormatterStyle('red'));
-        $formatter->setStyle('global', new OutputFormatterStyle('cyan', null, array('bold')));
-        $formatter->setStyle('const', new OutputFormatterStyle('cyan'));
-        $formatter->setStyle('class', new OutputFormatterStyle('blue', null, array('underscore')));
-        $formatter->setStyle('function', new OutputFormatterStyle(null));
-        $formatter->setStyle('default', new OutputFormatterStyle(null));
+        $formatter->setStyle('private',   new OutputFormatterStyle('red'));
+        $formatter->setStyle('global',    new OutputFormatterStyle('cyan', null, array('bold')));
+        $formatter->setStyle('const',     new OutputFormatterStyle('cyan'));
+        $formatter->setStyle('class',     new OutputFormatterStyle('blue', null, array('underscore')));
+        $formatter->setStyle('function',  new OutputFormatterStyle(null));
+        $formatter->setStyle('default',   new OutputFormatterStyle(null));
 
         // Types
-        $formatter->setStyle('number', new OutputFormatterStyle('magenta'));
-        $formatter->setStyle('string', new OutputFormatterStyle('green'));
-        $formatter->setStyle('bool', new OutputFormatterStyle('cyan'));
-        $formatter->setStyle('keyword', new OutputFormatterStyle('yellow'));
-        $formatter->setStyle('comment', new OutputFormatterStyle('blue'));
-        $formatter->setStyle('object', new OutputFormatterStyle('blue'));
+        $formatter->setStyle('number',   new OutputFormatterStyle('magenta'));
+        $formatter->setStyle('string',   new OutputFormatterStyle('green'));
+        $formatter->setStyle('bool',     new OutputFormatterStyle('cyan'));
+        $formatter->setStyle('keyword',  new OutputFormatterStyle('yellow'));
+        $formatter->setStyle('comment',  new OutputFormatterStyle('blue'));
+        $formatter->setStyle('object',   new OutputFormatterStyle('blue'));
         $formatter->setStyle('resource', new OutputFormatterStyle('yellow'));
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Prettifies class and method names for use in TestDox documentation.
  */
-class PHPUnit_Util_TestDox_NamePrettifier {
-
+class PHPUnit_Util_TestDox_NamePrettifier
+{
     /**
      * @var string
      */
@@ -36,16 +35,17 @@ class PHPUnit_Util_TestDox_NamePrettifier {
      *
      * @return string
      */
-    public function prettifyTestClass($name) {
+    public function prettifyTestClass($name)
+    {
         $title = $name;
 
         if ($this->suffix !== null &&
-                $this->suffix == substr($name, -1 * strlen($this->suffix))) {
+            $this->suffix == substr($name, -1 * strlen($this->suffix))) {
             $title = substr($title, 0, strripos($title, $this->suffix));
         }
 
         if ($this->prefix !== null &&
-                $this->prefix == substr($name, 0, strlen($this->prefix))) {
+            $this->prefix == substr($name, 0, strlen($this->prefix))) {
             $title = substr($title, strlen($this->prefix));
         }
 
@@ -63,7 +63,8 @@ class PHPUnit_Util_TestDox_NamePrettifier {
      *
      * @return string
      */
-    public function prettifyTestMethod($name) {
+    public function prettifyTestMethod($name)
+    {
         $buffer = '';
 
         if (!is_string($name) || strlen($name) == 0) {
@@ -92,19 +93,19 @@ class PHPUnit_Util_TestDox_NamePrettifier {
             return trim(str_replace('_', ' ', $name));
         }
 
-        $max = strlen($name);
+        $max        = strlen($name);
         $wasNumeric = false;
 
         for ($i = 0; $i < $max; $i++) {
             if ($i > 0 &&
-                    ord($name[$i]) >= 65 &&
-                    ord($name[$i]) <= 90) {
+                ord($name[$i]) >= 65 &&
+                ord($name[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);
 
                 if (!$wasNumeric && $isNumeric) {
-                    $buffer .= ' ';
+                    $buffer    .= ' ';
                     $wasNumeric = true;
                 }
 
@@ -124,7 +125,8 @@ class PHPUnit_Util_TestDox_NamePrettifier {
      *
      * @param string $prefix
      */
-    public function setPrefix($prefix) {
+    public function setPrefix($prefix)
+    {
         $this->prefix = $prefix;
     }
 
@@ -133,8 +135,8 @@ class PHPUnit_Util_TestDox_NamePrettifier {
      *
      * @param string $suffix
      */
-    public function setSuffix($suffix) {
+    public function setSuffix($suffix)
+    {
         $this->suffix = $suffix;
     }
-
 }

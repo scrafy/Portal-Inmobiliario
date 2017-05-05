@@ -18,8 +18,8 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface MessageCatalogueInterface {
-
+interface MessageCatalogueInterface
+{
     /**
      * Gets the catalogue locale.
      *

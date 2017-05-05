@@ -4,8 +4,8 @@ namespace Illuminate\Validation;
 
 use Exception;
 
-class ValidationException extends Exception {
-
+class ValidationException extends Exception
+{
     /**
      * The validator instance.
      *
@@ -27,7 +27,8 @@ class ValidationException extends Exception {
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return void
      */
-    public function __construct($validator, $response = null) {
+    public function __construct($validator, $response = null)
+    {
         parent::__construct('The given data failed to pass validation.');
 
         $this->response = $response;
@@ -39,8 +40,8 @@ class ValidationException extends Exception {
      *
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
-
 }

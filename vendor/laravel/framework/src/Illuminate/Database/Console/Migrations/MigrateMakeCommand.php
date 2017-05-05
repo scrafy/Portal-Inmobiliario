@@ -5,8 +5,8 @@ namespace Illuminate\Database\Console\Migrations;
 use Illuminate\Support\Composer;
 use Illuminate\Database\Migrations\MigrationCreator;
 
-class MigrateMakeCommand extends BaseCommand {
-
+class MigrateMakeCommand extends BaseCommand
+{
     /**
      * The console command signature.
      *
@@ -45,7 +45,8 @@ class MigrateMakeCommand extends BaseCommand {
      * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
-    public function __construct(MigrationCreator $creator, Composer $composer) {
+    public function __construct(MigrationCreator $creator, Composer $composer)
+    {
         parent::__construct();
 
         $this->creator = $creator;
@@ -57,7 +58,8 @@ class MigrateMakeCommand extends BaseCommand {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         // It's possible for the developer to specify the tables to modify in this
         // schema operation. The developer may also specify if this table needs
         // to be freshly created so we can create the appropriate migrations.
@@ -70,7 +72,7 @@ class MigrateMakeCommand extends BaseCommand {
         // If no table was given as an option but a create option is given then we
         // will use the "create" option as the table name. This allows the devs
         // to pass a table name into this option as a short-cut for creating.
-        if (!$table && is_string($create)) {
+        if (! $table && is_string($create)) {
             $table = $create;
 
             $create = true;
@@ -92,10 +94,11 @@ class MigrateMakeCommand extends BaseCommand {
      * @param  bool    $create
      * @return string
      */
-    protected function writeMigration($name, $table, $create) {
+    protected function writeMigration($name, $table, $create)
+    {
         $file = pathinfo($this->creator->create(
-                        $name, $this->getMigrationPath(), $table, $create
-                ), PATHINFO_FILENAME);
+            $name, $this->getMigrationPath(), $table, $create
+        ), PATHINFO_FILENAME);
 
         $this->line("<info>Created Migration:</info> {$file}");
     }
@@ -105,12 +108,12 @@ class MigrateMakeCommand extends BaseCommand {
      *
      * @return string
      */
-    protected function getMigrationPath() {
-        if (!is_null($targetPath = $this->input->getOption('path'))) {
-            return $this->laravel->basePath() . '/' . $targetPath;
+    protected function getMigrationPath()
+    {
+        if (! is_null($targetPath = $this->input->getOption('path'))) {
+            return $this->laravel->basePath().'/'.$targetPath;
         }
 
         return parent::getMigrationPath();
     }
-
 }

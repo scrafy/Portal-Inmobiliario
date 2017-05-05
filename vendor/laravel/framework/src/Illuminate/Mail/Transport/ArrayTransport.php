@@ -5,8 +5,8 @@ namespace Illuminate\Mail\Transport;
 use Swift_Mime_Message;
 use Illuminate\Support\Collection;
 
-class ArrayTransport extends Transport {
-
+class ArrayTransport extends Transport
+{
     /**
      * The collection of Swift Messages.
      *
@@ -19,14 +19,16 @@ class ArrayTransport extends Transport {
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->messages = new Collection;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $this->beforeSendPerformed($message);
 
         $this->messages[] = $message;
@@ -39,7 +41,8 @@ class ArrayTransport extends Transport {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function messages() {
+    public function messages()
+    {
         return $this->messages;
     }
 
@@ -48,8 +51,8 @@ class ArrayTransport extends Transport {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function flush() {
+    public function flush()
+    {
         return $this->messages = new Collection;
     }
-
 }

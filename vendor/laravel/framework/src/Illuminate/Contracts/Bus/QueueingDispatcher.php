@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Bus;
 
-interface QueueingDispatcher extends Dispatcher {
-
+interface QueueingDispatcher extends Dispatcher
+{
     /**
      * Dispatch a command to its appropriate handler behind a queue.
      *

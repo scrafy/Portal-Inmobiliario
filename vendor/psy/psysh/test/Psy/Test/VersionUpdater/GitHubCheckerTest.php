@@ -13,8 +13,8 @@ namespace Psy\Test\VersionUpdater;
 
 use Psy\Shell;
 
-class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
-
+class GitHubCheckerTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider malformedResults
      * @expectedException \InvalidArgumentException
@@ -22,10 +22,11 @@ class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
      *
      * @param $input
      */
-    public function testExceptionInvocation($input) {
+    public function testExceptionInvocation($input)
+    {
         $checker = $this->getMockBuilder('Psy\\VersionUpdater\\GitHubChecker')
-                ->setMethods(array('fetchLatestRelease'))
-                ->getMock();
+            ->setMethods(array('fetchLatestRelease'))
+            ->getMock();
         $checker->expects($this->once())->method('fetchLatestRelease')->willReturn($input);
         $checker->isLatest();
     }
@@ -36,10 +37,11 @@ class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
      * @param $assertion
      * @param $input
      */
-    public function testDataSetResults($assertion, $input) {
+    public function testDataSetResults($assertion, $input)
+    {
         $checker = $this->getMockBuilder('Psy\\VersionUpdater\\GitHubChecker')
-                ->setMethods(array('fetchLatestRelease'))
-                ->getMock();
+            ->setMethods(array('fetchLatestRelease'))
+            ->getMock();
         $checker->expects($this->once())->method('fetchLatestRelease')->willReturn($input);
         $this->assertSame($assertion, $checker->isLatest());
     }
@@ -47,7 +49,8 @@ class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
     /**
      * @return array
      */
-    public function jsonResults() {
+    public function jsonResults()
+    {
         return array(
             array(false, json_decode('{"tag_name":"v9.0.0"}')),
             array(true, json_decode('{"tag_name":"v' . Shell::VERSION . '"}')),
@@ -62,7 +65,8 @@ class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
     /**
      * @return array
      */
-    public function malformedResults() {
+    public function malformedResults()
+    {
         return array(
             array(null),
             array(false),
@@ -75,5 +79,4 @@ class GitHubCheckerTest extends \PHPUnit_Framework_TestCase {
             array(json_decode('{"tag_name":true"}')),
         );
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Http;
 
 use Illuminate\Support\Str;
 
-trait FileHelpers {
-
+trait FileHelpers
+{
     /**
      * The cache copy of the file's hash name.
      *
@@ -18,7 +18,8 @@ trait FileHelpers {
      *
      * @return string
      */
-    public function path() {
+    public function path()
+    {
         return $this->getRealPath();
     }
 
@@ -27,7 +28,8 @@ trait FileHelpers {
      *
      * @return string
      */
-    public function extension() {
+    public function extension()
+    {
         return $this->guessExtension();
     }
 
@@ -36,7 +38,8 @@ trait FileHelpers {
      *
      * @return string
      */
-    public function clientExtension() {
+    public function clientExtension()
+    {
         return $this->guessClientExtension();
     }
 
@@ -46,14 +49,14 @@ trait FileHelpers {
      * @param  string  $path
      * @return string
      */
-    public function hashName($path = null) {
+    public function hashName($path = null)
+    {
         if ($path) {
-            $path = rtrim($path, '/') . '/';
+            $path = rtrim($path, '/').'/';
         }
 
         $hash = $this->hashName ?: $this->hashName = Str::random(40);
 
-        return $path . $hash . '.' . $this->guessExtension();
+        return $path.$hash.'.'.$this->guessExtension();
     }
-
 }

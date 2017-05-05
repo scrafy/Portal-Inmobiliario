@@ -2,8 +2,8 @@
 
 namespace Illuminate\Support;
 
-class HigherOrderCollectionProxy {
-
+class HigherOrderCollectionProxy
+{
     /**
      * The collection being operated on.
      *
@@ -25,7 +25,8 @@ class HigherOrderCollectionProxy {
      * @param  string  $method
      * @return void
      */
-    public function __construct(Collection $collection, $method) {
+    public function __construct(Collection $collection, $method)
+    {
         $this->method = $method;
         $this->collection = $collection;
     }
@@ -36,10 +37,11 @@ class HigherOrderCollectionProxy {
      * @param  string  $key
      * @return mixed
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->collection->{$this->method}(function ($value) use ($key) {
-                    return is_array($value) ? $value[$key] : $value->{$key};
-                });
+            return is_array($value) ? $value[$key] : $value->{$key};
+        });
     }
 
     /**
@@ -49,10 +51,10 @@ class HigherOrderCollectionProxy {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->collection->{$this->method}(function ($value) use ($method, $parameters) {
-                    return $value->{$method}(...$parameters);
-                });
+            return $value->{$method}(...$parameters);
+        });
     }
-
 }

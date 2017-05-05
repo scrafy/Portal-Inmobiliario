@@ -16,12 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Interface Enumerator class.
  */
-class InterfaceEnumerator extends Enumerator {
-
+class InterfaceEnumerator extends Enumerator
+{
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         // only list interfaces when no Reflector is present.
         //
         // TODO: make a NamespaceReflector and pass that in for commands like:
@@ -57,7 +58,8 @@ class InterfaceEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function prepareInterfaces(array $interfaces) {
+    protected function prepareInterfaces(array $interfaces)
+    {
         natcasesort($interfaces);
 
         // My kingdom for a generator.
@@ -66,7 +68,7 @@ class InterfaceEnumerator extends Enumerator {
         foreach ($interfaces as $name) {
             if ($this->showItem($name)) {
                 $ret[$name] = array(
-                    'name' => $name,
+                    'name'  => $name,
                     'style' => self::IS_CLASS,
                     'value' => $this->presentSignature($name),
                 );
@@ -75,5 +77,4 @@ class InterfaceEnumerator extends Enumerator {
 
         return $ret;
     }
-
 }

@@ -22,13 +22,13 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandle
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class NativeSessionHandlerTest extends TestCase {
-
-    public function testConstruct() {
+class NativeSessionHandlerTest extends TestCase
+{
+    public function testConstruct()
+    {
         $handler = new NativeSessionHandler();
 
         $this->assertTrue($handler instanceof \SessionHandler);
         $this->assertTrue($handler instanceof NativeSessionHandler);
     }
-
 }

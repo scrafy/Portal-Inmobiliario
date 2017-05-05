@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,15 +13,17 @@ namespace SebastianBergmann\CodeCoverage\Report;
 use SebastianBergmann\CodeCoverage\TestCase;
 use SebastianBergmann\CodeCoverage\Node\Builder;
 
-class BuilderTest extends TestCase {
-
+class BuilderTest extends TestCase
+{
     protected $factory;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->factory = new Builder;
     }
 
-    public function testSomething() {
+    public function testSomething()
+    {
         $root = $this->getCoverageForBankAccount()->getReport();
 
         $expectedPath = rtrim(TEST_FILES_PATH, DIRECTORY_SEPARATOR);
@@ -45,109 +46,116 @@ class BuilderTest extends TestCase {
         #$this->assertEquals(array(), $root->getChildNodes());
 
         $this->assertEquals(
-                [
-            'BankAccount' => [
-                'methods' => [
-                    'getBalance' => [
-                        'signature' => 'getBalance()',
-                        'startLine' => 6,
-                        'endLine' => 9,
-                        'executableLines' => 1,
-                        'executedLines' => 1,
-                        'ccn' => 1,
-                        'coverage' => 100,
-                        'crap' => '1',
-                        'link' => 'BankAccount.php.html#6',
-                        'methodName' => 'getBalance',
-                        'visibility' => 'public',
+            [
+                'BankAccount' => [
+                    'methods' => [
+                        'getBalance' => [
+                            'signature'       => 'getBalance()',
+                            'startLine'       => 6,
+                            'endLine'         => 9,
+                            'executableLines' => 1,
+                            'executedLines'   => 1,
+                            'ccn'             => 1,
+                            'coverage'        => 100,
+                            'crap'            => '1',
+                            'link'            => 'BankAccount.php.html#6',
+                            'methodName'      => 'getBalance',
+                            'visibility'      => 'public',
+                        ],
+                        'setBalance' => [
+                            'signature'       => 'setBalance($balance)',
+                            'startLine'       => 11,
+                            'endLine'         => 18,
+                            'executableLines' => 5,
+                            'executedLines'   => 0,
+                            'ccn'             => 2,
+                            'coverage'        => 0,
+                            'crap'            => 6,
+                            'link'            => 'BankAccount.php.html#11',
+                            'methodName'      => 'setBalance',
+                            'visibility'      => 'protected',
+                        ],
+                        'depositMoney' => [
+                            'signature'       => 'depositMoney($balance)',
+                            'startLine'       => 20,
+                            'endLine'         => 25,
+                            'executableLines' => 2,
+                            'executedLines'   => 2,
+                            'ccn'             => 1,
+                            'coverage'        => 100,
+                            'crap'            => '1',
+                            'link'            => 'BankAccount.php.html#20',
+                            'methodName'      => 'depositMoney',
+                            'visibility'      => 'public',
+                        ],
+                        'withdrawMoney' => [
+                            'signature'       => 'withdrawMoney($balance)',
+                            'startLine'       => 27,
+                            'endLine'         => 32,
+                            'executableLines' => 2,
+                            'executedLines'   => 2,
+                            'ccn'             => 1,
+                            'coverage'        => 100,
+                            'crap'            => '1',
+                            'link'            => 'BankAccount.php.html#27',
+                            'methodName'      => 'withdrawMoney',
+                            'visibility'      => 'public',
+                        ],
                     ],
-                    'setBalance' => [
-                        'signature' => 'setBalance($balance)',
-                        'startLine' => 11,
-                        'endLine' => 18,
-                        'executableLines' => 5,
-                        'executedLines' => 0,
-                        'ccn' => 2,
-                        'coverage' => 0,
-                        'crap' => 6,
-                        'link' => 'BankAccount.php.html#11',
-                        'methodName' => 'setBalance',
-                        'visibility' => 'protected',
+                    'startLine'       => 2,
+                    'executableLines' => 10,
+                    'executedLines'   => 5,
+                    'ccn'             => 5,
+                    'coverage'        => 50,
+                    'crap'            => '8.12',
+                    'package'         => [
+                        'namespace'   => '',
+                        'fullPackage' => '',
+                        'category'    => '',
+                        'package'     => '',
+                        'subpackage'  => ''
                     ],
-                    'depositMoney' => [
-                        'signature' => 'depositMoney($balance)',
-                        'startLine' => 20,
-                        'endLine' => 25,
-                        'executableLines' => 2,
-                        'executedLines' => 2,
-                        'ccn' => 1,
-                        'coverage' => 100,
-                        'crap' => '1',
-                        'link' => 'BankAccount.php.html#20',
-                        'methodName' => 'depositMoney',
-                        'visibility' => 'public',
-                    ],
-                    'withdrawMoney' => [
-                        'signature' => 'withdrawMoney($balance)',
-                        'startLine' => 27,
-                        'endLine' => 32,
-                        'executableLines' => 2,
-                        'executedLines' => 2,
-                        'ccn' => 1,
-                        'coverage' => 100,
-                        'crap' => '1',
-                        'link' => 'BankAccount.php.html#27',
-                        'methodName' => 'withdrawMoney',
-                        'visibility' => 'public',
-                    ],
-                ],
-                'startLine' => 2,
-                'executableLines' => 10,
-                'executedLines' => 5,
-                'ccn' => 5,
-                'coverage' => 50,
-                'crap' => '8.12',
-                'package' => [
-                    'namespace' => '',
-                    'fullPackage' => '',
-                    'category' => '',
-                    'package' => '',
-                    'subpackage' => ''
-                ],
-                'link' => 'BankAccount.php.html#2',
-                'className' => 'BankAccount'
-            ]
-                ], $root->getClasses()
+                    'link'      => 'BankAccount.php.html#2',
+                    'className' => 'BankAccount'
+                ]
+            ],
+            $root->getClasses()
         );
 
         $this->assertEquals([], $root->getFunctions());
     }
 
-    public function testBuildDirectoryStructure() {
+    public function testBuildDirectoryStructure()
+    {
         $method = new \ReflectionMethod(
-                Builder::class, 'buildDirectoryStructure'
+            Builder::class,
+            'buildDirectoryStructure'
         );
 
         $method->setAccessible(true);
 
         $this->assertEquals(
-                [
-            'src' => [
-                'Money.php/f' => [],
-                'MoneyBag.php/f' => []
-            ]
-                ], $method->invoke(
-                        $this->factory, ['src/Money.php' => [], 'src/MoneyBag.php' => []]
-                )
+            [
+                'src' => [
+                    'Money.php/f'    => [],
+                    'MoneyBag.php/f' => []
+                ]
+            ],
+            $method->invoke(
+                $this->factory,
+                ['src/Money.php' => [], 'src/MoneyBag.php' => []]
+            )
         );
     }
 
     /**
      * @dataProvider reducePathsProvider
      */
-    public function testReducePaths($reducedPaths, $commonPath, $paths) {
+    public function testReducePaths($reducedPaths, $commonPath, $paths)
+    {
         $method = new \ReflectionMethod(
-                Builder::class, 'reducePaths'
+            Builder::class,
+            'reducePaths'
         );
 
         $method->setAccessible(true);
@@ -158,16 +166,17 @@ class BuilderTest extends TestCase {
         $this->assertEquals($commonPath, $_commonPath);
     }
 
-    public function reducePathsProvider() {
+    public function reducePathsProvider()
+    {
         return [
             [
                 [
-                    'Money.php' => [],
+                    'Money.php'    => [],
                     'MoneyBag.php' => []
                 ],
                 '/home/sb/Money',
                 [
-                    '/home/sb/Money/Money.php' => [],
+                    '/home/sb/Money/Money.php'    => [],
                     '/home/sb/Money/MoneyBag.php' => []
                 ]
             ],
@@ -187,18 +196,17 @@ class BuilderTest extends TestCase {
             ],
             [
                 [
-                    'Money.php' => [],
-                    'MoneyBag.php' => [],
+                    'Money.php'          => [],
+                    'MoneyBag.php'       => [],
                     'Cash.phar/Cash.php' => [],
                 ],
                 '/home/sb/Money',
                 [
-                    '/home/sb/Money/Money.php' => [],
-                    '/home/sb/Money/MoneyBag.php' => [],
+                    '/home/sb/Money/Money.php'                 => [],
+                    '/home/sb/Money/MoneyBag.php'              => [],
                     'phar:///home/sb/Money/Cash.phar/Cash.php' => [],
                 ],
             ],
         ];
     }
-
 }

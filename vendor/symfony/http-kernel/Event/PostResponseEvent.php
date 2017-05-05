@@ -23,11 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class PostResponseEvent extends KernelEvent {
-
+class PostResponseEvent extends KernelEvent
+{
     private $response;
 
-    public function __construct(HttpKernelInterface $kernel, Request $request, Response $response) {
+    public function __construct(HttpKernelInterface $kernel, Request $request, Response $response)
+    {
         parent::__construct($kernel, $request, HttpKernelInterface::MASTER_REQUEST);
 
         $this->response = $response;
@@ -38,8 +39,8 @@ class PostResponseEvent extends KernelEvent {
      *
      * @return Response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
-
 }

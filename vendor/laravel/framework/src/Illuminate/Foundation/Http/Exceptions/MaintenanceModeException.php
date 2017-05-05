@@ -6,8 +6,8 @@ use Exception;
 use Carbon\Carbon;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
-class MaintenanceModeException extends ServiceUnavailableHttpException {
-
+class MaintenanceModeException extends ServiceUnavailableHttpException
+{
     /**
      * When the application was put in maintenance mode.
      *
@@ -39,7 +39,8 @@ class MaintenanceModeException extends ServiceUnavailableHttpException {
      * @param  int  $code
      * @return void
      */
-    public function __construct($time, $retryAfter = null, $message = null, Exception $previous = null, $code = 0) {
+    public function __construct($time, $retryAfter = null, $message = null, Exception $previous = null, $code = 0)
+    {
         parent::__construct($retryAfter, $message, $previous, $code);
 
         $this->wentDownAt = Carbon::createFromTimestamp($time);
@@ -50,5 +51,4 @@ class MaintenanceModeException extends ServiceUnavailableHttpException {
             $this->willBeAvailableAt = Carbon::createFromTimestamp($time)->addSeconds($this->retryAfter);
         }
     }
-
 }

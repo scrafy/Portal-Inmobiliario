@@ -25,11 +25,12 @@ use Webmozart\Assert\Assert;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class AssertTest extends PHPUnit_Framework_TestCase {
-
+class AssertTest extends PHPUnit_Framework_TestCase
+{
     private static $resource;
 
-    public static function getResource() {
+    public static function getResource()
+    {
         if (!static::$resource) {
             static::$resource = fopen(__FILE__, 'r');
         }
@@ -37,11 +38,13 @@ class AssertTest extends PHPUnit_Framework_TestCase {
         return static::$resource;
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
         @fclose(self::$resource);
     }
 
-    public function getTests() {
+    public function getTests()
+    {
         $resource = self::getResource();
 
         return array(
@@ -90,9 +93,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
             array('resource', array(1), false),
             array('isCallable', array('strlen'), true),
             array('isCallable', array(array($this, 'getTests')), true),
-            array('isCallable', array(function () {
-                        
-                    }), true),
+            array('isCallable', array(function () {}), true),
             array('isCallable', array(1234), false),
             array('isCallable', array('foobar'), false),
             array('isArray', array(array()), true),
@@ -236,16 +237,16 @@ class AssertTest extends PHPUnit_Framework_TestCase {
             array('lengthBetween', array('äbcdef', 3, 5), false, true),
             array('fileExists', array(__FILE__), true),
             array('fileExists', array(__DIR__), true),
-            array('fileExists', array(__DIR__ . '/foobar'), false),
+            array('fileExists', array(__DIR__.'/foobar'), false),
             array('file', array(__FILE__), true),
             array('file', array(__DIR__), false),
-            array('file', array(__DIR__ . '/foobar'), false),
+            array('file', array(__DIR__.'/foobar'), false),
             array('directory', array(__DIR__), true),
             array('directory', array(__FILE__), false),
-            array('directory', array(__DIR__ . '/foobar'), false),
+            array('directory', array(__DIR__.'/foobar'), false),
             // no tests for readable()/writable() for now
             array('classExists', array(__CLASS__), true),
-            array('classExists', array(__NAMESPACE__ . '\Foobar'), false),
+            array('classExists', array(__NAMESPACE__.'\Foobar'), false),
             array('subclassOf', array(__CLASS__, 'PHPUnit_Framework_TestCase'), true),
             array('subclassOf', array(__CLASS__, 'stdClass'), false),
             array('implementsInterface', array('ArrayIterator', 'Traversable'), true),
@@ -290,28 +291,17 @@ class AssertTest extends PHPUnit_Framework_TestCase {
             array('uuid', array('ff6f8cb0-c57da-51e1-9b21-0800200c9a66'), false),
             array('uuid', array('af6f8cb-c57d-11e1-9b21-0800200c9a66'), false),
             array('uuid', array('3f6f8cb0-c57d-11e1-9b21-0800200c9a6'), false),
-            array('throws', array(function() {
-                        throw new LogicException('test');
-                    }, 'LogicException'), true),
-            array('throws', array(function() {
-                        throw new LogicException('test');
-                    }, 'IllogicException'), false),
-            array('throws', array(function() {
-                        throw new Exception('test');
-                    }), true),
-            array('throws', array(function() {
-                        trigger_error('test');
-                    }, 'Throwable'), true, false, 70000),
-            array('throws', array(function() {
-                        trigger_error('test');
-                    }, 'Unthrowable'), false, false, 70000),
-            array('throws', array(function() {
-                        throw new Error();
-                    }, 'Throwable'), true, true, 70000),
+            array('throws', array(function() { throw new LogicException('test'); }, 'LogicException'), true),
+            array('throws', array(function() { throw new LogicException('test'); }, 'IllogicException'), false),
+            array('throws', array(function() { throw new Exception('test'); }), true),
+            array('throws', array(function() { trigger_error('test'); }, 'Throwable'), true, false, 70000),
+            array('throws', array(function() { trigger_error('test'); }, 'Unthrowable'), false, false, 70000),
+            array('throws', array(function() { throw new Error(); }, 'Throwable'), true, true, 70000),
         );
     }
 
-    public function getMethods() {
+    public function getMethods()
+    {
         $methods = array();
 
         foreach ($this->getTests() as $params) {
@@ -324,7 +314,8 @@ class AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider getTests
      */
-    public function testAssert($method, $args, $success, $multibyte = false, $minVersion = null) {
+    public function testAssert($method, $args, $success, $multibyte = false, $minVersion = null)
+    {
         if ($minVersion && PHP_VERSION_ID < $minVersion) {
             $this->markTestSkipped(sprintf('This test requires php %s or upper.', $minVersion));
 
@@ -346,7 +337,8 @@ class AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider getTests
      */
-    public function testNullOr($method, $args, $success, $multibyte = false, $minVersion = null) {
+    public function testNullOr($method, $args, $success, $multibyte = false, $minVersion = null)
+    {
         if ($minVersion && PHP_VERSION_ID < $minVersion) {
             $this->markTestSkipped(sprintf('This test requires php %s or upper.', $minVersion));
 
@@ -362,20 +354,22 @@ class AssertTest extends PHPUnit_Framework_TestCase {
             $this->setExpectedException('\InvalidArgumentException');
         }
 
-        call_user_func_array(array('Webmozart\Assert\Assert', 'nullOr' . ucfirst($method)), $args);
+        call_user_func_array(array('Webmozart\Assert\Assert', 'nullOr'.ucfirst($method)), $args);
     }
 
     /**
      * @dataProvider getMethods
      */
-    public function testNullOrAcceptsNull($method) {
-        call_user_func(array('Webmozart\Assert\Assert', 'nullOr' . ucfirst($method)), null);
+    public function testNullOrAcceptsNull($method)
+    {
+        call_user_func(array('Webmozart\Assert\Assert', 'nullOr'.ucfirst($method)), null);
     }
 
     /**
      * @dataProvider getTests
      */
-    public function testAllArray($method, $args, $success, $multibyte = false, $minVersion = null) {
+    public function testAllArray($method, $args, $success, $multibyte = false, $minVersion = null)
+    {
         if ($minVersion && PHP_VERSION_ID < $minVersion) {
             $this->markTestSkipped(sprintf('This test requires php %s or upper.', $minVersion));
 
@@ -394,13 +388,14 @@ class AssertTest extends PHPUnit_Framework_TestCase {
         $arg = array_shift($args);
         array_unshift($args, array($arg));
 
-        call_user_func_array(array('Webmozart\Assert\Assert', 'all' . ucfirst($method)), $args);
+        call_user_func_array(array('Webmozart\Assert\Assert', 'all'.ucfirst($method)), $args);
     }
 
     /**
      * @dataProvider getTests
      */
-    public function testAllTraversable($method, $args, $success, $multibyte = false, $minVersion = null) {
+    public function testAllTraversable($method, $args, $success, $multibyte = false, $minVersion = null)
+    {
         if ($minVersion && PHP_VERSION_ID < $minVersion) {
             $this->markTestSkipped(sprintf('This test requires php %s or upper.', $minVersion));
 
@@ -419,10 +414,11 @@ class AssertTest extends PHPUnit_Framework_TestCase {
         $arg = array_shift($args);
         array_unshift($args, new ArrayIterator(array($arg)));
 
-        call_user_func_array(array('Webmozart\Assert\Assert', 'all' . ucfirst($method)), $args);
+        call_user_func_array(array('Webmozart\Assert\Assert', 'all'.ucfirst($method)), $args);
     }
 
-    public function getStringConversions() {
+    public function getStringConversions()
+    {
         return array(
             array('integer', array('foobar'), 'Expected an integer. Got: string'),
             array('string', array(1), 'Expected a string. Got: integer'),
@@ -431,6 +427,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
             array('string', array(array()), 'Expected a string. Got: array'),
             array('string', array(new stdClass()), 'Expected a string. Got: stdClass'),
             array('string', array(self::getResource()), 'Expected a string. Got: resource'),
+
             array('eq', array('1', '2'), 'Expected a value equal to "2". Got: "1"'),
             array('eq', array(1, 2), 'Expected a value equal to 2. Got: 1'),
             array('eq', array(true, false), 'Expected a value equal to false. Got: true'),
@@ -445,10 +442,10 @@ class AssertTest extends PHPUnit_Framework_TestCase {
     /**
      * @dataProvider getStringConversions
      */
-    public function testConvertValuesToStrings($method, $args, $exceptionMessage) {
+    public function testConvertValuesToStrings($method, $args, $exceptionMessage)
+    {
         $this->setExpectedException('\InvalidArgumentException', $exceptionMessage);
 
         call_user_func_array(array('Webmozart\Assert\Assert', $method), $args);
     }
-
 }

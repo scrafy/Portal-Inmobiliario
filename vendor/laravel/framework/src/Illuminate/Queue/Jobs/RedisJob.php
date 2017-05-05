@@ -7,8 +7,8 @@ use Illuminate\Queue\RedisQueue;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-class RedisJob extends Job implements JobContract {
-
+class RedisJob extends Job implements JobContract
+{
     /**
      * The Redis queue instance.
      *
@@ -48,7 +48,8 @@ class RedisJob extends Job implements JobContract {
      * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, RedisQueue $redis, $job, $reserved, $connectionName, $queue) {
+    public function __construct(Container $container, RedisQueue $redis, $job, $reserved, $connectionName, $queue)
+    {
         // The $job variable is the original job JSON as it existed in the ready queue while
         // the $reserved variable is the raw JSON in the reserved queue. The exact format
         // of the reserved job is requird in order for us to properly delete its value.
@@ -67,7 +68,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getRawBody() {
+    public function getRawBody()
+    {
         return $this->job;
     }
 
@@ -76,7 +78,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         parent::delete();
 
         $this->redis->deleteReserved($this->queue, $this);
@@ -88,7 +91,8 @@ class RedisJob extends Job implements JobContract {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         parent::release($delay);
 
         $this->redis->deleteAndRelease($this->queue, $this, $delay);
@@ -99,7 +103,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         return Arr::get($this->decoded, 'attempts') + 1;
     }
 
@@ -108,7 +113,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getJobId() {
+    public function getJobId()
+    {
         return Arr::get($this->decoded, 'id');
     }
 
@@ -117,7 +123,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */
-    public function getRedisQueue() {
+    public function getRedisQueue()
+    {
         return $this->redis;
     }
 
@@ -126,8 +133,8 @@ class RedisJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getReservedJob() {
+    public function getReservedJob()
+    {
         return $this->reserved;
     }
-
 }

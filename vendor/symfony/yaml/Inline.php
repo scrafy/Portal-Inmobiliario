@@ -21,11 +21,12 @@ use Symfony\Component\Yaml\Exception\DumpException;
  *
  * @internal
  */
-class Inline {
-
+class Inline
+{
     const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*+(?:\\\\.[^"\\\\]*+)*+)"|\'([^\']*+(?:\'\'[^\']*+)*+)\')';
 
     public static $parsedLineNumber;
+
     private static $exceptionOnInvalidType = false;
     private static $objectSupport = false;
     private static $objectForMap = false;
@@ -42,7 +43,8 @@ class Inline {
      *
      * @throws ParseException
      */
-    public static function parse($value, $flags = 0, $references = array()) {
+    public static function parse($value, $flags = 0, $references = array())
+    {
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
@@ -127,7 +129,8 @@ class Inline {
      *
      * @throws DumpException When trying to dump PHP resource
      */
-    public static function dump($value, $flags = 0) {
+    public static function dump($value, $flags = 0)
+    {
         if (is_bool($flags)) {
             @trigger_error('Passing a boolean flag to toggle exception handling is deprecated since version 3.1 and will be removed in 4.0. Use the Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE flag instead.', E_USER_DEPRECATED);
 
@@ -157,7 +160,7 @@ class Inline {
                 return $value->format('c');
             case is_object($value):
                 if (Yaml::DUMP_OBJECT & $flags) {
-                    return '!php/object:' . serialize($value);
+                    return '!php/object:'.serialize($value);
                 }
 
                 if (Yaml::DUMP_OBJECT_AS_MAP & $flags && ($value instanceof \stdClass || $value instanceof \ArrayObject)) {
@@ -190,7 +193,7 @@ class Inline {
                         $repr = str_ireplace('INF', '.Inf', $repr);
                     } elseif (floor($value) == $value && $repr == $value) {
                         // Preserve float data type since storing a whole number will result in integer value.
-                        $repr = '!!float ' . $repr;
+                        $repr = '!!float '.$repr;
                     }
                 } else {
                     $repr = is_string($value) ? "'$value'" : (string) $value;
@@ -203,7 +206,7 @@ class Inline {
             case '' == $value:
                 return "''";
             case self::isBinaryString($value):
-                return '!!binary ' . base64_encode($value);
+                return '!!binary '.base64_encode($value);
             case Escaper::requiresDoubleQuoting($value):
                 return Escaper::escapeWithDoubleQuotes($value);
             case Escaper::requiresSingleQuoting($value):
@@ -225,7 +228,8 @@ class Inline {
      *
      * @return bool true if value is hash array, false otherwise
      */
-    public static function isHash(array $value) {
+    public static function isHash(array $value)
+    {
         $expectedKey = 0;
 
         foreach ($value as $key => $val) {
@@ -245,7 +249,8 @@ class Inline {
      *
      * @return string The YAML string representing the PHP array
      */
-    private static function dumpArray($value, $flags) {
+    private static function dumpArray($value, $flags)
+    {
         // array
         if ($value && !self::isHash($value)) {
             $output = array();
@@ -282,7 +287,8 @@ class Inline {
      *
      * @internal
      */
-    public static function parseScalar($scalar, $flags = 0, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true, $references = array()) {
+    public static function parseScalar($scalar, $flags = 0, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true, $references = array())
+    {
         if (in_array($scalar[$i], $stringDelimiters)) {
             // quoted scalar
             $output = self::parseQuotedScalar($scalar, $i);
@@ -303,7 +309,7 @@ class Inline {
                 if (preg_match('/[ \t]+#/', $output, $match, PREG_OFFSET_CAPTURE)) {
                     $output = substr($output, 0, $match[0][1]);
                 }
-            } elseif (preg_match('/^(.+?)(' . implode('|', $delimiters) . ')/', substr($scalar, $i), $match)) {
+            } elseif (preg_match('/^(.+?)('.implode('|', $delimiters).')/', substr($scalar, $i), $match)) {
                 $output = $match[1];
                 $i += strlen($output);
             } else {
@@ -337,8 +343,9 @@ class Inline {
      *
      * @throws ParseException When malformed inline YAML string is parsed
      */
-    private static function parseQuotedScalar($scalar, &$i) {
-        if (!preg_match('/' . self::REGEX_QUOTED_STRING . '/Au', substr($scalar, $i), $match)) {
+    private static function parseQuotedScalar($scalar, &$i)
+    {
+        if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
             throw new ParseException(sprintf('Malformed inline YAML string: %s.', substr($scalar, $i)));
         }
 
@@ -368,7 +375,8 @@ class Inline {
      *
      * @throws ParseException When malformed inline YAML string is parsed
      */
-    private static function parseSequence($sequence, $flags, &$i = 0, $references = array()) {
+    private static function parseSequence($sequence, $flags, &$i = 0, $references = array())
+    {
         $output = array();
         $len = strlen($sequence);
         ++$i;
@@ -398,7 +406,7 @@ class Inline {
                         // embedded mapping?
                         try {
                             $pos = 0;
-                            $value = self::parseMapping('{' . $value . '}', $flags, $pos, $references);
+                            $value = self::parseMapping('{'.$value.'}', $flags, $pos, $references);
                         } catch (\InvalidArgumentException $e) {
                             // no, it's not
                         }
@@ -427,7 +435,8 @@ class Inline {
      *
      * @throws ParseException When malformed inline YAML string is parsed
      */
-    private static function parseMapping($mapping, $flags, &$i = 0, $references = array()) {
+    private static function parseMapping($mapping, $flags, &$i = 0, $references = array())
+    {
         $output = array();
         $len = strlen($mapping);
         ++$i;
@@ -528,7 +537,8 @@ class Inline {
      *
      * @throws ParseException when object parsing support was disabled and the parser detected a PHP object or when a reference could not be resolved
      */
-    private static function evaluateScalar($scalar, $flags, $references = array()) {
+    private static function evaluateScalar($scalar, $flags, $references = array())
+    {
         $scalar = trim($scalar);
         $scalarLower = strtolower($scalar);
 
@@ -606,7 +616,7 @@ class Inline {
                         return (float) substr($scalar, 8);
                     case preg_match('{^[+-]?[0-9][0-9_]*$}', $scalar):
                         $scalar = str_replace('_', '', (string) $scalar);
-                    // omitting the break / return as integers are handled in the next case
+                        // omitting the break / return as integers are handled in the next case
                     case ctype_digit($scalar):
                         $raw = $scalar;
                         $cast = (int) $scalar;
@@ -621,7 +631,7 @@ class Inline {
                     case preg_match(self::getHexRegex(), $scalar):
                         $scalar = str_replace('_', '', $scalar);
 
-                        return '0x' === $scalar[0] . $scalar[1] ? hexdec($scalar) : (float) $scalar;
+                        return '0x' === $scalar[0].$scalar[1] ? hexdec($scalar) : (float) $scalar;
                     case '.inf' === $scalarLower:
                     case '.nan' === $scalarLower:
                         return -log(0);
@@ -661,7 +671,8 @@ class Inline {
      *
      * @internal
      */
-    public static function evaluateBinaryScalar($scalar) {
+    public static function evaluateBinaryScalar($scalar)
+    {
         $parsedBinaryData = self::parseScalar(preg_replace('/\s/', '', $scalar));
 
         if (0 !== (strlen($parsedBinaryData) % 4)) {
@@ -675,7 +686,8 @@ class Inline {
         return base64_decode($parsedBinaryData, true);
     }
 
-    private static function isBinaryString($value) {
+    private static function isBinaryString($value)
+    {
         return !preg_match('//u', $value) || preg_match('/[^\x00\x07-\x0d\x1B\x20-\xff]/', $value);
     }
 
@@ -686,7 +698,8 @@ class Inline {
      *
      * @see http://www.yaml.org/spec/1.2/spec.html#id2761573
      */
-    private static function getTimestampRegex() {
+    private static function getTimestampRegex()
+    {
         return <<<EOF
         ~^
         (?P<year>[0-9][0-9][0-9][0-9])
@@ -708,8 +721,8 @@ EOF;
      *
      * @return string
      */
-    private static function getHexRegex() {
+    private static function getHexRegex()
+    {
         return '~^0x[0-9a-f_]++$~i';
     }
-
 }

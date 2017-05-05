@@ -14,8 +14,8 @@ namespace Psy\Reflection;
 /**
  * A fake ReflectionFunction but for language constructs.
  */
-class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
-
+class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract
+{
     public $keyword;
 
     /**
@@ -25,39 +25,45 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
         'isset' => array(
             'var' => array(),
             '...' => array(
-                'isOptional' => true,
+                'isOptional'   => true,
                 'defaultValue' => null,
             ),
         ),
+
         'unset' => array(
             'var' => array(),
             '...' => array(
-                'isOptional' => true,
+                'isOptional'   => true,
                 'defaultValue' => null,
             ),
         ),
+
         'empty' => array(
             'var' => array(),
         ),
+
         'echo' => array(
             'arg1' => array(),
-            '...' => array(
-                'isOptional' => true,
+            '...'  => array(
+                'isOptional'   => true,
                 'defaultValue' => null,
             ),
         ),
+
         'print' => array(
             'arg' => array(),
         ),
+
         'die' => array(
             'status' => array(
-                'isOptional' => true,
+                'isOptional'   => true,
                 'defaultValue' => 0,
             ),
         ),
+
         'exit' => array(
             'status' => array(
-                'isOptional' => true,
+                'isOptional'   => true,
                 'defaultValue' => 0,
             ),
         ),
@@ -68,7 +74,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @param string $name
      */
-    public function __construct($keyword) {
+    public function __construct($keyword)
+    {
         if (self::isLanguageConstruct($keyword)) {
             throw new \InvalidArgumentException('Unknown language construct: ' . $keyword);
         }
@@ -81,7 +88,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @throws \RuntimeException
      */
-    public static function export($name) {
+    public static function export($name)
+    {
         throw new \RuntimeException('Not yet implemented because it\'s unclear what I should do here :)');
     }
 
@@ -90,7 +98,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->keyword;
     }
 
@@ -99,7 +108,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @return bool
      */
-    public function returnsReference() {
+    public function returnsReference()
+    {
         return false;
     }
 
@@ -108,7 +118,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @return
      */
-    public function getParameters() {
+    public function getParameters()
+    {
         $params = array();
         foreach (self::$languageConstructs[$this->keyword] as $parameter => $opts) {
             array_push($params, new ReflectionLanguageConstructParameter($this->keyword, $parameter, $opts));
@@ -122,7 +133,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
     }
 
@@ -133,8 +145,8 @@ class ReflectionLanguageConstruct extends \ReflectionFunctionAbstract {
      *
      * @return bool
      */
-    public static function isLanguageConstruct($keyword) {
+    public static function isLanguageConstruct($keyword)
+    {
         return array_key_exists($keyword, self::$languageConstructs);
     }
-
 }

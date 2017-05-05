@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
-class AuthenticateSession {
-
+class AuthenticateSession
+{
     /**
      * The authentication factory implementation.
      *
@@ -21,7 +21,8 @@ class AuthenticateSession {
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
-    public function __construct(AuthFactory $auth) {
+    public function __construct(AuthFactory $auth)
+    {
         $this->auth = $auth;
     }
 
@@ -32,16 +33,17 @@ class AuthenticateSession {
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next) {
-        if (!$request->user() || !$request->session()) {
+    public function handle($request, Closure $next)
+    {
+        if (! $request->user() || ! $request->session()) {
             return $next($request);
         }
 
-        if (!$request->session()->has('password_hash') && $this->auth->viaRemember()) {
+        if (! $request->session()->has('password_hash') && $this->auth->viaRemember()) {
             $this->logout($request);
         }
 
-        if (!$request->session()->has('password_hash')) {
+        if (! $request->session()->has('password_hash')) {
             $this->storePasswordHashInSession($request);
         }
 
@@ -60,8 +62,9 @@ class AuthenticateSession {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    protected function storePasswordHashInSession($request) {
-        if (!$request->user()) {
+    protected function storePasswordHashInSession($request)
+    {
+        if (! $request->user()) {
             return;
         }
 
@@ -78,12 +81,12 @@ class AuthenticateSession {
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function logout($request) {
+    protected function logout($request)
+    {
         $this->auth->logout();
 
         $request->session()->flush();
 
         throw new AuthenticationException;
     }
-
 }

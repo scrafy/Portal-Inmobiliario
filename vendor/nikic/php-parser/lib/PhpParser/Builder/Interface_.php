@@ -6,8 +6,8 @@ use PhpParser;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 
-class Interface_ extends Declaration {
-
+class Interface_ extends Declaration
+{
     protected $name;
     protected $extends = array();
     protected $constants = array();
@@ -75,7 +75,6 @@ class Interface_ extends Declaration {
         return new Stmt\Interface_($this->name, array(
             'extends' => $this->extends,
             'stmts' => array_merge($this->constants, $this->methods),
-                ), $this->attributes);
+        ), $this->attributes);
     }
-
 }

@@ -1,11 +1,10 @@
 <?php
-
-abstract class AbstractMockTestClass implements MockTestInterface {
-
+abstract class AbstractMockTestClass implements MockTestInterface
+{
     abstract public function doSomething();
 
-    public function returnAnything() {
+    public function returnAnything()
+    {
         return 1;
     }
-
 }

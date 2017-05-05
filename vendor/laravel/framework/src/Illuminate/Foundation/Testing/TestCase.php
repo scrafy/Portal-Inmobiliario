@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Console\Application as Artisan;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class TestCase extends BaseTestCase {
-
+abstract class TestCase extends BaseTestCase
+{
     use Concerns\InteractsWithContainer,
         Concerns\MakesHttpRequests,
         Concerns\InteractsWithAuthentication,
@@ -60,8 +60,9 @@ abstract class TestCase extends BaseTestCase {
      *
      * @return void
      */
-    protected function setUp() {
-        if (!$this->app) {
+    protected function setUp()
+    {
+        if (! $this->app) {
             $this->refreshApplication();
         }
 
@@ -83,7 +84,8 @@ abstract class TestCase extends BaseTestCase {
      *
      * @return void
      */
-    protected function refreshApplication() {
+    protected function refreshApplication()
+    {
         $this->app = $this->createApplication();
     }
 
@@ -92,7 +94,8 @@ abstract class TestCase extends BaseTestCase {
      *
      * @return void
      */
-    protected function setUpTraits() {
+    protected function setUpTraits()
+    {
         $uses = array_flip(class_uses_recursive(static::class));
 
         if (isset($uses[DatabaseMigrations::class])) {
@@ -117,7 +120,8 @@ abstract class TestCase extends BaseTestCase {
      *
      * @return void
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
         if ($this->app) {
             foreach ($this->beforeApplicationDestroyedCallbacks as $callback) {
                 call_user_func($callback);
@@ -150,7 +154,8 @@ abstract class TestCase extends BaseTestCase {
      * @param  callable  $callback
      * @return void
      */
-    public function afterApplicationCreated(callable $callback) {
+    public function afterApplicationCreated(callable $callback)
+    {
         $this->afterApplicationCreatedCallbacks[] = $callback;
 
         if ($this->setUpHasRun) {
@@ -164,8 +169,8 @@ abstract class TestCase extends BaseTestCase {
      * @param  callable  $callback
      * @return void
      */
-    protected function beforeApplicationDestroyed(callable $callback) {
+    protected function beforeApplicationDestroyed(callable $callback)
+    {
         $this->beforeApplicationDestroyedCallbacks[] = $callback;
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace DeepCopy\TypeFilter;
 
-interface TypeFilter {
-
+interface TypeFilter
+{
     /**
      * Apply the filter to the object.
      * @param mixed $element

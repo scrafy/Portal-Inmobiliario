@@ -4,8 +4,8 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class ShellExec extends Expr {
-
+class ShellExec extends Expr
+{
     /** @var array Encapsed string array */
     public $parts;
 
@@ -23,5 +23,4 @@ class ShellExec extends Expr {
     public function getSubNodeNames() {
         return array('parts');
     }
-
 }

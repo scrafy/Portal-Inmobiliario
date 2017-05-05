@@ -7,8 +7,8 @@ use Illuminate\Support\Collection;
 use PHPUnit_Framework_Assert as PHPUnit;
 use Illuminate\Contracts\Notifications\Factory as NotificationFactory;
 
-class NotificationFake implements NotificationFactory {
-
+class NotificationFake implements NotificationFactory
+{
     /**
      * All of the notifications that have been sent.
      *
@@ -24,7 +24,8 @@ class NotificationFake implements NotificationFactory {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertSentTo($notifiable, $notification, $callback = null) {
+    public function assertSentTo($notifiable, $notification, $callback = null)
+    {
         if (is_array($notifiable) || $notifiable instanceof Collection) {
             foreach ($notifiable as $singleNotifiable) {
                 $this->assertSentTo($singleNotifiable, $notification, $callback);
@@ -34,7 +35,8 @@ class NotificationFake implements NotificationFactory {
         }
 
         PHPUnit::assertTrue(
-                $this->sent($notifiable, $notification, $callback)->count() > 0, "The expected [{$notification}] notification was not sent."
+            $this->sent($notifiable, $notification, $callback)->count() > 0,
+            "The expected [{$notification}] notification was not sent."
         );
     }
 
@@ -46,7 +48,8 @@ class NotificationFake implements NotificationFactory {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertNotSentTo($notifiable, $notification, $callback = null) {
+    public function assertNotSentTo($notifiable, $notification, $callback = null)
+    {
         if (is_array($notifiable) || $notifiable instanceof Collection) {
             foreach ($notifiable as $singleNotifiable) {
                 $this->assertNotSentTo($singleNotifiable, $notification, $callback);
@@ -56,7 +59,8 @@ class NotificationFake implements NotificationFactory {
         }
 
         PHPUnit::assertTrue(
-                $this->sent($notifiable, $notification, $callback)->count() === 0, "The unexpected [{$notification}] notification was sent."
+            $this->sent($notifiable, $notification, $callback)->count() === 0,
+            "The unexpected [{$notification}] notification was sent."
         );
     }
 
@@ -68,8 +72,9 @@ class NotificationFake implements NotificationFactory {
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function sent($notifiable, $notification, $callback = null) {
-        if (!$this->hasSent($notifiable, $notification)) {
+    public function sent($notifiable, $notification, $callback = null)
+    {
+        if (! $this->hasSent($notifiable, $notification)) {
             return collect();
         }
 
@@ -80,8 +85,8 @@ class NotificationFake implements NotificationFactory {
         $notifications = collect($this->notificationsFor($notifiable, $notification));
 
         return $notifications->filter(function ($arguments) use ($callback) {
-                    return $callback(...array_values($arguments));
-                })->pluck('notification');
+            return $callback(...array_values($arguments));
+        })->pluck('notification');
     }
 
     /**
@@ -91,8 +96,9 @@ class NotificationFake implements NotificationFactory {
      * @param  string  $notification
      * @return bool
      */
-    public function hasSent($notifiable, $notification) {
-        return !empty($this->notificationsFor($notifiable, $notification));
+    public function hasSent($notifiable, $notification)
+    {
+        return ! empty($this->notificationsFor($notifiable, $notification));
     }
 
     /**
@@ -102,7 +108,8 @@ class NotificationFake implements NotificationFactory {
      * @param  string  $notification
      * @return array
      */
-    protected function notificationsFor($notifiable, $notification) {
+    protected function notificationsFor($notifiable, $notification)
+    {
         if (isset($this->notifications[get_class($notifiable)][$notifiable->getKey()][$notification])) {
             return $this->notifications[get_class($notifiable)][$notifiable->getKey()][$notification];
         }
@@ -117,7 +124,8 @@ class NotificationFake implements NotificationFactory {
      * @param  mixed  $notification
      * @return void
      */
-    public function send($notifiables, $notification) {
+    public function send($notifiables, $notification)
+    {
         return $this->sendNow($notifiables, $notification);
     }
 
@@ -128,8 +136,9 @@ class NotificationFake implements NotificationFactory {
      * @param  mixed  $notification
      * @return void
      */
-    public function sendNow($notifiables, $notification) {
-        if (!$notifiables instanceof Collection && !is_array($notifiables)) {
+    public function sendNow($notifiables, $notification)
+    {
+        if (! $notifiables instanceof Collection && ! is_array($notifiables)) {
             $notifiables = [$notifiables];
         }
 
@@ -149,8 +158,8 @@ class NotificationFake implements NotificationFactory {
      * @param  string|null  $name
      * @return mixed
      */
-    public function channel($name = null) {
+    public function channel($name = null)
+    {
         //
     }
-
 }

@@ -18,12 +18,13 @@ namespace Psy\TabCompletion\Matcher;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class FunctionsMatcher extends AbstractMatcher {
-
+class FunctionsMatcher extends AbstractMatcher
+{
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array()) {
+    public function getMatches(array $tokens, array $info = array())
+    {
         $func = $this->getInput($tokens);
 
         $functions = get_defined_functions();
@@ -37,7 +38,8 @@ class FunctionsMatcher extends AbstractMatcher {
     /**
      * {@inheritdoc}
      */
-    public function hasMatched(array $tokens) {
+    public function hasMatched(array $tokens)
+    {
         $token = array_pop($tokens);
         $prevToken = array_pop($tokens);
 
@@ -51,5 +53,4 @@ class FunctionsMatcher extends AbstractMatcher {
 
         return false;
     }
-
 }

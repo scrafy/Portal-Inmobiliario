@@ -18,8 +18,8 @@ use Prophecy\Doubler\Generator\Node\ClassNode;
  *
  * @author Milan Magudia <milan@magudia.com>
  */
-class KeywordPatch implements ClassPatchInterface {
-
+class KeywordPatch implements ClassPatchInterface
+{
     /**
      * Support any class
      *
@@ -27,7 +27,8 @@ class KeywordPatch implements ClassPatchInterface {
      *
      * @return boolean
      */
-    public function supports(ClassNode $node) {
+    public function supports(ClassNode $node)
+    {
         return true;
     }
 
@@ -36,7 +37,8 @@ class KeywordPatch implements ClassPatchInterface {
      *
      * @param ClassNode $node
      */
-    public function apply(ClassNode $node) {
+    public function apply(ClassNode $node)
+    {
         $methodNames = array_keys($node->getMethods());
         $methodsToRemove = array_intersect($methodNames, $this->getKeywords());
         foreach ($methodsToRemove as $methodName) {
@@ -130,5 +132,4 @@ class KeywordPatch implements ClassPatchInterface {
             'yield',
         );
     }
-
 }

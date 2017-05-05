@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -23,15 +22,15 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  *
  * @link http://tools.ietf.org/html/rfc4122#section-4.5
  */
-class RandomNodeProvider implements NodeProviderInterface {
-
+class RandomNodeProvider implements NodeProviderInterface
+{
     /**
      * Returns the system node ID
      *
      * @return string System node ID as a hexadecimal string
      */
-    public function getNode() {
+    public function getNode()
+    {
         return sprintf('%06x%06x', mt_rand(0, 0xffffff), mt_rand(0, 0xffffff));
     }
-
 }

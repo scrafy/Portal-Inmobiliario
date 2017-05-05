@@ -18,9 +18,10 @@ use Symfony\Component\HttpKernel\Tests\Fixtures\Controller\NullableController;
 use Symfony\Component\HttpKernel\Tests\Fixtures\Controller\VariadicController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ControllerResolverTest extends TestCase {
-
-    public function testGetControllerWithoutControllerParameter() {
+class ControllerResolverTest extends TestCase
+{
+    public function testGetControllerWithoutControllerParameter()
+    {
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock();
         $logger->expects($this->once())->method('warning')->with('Unable to look for the controller as the "_controller" parameter is missing.');
         $resolver = $this->createControllerResolver($logger);
@@ -29,18 +30,18 @@ class ControllerResolverTest extends TestCase {
         $this->assertFalse($resolver->getController($request), '->getController() returns false when the request has no _controller attribute');
     }
 
-    public function testGetControllerWithLambda() {
+    public function testGetControllerWithLambda()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
-        $request->attributes->set('_controller', $lambda = function () {
-            
-        });
+        $request->attributes->set('_controller', $lambda = function () {});
         $controller = $resolver->getController($request);
         $this->assertSame($lambda, $controller);
     }
 
-    public function testGetControllerWithObjectAndInvokeMethod() {
+    public function testGetControllerWithObjectAndInvokeMethod()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -49,7 +50,8 @@ class ControllerResolverTest extends TestCase {
         $this->assertSame($this, $controller);
     }
 
-    public function testGetControllerWithObjectAndMethod() {
+    public function testGetControllerWithObjectAndMethod()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -58,7 +60,8 @@ class ControllerResolverTest extends TestCase {
         $this->assertSame(array($this, 'controllerMethod1'), $controller);
     }
 
-    public function testGetControllerWithClassAndMethod() {
+    public function testGetControllerWithClassAndMethod()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -67,7 +70,8 @@ class ControllerResolverTest extends TestCase {
         $this->assertSame(array('Symfony\Component\HttpKernel\Tests\Controller\ControllerResolverTest', 'controllerMethod4'), $controller);
     }
 
-    public function testGetControllerWithObjectAndMethodAsString() {
+    public function testGetControllerWithObjectAndMethodAsString()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -76,7 +80,8 @@ class ControllerResolverTest extends TestCase {
         $this->assertInstanceOf('Symfony\Component\HttpKernel\Tests\Controller\ControllerResolverTest', $controller[0], '->getController() returns a PHP callable');
     }
 
-    public function testGetControllerWithClassAndInvokeMethod() {
+    public function testGetControllerWithClassAndInvokeMethod()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -88,7 +93,8 @@ class ControllerResolverTest extends TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testGetControllerOnObjectWithoutInvokeMethod() {
+    public function testGetControllerOnObjectWithoutInvokeMethod()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -96,7 +102,8 @@ class ControllerResolverTest extends TestCase {
         $resolver->getController($request);
     }
 
-    public function testGetControllerWithFunction() {
+    public function testGetControllerWithFunction()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -108,7 +115,8 @@ class ControllerResolverTest extends TestCase {
     /**
      * @dataProvider getUndefinedControllers
      */
-    public function testGetControllerOnNonUndefinedFunction($controller, $exceptionName = null, $exceptionMessage = null) {
+    public function testGetControllerOnNonUndefinedFunction($controller, $exceptionName = null, $exceptionMessage = null)
+    {
         $resolver = $this->createControllerResolver();
         if (method_exists($this, 'expectException')) {
             $this->expectException($exceptionName);
@@ -122,7 +130,8 @@ class ControllerResolverTest extends TestCase {
         $resolver->getController($request);
     }
 
-    public function getUndefinedControllers() {
+    public function getUndefinedControllers()
+    {
         return array(
             array(1, 'InvalidArgumentException', 'Unable to find controller "1".'),
             array('foo', 'InvalidArgumentException', 'Unable to find controller "foo".'),
@@ -138,7 +147,8 @@ class ControllerResolverTest extends TestCase {
     /**
      * @group legacy
      */
-    public function testGetArguments() {
+    public function testGetArguments()
+    {
         $resolver = $this->createControllerResolver();
 
         $request = Request::create('/');
@@ -160,16 +170,12 @@ class ControllerResolverTest extends TestCase {
 
         $request = Request::create('/');
         $request->attributes->set('foo', 'foo');
-        $controller = function ($foo) {
-            
-        };
+        $controller = function ($foo) {};
         $this->assertEquals(array('foo'), $resolver->getArguments($request, $controller));
 
         $request = Request::create('/');
         $request->attributes->set('foo', 'foo');
-        $controller = function ($foo, $bar = 'bar') {
-            
-        };
+        $controller = function ($foo, $bar = 'bar') {};
         $this->assertEquals(array('foo', 'bar'), $resolver->getArguments($request, $controller));
 
         $request = Request::create('/');
@@ -206,7 +212,8 @@ class ControllerResolverTest extends TestCase {
      * @requires PHP 5.6
      * @group legacy
      */
-    public function testGetVariadicArguments() {
+    public function testGetVariadicArguments()
+    {
         $resolver = new ControllerResolver();
 
         $request = Request::create('/');
@@ -216,7 +223,8 @@ class ControllerResolverTest extends TestCase {
         $this->assertEquals(array('foo', 'foo', 'bar'), $resolver->getArguments($request, $controller));
     }
 
-    public function testCreateControllerCanReturnAnyCallable() {
+    public function testCreateControllerCanReturnAnyCallable()
+    {
         $mock = $this->getMockBuilder('Symfony\Component\HttpKernel\Controller\ControllerResolver')->setMethods(array('createController'))->getMock();
         $mock->expects($this->once())->method('createController')->will($this->returnValue('Symfony\Component\HttpKernel\Tests\Controller\some_controller_function'));
 
@@ -229,7 +237,8 @@ class ControllerResolverTest extends TestCase {
      * @expectedException \RuntimeException
      * @group legacy
      */
-    public function testIfExceptionIsThrownWhenMissingAnArgument() {
+    public function testIfExceptionIsThrownWhenMissingAnArgument()
+    {
         $resolver = new ControllerResolver();
         $request = Request::create('/');
 
@@ -242,7 +251,8 @@ class ControllerResolverTest extends TestCase {
      * @requires PHP 7.1
      * @group legacy
      */
-    public function testGetNullableArguments() {
+    public function testGetNullableArguments()
+    {
         $resolver = new ControllerResolver();
 
         $request = Request::create('/');
@@ -257,7 +267,8 @@ class ControllerResolverTest extends TestCase {
      * @requires PHP 7.1
      * @group legacy
      */
-    public function testGetNullableArgumentsWithDefaults() {
+    public function testGetNullableArgumentsWithDefaults()
+    {
         $resolver = new ControllerResolver();
 
         $request = Request::create('/');
@@ -266,56 +277,55 @@ class ControllerResolverTest extends TestCase {
         $this->assertEquals(array(null, null, 'value', 'mandatory'), $resolver->getArguments($request, $controller));
     }
 
-    protected function createControllerResolver(LoggerInterface $logger = null) {
+    protected function createControllerResolver(LoggerInterface $logger = null)
+    {
         return new ControllerResolver($logger);
     }
 
-    public function __invoke($foo, $bar = null) {
-        
+    public function __invoke($foo, $bar = null)
+    {
     }
 
-    public function controllerMethod1($foo) {
-        
+    public function controllerMethod1($foo)
+    {
     }
 
-    protected function controllerMethod2($foo, $bar = null) {
-        
+    protected function controllerMethod2($foo, $bar = null)
+    {
     }
 
-    protected function controllerMethod3($foo, $bar, $foobar) {
-        
+    protected function controllerMethod3($foo, $bar, $foobar)
+    {
     }
 
-    protected static function controllerMethod4() {
-        
+    protected static function controllerMethod4()
+    {
     }
 
-    protected function controllerMethod5(Request $request) {
-        
+    protected function controllerMethod5(Request $request)
+    {
     }
-
 }
 
-function some_controller_function($foo, $foobar) {
-    
+function some_controller_function($foo, $foobar)
+{
 }
 
-class ControllerTest {
-
-    public function publicAction() {
-        
+class ControllerTest
+{
+    public function publicAction()
+    {
     }
 
-    private function privateAction() {
-        
+    private function privateAction()
+    {
     }
 
-    protected function protectedAction() {
-        
+    protected function protectedAction()
+    {
     }
 
-    public static function staticAction() {
-        
+    public static function staticAction()
+    {
     }
-
 }

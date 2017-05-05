@@ -16,20 +16,22 @@ use Symfony\Component\Translation\Dumper\DumperInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Writer\TranslationWriter;
 
-class TranslationWriterTest extends TestCase {
-
-    public function testWriteTranslations() {
+class TranslationWriterTest extends TestCase
+{
+    public function testWriteTranslations()
+    {
         $dumper = $this->getMockBuilder('Symfony\Component\Translation\Dumper\DumperInterface')->getMock();
         $dumper
-                ->expects($this->once())
-                ->method('dump');
+            ->expects($this->once())
+            ->method('dump');
 
         $writer = new TranslationWriter();
         $writer->addDumper('test', $dumper);
         $writer->writeTranslations(new MessageCatalogue(array()), 'test');
     }
 
-    public function testDisableBackup() {
+    public function testDisableBackup()
+    {
         $nonBackupDumper = new NonBackupDumper();
         $backupDumper = new BackupDumper();
 
@@ -40,27 +42,25 @@ class TranslationWriterTest extends TestCase {
 
         $this->assertFalse($backupDumper->backup, 'backup can be disabled if setBackup() method does exist');
     }
-
 }
 
-class NonBackupDumper implements DumperInterface {
-
-    public function dump(MessageCatalogue $messages, $options = array()) {
-        
+class NonBackupDumper implements DumperInterface
+{
+    public function dump(MessageCatalogue $messages, $options = array())
+    {
     }
-
 }
 
-class BackupDumper implements DumperInterface {
-
+class BackupDumper implements DumperInterface
+{
     public $backup = true;
 
-    public function dump(MessageCatalogue $messages, $options = array()) {
-        
+    public function dump(MessageCatalogue $messages, $options = array())
+    {
     }
 
-    public function setBackup($backup) {
+    public function setBackup($backup)
+    {
         $this->backup = $backup;
     }
-
 }

@@ -10,8 +10,8 @@ use Illuminate\Queue\WorkerOptions;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 
-class WorkCommand extends Command {
-
+class WorkCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -49,7 +49,8 @@ class WorkCommand extends Command {
      * @param  \Illuminate\Queue\Worker  $worker
      * @return void
      */
-    public function __construct(Worker $worker) {
+    public function __construct(Worker $worker)
+    {
         parent::__construct();
 
         $this->worker = $worker;
@@ -60,7 +61,8 @@ class WorkCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         if ($this->downForMaintenance() && $this->option('once')) {
             return $this->worker->sleep($this->option('sleep'));
         }
@@ -70,7 +72,8 @@ class WorkCommand extends Command {
         // which jobs are coming through a queue and be informed on its progress.
         $this->listenForEvents();
 
-        $connection = $this->argument('connection') ?: $this->laravel['config']['queue.default'];
+        $connection = $this->argument('connection')
+                        ?: $this->laravel['config']['queue.default'];
 
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
@@ -78,7 +81,7 @@ class WorkCommand extends Command {
         $queue = $this->getQueue($connection);
 
         $this->runWorker(
-                $connection, $queue
+            $connection, $queue
         );
     }
 
@@ -89,11 +92,12 @@ class WorkCommand extends Command {
      * @param  string  $queue
      * @return array
      */
-    protected function runWorker($connection, $queue) {
+    protected function runWorker($connection, $queue)
+    {
         $this->worker->setCache($this->laravel['cache']->driver());
 
         return $this->worker->{$this->option('once') ? 'runNextJob' : 'daemon'}(
-                        $connection, $queue, $this->gatherWorkerOptions()
+            $connection, $queue, $this->gatherWorkerOptions()
         );
     }
 
@@ -102,9 +106,12 @@ class WorkCommand extends Command {
      *
      * @return \Illuminate\Queue\WorkerOptions
      */
-    protected function gatherWorkerOptions() {
+    protected function gatherWorkerOptions()
+    {
         return new WorkerOptions(
-                $this->option('delay'), $this->option('memory'), $this->option('timeout'), $this->option('sleep'), $this->option('tries'), $this->option('force')
+            $this->option('delay'), $this->option('memory'),
+            $this->option('timeout'), $this->option('sleep'),
+            $this->option('tries'), $this->option('force')
         );
     }
 
@@ -113,7 +120,8 @@ class WorkCommand extends Command {
      *
      * @return void
      */
-    protected function listenForEvents() {
+    protected function listenForEvents()
+    {
         $this->laravel['events']->listen(JobProcessed::class, function ($event) {
             $this->writeOutput($event->job, false);
         });
@@ -132,11 +140,12 @@ class WorkCommand extends Command {
      * @param  bool  $failed
      * @return void
      */
-    protected function writeOutput(Job $job, $failed) {
+    protected function writeOutput(Job $job, $failed)
+    {
         if ($failed) {
-            $this->output->writeln('<error>[' . Carbon::now()->format('Y-m-d H:i:s') . '] Failed:</error> ' . $job->resolveName());
+            $this->output->writeln('<error>['.Carbon::now()->format('Y-m-d H:i:s').'] Failed:</error> '.$job->resolveName());
         } else {
-            $this->output->writeln('<info>[' . Carbon::now()->format('Y-m-d H:i:s') . '] Processed:</info> ' . $job->resolveName());
+            $this->output->writeln('<info>['.Carbon::now()->format('Y-m-d H:i:s').'] Processed:</info> '.$job->resolveName());
         }
     }
 
@@ -146,9 +155,11 @@ class WorkCommand extends Command {
      * @param  JobFailed  $event
      * @return void
      */
-    protected function logFailedJob(JobFailed $event) {
+    protected function logFailedJob(JobFailed $event)
+    {
         $this->laravel['queue.failer']->log(
-                $event->connectionName, $event->job->getQueue(), $event->job->getRawBody(), $event->exception
+            $event->connectionName, $event->job->getQueue(),
+            $event->job->getRawBody(), $event->exception
         );
     }
 
@@ -158,9 +169,10 @@ class WorkCommand extends Command {
      * @param  string  $connection
      * @return string
      */
-    protected function getQueue($connection) {
+    protected function getQueue($connection)
+    {
         return $this->option('queue') ?: $this->laravel['config']->get(
-                        "queue.connections.{$connection}.queue", 'default'
+            "queue.connections.{$connection}.queue", 'default'
         );
     }
 
@@ -169,8 +181,8 @@ class WorkCommand extends Command {
      *
      * @return bool
      */
-    protected function downForMaintenance() {
+    protected function downForMaintenance()
+    {
         return $this->option('force') ? false : $this->laravel->isDownForMaintenance();
     }
-
 }

@@ -4,8 +4,8 @@ namespace PhpParser;
 
 require_once __DIR__ . '/CodeTestAbstract.php';
 
-class CodeParsingTest extends CodeTestAbstract {
-
+class CodeParsingTest extends CodeTestAbstract
+{
     /**
      * @dataProvider provideTestParse
      */
@@ -18,7 +18,7 @@ class CodeParsingTest extends CodeTestAbstract {
 
 
         $lexer = new Lexer\Emulative(array('usedAttributes' => array(
-                'startLine', 'endLine', 'startFilePos', 'endFilePos', 'comments'
+            'startLine', 'endLine', 'startFilePos', 'endFilePos', 'comments'
         )));
         $parser5 = new Parser\Php5($lexer);
         $parser7 = new Parser\Php7($lexer);
@@ -67,5 +67,4 @@ class CodeParsingTest extends CodeTestAbstract {
             return $e->getMessage();
         }
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,14 +13,15 @@ namespace SebastianBergmann\CodeCoverage;
 /**
  * @covers SebastianBergmann\CodeCoverage\Util
  */
-class UtilTest extends \PHPUnit_Framework_TestCase {
-
-    public function testPercent() {
+class UtilTest extends \PHPUnit_Framework_TestCase
+{
+    public function testPercent()
+    {
         $this->assertEquals(100, Util::percent(100, 0));
         $this->assertEquals(100, Util::percent(100, 100));
         $this->assertEquals(
-                '100.00%', Util::percent(100, 100, true)
+            '100.00%',
+            Util::percent(100, 100, true)
         );
     }
-
 }

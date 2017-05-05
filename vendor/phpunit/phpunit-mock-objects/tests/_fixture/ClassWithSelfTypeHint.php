@@ -1,9 +1,7 @@
 <?php
-
-class ClassWithSelfTypeHint {
-
-    public function foo(self $foo) {
-        
+class ClassWithSelfTypeHint
+{
+    public function foo(self $foo)
+    {
     }
-
 }

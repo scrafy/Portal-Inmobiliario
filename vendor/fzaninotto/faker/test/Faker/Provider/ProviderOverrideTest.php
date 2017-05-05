@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Mark van der Velden <mark@dynom.nl>
  */
@@ -17,8 +16,8 @@ use Faker;
  * locale specific provider (can) has specific implementations. The goal of this test is to test the common denominator
  * and to try to catch possible invalid multi-byte sequences.
  */
-class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
-
+class ProviderOverrideTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * Constants with regular expression patterns for testing the output.
      *
@@ -36,7 +35,8 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testAddress($locale = null) {
+    public function testAddress($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->city);
@@ -45,32 +45,38 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->country);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testCompany($locale = null) {
+    public function testCompany($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->company);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testDateTime($locale = null) {
+    public function testDateTime($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->century);
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->timezone);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testInternet($locale = null) {
+    public function testInternet($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->userName);
@@ -81,11 +87,13 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
         $this->assertRegExp(static::TEST_EMAIL_REGEX, $faker->companyEmail);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testPerson($locale = null) {
+    public function testPerson($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->name);
@@ -94,25 +102,30 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->lastName);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testPhoneNumber($locale = null) {
+    public function testPhoneNumber($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->phoneNumber);
     }
 
+
     /**
      * @dataProvider localeDataProvider
      * @param string $locale
      */
-    public function testUserAgent($locale = null) {
+    public function testUserAgent($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->userAgent);
     }
+
 
     /**
      * @dataProvider localeDataProvider
@@ -120,16 +133,19 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
      * @param null   $locale
      * @param string $locale
      */
-    public function testUuid($locale = null) {
+    public function testUuid($locale = null)
+    {
         $faker = Faker\Factory::create($locale);
 
         $this->assertRegExp(static::TEST_STRING_REGEX, $faker->uuid);
     }
 
+
     /**
      * @return array
      */
-    public function localeDataProvider() {
+    public function localeDataProvider()
+    {
         $locales = $this->getAllLocales();
         $data = array();
 
@@ -142,31 +158,32 @@ class ProviderOverrideTest extends \PHPUnit_Framework_TestCase {
         return $data;
     }
 
+
     /**
      * Returns all locales as array values
      *
      * @return array
      */
-    private function getAllLocales() {
+    private function getAllLocales()
+    {
         static $locales = array();
 
-        if (!empty($locales)) {
+        if ( ! empty($locales)) {
             return $locales;
         }
 
         // Finding all PHP files in the xx_XX directories
-        $providerDir = __DIR__ . '/../../../src/Faker/Provider';
-        foreach (glob($providerDir . '/*_*/*.php') as $file) {
+        $providerDir = __DIR__ .'/../../../src/Faker/Provider';
+        foreach (glob($providerDir .'/*_*/*.php') as $file) {
             $localisation = basename(dirname($file));
 
-            if (isset($locales[$localisation])) {
+            if (isset($locales[ $localisation ])) {
                 continue;
             }
 
-            $locales[$localisation] = $localisation;
+            $locales[ $localisation ] = $localisation;
         }
 
         return $locales;
     }
-
 }

@@ -20,8 +20,8 @@ use Prophecy\Prophecy\MethodProphecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface PromiseInterface {
-
+interface PromiseInterface
+{
     /**
      * Evaluates promise.
      *

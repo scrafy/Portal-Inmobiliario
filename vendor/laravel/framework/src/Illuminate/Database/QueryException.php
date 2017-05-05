@@ -5,8 +5,8 @@ namespace Illuminate\Database;
 use PDOException;
 use Illuminate\Support\Str;
 
-class QueryException extends PDOException {
-
+class QueryException extends PDOException
+{
     /**
      * The SQL for the query.
      *
@@ -29,7 +29,8 @@ class QueryException extends PDOException {
      * @param  \Exception $previous
      * @return void
      */
-    public function __construct($sql, array $bindings, $previous) {
+    public function __construct($sql, array $bindings, $previous)
+    {
         parent::__construct('', 0, $previous);
 
         $this->sql = $sql;
@@ -50,8 +51,9 @@ class QueryException extends PDOException {
      * @param  \Exception $previous
      * @return string
      */
-    protected function formatMessage($sql, $bindings, $previous) {
-        return $previous->getMessage() . ' (SQL: ' . Str::replaceArray('?', $bindings, $sql) . ')';
+    protected function formatMessage($sql, $bindings, $previous)
+    {
+        return $previous->getMessage().' (SQL: '.Str::replaceArray('?', $bindings, $sql).')';
     }
 
     /**
@@ -59,7 +61,8 @@ class QueryException extends PDOException {
      *
      * @return string
      */
-    public function getSql() {
+    public function getSql()
+    {
         return $this->sql;
     }
 
@@ -68,8 +71,8 @@ class QueryException extends PDOException {
      *
      * @return array
      */
-    public function getBindings() {
+    public function getBindings()
+    {
         return $this->bindings;
     }
-
 }

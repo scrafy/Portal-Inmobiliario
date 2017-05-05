@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger {
-
+class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger
+{
     /** Whether or not HTML should be output */
     private $_isHtml;
 
@@ -23,7 +23,8 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger {
      *
      * @param bool $isHtml
      */
-    public function __construct($isHtml = true) {
+    public function __construct($isHtml = true)
+    {
         $this->_isHtml = $isHtml;
     }
 
@@ -32,7 +33,8 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger {
      *
      * @param string $entry
      */
-    public function add($entry) {
+    public function add($entry)
+    {
         if ($this->_isHtml) {
             printf('%s%s%s', htmlspecialchars($entry, ENT_QUOTES), '<br />', PHP_EOL);
         } else {
@@ -43,15 +45,14 @@ class Swift_Plugins_Loggers_EchoLogger implements Swift_Plugins_Logger {
     /**
      * Not implemented.
      */
-    public function clear() {
-        
+    public function clear()
+    {
     }
 
     /**
      * Not implemented.
      */
-    public function dump() {
-        
+    public function dump()
+    {
     }
-
 }

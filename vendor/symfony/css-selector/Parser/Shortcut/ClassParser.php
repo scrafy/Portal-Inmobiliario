@@ -26,12 +26,13 @@ use Symfony\Component\CssSelector\Parser\ParserInterface;
  *
  * @internal
  */
-class ClassParser implements ParserInterface {
-
+class ClassParser implements ParserInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function parse($source) {
+    public function parse($source)
+    {
         // Matches an optional namespace, optional element, and required class
         // $source = 'test|input.ab6bd_field';
         // $matches = array (size=4)
@@ -47,5 +48,4 @@ class ClassParser implements ParserInterface {
 
         return array();
     }
-
 }

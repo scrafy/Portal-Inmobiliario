@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-abstract class MatcherAbstract {
+abstract class MatcherAbstract
+{
 
     /**
      * The expected value (or part thereof)
@@ -35,7 +35,8 @@ abstract class MatcherAbstract {
      *
      * @param mixed $expected
      */
-    public function __construct($expected = null) {
+    public function __construct($expected = null)
+    {
         $this->_expected = $expected;
     }
 

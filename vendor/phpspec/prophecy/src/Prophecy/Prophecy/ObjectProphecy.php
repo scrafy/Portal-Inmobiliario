@@ -27,8 +27,8 @@ use Prophecy\Exception\Prediction\PredictionException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class ObjectProphecy implements ProphecyInterface {
-
+class ObjectProphecy implements ProphecyInterface
+{
     private $lazyDouble;
     private $callCenter;
     private $revealer;
@@ -48,11 +48,14 @@ class ObjectProphecy implements ProphecyInterface {
      * @param ComparatorFactory $comparatorFactory
      */
     public function __construct(
-    LazyDouble $lazyDouble, CallCenter $callCenter = null, RevealerInterface $revealer = null, ComparatorFactory $comparatorFactory = null
+        LazyDouble $lazyDouble,
+        CallCenter $callCenter = null,
+        RevealerInterface $revealer = null,
+        ComparatorFactory $comparatorFactory = null
     ) {
         $this->lazyDouble = $lazyDouble;
         $this->callCenter = $callCenter ?: new CallCenter;
-        $this->revealer = $revealer ?: new Revealer;
+        $this->revealer   = $revealer ?: new Revealer;
 
         $this->comparatorFactory = $comparatorFactory ?: ComparatorFactory::getInstance();
     }
@@ -64,7 +67,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return $this
      */
-    public function willExtend($class) {
+    public function willExtend($class)
+    {
         $this->lazyDouble->setParentClass($class);
 
         return $this;
@@ -77,7 +81,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return $this
      */
-    public function willImplement($interface) {
+    public function willImplement($interface)
+    {
         $this->lazyDouble->addInterface($interface);
 
         return $this;
@@ -90,7 +95,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return $this
      */
-    public function willBeConstructedWith(array $arguments = null) {
+    public function willBeConstructedWith(array $arguments = null)
+    {
         $this->lazyDouble->setArguments($arguments);
 
         return $this;
@@ -103,13 +109,15 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @throws \Prophecy\Exception\Prophecy\ObjectProphecyException If double doesn't implement needed interface
      */
-    public function reveal() {
+    public function reveal()
+    {
         $double = $this->lazyDouble->getInstance();
 
         if (null === $double || !$double instanceof ProphecySubjectInterface) {
             throw new ObjectProphecyException(
-            "Generated double must implement ProphecySubjectInterface, but it does not.\n" .
-            'It seems you have wrongly configured doubler without required ClassPatch.', $this
+                "Generated double must implement ProphecySubjectInterface, but it does not.\n".
+                'It seems you have wrongly configured doubler without required ClassPatch.',
+                $this
             );
         }
 
@@ -126,12 +134,15 @@ class ObjectProphecy implements ProphecyInterface {
      * @throws \Prophecy\Exception\Prophecy\MethodProphecyException If method prophecy doesn't
      *                                                              have arguments wildcard
      */
-    public function addMethodProphecy(MethodProphecy $methodProphecy) {
+    public function addMethodProphecy(MethodProphecy $methodProphecy)
+    {
         $argumentsWildcard = $methodProphecy->getArgumentsWildcard();
         if (null === $argumentsWildcard) {
             throw new MethodProphecyException(sprintf(
-                    "Can not add prophecy for a method `%s::%s()`\n" .
-                    "as you did not specify arguments wildcard for it.", get_class($this->reveal()), $methodProphecy->getMethodName()
+                "Can not add prophecy for a method `%s::%s()`\n".
+                "as you did not specify arguments wildcard for it.",
+                get_class($this->reveal()),
+                $methodProphecy->getMethodName()
             ), $methodProphecy);
         }
 
@@ -151,7 +162,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return MethodProphecy[]
      */
-    public function getMethodProphecies($methodName = null) {
+    public function getMethodProphecies($methodName = null)
+    {
         if (null === $methodName) {
             return $this->methodProphecies;
         }
@@ -171,9 +183,10 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return mixed
      */
-    public function makeProphecyMethodCall($methodName, array $arguments) {
+    public function makeProphecyMethodCall($methodName, array $arguments)
+    {
         $arguments = $this->revealer->reveal($arguments);
-        $return = $this->callCenter->makeCall($this, $methodName, $arguments);
+        $return    = $this->callCenter->makeCall($this, $methodName, $arguments);
 
         return $this->revealer->reveal($return);
     }
@@ -186,7 +199,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return Call[]
      */
-    public function findProphecyMethodCalls($methodName, ArgumentsWildcard $wildcard) {
+    public function findProphecyMethodCalls($methodName, ArgumentsWildcard $wildcard)
+    {
         return $this->callCenter->findCalls($methodName, $wildcard);
     }
 
@@ -195,7 +209,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @throws \Prophecy\Exception\Prediction\AggregateException If any of registered predictions fail
      */
-    public function checkProphecyMethodsPredictions() {
+    public function checkProphecyMethodsPredictions()
+    {
         $exception = new AggregateException(sprintf("%s:\n", get_class($this->reveal())));
         $exception->setObjectProphecy($this);
 
@@ -222,21 +237,20 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return MethodProphecy
      */
-    public function __call($methodName, array $arguments) {
+    public function __call($methodName, array $arguments)
+    {
         $arguments = new ArgumentsWildcard($this->revealer->reveal($arguments));
 
         foreach ($this->getMethodProphecies($methodName) as $prophecy) {
             $argumentsWildcard = $prophecy->getArgumentsWildcard();
             $comparator = $this->comparatorFactory->getComparatorFor(
-                    $argumentsWildcard, $arguments
+                $argumentsWildcard, $arguments
             );
 
             try {
                 $comparator->assertEquals($argumentsWildcard, $arguments);
                 return $prophecy;
-            } catch (ComparisonFailure $failure) {
-                
-            }
+            } catch (ComparisonFailure $failure) {}
         }
 
         return new MethodProphecy($this, $methodName, $arguments);
@@ -249,7 +263,8 @@ class ObjectProphecy implements ProphecyInterface {
      *
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->reveal()->$name;
     }
 
@@ -259,8 +274,8 @@ class ObjectProphecy implements ProphecyInterface {
      * @param string $name
      * @param mixed  $value
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->reveal()->$name = $this->revealer->reveal($value);
     }
-
 }

@@ -6,8 +6,8 @@ use Illuminate\Container\Container;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class FailingJob {
-
+class FailingJob
+{
     /**
      * Delete the job, call the "failed" method, and raise the failed job event.
      *
@@ -16,7 +16,8 @@ class FailingJob {
      * @param  \Exception $e
      * @return void
      */
-    public static function handle($connectionName, $job, $e = null) {
+    public static function handle($connectionName, $job, $e = null)
+    {
         $job->markAsFailed();
 
         if ($job->isDeleted()) {
@@ -32,7 +33,7 @@ class FailingJob {
             $job->failed($e);
         } finally {
             static::events()->fire(new JobFailed(
-                    $connectionName, $job, $e ?: new ManuallyFailedException
+                $connectionName, $job, $e ?: new ManuallyFailedException
             ));
         }
     }
@@ -42,8 +43,8 @@ class FailingJob {
      *
      * @return \Illuminate\Contracts\Events\Dispatcher
      */
-    protected static function events() {
+    protected static function events()
+    {
         return Container::getInstance()->make(Dispatcher::class);
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Support;
 
 use Illuminate\Contracts\Support\Htmlable;
 
-class HtmlString implements Htmlable {
-
+class HtmlString implements Htmlable
+{
     /**
      * The HTML string.
      *
@@ -19,7 +19,8 @@ class HtmlString implements Htmlable {
      * @param  string  $html
      * @return void
      */
-    public function __construct($html) {
+    public function __construct($html)
+    {
         $this->html = $html;
     }
 
@@ -28,7 +29,8 @@ class HtmlString implements Htmlable {
      *
      * @return string
      */
-    public function toHtml() {
+    public function toHtml()
+    {
         return $this->html;
     }
 
@@ -37,8 +39,8 @@ class HtmlString implements Htmlable {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->toHtml();
     }
-
 }

@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
-
+class Swift_KeyCache_NullKeyCache implements Swift_KeyCache
+{
     /**
      * Set a string into the cache under $itemKey for the namespace $nsKey.
      *
@@ -25,8 +25,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      * @param string $string
      * @param int    $mode
      */
-    public function setString($nsKey, $itemKey, $string, $mode) {
-        
+    public function setString($nsKey, $itemKey, $string, $mode)
+    {
     }
 
     /**
@@ -39,8 +39,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      * @param Swift_OutputByteStream $os
      * @param int                    $mode
      */
-    public function importFromByteStream($nsKey, $itemKey, Swift_OutputByteStream $os, $mode) {
-        
+    public function importFromByteStream($nsKey, $itemKey, Swift_OutputByteStream $os, $mode)
+    {
     }
 
     /**
@@ -54,8 +54,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      *
      * @return Swift_InputByteStream
      */
-    public function getInputByteStream($nsKey, $itemKey, Swift_InputByteStream $writeThrough = null) {
-        
+    public function getInputByteStream($nsKey, $itemKey, Swift_InputByteStream $writeThrough = null)
+    {
     }
 
     /**
@@ -66,8 +66,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      *
      * @return string
      */
-    public function getString($nsKey, $itemKey) {
-        
+    public function getString($nsKey, $itemKey)
+    {
     }
 
     /**
@@ -77,8 +77,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      * @param string                $itemKey
      * @param Swift_InputByteStream $is      to write the data to
      */
-    public function exportToByteStream($nsKey, $itemKey, Swift_InputByteStream $is) {
-        
+    public function exportToByteStream($nsKey, $itemKey, Swift_InputByteStream $is)
+    {
     }
 
     /**
@@ -89,7 +89,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      *
      * @return bool
      */
-    public function hasKey($nsKey, $itemKey) {
+    public function hasKey($nsKey, $itemKey)
+    {
         return false;
     }
 
@@ -99,8 +100,8 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      * @param string $nsKey
      * @param string $itemKey
      */
-    public function clearKey($nsKey, $itemKey) {
-        
+    public function clearKey($nsKey, $itemKey)
+    {
     }
 
     /**
@@ -108,8 +109,7 @@ class Swift_KeyCache_NullKeyCache implements Swift_KeyCache {
      *
      * @param string $nsKey
      */
-    public function clearAll($nsKey) {
-        
+    public function clearAll($nsKey)
+    {
     }
-
 }

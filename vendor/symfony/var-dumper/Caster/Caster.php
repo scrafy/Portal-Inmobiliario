@@ -18,8 +18,8 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class Caster {
-
+class Caster
+{
     const EXCLUDE_VERBOSE = 1;
     const EXCLUDE_VIRTUAL = 2;
     const EXCLUDE_DYNAMIC = 4;
@@ -30,6 +30,7 @@ class Caster {
     const EXCLUDE_EMPTY = 128;
     const EXCLUDE_NOT_IMPORTANT = 256;
     const EXCLUDE_STRICT = 512;
+
     const PREFIX_VIRTUAL = "\0~\0";
     const PREFIX_DYNAMIC = "\0+\0";
     const PREFIX_PROTECTED = "\0*\0";
@@ -42,7 +43,8 @@ class Caster {
      *
      * @return array The array-cast of the object, with prefixed dynamic properties
      */
-    public static function castObject($obj, \ReflectionClass $reflector) {
+    public static function castObject($obj, \ReflectionClass $reflector)
+    {
         if ($reflector->hasMethod('__debugInfo')) {
             $a = $obj->__debugInfo();
         } elseif ($obj instanceof \Closure) {
@@ -60,10 +62,10 @@ class Caster {
             foreach ($p as $i => $k) {
                 if (isset($k[0]) && "\0" !== $k[0] && !$reflector->hasProperty($k)) {
                     $combine = true;
-                    $p[$i] = self::PREFIX_DYNAMIC . $k;
+                    $p[$i] = self::PREFIX_DYNAMIC.$k;
                 } elseif (isset($k[16]) && "\0" === $k[16] && 0 === strpos($k, "\0class@anonymous\0")) {
                     $combine = true;
-                    $p[$i] = "\0" . $reflector->getParentClass() . '@anonymous' . strrchr($k, "\0");
+                    $p[$i] = "\0".$reflector->getParentClass().'@anonymous'.strrchr($k, "\0");
                 }
             }
             if ($combine) {
@@ -87,7 +89,8 @@ class Caster {
      *
      * @return array The filtered array
      */
-    public static function filter(array $a, $filter, array $listedProperties = array(), &$count = 0) {
+    public static function filter(array $a, $filter, array $listedProperties = array(), &$count = 0)
+    {
         $count = 0;
 
         foreach ($a as $k => $v) {
@@ -127,11 +130,11 @@ class Caster {
         return $a;
     }
 
-    public static function castPhpIncompleteClass(\__PHP_Incomplete_Class $c, array $a, Stub $stub, $isNested) {
-        $stub->class .= '(' . $a['__PHP_Incomplete_Class_Name'] . ')';
+    public static function castPhpIncompleteClass(\__PHP_Incomplete_Class $c, array $a, Stub $stub, $isNested)
+    {
+        $stub->class .= '('.$a['__PHP_Incomplete_Class_Name'].')';
         unset($a['__PHP_Incomplete_Class_Name']);
 
         return $a;
     }
-
 }

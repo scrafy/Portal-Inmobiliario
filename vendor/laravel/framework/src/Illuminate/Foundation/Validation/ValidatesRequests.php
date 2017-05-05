@@ -9,8 +9,8 @@ use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 
-trait ValidatesRequests {
-
+trait ValidatesRequests
+{
     /**
      * The default error bag.
      *
@@ -25,7 +25,8 @@ trait ValidatesRequests {
      * @param  \Illuminate\Http\Request|null  $request
      * @return void
      */
-    public function validateWith($validator, Request $request = null) {
+    public function validateWith($validator, Request $request = null)
+    {
         $request = $request ?: app('request');
 
         if (is_array($validator)) {
@@ -46,7 +47,8 @@ trait ValidatesRequests {
      * @param  array  $customAttributes
      * @return void
      */
-    public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = []) {
+    public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
+    {
         $validator = $this->getValidationFactory()->make($request->all(), $rules, $messages, $customAttributes);
 
         if ($validator->fails()) {
@@ -66,7 +68,8 @@ trait ValidatesRequests {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateWithBag($errorBag, Request $request, array $rules, array $messages = [], array $customAttributes = []) {
+    public function validateWithBag($errorBag, Request $request, array $rules, array $messages = [], array $customAttributes = [])
+    {
         $this->withErrorBag($errorBag, function () use ($request, $rules, $messages, $customAttributes) {
             $this->validate($request, $rules, $messages, $customAttributes);
         });
@@ -79,7 +82,8 @@ trait ValidatesRequests {
      * @param  callable  $callback
      * @return void
      */
-    protected function withErrorBag($errorBag, callable $callback) {
+    protected function withErrorBag($errorBag, callable $callback)
+    {
         $this->validatesRequestErrorBag = $errorBag;
 
         call_user_func($callback);
@@ -96,9 +100,10 @@ trait ValidatesRequests {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function throwValidationException(Request $request, $validator) {
+    protected function throwValidationException(Request $request, $validator)
+    {
         throw new ValidationException($validator, $this->buildFailedValidationResponse(
-                $request, $this->formatValidationErrors($validator)
+            $request, $this->formatValidationErrors($validator)
         ));
     }
 
@@ -109,7 +114,8 @@ trait ValidatesRequests {
      * @param  array  $errors
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function buildFailedValidationResponse(Request $request, array $errors) {
+    protected function buildFailedValidationResponse(Request $request, array $errors)
+    {
         if ($request->expectsJson()) {
             return new JsonResponse($errors, 422);
         }
@@ -125,7 +131,8 @@ trait ValidatesRequests {
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return array
      */
-    protected function formatValidationErrors(Validator $validator) {
+    protected function formatValidationErrors(Validator $validator)
+    {
         return $validator->errors()->getMessages();
     }
 
@@ -134,7 +141,8 @@ trait ValidatesRequests {
      *
      * @return string
      */
-    protected function errorBag() {
+    protected function errorBag()
+    {
         return $this->validatesRequestErrorBag ?: 'default';
     }
 
@@ -143,7 +151,8 @@ trait ValidatesRequests {
      *
      * @return string
      */
-    protected function getRedirectUrl() {
+    protected function getRedirectUrl()
+    {
         return app(UrlGenerator::class)->previous();
     }
 
@@ -152,8 +161,8 @@ trait ValidatesRequests {
      *
      * @return \Illuminate\Contracts\Validation\Factory
      */
-    protected function getValidationFactory() {
+    protected function getValidationFactory()
+    {
         return app(Factory::class);
     }
-
 }

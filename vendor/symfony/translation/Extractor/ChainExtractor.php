@@ -18,8 +18,8 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-class ChainExtractor implements ExtractorInterface {
-
+class ChainExtractor implements ExtractorInterface
+{
     /**
      * The extractors.
      *
@@ -33,14 +33,16 @@ class ChainExtractor implements ExtractorInterface {
      * @param string             $format    The format of the loader
      * @param ExtractorInterface $extractor The loader
      */
-    public function addExtractor($format, ExtractorInterface $extractor) {
+    public function addExtractor($format, ExtractorInterface $extractor)
+    {
         $this->extractors[$format] = $extractor;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPrefix($prefix) {
+    public function setPrefix($prefix)
+    {
         foreach ($this->extractors as $extractor) {
             $extractor->setPrefix($prefix);
         }
@@ -49,10 +51,10 @@ class ChainExtractor implements ExtractorInterface {
     /**
      * {@inheritdoc}
      */
-    public function extract($directory, MessageCatalogue $catalogue) {
+    public function extract($directory, MessageCatalogue $catalogue)
+    {
         foreach ($this->extractors as $extractor) {
             $extractor->extract($directory, $catalogue);
         }
     }
-
 }

@@ -2,10 +2,9 @@
 
 namespace Fixtures\Prophecy;
 
-class WithFinalMethod {
-
-    final public function finalImplementation() {
-        
+class WithFinalMethod
+{
+    final public function finalImplementation()
+    {
     }
-
 }

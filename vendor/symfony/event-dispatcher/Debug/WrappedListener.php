@@ -20,8 +20,8 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class WrappedListener {
-
+class WrappedListener
+{
     private $listener;
     private $name;
     private $called;
@@ -30,9 +30,11 @@ class WrappedListener {
     private $dispatcher;
     private $pretty;
     private $data;
+
     private static $cloner;
 
-    public function __construct($listener, $name, Stopwatch $stopwatch, EventDispatcherInterface $dispatcher = null) {
+    public function __construct($listener, $name, Stopwatch $stopwatch, EventDispatcherInterface $dispatcher = null)
+    {
         $this->listener = $listener;
         $this->name = $name;
         $this->stopwatch = $stopwatch;
@@ -42,14 +44,14 @@ class WrappedListener {
 
         if (is_array($listener)) {
             $this->name = is_object($listener[0]) ? get_class($listener[0]) : $listener[0];
-            $this->pretty = $this->name . '::' . $listener[1];
+            $this->pretty = $this->name.'::'.$listener[1];
         } elseif ($listener instanceof \Closure) {
             $this->pretty = $this->name = 'closure';
         } elseif (is_string($listener)) {
             $this->pretty = $this->name = $listener;
         } else {
             $this->name = get_class($listener);
-            $this->pretty = $this->name . '::__invoke';
+            $this->pretty = $this->name.'::__invoke';
         }
 
         if (null !== $name) {
@@ -61,25 +63,30 @@ class WrappedListener {
         }
     }
 
-    public function getWrappedListener() {
+    public function getWrappedListener()
+    {
         return $this->listener;
     }
 
-    public function wasCalled() {
+    public function wasCalled()
+    {
         return $this->called;
     }
 
-    public function stoppedPropagation() {
+    public function stoppedPropagation()
+    {
         return $this->stoppedPropagation;
     }
 
-    public function getPretty() {
+    public function getPretty()
+    {
         return $this->pretty;
     }
 
-    public function getInfo($eventName) {
+    public function getInfo($eventName)
+    {
         if (null === $this->data) {
-            $this->data = false !== self::$cloner ? self::$cloner->cloneVar(array(new ClassStub($this->pretty . '()', $this->listener)))->seek(0) : $this->pretty;
+            $this->data = false !== self::$cloner ? self::$cloner->cloneVar(array(new ClassStub($this->pretty.'()', $this->listener)))->seek(0) : $this->pretty;
         }
 
         return array(
@@ -90,7 +97,8 @@ class WrappedListener {
         );
     }
 
-    public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher) {
+    public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher)
+    {
         $this->called = true;
 
         $e = $this->stopwatch->start($this->name, 'event_listener');
@@ -105,5 +113,4 @@ class WrappedListener {
             $this->stoppedPropagation = true;
         }
     }
-
 }

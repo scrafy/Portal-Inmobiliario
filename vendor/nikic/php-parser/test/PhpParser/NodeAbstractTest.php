@@ -3,7 +3,6 @@
 namespace PhpParser;
 
 class DummyNode extends NodeAbstract {
-
     public $subNode1;
     public $subNode2;
 
@@ -21,15 +20,14 @@ class DummyNode extends NodeAbstract {
     public function getType() {
         return 'Dummy';
     }
-
 }
 
-class NodeAbstractTest extends \PHPUnit_Framework_TestCase {
-
+class NodeAbstractTest extends \PHPUnit_Framework_TestCase
+{
     public function provideNodes() {
         $attributes = array(
             'startLine' => 10,
-            'comments' => array(
+            'comments'  => array(
                 new Comment('// Comment' . "\n"),
                 new Comment\Doc('/** doc comment */'),
             ),
@@ -107,7 +105,7 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame('newValue', $node->subNode);
 
         // indirect modification
-        $subNode = & $node->subNode;
+        $subNode =& $node->subNode;
         $subNode = 'newNewValue';
         $this->assertSame('newNewValue', $node->subNode);
 
@@ -161,10 +159,11 @@ class NodeAbstractTest extends \PHPUnit_Framework_TestCase {
         $this->assertNull($node->getAttribute('null', 'default'));
 
         $this->assertSame(
-                array(
-            'key' => 'value',
-            'null' => null,
-                ), $node->getAttributes()
+            array(
+                'key'  => 'value',
+                'null' => null,
+            ),
+            $node->getAttributes()
         );
     }
 
@@ -272,5 +271,4 @@ JSON;
         $json = json_encode($stmts, JSON_PRETTY_PRINT);
         $this->assertEquals(canonicalize($expected), canonicalize($json));
     }
-
 }

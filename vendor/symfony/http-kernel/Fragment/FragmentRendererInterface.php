@@ -20,8 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface FragmentRendererInterface {
-
+interface FragmentRendererInterface
+{
     /**
      * Renders a URI and returns the Response content.
      *

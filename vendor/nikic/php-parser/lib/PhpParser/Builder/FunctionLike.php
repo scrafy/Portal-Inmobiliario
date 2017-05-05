@@ -5,8 +5,8 @@ namespace PhpParser\Builder;
 use PhpParser;
 use PhpParser\Node;
 
-abstract class FunctionLike extends Declaration {
-
+abstract class FunctionLike extends Declaration
+{
     protected $returnByRef = false;
     protected $params = array();
 
@@ -66,10 +66,10 @@ abstract class FunctionLike extends Declaration {
      *
      * @return $this The builder instance (for fluid interface)
      */
-    public function setReturnType($type) {
+    public function setReturnType($type)
+    {
         $this->returnType = $this->normalizeType($type);
 
         return $this;
     }
-
 }

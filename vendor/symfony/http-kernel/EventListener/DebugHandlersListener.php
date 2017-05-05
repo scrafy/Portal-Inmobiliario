@@ -27,8 +27,8 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class DebugHandlersListener implements EventSubscriberInterface {
-
+class DebugHandlersListener implements EventSubscriberInterface
+{
     private $exceptionHandler;
     private $logger;
     private $levels;
@@ -47,7 +47,8 @@ class DebugHandlersListener implements EventSubscriberInterface {
      * @param string|array         $fileLinkFormat   The format for links to source files
      * @param bool                 $scope            Enables/disables scoping mode
      */
-    public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = E_ALL, $throwAt = E_ALL, $scream = true, $fileLinkFormat = null, $scope = true) {
+    public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = E_ALL, $throwAt = E_ALL, $scream = true, $fileLinkFormat = null, $scope = true)
+    {
         $this->exceptionHandler = $exceptionHandler;
         $this->logger = $logger;
         $this->levels = null === $levels ? E_ALL : $levels;
@@ -62,7 +63,8 @@ class DebugHandlersListener implements EventSubscriberInterface {
      *
      * @param Event|null $event The triggering event
      */
-    public function configure(Event $event = null) {
+    public function configure(Event $event = null)
+    {
         if (!$this->firstCall) {
             return;
         }
@@ -131,7 +133,8 @@ class DebugHandlersListener implements EventSubscriberInterface {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         $events = array(KernelEvents::REQUEST => array('configure', 2048));
 
         if ('cli' === PHP_SAPI && defined('Symfony\Component\Console\ConsoleEvents::COMMAND')) {
@@ -140,5 +143,4 @@ class DebugHandlersListener implements EventSubscriberInterface {
 
         return $events;
     }
-
 }

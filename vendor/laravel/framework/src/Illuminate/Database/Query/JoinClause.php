@@ -4,8 +4,8 @@ namespace Illuminate\Database\Query;
 
 use Closure;
 
-class JoinClause extends Builder {
-
+class JoinClause extends Builder
+{
     /**
      * The type of join being performed.
      *
@@ -35,13 +35,14 @@ class JoinClause extends Builder {
      * @param  string  $table
      * @return void
      */
-    public function __construct(Builder $parentQuery, $type, $table) {
+    public function __construct(Builder $parentQuery, $type, $table)
+    {
         $this->type = $type;
         $this->table = $table;
         $this->parentQuery = $parentQuery;
 
         parent::__construct(
-                $parentQuery->getConnection(), $parentQuery->getGrammar(), $parentQuery->getProcessor()
+            $parentQuery->getConnection(), $parentQuery->getGrammar(), $parentQuery->getProcessor()
         );
     }
 
@@ -65,7 +66,8 @@ class JoinClause extends Builder {
      *
      * @throws \InvalidArgumentException
      */
-    public function on($first, $operator = null, $second = null, $boolean = 'and') {
+    public function on($first, $operator = null, $second = null, $boolean = 'and')
+    {
         if ($first instanceof Closure) {
             return $this->whereNested($first, $boolean);
         }
@@ -81,7 +83,8 @@ class JoinClause extends Builder {
      * @param  string|null  $second
      * @return \Illuminate\Database\Query\JoinClause
      */
-    public function orOn($first, $operator = null, $second = null) {
+    public function orOn($first, $operator = null, $second = null)
+    {
         return $this->on($first, $operator, $second, 'or');
     }
 
@@ -90,8 +93,8 @@ class JoinClause extends Builder {
      *
      * @return \Illuminate\Database\Query\JoinClause
      */
-    public function newQuery() {
+    public function newQuery()
+    {
         return new static($this->parentQuery, $this->type, $this->table);
     }
-
 }

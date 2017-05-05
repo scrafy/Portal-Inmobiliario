@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Auth;
 
-interface PasswordBrokerFactory {
-
+interface PasswordBrokerFactory
+{
     /**
      * Get a password broker instance by name.
      *

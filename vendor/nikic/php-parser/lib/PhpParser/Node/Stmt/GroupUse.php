@@ -5,14 +5,12 @@ namespace PhpParser\Node\Stmt;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 
-class GroupUse extends Stmt {
-
+class GroupUse extends Stmt
+{
     /** @var int Type of group use */
     public $type;
-
     /** @var Name Prefix for uses */
     public $prefix;
-
     /** @var UseUse[] Uses */
     public $uses;
 
@@ -34,5 +32,4 @@ class GroupUse extends Stmt {
     public function getSubNodeNames() {
         return array('type', 'prefix', 'uses');
     }
-
 }

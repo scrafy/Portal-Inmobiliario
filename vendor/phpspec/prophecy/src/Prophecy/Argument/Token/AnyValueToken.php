@@ -16,8 +16,8 @@ namespace Prophecy\Argument\Token;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class AnyValueToken implements TokenInterface {
-
+class AnyValueToken implements TokenInterface
+{
     /**
      * Always scores 3 for any argument.
      *
@@ -25,7 +25,8 @@ class AnyValueToken implements TokenInterface {
      *
      * @return int
      */
-    public function scoreArgument($argument) {
+    public function scoreArgument($argument)
+    {
         return 3;
     }
 
@@ -34,7 +35,8 @@ class AnyValueToken implements TokenInterface {
      *
      * @return bool
      */
-    public function isLast() {
+    public function isLast()
+    {
         return false;
     }
 
@@ -43,8 +45,8 @@ class AnyValueToken implements TokenInterface {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '*';
     }
-
 }

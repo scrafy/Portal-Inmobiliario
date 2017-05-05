@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_MimePart extends Swift_Mime_MimePart {
-
+class Swift_MimePart extends Swift_Mime_MimePart
+{
     /**
      * Create a new MimePart.
      *
@@ -24,15 +24,17 @@ class Swift_MimePart extends Swift_Mime_MimePart {
      * @param string $contentType
      * @param string $charset
      */
-    public function __construct($body = null, $contentType = null, $charset = null) {
+    public function __construct($body = null, $contentType = null, $charset = null)
+    {
         call_user_func_array(
-                array($this, 'Swift_Mime_MimePart::__construct'), Swift_DependencyContainer::getInstance()
-                        ->createDependenciesFor('mime.part')
-        );
+            array($this, 'Swift_Mime_MimePart::__construct'),
+            Swift_DependencyContainer::getInstance()
+                ->createDependenciesFor('mime.part')
+            );
 
         if (!isset($charset)) {
             $charset = Swift_DependencyContainer::getInstance()
-                    ->lookup('properties.charset');
+                ->lookup('properties.charset');
         }
         $this->setBody($body);
         $this->setCharset($charset);
@@ -50,8 +52,8 @@ class Swift_MimePart extends Swift_Mime_MimePart {
      *
      * @return Swift_Mime_MimePart
      */
-    public static function newInstance($body = null, $contentType = null, $charset = null) {
+    public static function newInstance($body = null, $contentType = null, $charset = null)
+    {
         return new self($body, $contentType, $charset);
     }
-
 }

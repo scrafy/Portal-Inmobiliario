@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Cache;
 
 use Closure;
 
-interface Repository {
-
+interface Repository
+{
     /**
      * Determine if an item exists in the cache.
      *

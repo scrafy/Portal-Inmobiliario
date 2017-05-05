@@ -22,9 +22,10 @@ use Symfony\Component\HttpKernel\Tests\Fixtures\TestClient;
 /**
  * @group time-sensitive
  */
-class ClientTest extends TestCase {
-
-    public function testDoRequest() {
+class ClientTest extends TestCase
+{
+    public function testDoRequest()
+    {
         $client = new Client(new TestHttpKernel());
 
         $client->request('GET', '/');
@@ -39,10 +40,11 @@ class ClientTest extends TestCase {
         $this->assertEquals('www.example.com', $client->getRequest()->getHost(), '->doRequest() uses the request handler to make the request');
 
         $client->request('GET', 'http://www.example.com/?parameter=http://google.com');
-        $this->assertEquals('http://www.example.com/?parameter=' . urlencode('http://google.com'), $client->getRequest()->getUri(), '->doRequest() uses the request handler to make the request');
+        $this->assertEquals('http://www.example.com/?parameter='.urlencode('http://google.com'), $client->getRequest()->getUri(), '->doRequest() uses the request handler to make the request');
     }
 
-    public function testGetScript() {
+    public function testGetScript()
+    {
         $client = new TestClient(new TestHttpKernel());
         $client->insulate();
         $client->request('GET', '/');
@@ -50,7 +52,8 @@ class ClientTest extends TestCase {
         $this->assertEquals('Request: /', $client->getResponse()->getContent(), '->getScript() returns a script that uses the request handler to make the request');
     }
 
-    public function testFilterResponseConvertsCookies() {
+    public function testFilterResponseConvertsCookies()
+    {
         $client = new Client(new TestHttpKernel());
 
         $r = new \ReflectionObject($client);
@@ -62,8 +65,8 @@ class ClientTest extends TestCase {
             'foo1=bar1; expires=Sun, 15 Feb 2009 20:00:00 GMT; domain=http://example.com; path=/foo; secure; httponly',
         );
         $expected33 = array(
-            'foo=bar; expires=Sun, 15-Feb-2009 20:00:00 GMT; max-age=' . (strtotime('Sun, 15-Feb-2009 20:00:00 GMT') - time()) . '; path=/foo; domain=http://example.com; secure; httponly',
-            'foo1=bar1; expires=Sun, 15-Feb-2009 20:00:00 GMT; max-age=' . (strtotime('Sun, 15-Feb-2009 20:00:00 GMT') - time()) . '; path=/foo; domain=http://example.com; secure; httponly',
+            'foo=bar; expires=Sun, 15-Feb-2009 20:00:00 GMT; max-age='.(strtotime('Sun, 15-Feb-2009 20:00:00 GMT') - time()).'; path=/foo; domain=http://example.com; secure; httponly',
+            'foo1=bar1; expires=Sun, 15-Feb-2009 20:00:00 GMT; max-age='.(strtotime('Sun, 15-Feb-2009 20:00:00 GMT') - time()).'; path=/foo; domain=http://example.com; secure; httponly',
         );
 
         $response = new Response();
@@ -97,7 +100,8 @@ class ClientTest extends TestCase {
         }
     }
 
-    public function testFilterResponseSupportsStreamedResponses() {
+    public function testFilterResponseSupportsStreamedResponses()
+    {
         $client = new Client(new TestHttpKernel());
 
         $r = new \ReflectionObject($client);
@@ -112,9 +116,10 @@ class ClientTest extends TestCase {
         $this->assertEquals('foo', $domResponse->getContent());
     }
 
-    public function testUploadedFile() {
+    public function testUploadedFile()
+    {
         $source = tempnam(sys_get_temp_dir(), 'source');
-        $target = sys_get_temp_dir() . '/sf.moved.file';
+        $target = sys_get_temp_dir().'/sf.moved.file';
         @unlink($target);
 
         $kernel = new TestHttpKernel();
@@ -147,7 +152,8 @@ class ClientTest extends TestCase {
         unlink($target);
     }
 
-    public function testUploadedFileWhenNoFileSelected() {
+    public function testUploadedFileWhenNoFileSelected()
+    {
         $kernel = new TestHttpKernel();
         $client = new Client($kernel);
 
@@ -161,22 +167,23 @@ class ClientTest extends TestCase {
         $this->assertNull($files['foo']);
     }
 
-    public function testUploadedFileWhenSizeExceedsUploadMaxFileSize() {
+    public function testUploadedFileWhenSizeExceedsUploadMaxFileSize()
+    {
         $source = tempnam(sys_get_temp_dir(), 'source');
 
         $kernel = new TestHttpKernel();
         $client = new Client($kernel);
 
         $file = $this
-                ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-                ->setConstructorArgs(array($source, 'original', 'mime/original', 123, UPLOAD_ERR_OK, true))
-                ->setMethods(array('getSize'))
-                ->getMock()
+            ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->setConstructorArgs(array($source, 'original', 'mime/original', 123, UPLOAD_ERR_OK, true))
+            ->setMethods(array('getSize'))
+            ->getMock()
         ;
 
         $file->expects($this->once())
-                ->method('getSize')
-                ->will($this->returnValue(INF))
+            ->method('getSize')
+            ->will($this->returnValue(INF))
         ;
 
         $client->request('POST', '/', array(), array($file));
@@ -195,5 +202,4 @@ class ClientTest extends TestCase {
 
         unlink($source);
     }
-
 }

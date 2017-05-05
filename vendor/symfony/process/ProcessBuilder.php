@@ -19,8 +19,8 @@ use Symfony\Component\Process\Exception\LogicException;
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
-class ProcessBuilder {
-
+class ProcessBuilder
+{
     private $arguments;
     private $cwd;
     private $env = array();
@@ -36,7 +36,8 @@ class ProcessBuilder {
      *
      * @param string[] $arguments An array of arguments
      */
-    public function __construct(array $arguments = array()) {
+    public function __construct(array $arguments = array())
+    {
         $this->arguments = $arguments;
     }
 
@@ -47,7 +48,8 @@ class ProcessBuilder {
      *
      * @return static
      */
-    public static function create(array $arguments = array()) {
+    public static function create(array $arguments = array())
+    {
         return new static($arguments);
     }
 
@@ -58,7 +60,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function add($argument) {
+    public function add($argument)
+    {
         $this->arguments[] = $argument;
 
         return $this;
@@ -73,7 +76,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function setPrefix($prefix) {
+    public function setPrefix($prefix)
+    {
         $this->prefix = is_array($prefix) ? $prefix : array($prefix);
 
         return $this;
@@ -89,7 +93,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function setArguments(array $arguments) {
+    public function setArguments(array $arguments)
+    {
         $this->arguments = $arguments;
 
         return $this;
@@ -102,7 +107,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function setWorkingDirectory($cwd) {
+    public function setWorkingDirectory($cwd)
+    {
         $this->cwd = $cwd;
 
         return $this;
@@ -115,7 +121,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function inheritEnvironmentVariables($inheritEnv = true) {
+    public function inheritEnvironmentVariables($inheritEnv = true)
+    {
         $this->inheritEnv = $inheritEnv;
 
         return $this;
@@ -132,7 +139,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function setEnv($name, $value) {
+    public function setEnv($name, $value)
+    {
         $this->env[$name] = $value;
 
         return $this;
@@ -149,7 +157,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function addEnvironmentVariables(array $variables) {
+    public function addEnvironmentVariables(array $variables)
+    {
         $this->env = array_replace($this->env, $variables);
 
         return $this;
@@ -164,7 +173,8 @@ class ProcessBuilder {
      *
      * @throws InvalidArgumentException In case the argument is invalid
      */
-    public function setInput($input) {
+    public function setInput($input)
+    {
         $this->input = ProcessUtils::validateInput(__METHOD__, $input);
 
         return $this;
@@ -181,7 +191,8 @@ class ProcessBuilder {
      *
      * @throws InvalidArgumentException
      */
-    public function setTimeout($timeout) {
+    public function setTimeout($timeout)
+    {
         if (null === $timeout) {
             $this->timeout = null;
 
@@ -207,7 +218,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function setOption($name, $value) {
+    public function setOption($name, $value)
+    {
         $this->options[$name] = $value;
 
         return $this;
@@ -218,7 +230,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function disableOutput() {
+    public function disableOutput()
+    {
         $this->outputDisabled = true;
 
         return $this;
@@ -229,7 +242,8 @@ class ProcessBuilder {
      *
      * @return $this
      */
-    public function enableOutput() {
+    public function enableOutput()
+    {
         $this->outputDisabled = false;
 
         return $this;
@@ -242,7 +256,8 @@ class ProcessBuilder {
      *
      * @throws LogicException In case no arguments have been provided
      */
-    public function getProcess() {
+    public function getProcess()
+    {
         if (0 === count($this->prefix) && 0 === count($this->arguments)) {
             throw new LogicException('You must add() command arguments before calling getProcess().');
         }
@@ -250,7 +265,7 @@ class ProcessBuilder {
         $options = $this->options;
 
         $arguments = array_merge($this->prefix, $this->arguments);
-        $script = implode(' ', array_map(array(__NAMESPACE__ . '\\ProcessUtils', 'escapeArgument'), $arguments));
+        $script = implode(' ', array_map(array(__NAMESPACE__.'\\ProcessUtils', 'escapeArgument'), $arguments));
 
         $process = new Process($script, $this->cwd, $this->env, $this->input, $this->timeout, $options);
 
@@ -263,5 +278,4 @@ class ProcessBuilder {
 
         return $process;
     }
-
 }

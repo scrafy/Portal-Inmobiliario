@@ -32,8 +32,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class RouterListener implements EventSubscriberInterface {
-
+class RouterListener implements EventSubscriberInterface
+{
     private $matcher;
     private $context;
     private $logger;
@@ -49,7 +49,8 @@ class RouterListener implements EventSubscriberInterface {
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($matcher, RequestStack $requestStack, RequestContext $context = null, LoggerInterface $logger = null) {
+    public function __construct($matcher, RequestStack $requestStack, RequestContext $context = null, LoggerInterface $logger = null)
+    {
         if (!$matcher instanceof UrlMatcherInterface && !$matcher instanceof RequestMatcherInterface) {
             throw new \InvalidArgumentException('Matcher must either implement UrlMatcherInterface or RequestMatcherInterface.');
         }
@@ -64,7 +65,8 @@ class RouterListener implements EventSubscriberInterface {
         $this->logger = $logger;
     }
 
-    private function setCurrentRequest(Request $request = null) {
+    private function setCurrentRequest(Request $request = null)
+    {
         if (null !== $request) {
             $this->context->fromRequest($request);
         }
@@ -76,11 +78,13 @@ class RouterListener implements EventSubscriberInterface {
      *
      * @param FinishRequestEvent $event
      */
-    public function onKernelFinishRequest(FinishRequestEvent $event) {
+    public function onKernelFinishRequest(FinishRequestEvent $event)
+    {
         $this->setCurrentRequest($this->requestStack->getParentRequest());
     }
 
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(GetResponseEvent $event)
+    {
         $request = $event->getRequest();
 
         $this->setCurrentRequest($request);
@@ -126,11 +130,11 @@ class RouterListener implements EventSubscriberInterface {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             KernelEvents::REQUEST => array(array('onKernelRequest', 32)),
             KernelEvents::FINISH_REQUEST => array(array('onKernelFinishRequest', 0)),
         );
     }
-
 }

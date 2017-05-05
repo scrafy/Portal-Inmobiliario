@@ -1,41 +1,49 @@
 <?php
 
-class Swift_Plugins_Reporters_HtmlReporterTest extends \PHPUnit_Framework_TestCase {
-
+class Swift_Plugins_Reporters_HtmlReporterTest extends \PHPUnit_Framework_TestCase
+{
     private $_html;
     private $_message;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->_html = new Swift_Plugins_Reporters_HtmlReporter();
         $this->_message = $this->getMockBuilder('Swift_Mime_Message')->getMock();
     }
 
-    public function testReportingPass() {
+    public function testReportingPass()
+    {
         ob_start();
-        $this->_html->notify($this->_message, 'foo@bar.tld', Swift_Plugins_Reporter::RESULT_PASS
-        );
+        $this->_html->notify($this->_message, 'foo@bar.tld',
+            Swift_Plugins_Reporter::RESULT_PASS
+            );
         $html = ob_get_clean();
 
         $this->assertRegExp('~ok|pass~i', $html, '%s: Reporter should indicate pass');
         $this->assertRegExp('~foo@bar\.tld~', $html, '%s: Reporter should show address');
     }
 
-    public function testReportingFail() {
+    public function testReportingFail()
+    {
         ob_start();
-        $this->_html->notify($this->_message, 'zip@button', Swift_Plugins_Reporter::RESULT_FAIL
-        );
+        $this->_html->notify($this->_message, 'zip@button',
+            Swift_Plugins_Reporter::RESULT_FAIL
+            );
         $html = ob_get_clean();
 
         $this->assertRegExp('~fail~i', $html, '%s: Reporter should indicate fail');
         $this->assertRegExp('~zip@button~', $html, '%s: Reporter should show address');
     }
 
-    public function testMultipleReports() {
+    public function testMultipleReports()
+    {
         ob_start();
-        $this->_html->notify($this->_message, 'foo@bar.tld', Swift_Plugins_Reporter::RESULT_PASS
-        );
-        $this->_html->notify($this->_message, 'zip@button', Swift_Plugins_Reporter::RESULT_FAIL
-        );
+        $this->_html->notify($this->_message, 'foo@bar.tld',
+            Swift_Plugins_Reporter::RESULT_PASS
+            );
+        $this->_html->notify($this->_message, 'zip@button',
+            Swift_Plugins_Reporter::RESULT_FAIL
+            );
         $html = ob_get_clean();
 
         $this->assertRegExp('~ok|pass~i', $html, '%s: Reporter should indicate pass');
@@ -43,5 +51,4 @@ class Swift_Plugins_Reporters_HtmlReporterTest extends \PHPUnit_Framework_TestCa
         $this->assertRegExp('~fail~i', $html, '%s: Reporter should indicate fail');
         $this->assertRegExp('~zip@button~', $html, '%s: Reporter should show address');
     }
-
 }

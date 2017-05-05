@@ -7,8 +7,8 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Scalar\String_;
 
-abstract class ParserTest extends \PHPUnit_Framework_TestCase {
-
+abstract class ParserTest extends \PHPUnit_Framework_TestCase
+{
     /** @returns Parser */
     abstract protected function getParser(Lexer $lexer);
 
@@ -72,7 +72,7 @@ EOC;
             'endLine' => 7,
             'startTokenPos' => 3,
             'endTokenPos' => 21,
-                ), $fn->getAttributes());
+        ), $fn->getAttributes());
 
         $param = $fn->params[0];
         $this->assertInstanceOf('PhpParser\Node\Param', $param);
@@ -81,7 +81,7 @@ EOC;
             'endLine' => 3,
             'startTokenPos' => 7,
             'endTokenPos' => 7,
-                ), $param->getAttributes());
+        ), $param->getAttributes());
 
         /** @var \PhpParser\Node\Stmt\Echo_ $echo */
         $echo = $fn->stmts[0];
@@ -95,7 +95,7 @@ EOC;
             'endLine' => 6,
             'startTokenPos' => 16,
             'endTokenPos' => 19,
-                ), $echo->getAttributes());
+        ), $echo->getAttributes());
 
         /** @var \PhpParser\Node\Expr\Variable $var */
         $var = $echo->exprs[0];
@@ -105,7 +105,7 @@ EOC;
             'endLine' => 6,
             'startTokenPos' => 18,
             'endTokenPos' => 18,
-                ), $var->getAttributes());
+        ), $var->getAttributes());
     }
 
     /**
@@ -171,14 +171,11 @@ EOC;
             array("?>\nFoo", ['hasLeadingNewline' => true]),
         );
     }
-
 }
 
 class InvalidTokenLexer extends Lexer {
-
     public function getNextToken(&$value = null, &$startAttributes = null, &$endAttributes = null) {
         $value = 'foobar';
         return 999;
     }
-
 }

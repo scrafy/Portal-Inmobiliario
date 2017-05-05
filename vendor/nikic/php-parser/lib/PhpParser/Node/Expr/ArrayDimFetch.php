@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class ArrayDimFetch extends Expr {
-
+class ArrayDimFetch extends Expr
+{
     /** @var Expr Variable */
     public $var;
-
     /** @var null|Expr Array index / dim */
     public $dim;
 
@@ -28,5 +27,4 @@ class ArrayDimFetch extends Expr {
     public function getSubNodeNames() {
         return array('var', 'dim');
     }
-
 }

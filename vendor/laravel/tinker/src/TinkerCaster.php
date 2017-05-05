@@ -5,8 +5,8 @@ namespace Laravel\Tinker;
 use Exception;
 use Symfony\Component\VarDumper\Caster\Caster;
 
-class TinkerCaster {
-
+class TinkerCaster
+{
     /**
      * Application methods to include in the presenter.
      *
@@ -36,15 +36,16 @@ class TinkerCaster {
      * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
-    public static function castApplication($app) {
+    public static function castApplication($app)
+    {
         $results = [];
 
         foreach (self::$appProperties as $property) {
             try {
                 $val = $app->$property();
 
-                if (!is_null($val)) {
-                    $results[Caster::PREFIX_VIRTUAL . $property] = $val;
+                if (! is_null($val)) {
+                    $results[Caster::PREFIX_VIRTUAL.$property] = $val;
                 }
             } catch (Exception $e) {
                 //
@@ -60,9 +61,10 @@ class TinkerCaster {
      * @param  \Illuminate\Support\Collection  $collection
      * @return array
      */
-    public static function castCollection($collection) {
+    public static function castCollection($collection)
+    {
         return [
-            Caster::PREFIX_VIRTUAL . 'all' => $collection->all(),
+            Caster::PREFIX_VIRTUAL.'all' => $collection->all(),
         ];
     }
 
@@ -72,22 +74,22 @@ class TinkerCaster {
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
-    public static function castModel($model) {
+    public static function castModel($model)
+    {
         $attributes = array_merge(
-                $model->getAttributes(), $model->getRelations()
+            $model->getAttributes(), $model->getRelations()
         );
 
         $visible = array_flip(
-                $model->getVisible() ?: array_diff(array_keys($attributes), $model->getHidden())
+            $model->getVisible() ?: array_diff(array_keys($attributes), $model->getHidden())
         );
 
         $results = [];
 
         foreach (array_intersect_key($attributes, $visible) as $key => $value) {
-            $results[(isset($visible[$key]) ? Caster::PREFIX_VIRTUAL : Caster::PREFIX_PROTECTED) . $key] = $value;
+            $results[(isset($visible[$key]) ? Caster::PREFIX_VIRTUAL : Caster::PREFIX_PROTECTED).$key] = $value;
         }
 
         return $results;
     }
-
 }

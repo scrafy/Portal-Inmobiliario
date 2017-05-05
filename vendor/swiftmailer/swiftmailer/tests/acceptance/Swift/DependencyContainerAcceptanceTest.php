@@ -4,9 +4,10 @@ require_once 'swift_required.php';
 
 //This is more of a "cross your fingers and hope it works" test!
 
-class Swift_DependencyContainerAcceptanceTest extends \PHPUnit_Framework_TestCase {
-
-    public function testNoLookupsFail() {
+class Swift_DependencyContainerAcceptanceTest extends \PHPUnit_Framework_TestCase
+{
+    public function testNoLookupsFail()
+    {
         $di = Swift_DependencyContainer::getInstance();
         foreach ($di->listItems() as $itemName) {
             try {
@@ -20,5 +21,4 @@ class Swift_DependencyContainerAcceptanceTest extends \PHPUnit_Framework_TestCas
             }
         }
     }
-
 }

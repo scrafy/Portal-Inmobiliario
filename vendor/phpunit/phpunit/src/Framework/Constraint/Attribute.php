@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint_Composite {
-
+class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint_Composite
+{
     /**
      * @var string
      */
@@ -20,7 +19,8 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      * @param PHPUnit_Framework_Constraint $constraint
      * @param string                       $attributeName
      */
-    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName) {
+    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    {
         parent::__construct($constraint);
 
         $this->attributeName = $attributeName;
@@ -44,11 +44,15 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = false) {
+    public function evaluate($other, $description = '', $returnResult = false)
+    {
         return parent::evaluate(
-                        PHPUnit_Framework_Assert::readAttribute(
-                                $other, $this->attributeName
-                        ), $description, $returnResult
+            PHPUnit_Framework_Assert::readAttribute(
+                $other,
+                $this->attributeName
+            ),
+            $description,
+            $returnResult
         );
     }
 
@@ -57,9 +61,10 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'attribute "' . $this->attributeName . '" ' .
-                $this->innerConstraint->toString();
+               $this->innerConstraint->toString();
     }
 
     /**
@@ -72,8 +77,8 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return $this->toString();
     }
-
 }

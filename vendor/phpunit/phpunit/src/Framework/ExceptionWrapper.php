@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -18,8 +17,8 @@
  * Unlike PHPUnit_Framework_Exception, the complete stack of previous Exceptions
  * is processed.
  */
-class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception {
-
+class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
+{
     /**
      * @var string
      */
@@ -33,14 +32,15 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception {
     /**
      * @param Throwable|Exception $e
      */
-    public function __construct($e) {
+    public function __construct($e)
+    {
         // PDOException::getCode() is a string.
         // @see http://php.net/manual/en/class.pdoexception.php#95812
         parent::__construct($e->getMessage(), (int) $e->getCode());
 
         $this->className = get_class($e);
-        $this->file = $e->getFile();
-        $this->line = $e->getLine();
+        $this->file      = $e->getFile();
+        $this->line      = $e->getLine();
 
         $this->serializableTrace = $e->getTrace();
 
@@ -56,21 +56,24 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception {
     /**
      * @return string
      */
-    public function getClassName() {
+    public function getClassName()
+    {
         return $this->className;
     }
 
     /**
      * @return PHPUnit_Framework_ExceptionWrapper
      */
-    public function getPreviousWrapped() {
+    public function getPreviousWrapped()
+    {
         return $this->previous;
     }
 
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $string = PHPUnit_Framework_TestFailure::exceptionToString($this);
 
         if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
@@ -83,5 +86,4 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception {
 
         return $string;
     }
-
 }

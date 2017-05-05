@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Ducktype extends MatcherAbstract {
+class Ducktype extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,7 +29,8 @@ class Ducktype extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
+    public function match(&$actual)
+    {
         if (!is_object($actual)) {
             return false;
         }
@@ -46,8 +47,8 @@ class Ducktype extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return '<Ducktype[' . implode(', ', $this->_expected) . ']>';
     }
-
 }

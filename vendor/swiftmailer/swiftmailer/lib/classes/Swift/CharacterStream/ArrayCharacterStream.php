@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStream {
-
+class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStream
+{
     /** A map of byte values and their respective characters */
     private static $_charMap;
 
@@ -45,7 +45,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      * @param Swift_CharacterReaderFactory $factory for loading validators
      * @param string                       $charset used in the stream
      */
-    public function __construct(Swift_CharacterReaderFactory $factory, $charset) {
+    public function __construct(Swift_CharacterReaderFactory $factory, $charset)
+    {
         self::_initializeMaps();
         $this->setCharacterReaderFactory($factory);
         $this->setCharacterSet($charset);
@@ -56,7 +57,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param string $charset
      */
-    public function setCharacterSet($charset) {
+    public function setCharacterSet($charset)
+    {
         $this->_charset = $charset;
         $this->_charReader = null;
     }
@@ -66,7 +68,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param Swift_CharacterReaderFactory $factory
      */
-    public function setCharacterReaderFactory(Swift_CharacterReaderFactory $factory) {
+    public function setCharacterReaderFactory(Swift_CharacterReaderFactory $factory)
+    {
         $this->_charReaderFactory = $factory;
     }
 
@@ -75,10 +78,11 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param Swift_OutputByteStream $os output stream to read from
      */
-    public function importByteStream(Swift_OutputByteStream $os) {
+    public function importByteStream(Swift_OutputByteStream $os)
+    {
         if (!isset($this->_charReader)) {
             $this->_charReader = $this->_charReaderFactory
-                    ->getReaderFor($this->_charset);
+                ->getReaderFor($this->_charset);
         }
 
         $startLength = $this->_charReader->getInitialByteSize();
@@ -89,9 +93,9 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
             }
             $size = count($c);
             $need = $this->_charReader
-                    ->validateByteSequence($c, $size);
+                ->validateByteSequence($c, $size);
             if ($need > 0 &&
-                    false !== $bytes = $os->read($need)) {
+                false !== $bytes = $os->read($need)) {
                 for ($i = 0, $len = strlen($bytes); $i < $len; ++$i) {
                     $c[] = self::$_byteMap[$bytes[$i]];
                 }
@@ -107,7 +111,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param string $string
      */
-    public function importString($string) {
+    public function importString($string)
+    {
         $this->flushContents();
         $this->write($string);
     }
@@ -120,7 +125,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @return string
      */
-    public function read($length) {
+    public function read($length)
+    {
         if ($this->_offset == $this->_array_size) {
             return false;
         }
@@ -151,7 +157,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @return int[]
      */
-    public function readBytes($length) {
+    public function readBytes($length)
+    {
         if ($this->_offset == $this->_array_size) {
             return false;
         }
@@ -173,10 +180,11 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param string $chars
      */
-    public function write($chars) {
+    public function write($chars)
+    {
         if (!isset($this->_charReader)) {
             $this->_charReader = $this->_charReaderFactory->getReaderFor(
-                    $this->_charset);
+                $this->_charset);
         }
 
         $startLength = $this->_charReader->getInitialByteSize();
@@ -211,7 +219,7 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
                     $bytes[] = $buffer[$buf_pos++];
                 }
                 $need = $this->_charReader->validateByteSequence(
-                        $bytes, $size);
+                    $bytes, $size);
                 if ($need > 0) {
                     if ($buf_len - $buf_pos < $need) {
                         $new = $this->_reloadBuffer($fp, $need);
@@ -238,7 +246,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
      *
      * @param int $charOffset
      */
-    public function setPointer($charOffset) {
+    public function setPointer($charOffset)
+    {
         if ($charOffset > $this->_array_size) {
             $charOffset = $this->_array_size;
         } elseif ($charOffset < 0) {
@@ -250,13 +259,15 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
     /**
      * Empty the stream and reset the internal pointer.
      */
-    public function flushContents() {
+    public function flushContents()
+    {
         $this->_offset = 0;
         $this->_array = array();
         $this->_array_size = 0;
     }
 
-    private function _reloadBuffer($fp, $len) {
+    private function _reloadBuffer($fp, $len)
+    {
         if (!feof($fp) && ($bytes = fread($fp, $len)) !== false) {
             $buf = array();
             for ($i = 0, $len = strlen($bytes); $i < $len; ++$i) {
@@ -269,7 +280,8 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
         return false;
     }
 
-    private static function _initializeMaps() {
+    private static function _initializeMaps()
+    {
         if (!isset(self::$_charMap)) {
             self::$_charMap = array();
             for ($byte = 0; $byte < 256; ++$byte) {
@@ -278,5 +290,4 @@ class Swift_CharacterStream_ArrayCharacterStream implements Swift_CharacterStrea
             self::$_byteMap = array_flip(self::$_charMap);
         }
     }
-
 }

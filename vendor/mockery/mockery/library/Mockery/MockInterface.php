@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-interface MockInterface {
+interface MockInterface
+{
 
     /**
      * Alternative setup method to constructor
@@ -72,7 +72,7 @@ interface MockInterface {
      * @return Mock
      */
     public function shouldDeferMissing();
-
+    
     /**
      * Set mock to defer unexpected methods to its parent if possible
      *
@@ -94,6 +94,7 @@ interface MockInterface {
      */
     public function shouldNotHaveReceived($method, $args = null);
 
+
     /**
      * In the event shouldReceive() accepting an array of methods/returns
      * this method will switch them from normal expectations to default
@@ -110,11 +111,11 @@ interface MockInterface {
      * @param array $args
      * @return mixed
      */
-    /**
-     * Unfortunately we need to allow type hinting agnostic __call()
-     * definitions since any interface/class being mocked can go either
-     * way.
-     */
+        /**
+         * Unfortunately we need to allow type hinting agnostic __call()
+         * definitions since any interface/class being mocked can go either
+         * way.
+         */
     //public function __call($method, array $args);
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,6 +20,6 @@
 
 namespace Mockery;
 
-class Exception extends \UnexpectedValueException {
-    
+class Exception extends \UnexpectedValueException
+{
 }

@@ -21,8 +21,8 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ClosureLoader extends Loader {
-
+class ClosureLoader extends Loader
+{
     /**
      * Loads a Closure.
      *
@@ -31,15 +31,16 @@ class ClosureLoader extends Loader {
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function load($closure, $type = null) {
+    public function load($closure, $type = null)
+    {
         return $closure();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return $resource instanceof \Closure && (!$type || 'closure' === $type);
     }
-
 }

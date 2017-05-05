@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
 if (!function_exists('Psy\sh')) {
-
     /**
      * Command to return the eval-able code to startup PsySH.
      *
@@ -26,14 +25,13 @@ if (!function_exists('Psy\sh')) {
      *
      * @return string
      */
-    function sh() {
+    function sh()
+    {
         return 'extract(\Psy\Shell::debug(get_defined_vars(), isset($this) ? $this : null));';
     }
-
 }
 
 if (!function_exists('Psy\info')) {
-
     /**
      * Get a bunch of debugging info about the current PsySH environment and
      * configuration.
@@ -45,7 +43,8 @@ if (!function_exists('Psy\info')) {
      *
      * @return array|null
      */
-    function info(Configuration $config = null) {
+    function info(Configuration $config = null)
+    {
         static $lastConfig;
         if ($config !== null) {
             $lastConfig = $config;
@@ -56,28 +55,28 @@ if (!function_exists('Psy\info')) {
         $config = $lastConfig ?: new Configuration();
 
         $core = array(
-            'PsySH version' => Shell::VERSION,
-            'PHP version' => PHP_VERSION,
-            'default includes' => $config->getDefaultIncludes(),
-            'require semicolons' => $config->requireSemicolons(),
+            'PsySH version'       => Shell::VERSION,
+            'PHP version'         => PHP_VERSION,
+            'default includes'    => $config->getDefaultIncludes(),
+            'require semicolons'  => $config->requireSemicolons(),
             'error logging level' => $config->errorLoggingLevel(),
-            'config file' => array(
+            'config file'         => array(
                 'default config file' => $config->getConfigFile(),
-                'local config file' => $config->getLocalConfigFile(),
-                'PSYSH_CONFIG env' => getenv('PSYSH_CONFIG'),
+                'local config file'   => $config->getLocalConfigFile(),
+                'PSYSH_CONFIG env'    => getenv('PSYSH_CONFIG'),
             ),
-                // 'config dir'  => $config->getConfigDir(),
-                // 'data dir'    => $config->getDataDir(),
-                // 'runtime dir' => $config->getRuntimeDir(),
+            // 'config dir'  => $config->getConfigDir(),
+            // 'data dir'    => $config->getDataDir(),
+            // 'runtime dir' => $config->getRuntimeDir(),
         );
 
         // Use an explicit, fresh update check here, rather than relying on whatever is in $config.
         $checker = new GitHubChecker();
         $updates = array(
-            'update available' => !$checker->isLatest(),
+            'update available'       => !$checker->isLatest(),
             'latest release version' => $checker->getLatest(),
-            'update check interval' => $config->getUpdateCheck(),
-            'update cache file' => $config->getUpdateCheckCacheFile(),
+            'update check interval'  => $config->getUpdateCheck(),
+            'update cache file'      => $config->getUpdateCheckCacheFile(),
         );
 
         if ($config->hasReadline()) {
@@ -85,9 +84,9 @@ if (!function_exists('Psy\info')) {
 
             $readline = array(
                 'readline available' => true,
-                'readline enabled' => $config->useReadline(),
-                'readline service' => get_class($config->getReadline()),
-                'readline library' => $info['library_version'],
+                'readline enabled'   => $config->useReadline(),
+                'readline service'   => get_class($config->getReadline()),
+                'readline library'   => $info['library_version'],
             );
 
             if ($info['readline_name'] !== '') {
@@ -105,13 +104,13 @@ if (!function_exists('Psy\info')) {
         );
 
         $history = array(
-            'history file' => $config->getHistoryFile(),
-            'history size' => $config->getHistorySize(),
+            'history file'     => $config->getHistoryFile(),
+            'history size'     => $config->getHistorySize(),
             'erase duplicates' => $config->getEraseDuplicates(),
         );
 
         $docs = array(
-            'manual db file' => $config->getManualDbFile(),
+            'manual db file'   => $config->getManualDbFile(),
             'sqlite available' => true,
         );
 
@@ -145,34 +144,34 @@ if (!function_exists('Psy\info')) {
 
         $autocomplete = array(
             'tab completion enabled' => $config->getTabCompletion(),
-            'custom matchers' => array_map('get_class', $config->getTabCompletionMatchers()),
+            'custom matchers'        => array_map('get_class', $config->getTabCompletionMatchers()),
         );
 
         return array_merge($core, compact('updates', 'pcntl', 'readline', 'history', 'docs', 'autocomplete'));
     }
-
 }
 
 if (!function_exists('Psy\bin')) {
-
     /**
      * `psysh` command line executable.
      *
      * @return Closure
      */
-    function bin() {
+    function bin()
+    {
         return function () {
             $usageException = null;
 
             $input = new ArgvInput();
             try {
                 $input->bind(new InputDefinition(array(
-                    new InputOption('help', 'h', InputOption::VALUE_NONE),
-                    new InputOption('config', 'c', InputOption::VALUE_REQUIRED),
-                    new InputOption('version', 'v', InputOption::VALUE_NONE),
-                    new InputOption('cwd', null, InputOption::VALUE_REQUIRED),
-                    new InputOption('color', null, InputOption::VALUE_NONE),
+                    new InputOption('help',     'h',  InputOption::VALUE_NONE),
+                    new InputOption('config',   'c',  InputOption::VALUE_REQUIRED),
+                    new InputOption('version',  'v',  InputOption::VALUE_NONE),
+                    new InputOption('cwd',      null, InputOption::VALUE_REQUIRED),
+                    new InputOption('color',    null, InputOption::VALUE_NONE),
                     new InputOption('no-color', null, InputOption::VALUE_NONE),
+
                     new InputArgument('include', InputArgument::IS_ARRAY),
                 )));
             } catch (\RuntimeException $e) {
@@ -204,7 +203,7 @@ if (!function_exists('Psy\bin')) {
                 }
 
                 $version = $shell->getVersion();
-                $name = basename(reset($_SERVER['argv']));
+                $name    = basename(reset($_SERVER['argv']));
                 echo <<<EOL
 $version
 
@@ -241,9 +240,9 @@ EOL;
                 // TODO: this triggers the "exited unexpectedly" logic in the
                 // ForkingLoop, so we can't exit(1) after starting the shell...
                 // fix this :)
+
                 // exit(1);
             }
         };
     }
-
 }

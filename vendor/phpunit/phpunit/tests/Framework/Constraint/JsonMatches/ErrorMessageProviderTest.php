@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,31 +8,37 @@
  * file that was distributed with this source code.
  */
 
-class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_Framework_TestCase {
-
+class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider translateTypeToPrefixDataprovider
      */
-    public function testTranslateTypeToPrefix($expected, $type) {
+    public function testTranslateTypeToPrefix($expected, $type)
+    {
         $this->assertEquals(
-                $expected, PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix($type)
+            $expected,
+            PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix($type)
         );
     }
 
     /**
      * @dataProvider determineJsonErrorDataprovider
      */
-    public function testDetermineJsonError($expected, $error, $prefix) {
+    public function testDetermineJsonError($expected, $error, $prefix)
+    {
         $this->assertEquals(
-                $expected, PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-                        $error, $prefix
-                )
+            $expected,
+            PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
+                $error,
+                $prefix
+            )
         );
     }
 
-    public static function determineJsonErrorDataprovider() {
+    public static function determineJsonErrorDataprovider()
+    {
         return [
-            'JSON_ERROR_NONE' => [
+            'JSON_ERROR_NONE'  => [
                 null, 'json_error_none', ''
             ],
             'JSON_ERROR_DEPTH' => [
@@ -62,12 +67,12 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
         ];
     }
 
-    public static function translateTypeToPrefixDataprovider() {
+    public static function translateTypeToPrefixDataprovider()
+    {
         return [
             'expected' => ['Expected value JSON decode error - ', 'expected'],
-            'actual' => ['Actual value JSON decode error - ', 'actual'],
-            'default' => ['', ''],
+            'actual'   => ['Actual value JSON decode error - ', 'actual'],
+            'default'  => ['', ''],
         ];
     }
-
 }

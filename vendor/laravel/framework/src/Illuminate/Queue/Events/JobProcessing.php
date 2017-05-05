@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Events;
 
-class JobProcessing {
-
+class JobProcessing
+{
     /**
      * The connection name.
      *
@@ -25,9 +25,9 @@ class JobProcessing {
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return void
      */
-    public function __construct($connectionName, $job) {
+    public function __construct($connectionName, $job)
+    {
         $this->job = $job;
         $this->connectionName = $connectionName;
     }
-
 }

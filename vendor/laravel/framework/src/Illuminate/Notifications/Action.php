@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications;
 
-class Action {
-
+class Action
+{
     /**
      * The action text.
      *
@@ -25,9 +25,9 @@ class Action {
      * @param  string  $url
      * @return void
      */
-    public function __construct($text, $url) {
+    public function __construct($text, $url)
+    {
         $this->url = $url;
         $this->text = $text;
     }
-
 }

@@ -1,27 +1,30 @@
 <?php
 
-class Swift_Bug76Test extends \PHPUnit_Framework_TestCase {
-
+class Swift_Bug76Test extends \PHPUnit_Framework_TestCase
+{
     private $_inputFile;
     private $_outputFile;
     private $_encoder;
 
-    protected function setUp() {
-        $this->_inputFile = sys_get_temp_dir() . '/in.bin';
+    protected function setUp()
+    {
+        $this->_inputFile = sys_get_temp_dir().'/in.bin';
         file_put_contents($this->_inputFile, '');
 
-        $this->_outputFile = sys_get_temp_dir() . '/out.bin';
+        $this->_outputFile = sys_get_temp_dir().'/out.bin';
         file_put_contents($this->_outputFile, '');
 
         $this->_encoder = $this->_createEncoder();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         unlink($this->_inputFile);
         unlink($this->_outputFile);
     }
 
-    public function testBase64EncodedLineLengthNeverExceeds76CharactersEvenIfArgsDo() {
+    public function testBase64EncodedLineLengthNeverExceeds76CharactersEvenIfArgsDo()
+    {
         $this->_fillFileWithRandomBytes(1000, $this->_inputFile);
 
         $os = $this->_createStream($this->_inputFile);
@@ -29,18 +32,21 @@ class Swift_Bug76Test extends \PHPUnit_Framework_TestCase {
 
         $this->_encoder->encodeByteStream($os, $is, 0, 80); //Exceeds 76
 
-        $this->assertMaxLineLength(76, $this->_outputFile, '%s: Line length should not exceed 76 characters'
+        $this->assertMaxLineLength(76, $this->_outputFile,
+            '%s: Line length should not exceed 76 characters'
         );
     }
 
-    public function assertMaxLineLength($length, $filePath, $message = '%s') {
+    public function assertMaxLineLength($length, $filePath, $message = '%s')
+    {
         $lines = file($filePath);
         foreach ($lines as $line) {
             $this->assertTrue((strlen(trim($line)) <= 76), $message);
         }
     }
 
-    private function _fillFileWithRandomBytes($byteCount, $file) {
+    private function _fillFileWithRandomBytes($byteCount, $file)
+    {
         // I was going to use dd with if=/dev/random but this way seems more
         // cross platform even if a hella expensive!!
 
@@ -53,12 +59,13 @@ class Swift_Bug76Test extends \PHPUnit_Framework_TestCase {
         fclose($fp);
     }
 
-    private function _createEncoder() {
+    private function _createEncoder()
+    {
         return new Swift_Mime_ContentEncoder_Base64ContentEncoder();
     }
 
-    private function _createStream($file) {
+    private function _createStream($file)
+    {
         return new Swift_ByteStream_FileByteStream($file, true);
     }
-
 }

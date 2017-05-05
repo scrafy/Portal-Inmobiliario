@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\cs_CZ;
 
-class Address extends \Faker\Provider\Address {
-
+class Address extends \Faker\Provider\Address
+{
     protected static $streetAddressFormats = array(
         '{{streetName}}',
         '{{streetName}} {{buildingNumber}}',
@@ -11,6 +11,7 @@ class Address extends \Faker\Provider\Address {
         '{{streetName}} {{buildingNumber}}',
         '{{streetName}} {{buildingNumber}}',
     );
+
     protected static $addressFormats = array(
         "{{streetAddress}}\n{{region}}\n{{postcode}} {{city}}",
         "{{streetAddress}}\n{{postcode}} {{city}}",
@@ -20,7 +21,9 @@ class Address extends \Faker\Provider\Address {
         "{{streetAddress}}\n{{postcode}} {{city}}",
         "{{streetAddress}}\n{{postcode}} {{city}}\nČeská republika",
     );
+
     protected static $buildingNumber = array('%', '%%', '%/%%', '%%/%%', '%/%%%', '%%/%%%');
+
     protected static $postcode = array('#####', '### ##');
 
     /**
@@ -114,7 +117,8 @@ class Address extends \Faker\Provider\Address {
      *
      * @return string
      */
-    public function city() {
+    public function city()
+    {
         return static::randomElement(static::$city);
     }
 
@@ -125,7 +129,8 @@ class Address extends \Faker\Provider\Address {
      *
      * @return string
      */
-    public static function region() {
+    public static function region()
+    {
         return static::randomElement(static::$regions);
     }
 
@@ -137,8 +142,8 @@ class Address extends \Faker\Provider\Address {
      *
      * @return string
      */
-    public function streetName() {
+    public function streetName()
+    {
         return static::randomElement(static::$street);
     }
-
 }

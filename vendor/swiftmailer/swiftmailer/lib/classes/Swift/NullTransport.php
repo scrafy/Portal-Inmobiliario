@@ -13,15 +13,17 @@
  *
  * @author Fabien Potencier
  */
-class Swift_NullTransport extends Swift_Transport_NullTransport {
-
+class Swift_NullTransport extends Swift_Transport_NullTransport
+{
     /**
      * Create a new NullTransport.
      */
-    public function __construct() {
+    public function __construct()
+    {
         call_user_func_array(
-                array($this, 'Swift_Transport_NullTransport::__construct'), Swift_DependencyContainer::getInstance()
-                        ->createDependenciesFor('transport.null')
+            array($this, 'Swift_Transport_NullTransport::__construct'),
+            Swift_DependencyContainer::getInstance()
+                ->createDependenciesFor('transport.null')
         );
     }
 
@@ -30,8 +32,8 @@ class Swift_NullTransport extends Swift_Transport_NullTransport {
      *
      * @return Swift_NullTransport
      */
-    public static function newInstance() {
+    public static function newInstance()
+    {
         return new self();
     }
-
 }

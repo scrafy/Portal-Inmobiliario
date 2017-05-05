@@ -18,8 +18,8 @@ use Prophecy\Argument\Token;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class Argument {
-
+class Argument
+{
     /**
      * Checks that argument is exact value or object.
      *
@@ -27,7 +27,8 @@ class Argument {
      *
      * @return Token\ExactValueToken
      */
-    public static function exact($value) {
+    public static function exact($value)
+    {
         return new Token\ExactValueToken($value);
     }
 
@@ -38,7 +39,8 @@ class Argument {
      *
      * @return Token\TypeToken
      */
-    public static function type($type) {
+    public static function type($type)
+    {
         return new Token\TypeToken($type);
     }
 
@@ -50,7 +52,8 @@ class Argument {
      *
      * @return Token\ObjectStateToken
      */
-    public static function which($methodName, $value) {
+    public static function which($methodName, $value)
+    {
         return new Token\ObjectStateToken($methodName, $value);
     }
 
@@ -61,7 +64,8 @@ class Argument {
      *
      * @return Token\CallbackToken
      */
-    public static function that($callback) {
+    public static function that($callback)
+    {
         return new Token\CallbackToken($callback);
     }
 
@@ -70,7 +74,8 @@ class Argument {
      *
      * @return Token\AnyValueToken
      */
-    public static function any() {
+    public static function any()
+    {
         return new Token\AnyValueToken;
     }
 
@@ -79,7 +84,8 @@ class Argument {
      *
      * @return Token\AnyValuesToken
      */
-    public static function cetera() {
+    public static function cetera()
+    {
         return new Token\AnyValuesToken;
     }
 
@@ -90,7 +96,8 @@ class Argument {
      *
      * @return Token\LogicalAndToken
      */
-    public static function allOf() {
+    public static function allOf()
+    {
         return new Token\LogicalAndToken(func_get_args());
     }
 
@@ -101,7 +108,8 @@ class Argument {
      *
      * @return Token\ArrayCountToken
      */
-    public static function size($value) {
+    public static function size($value)
+    {
         return new Token\ArrayCountToken($value);
     }
 
@@ -113,7 +121,8 @@ class Argument {
      *
      * @return Token\ArrayEntryToken
      */
-    public static function withEntry($key, $value) {
+    public static function withEntry($key, $value)
+    {
         return new Token\ArrayEntryToken($key, $value);
     }
 
@@ -124,7 +133,8 @@ class Argument {
      *
      * @return Token\ArrayEveryEntryToken
      */
-    public static function withEveryEntry($value) {
+    public static function withEveryEntry($value)
+    {
         return new Token\ArrayEveryEntryToken($value);
     }
 
@@ -135,7 +145,8 @@ class Argument {
      *
      * @return Token\ArrayEntryToken
      */
-    public static function containing($value) {
+    public static function containing($value)
+    {
         return new Token\ArrayEntryToken(self::any(), $value);
     }
 
@@ -146,7 +157,8 @@ class Argument {
      *
      * @return Token\ArrayEntryToken
      */
-    public static function withKey($key) {
+    public static function withKey($key)
+    {
         return new Token\ArrayEntryToken($key, self::any());
     }
 
@@ -157,7 +169,8 @@ class Argument {
      *
      * @return Token\LogicalNotToken
      */
-    public static function not($value) {
+    public static function not($value)
+    {
         return new Token\LogicalNotToken($value);
     }
 
@@ -166,7 +179,8 @@ class Argument {
      *
      * @return Token\StringContainsToken
      */
-    public static function containingString($value) {
+    public static function containingString($value)
+    {
         return new Token\StringContainsToken($value);
     }
 
@@ -177,7 +191,8 @@ class Argument {
      *
      * @return Token\IdenticalValueToken
      */
-    public static function is($value) {
+    public static function is($value)
+    {
         return new Token\IdenticalValueToken($value);
     }
 
@@ -190,8 +205,8 @@ class Argument {
      *
      * @return Token\ApproximateValueToken
      */
-    public static function approximate($value, $precision = 0) {
+    public static function approximate($value, $precision = 0)
+    {
         return new Token\ApproximateValueToken($value, $precision);
     }
-
 }

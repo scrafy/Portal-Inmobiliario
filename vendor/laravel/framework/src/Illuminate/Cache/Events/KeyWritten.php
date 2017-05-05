@@ -2,8 +2,8 @@
 
 namespace Illuminate\Cache\Events;
 
-class KeyWritten extends CacheEvent {
-
+class KeyWritten extends CacheEvent
+{
     /**
      * The value that was written.
      *
@@ -27,11 +27,11 @@ class KeyWritten extends CacheEvent {
      * @param  array  $tags
      * @return void
      */
-    public function __construct($key, $value, $minutes, $tags = []) {
+    public function __construct($key, $value, $minutes, $tags = [])
+    {
         parent::__construct($key, $tags);
 
         $this->value = $value;
         $this->minutes = $minutes;
     }
-
 }

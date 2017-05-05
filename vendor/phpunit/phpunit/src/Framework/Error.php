@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Wrapper for PHP errors.
  */
-class PHPUnit_Framework_Error extends PHPUnit_Framework_Exception {
-
+class PHPUnit_Framework_Error extends PHPUnit_Framework_Exception
+{
     /**
      * Constructor.
      *
@@ -23,11 +22,11 @@ class PHPUnit_Framework_Error extends PHPUnit_Framework_Exception {
      * @param int       $line
      * @param Exception $previous
      */
-    public function __construct($message, $code, $file, $line, Exception $previous = null) {
+    public function __construct($message, $code, $file, $line, Exception $previous = null)
+    {
         parent::__construct($message, $code, $previous);
 
-        $this->file = $file;
-        $this->line = $line;
+        $this->file  = $file;
+        $this->line  = $line;
     }
-
 }

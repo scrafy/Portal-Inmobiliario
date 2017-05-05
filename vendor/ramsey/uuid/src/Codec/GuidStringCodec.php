@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -22,22 +21,24 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @link https://en.wikipedia.org/wiki/Globally_unique_identifier
  */
-class GuidStringCodec extends StringCodec {
-
+class GuidStringCodec extends StringCodec
+{
     /**
      * Encodes a UuidInterface as a string representation of a GUID
      *
      * @param UuidInterface $uuid
      * @return string Hexadecimal string representation of a GUID
      */
-    public function encode(UuidInterface $uuid) {
+    public function encode(UuidInterface $uuid)
+    {
         $components = array_values($uuid->getFieldsHex());
 
         // Swap byte-order on the first three fields
         $this->swapFields($components);
 
         return vsprintf(
-                '%08s-%04s-%04s-%02s%02s-%012s', $components
+            '%08s-%04s-%04s-%02s%02s-%012s',
+            $components
         );
     }
 
@@ -47,7 +48,8 @@ class GuidStringCodec extends StringCodec {
      * @param UuidInterface $uuid
      * @return string Binary string representation of a GUID
      */
-    public function encodeBinary(UuidInterface $uuid) {
+    public function encodeBinary(UuidInterface $uuid)
+    {
         $components = array_values($uuid->getFieldsHex());
 
         return hex2bin(implode('', $components));
@@ -59,7 +61,8 @@ class GuidStringCodec extends StringCodec {
      * @param string $encodedUuid
      * @return UuidInterface
      */
-    public function decode($encodedUuid) {
+    public function decode($encodedUuid)
+    {
         $components = $this->extractComponents($encodedUuid);
 
         $this->swapFields($components);
@@ -73,7 +76,8 @@ class GuidStringCodec extends StringCodec {
      * @param string $bytes
      * @return UuidInterface
      */
-    public function decodeBytes($bytes) {
+    public function decodeBytes($bytes)
+    {
         // Specifically call parent::decode to preserve correct byte order
         return parent::decode(bin2hex($bytes));
     }
@@ -84,7 +88,8 @@ class GuidStringCodec extends StringCodec {
      * @param array $components An array of UUID components (the UUID exploded on its dashes)
      * @return void
      */
-    protected function swapFields(array &$components) {
+    protected function swapFields(array &$components)
+    {
         $hex = unpack('H*', pack('L', hexdec($components[0])));
         $components[0] = $hex[1];
         $hex = unpack('H*', pack('S', hexdec($components[1])));
@@ -92,5 +97,4 @@ class GuidStringCodec extends StringCodec {
         $hex = unpack('H*', pack('S', hexdec($components[2])));
         $components[2] = $hex[1];
     }
-
 }

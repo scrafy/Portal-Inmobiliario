@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt\TraitUseAdaptation;
 
 use PhpParser\Node;
 
-class Alias extends Node\Stmt\TraitUseAdaptation {
-
+class Alias extends Node\Stmt\TraitUseAdaptation
+{
     /** @var null|int New modifier */
     public $newModifier;
-
     /** @var null|string New name */
     public $newName;
 
@@ -32,5 +31,4 @@ class Alias extends Node\Stmt\TraitUseAdaptation {
     public function getSubNodeNames() {
         return array('trait', 'method', 'newModifier', 'newName');
     }
-
 }

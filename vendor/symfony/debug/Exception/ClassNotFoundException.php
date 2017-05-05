@@ -16,13 +16,18 @@ namespace Symfony\Component\Debug\Exception;
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  */
-class ClassNotFoundException extends FatalErrorException {
-
-    public function __construct($message, \ErrorException $previous) {
+class ClassNotFoundException extends FatalErrorException
+{
+    public function __construct($message, \ErrorException $previous)
+    {
         parent::__construct(
-                $message, $previous->getCode(), $previous->getSeverity(), $previous->getFile(), $previous->getLine(), $previous->getPrevious()
+            $message,
+            $previous->getCode(),
+            $previous->getSeverity(),
+            $previous->getFile(),
+            $previous->getLine(),
+            $previous->getPrevious()
         );
         $this->setTrace($previous->getTrace());
     }
-
 }

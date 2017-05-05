@@ -4,7 +4,7 @@ namespace Mockery\Loader;
 
 use Mockery\Generator\MockDefinition;
 
-interface Loader {
-
+interface Loader
+{
     public function load(MockDefinition $definition);
 }

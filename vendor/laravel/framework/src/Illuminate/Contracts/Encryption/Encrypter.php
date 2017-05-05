@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Encryption;
 
-interface Encrypter {
-
+interface Encrypter
+{
     /**
      * Encrypt the given value.
      *

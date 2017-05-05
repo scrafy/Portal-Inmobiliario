@@ -21,8 +21,8 @@ namespace Symfony\Component\CssSelector\Parser;
  *
  * @internal
  */
-class Reader {
-
+class Reader
+{
     /**
      * @var string
      */
@@ -41,7 +41,8 @@ class Reader {
     /**
      * @param string $source
      */
-    public function __construct($source) {
+    public function __construct($source)
+    {
         $this->source = $source;
         $this->length = strlen($source);
     }
@@ -49,21 +50,24 @@ class Reader {
     /**
      * @return bool
      */
-    public function isEOF() {
+    public function isEOF()
+    {
         return $this->position >= $this->length;
     }
 
     /**
      * @return int
      */
-    public function getPosition() {
+    public function getPosition()
+    {
         return $this->position;
     }
 
     /**
      * @return int
      */
-    public function getRemainingLength() {
+    public function getRemainingLength()
+    {
         return $this->length - $this->position;
     }
 
@@ -73,7 +77,8 @@ class Reader {
      *
      * @return string
      */
-    public function getSubstring($length, $offset = 0) {
+    public function getSubstring($length, $offset = 0)
+    {
         return substr($this->source, $this->position + $offset, $length);
     }
 
@@ -82,7 +87,8 @@ class Reader {
      *
      * @return int
      */
-    public function getOffset($string) {
+    public function getOffset($string)
+    {
         $position = strpos($this->source, $string, $this->position);
 
         return false === $position ? false : $position - $this->position;
@@ -93,7 +99,8 @@ class Reader {
      *
      * @return bool
      */
-    public function findPattern($pattern) {
+    public function findPattern($pattern)
+    {
         $source = substr($this->source, $this->position);
 
         if (preg_match($pattern, $source, $matches)) {
@@ -106,12 +113,13 @@ class Reader {
     /**
      * @param int $length
      */
-    public function moveForward($length) {
+    public function moveForward($length)
+    {
         $this->position += $length;
     }
 
-    public function moveToEnd() {
+    public function moveToEnd()
+    {
         $this->position = $this->length;
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery\Matcher;
 
-class Subset extends MatcherAbstract {
+class Subset extends MatcherAbstract
+{
 
     /**
      * Check if the actual value matches the expected.
@@ -29,8 +29,9 @@ class Subset extends MatcherAbstract {
      * @param mixed $actual
      * @return bool
      */
-    public function match(&$actual) {
-        foreach ($this->_expected as $k => $v) {
+    public function match(&$actual)
+    {
+        foreach ($this->_expected as $k=>$v) {
             if (!array_key_exists($k, $actual)) {
                 return false;
             }
@@ -46,14 +47,14 @@ class Subset extends MatcherAbstract {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $return = '<Subset[';
         $elements = array();
-        foreach ($this->_expected as $k => $v) {
+        foreach ($this->_expected as $k=>$v) {
             $elements[] = $k . '=' . (string) $v;
         }
         $return .= implode(', ', $elements) . ']>';
         return $return;
     }
-
 }

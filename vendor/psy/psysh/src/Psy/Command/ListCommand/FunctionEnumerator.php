@@ -16,12 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Function Enumerator class.
  */
-class FunctionEnumerator extends Enumerator {
-
+class FunctionEnumerator extends Enumerator
+{
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         // only list functions when no Reflector is present.
         //
         // TODO: make a NamespaceReflector and pass that in for commands like:
@@ -40,13 +41,13 @@ class FunctionEnumerator extends Enumerator {
         }
 
         if ($input->getOption('user')) {
-            $label = 'User Functions';
+            $label     = 'User Functions';
             $functions = $this->getFunctions('user');
         } elseif ($input->getOption('internal')) {
-            $label = 'Internal Functions';
+            $label     = 'Internal Functions';
             $functions = $this->getFunctions('internal');
         } else {
-            $label = 'Functions';
+            $label     = 'Functions';
             $functions = $this->getFunctions();
         }
 
@@ -71,7 +72,8 @@ class FunctionEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function getFunctions($type = null) {
+    protected function getFunctions($type = null)
+    {
         $funcs = get_defined_functions();
 
         if ($type) {
@@ -88,7 +90,8 @@ class FunctionEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function prepareFunctions(array $functions) {
+    protected function prepareFunctions(array $functions)
+    {
         natcasesort($functions);
 
         // My kingdom for a generator.
@@ -97,7 +100,7 @@ class FunctionEnumerator extends Enumerator {
         foreach ($functions as $name) {
             if ($this->showItem($name)) {
                 $ret[$name] = array(
-                    'name' => $name,
+                    'name'  => $name,
                     'style' => self::IS_FUNCTION,
                     'value' => $this->presentSignature($name),
                 );
@@ -106,5 +109,4 @@ class FunctionEnumerator extends Enumerator {
 
         return $ret;
     }
-
 }

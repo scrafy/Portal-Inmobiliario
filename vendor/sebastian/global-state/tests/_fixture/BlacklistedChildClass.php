@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -13,6 +12,6 @@ namespace SebastianBergmann\GlobalState\TestFixture;
 
 /**
  */
-class BlacklistedChildClass extends BlacklistedClass {
-    
+class BlacklistedChildClass extends BlacklistedClass
+{
 }

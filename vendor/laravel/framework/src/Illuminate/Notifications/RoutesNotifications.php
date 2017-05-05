@@ -5,15 +5,16 @@ namespace Illuminate\Notifications;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Notifications\Dispatcher;
 
-trait RoutesNotifications {
-
+trait RoutesNotifications
+{
     /**
      * Send the given notification.
      *
      * @param  mixed  $instance
      * @return void
      */
-    public function notify($instance) {
+    public function notify($instance)
+    {
         app(Dispatcher::class)->send($this, $instance);
     }
 
@@ -23,8 +24,9 @@ trait RoutesNotifications {
      * @param  string  $driver
      * @return mixed
      */
-    public function routeNotificationFor($driver) {
-        if (method_exists($this, $method = 'routeNotificationFor' . Str::studly($driver))) {
+    public function routeNotificationFor($driver)
+    {
+        if (method_exists($this, $method = 'routeNotificationFor'.Str::studly($driver))) {
             return $this->{$method}();
         }
 
@@ -37,5 +39,4 @@ trait RoutesNotifications {
                 return $this->phone_number;
         }
     }
-
 }

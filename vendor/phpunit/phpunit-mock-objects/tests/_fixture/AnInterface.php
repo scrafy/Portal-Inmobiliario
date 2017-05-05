@@ -1,6 +1,5 @@
 <?php
-
-interface AnInterface {
-
+interface AnInterface
+{
     public function doSomething();
 }

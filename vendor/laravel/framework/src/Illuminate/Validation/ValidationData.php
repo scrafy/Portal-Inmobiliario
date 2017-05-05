@@ -5,13 +5,14 @@ namespace Illuminate\Validation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class ValidationData {
-
-    public static function initializeAndGatherData($attribute, $masterData) {
+class ValidationData
+{
+    public static function initializeAndGatherData($attribute, $masterData)
+    {
         $data = Arr::dot(static::initializeAttributeOnData($attribute, $masterData));
 
         return array_merge($data, static::extractValuesForWildcards(
-                        $masterData, $data, $attribute
+            $masterData, $data, $attribute
         ));
     }
 
@@ -22,12 +23,13 @@ class ValidationData {
      * @param  array  $masterData
      * @return array
      */
-    protected static function initializeAttributeOnData($attribute, $masterData) {
+    protected static function initializeAttributeOnData($attribute, $masterData)
+    {
         $explicitPath = static::getLeadingExplicitAttributePath($attribute);
 
         $data = static::extractDataFromPath($explicitPath, $masterData);
 
-        if (!Str::contains($attribute, '*') || Str::endsWith($attribute, '*')) {
+        if (! Str::contains($attribute, '*') || Str::endsWith($attribute, '*')) {
             return $data;
         }
 
@@ -42,13 +44,14 @@ class ValidationData {
      * @param  string  $attribute
      * @return array
      */
-    protected static function extractValuesForWildcards($masterData, $data, $attribute) {
+    protected static function extractValuesForWildcards($masterData, $data, $attribute)
+    {
         $keys = [];
 
         $pattern = str_replace('\*', '[^\.]+', preg_quote($attribute));
 
         foreach ($data as $key => $value) {
-            if ((bool) preg_match('/^' . $pattern . '/', $key, $matches)) {
+            if ((bool) preg_match('/^'.$pattern.'/', $key, $matches)) {
                 $keys[] = $matches[0];
             }
         }
@@ -73,7 +76,8 @@ class ValidationData {
      * @param  array  $masterData
      * @return array
      */
-    public static function extractDataFromPath($attribute, $masterData) {
+    public static function extractDataFromPath($attribute, $masterData)
+    {
         $results = [];
 
         $value = Arr::get($masterData, $attribute, '__missing__');
@@ -95,8 +99,8 @@ class ValidationData {
      * @param  string  $attribute
      * @return string
      */
-    public static function getLeadingExplicitAttributePath($attribute) {
+    public static function getLeadingExplicitAttributePath($attribute)
+    {
         return rtrim(explode('*', $attribute)[0], '.') ?: null;
     }
-
 }

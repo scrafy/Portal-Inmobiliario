@@ -14,18 +14,20 @@ namespace Symfony\Component\Translation\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\MessageSelector;
 
-class MessageSelectorTest extends TestCase {
-
+class MessageSelectorTest extends TestCase
+{
     /**
      * @dataProvider getChooseTests
      */
-    public function testChoose($expected, $id, $number) {
+    public function testChoose($expected, $id, $number)
+    {
         $selector = new MessageSelector();
 
         $this->assertEquals($expected, $selector->choose($id, $number, 'en'));
     }
 
-    public function testReturnMessageIfExactlyOneStandardRuleIsGiven() {
+    public function testReturnMessageIfExactlyOneStandardRuleIsGiven()
+    {
         $selector = new MessageSelector();
 
         $this->assertEquals('There are two apples', $selector->choose('There are two apples', 2, 'en'));
@@ -35,13 +37,15 @@ class MessageSelectorTest extends TestCase {
      * @dataProvider getNonMatchingMessages
      * @expectedException \Symfony\Component\Translation\Exception\InvalidArgumentException
      */
-    public function testThrowExceptionIfMatchingMessageCannotBeFound($id, $number) {
+    public function testThrowExceptionIfMatchingMessageCannotBeFound($id, $number)
+    {
         $selector = new MessageSelector();
 
         $selector->choose($id, $number, 'en');
     }
 
-    public function getNonMatchingMessages() {
+    public function getNonMatchingMessages()
+    {
         return array(
             array('{0} There are no apples|{1} There is one apple', 2),
             array('{1} There is one apple|]1,Inf] There are %count% apples', 0),
@@ -50,30 +54,39 @@ class MessageSelectorTest extends TestCase {
         );
     }
 
-    public function getChooseTests() {
+    public function getChooseTests()
+    {
         return array(
             array('There are no apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 0),
             array('There are no apples', '{0}     There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 0),
             array('There are no apples', '{0}There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 0),
+
             array('There is one apple', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 1),
+
             array('There are %count% apples', '{0} There are no apples|{1} There is one apple|]1,Inf] There are %count% apples', 10),
             array('There are %count% apples', '{0} There are no apples|{1} There is one apple|]1,Inf]There are %count% apples', 10),
             array('There are %count% apples', '{0} There are no apples|{1} There is one apple|]1,Inf]     There are %count% apples', 10),
+
             array('There are %count% apples', 'There is one apple|There are %count% apples', 0),
             array('There is one apple', 'There is one apple|There are %count% apples', 1),
             array('There are %count% apples', 'There is one apple|There are %count% apples', 10),
+
             array('There are %count% apples', 'one: There is one apple|more: There are %count% apples', 0),
             array('There is one apple', 'one: There is one apple|more: There are %count% apples', 1),
             array('There are %count% apples', 'one: There is one apple|more: There are %count% apples', 10),
+
             array('There are no apples', '{0} There are no apples|one: There is one apple|more: There are %count% apples', 0),
             array('There is one apple', '{0} There are no apples|one: There is one apple|more: There are %count% apples', 1),
             array('There are %count% apples', '{0} There are no apples|one: There is one apple|more: There are %count% apples', 10),
+
             array('', '{0}|{1} There is one apple|]1,Inf] There are %count% apples', 0),
             array('', '{0} There are no apples|{1}|]1,Inf] There are %count% apples', 1),
+
             // Indexed only tests which are Gettext PoFile* compatible strings.
             array('There are %count% apples', 'There is one apple|There are %count% apples', 0),
             array('There is one apple', 'There is one apple|There are %count% apples', 1),
             array('There are %count% apples', 'There is one apple|There are %count% apples', 2),
+
             // Tests for float numbers
             array('There is almost one apple', '{0} There are no apples|]0,1[ There is almost one apple|{1} There is one apple|[1,Inf] There is more than one apple', 0.7),
             array('There is one apple', '{0} There are no apples|]0,1[There are %count% apples|{1} There is one apple|[1,Inf] There is more than one apple', 1),
@@ -81,6 +94,7 @@ class MessageSelectorTest extends TestCase {
             array('There are no apples', '{0} There are no apples|]0,1[There are %count% apples|{1} There is one apple|[1,Inf] There is more than one apple', 0),
             array('There are no apples', '{0} There are no apples|]0,1[There are %count% apples|{1} There is one apple|[1,Inf] There is more than one apple', 0.0),
             array('There are no apples', '{0.0} There are no apples|]0,1[There are %count% apples|{1} There is one apple|[1,Inf] There is more than one apple', 0),
+
             // Test texts with new-lines
             // with double-quotes and \n in id & double-quotes and actual newlines in text
             array("This is a text with a\n            new-line in it. Selector = 0.", '{0}This is a text with a
@@ -116,5 +130,4 @@ class MessageSelectorTest extends TestCase {
             array('This is a text with | in it. Selector = 0.', '{0}This is a text with || in it. Selector = 0.|{1}This is a text with || in it. Selector = 1.', 0),
         );
     }
-
 }

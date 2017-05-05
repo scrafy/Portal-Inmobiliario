@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Cache;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Get a cache store instance by name.
      *

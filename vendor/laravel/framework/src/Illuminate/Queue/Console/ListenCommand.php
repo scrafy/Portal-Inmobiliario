@@ -6,8 +6,8 @@ use Illuminate\Queue\Listener;
 use Illuminate\Console\Command;
 use Illuminate\Queue\ListenerOptions;
 
-class ListenCommand extends Command {
-
+class ListenCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -43,7 +43,8 @@ class ListenCommand extends Command {
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void
      */
-    public function __construct(Listener $listener) {
+    public function __construct(Listener $listener)
+    {
         parent::__construct();
 
         $this->setOutputHandler($this->listener = $listener);
@@ -54,16 +55,17 @@ class ListenCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         // We need to get the right queue for the connection which is set in the queue
         // configuration file for the application. We will pull it based on the set
         // connection being run for the queue operation currently being executed.
         $queue = $this->getQueue(
-                $connection = $this->input->getArgument('connection')
+            $connection = $this->input->getArgument('connection')
         );
 
         $this->listener->listen(
-                $connection, $queue, $this->gatherOptions()
+            $connection, $queue, $this->gatherOptions()
         );
     }
 
@@ -73,11 +75,12 @@ class ListenCommand extends Command {
      * @param  string  $connection
      * @return string
      */
-    protected function getQueue($connection) {
+    protected function getQueue($connection)
+    {
         $connection = $connection ?: $this->laravel['config']['queue.default'];
 
         return $this->input->getOption('queue') ?: $this->laravel['config']->get(
-                        "queue.connections.{$connection}.queue", 'default'
+            "queue.connections.{$connection}.queue", 'default'
         );
     }
 
@@ -86,9 +89,13 @@ class ListenCommand extends Command {
      *
      * @return \Illuminate\Queue\ListenerOptions
      */
-    protected function gatherOptions() {
+    protected function gatherOptions()
+    {
         return new ListenerOptions(
-                $this->option('env'), $this->option('delay'), $this->option('memory'), $this->option('timeout'), $this->option('sleep'), $this->option('tries'), $this->option('force')
+            $this->option('env'), $this->option('delay'),
+            $this->option('memory'), $this->option('timeout'),
+            $this->option('sleep'), $this->option('tries'),
+            $this->option('force')
         );
     }
 
@@ -98,10 +105,10 @@ class ListenCommand extends Command {
      * @param  \Illuminate\Queue\Listener  $listener
      * @return void
      */
-    protected function setOutputHandler(Listener $listener) {
+    protected function setOutputHandler(Listener $listener)
+    {
         $listener->setOutputHandler(function ($type, $line) {
             $this->output->write($line);
         });
     }
-
 }

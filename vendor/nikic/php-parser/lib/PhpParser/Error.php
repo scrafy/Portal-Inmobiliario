@@ -2,8 +2,8 @@
 
 namespace PhpParser;
 
-class Error extends \RuntimeException {
-
+class Error extends \RuntimeException
+{
     protected $rawMessage;
     protected $attributes;
 
@@ -50,6 +50,7 @@ class Error extends \RuntimeException {
     public function getEndLine() {
         return isset($this->attributes['endLine']) ? $this->attributes['endLine'] : -1;
     }
+
 
     /**
      * Gets the attributes of the node/token the error occurred at.
@@ -131,7 +132,9 @@ class Error extends \RuntimeException {
 
     public function getMessageWithColumnInfo($code) {
         return sprintf(
-                '%s from %d:%d to %d:%d', $this->getRawMessage(), $this->getStartLine(), $this->getStartColumn($code), $this->getEndLine(), $this->getEndColumn($code)
+            '%s from %d:%d to %d:%d', $this->getRawMessage(),
+            $this->getStartLine(), $this->getStartColumn($code),
+            $this->getEndLine(), $this->getEndColumn($code)
         );
     }
 
@@ -160,5 +163,4 @@ class Error extends \RuntimeException {
             $this->message .= ' on line ' . $this->getStartLine();
         }
     }
-
 }

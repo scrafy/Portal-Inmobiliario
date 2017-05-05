@@ -18,9 +18,10 @@ use Symfony\Component\CssSelector\Parser\Shortcut\EmptyStringParser;
 /**
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
  */
-class EmptyStringParserTest extends TestCase {
-
-    public function testParse() {
+class EmptyStringParserTest extends TestCase
+{
+    public function testParse()
+    {
         $parser = new EmptyStringParser();
         $selectors = $parser->parse('');
         $this->assertCount(1, $selectors);
@@ -32,5 +33,4 @@ class EmptyStringParserTest extends TestCase {
         $selectors = $parser->parse('this will produce an empty array');
         $this->assertCount(0, $selectors);
     }
-
 }

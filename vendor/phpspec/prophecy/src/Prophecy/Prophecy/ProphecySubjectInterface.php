@@ -16,8 +16,8 @@ namespace Prophecy\Prophecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ProphecySubjectInterface {
-
+interface ProphecySubjectInterface
+{
     /**
      * Sets subject prophecy.
      *

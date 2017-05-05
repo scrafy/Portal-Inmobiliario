@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Comparator;
 /**
  * Compares PHPUnit_Framework_MockObject_MockObject instances for equality.
  */
-class MockObjectComparator extends ObjectComparator {
-
+class MockObjectComparator extends ObjectComparator
+{
     /**
      * Returns whether the comparator can compare two values.
      *
@@ -23,7 +22,8 @@ class MockObjectComparator extends ObjectComparator {
      * @param  mixed $actual   The second value to compare
      * @return bool
      */
-    public function accepts($expected, $actual) {
+    public function accepts($expected, $actual)
+    {
         return $expected instanceof \PHPUnit_Framework_MockObject_MockObject && $actual instanceof \PHPUnit_Framework_MockObject_MockObject;
     }
 
@@ -34,12 +34,12 @@ class MockObjectComparator extends ObjectComparator {
      * @param  object $object
      * @return array
      */
-    protected function toArray($object) {
+    protected function toArray($object)
+    {
         $array = parent::toArray($object);
 
         unset($array['__phpunit_invocationMocker']);
 
         return $array;
     }
-
 }

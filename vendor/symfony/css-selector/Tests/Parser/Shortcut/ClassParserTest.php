@@ -18,10 +18,11 @@ use Symfony\Component\CssSelector\Parser\Shortcut\ClassParser;
 /**
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
  */
-class ClassParserTest extends TestCase {
-
+class ClassParserTest extends TestCase
+{
     /** @dataProvider getParseTestData */
-    public function testParse($source, $representation) {
+    public function testParse($source, $representation)
+    {
         $parser = new ClassParser();
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
@@ -31,7 +32,8 @@ class ClassParserTest extends TestCase {
         $this->assertEquals($representation, (string) $selector->getTree());
     }
 
-    public function getParseTestData() {
+    public function getParseTestData()
+    {
         return array(
             array('.testclass', 'Class[Element[*].testclass]'),
             array('testel.testclass', 'Class[Element[testel].testclass]'),
@@ -40,5 +42,4 @@ class ClassParserTest extends TestCase {
             array('testns|testel.testclass', 'Class[Element[testns|testel].testclass]'),
         );
     }
-
 }

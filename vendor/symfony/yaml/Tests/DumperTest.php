@@ -16,11 +16,12 @@ use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Yaml;
 
-class DumperTest extends TestCase {
-
+class DumperTest extends TestCase
+{
     protected $parser;
     protected $dumper;
     protected $path;
+
     protected $array = array(
         '' => 'bar',
         'foo' => '#bar',
@@ -36,20 +37,23 @@ class DumperTest extends TestCase {
         ),
     );
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->parser = new Parser();
         $this->dumper = new Dumper();
-        $this->path = __DIR__ . '/Fixtures';
+        $this->path = __DIR__.'/Fixtures';
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         $this->parser = null;
         $this->dumper = null;
         $this->path = null;
         $this->array = null;
     }
 
-    public function testIndentationInConstructor() {
+    public function testIndentationInConstructor()
+    {
         $dumper = new Dumper(7);
         $expected = <<<'EOF'
 '': bar
@@ -76,7 +80,8 @@ EOF;
     /**
      * @group legacy
      */
-    public function testSetIndentation() {
+    public function testSetIndentation()
+    {
         $this->dumper->setIndentation(7);
 
         $expected = <<<'EOF'
@@ -101,10 +106,11 @@ EOF;
         $this->assertEquals($expected, $this->dumper->dump($this->array, 4, 0));
     }
 
-    public function testSpecifications() {
-        $files = $this->parser->parse(file_get_contents($this->path . '/index.yml'));
+    public function testSpecifications()
+    {
+        $files = $this->parser->parse(file_get_contents($this->path.'/index.yml'));
         foreach ($files as $file) {
-            $yamls = file_get_contents($this->path . '/' . $file . '.yml');
+            $yamls = file_get_contents($this->path.'/'.$file.'.yml');
 
             // split YAMLs documents
             foreach (preg_split('/^---( %YAML\:1\.0)?/m', $yamls) as $yaml) {
@@ -118,14 +124,15 @@ EOF;
                 } elseif (isset($test['todo']) && $test['todo']) {
                     // TODO
                 } else {
-                    eval('$expected = ' . trim($test['php']) . ';');
+                    eval('$expected = '.trim($test['php']).';');
                     $this->assertSame($expected, $this->parser->parse($this->dumper->dump($expected, 10)), $test['test']);
                 }
             }
         }
     }
 
-    public function testInlineLevel() {
+    public function testInlineLevel()
+    {
         $expected = <<<'EOF'
 { '': bar, foo: '#bar', 'foo''bar': {  }, bar: [1, foo], foobar: { foo: bar, bar: [1, foo], foobar: { foo: bar, bar: [1, foo] } } }
 EOF;
@@ -199,7 +206,8 @@ EOF;
         $this->assertEquals($expected, $this->dumper->dump($this->array, 10), '->dump() takes an inline level argument');
     }
 
-    public function testObjectSupportEnabled() {
+    public function testObjectSupportEnabled()
+    {
         $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, Yaml::DUMP_OBJECT);
 
         $this->assertEquals('{ foo: !php/object:O:30:"Symfony\Component\Yaml\Tests\A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', $dump, '->dump() is able to dump objects');
@@ -208,13 +216,15 @@ EOF;
     /**
      * @group legacy
      */
-    public function testObjectSupportEnabledPassingTrue() {
+    public function testObjectSupportEnabledPassingTrue()
+    {
         $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, false, true);
 
         $this->assertEquals('{ foo: !php/object:O:30:"Symfony\Component\Yaml\Tests\A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', $dump, '->dump() is able to dump objects');
     }
 
-    public function testObjectSupportDisabledButNoExceptions() {
+    public function testObjectSupportDisabledButNoExceptions()
+    {
         $dump = $this->dumper->dump(array('foo' => new A(), 'bar' => 1));
 
         $this->assertEquals('{ foo: null, bar: 1 }', $dump, '->dump() does not dump objects when disabled');
@@ -223,7 +233,8 @@ EOF;
     /**
      * @expectedException \Symfony\Component\Yaml\Exception\DumpException
      */
-    public function testObjectSupportDisabledWithExceptions() {
+    public function testObjectSupportDisabledWithExceptions()
+    {
         $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE);
     }
 
@@ -231,18 +242,21 @@ EOF;
      * @group legacy
      * @expectedException \Symfony\Component\Yaml\Exception\DumpException
      */
-    public function testObjectSupportDisabledWithExceptionsPassingTrue() {
+    public function testObjectSupportDisabledWithExceptionsPassingTrue()
+    {
         $this->dumper->dump(array('foo' => new A(), 'bar' => 1), 0, 0, true);
     }
 
     /**
      * @dataProvider getEscapeSequences
      */
-    public function testEscapedEscapeSequencesInQuotedScalar($input, $expected) {
+    public function testEscapedEscapeSequencesInQuotedScalar($input, $expected)
+    {
         $this->assertEquals($expected, $this->dumper->dump($input));
     }
 
-    public function getEscapeSequences() {
+    public function getEscapeSequences()
+    {
         return array(
             'empty string' => array('', "''"),
             'null' => array("\x0", '"\\0"'),
@@ -266,14 +280,16 @@ EOF;
         );
     }
 
-    public function testBinaryDataIsDumpedBase64Encoded() {
-        $binaryData = file_get_contents(__DIR__ . '/Fixtures/arrow.gif');
-        $expected = '{ data: !!binary ' . base64_encode($binaryData) . ' }';
+    public function testBinaryDataIsDumpedBase64Encoded()
+    {
+        $binaryData = file_get_contents(__DIR__.'/Fixtures/arrow.gif');
+        $expected = '{ data: !!binary '.base64_encode($binaryData).' }';
 
         $this->assertSame($expected, $this->dumper->dump(array('data' => $binaryData)));
     }
 
-    public function testNonUtf8DataIsDumpedBase64Encoded() {
+    public function testNonUtf8DataIsDumpedBase64Encoded()
+    {
         // "für" (ISO-8859-1 encoded)
         $this->assertSame('!!binary ZsM/cg==', $this->dumper->dump("f\xc3\x3fr"));
     }
@@ -281,13 +297,15 @@ EOF;
     /**
      * @dataProvider objectAsMapProvider
      */
-    public function testDumpObjectAsMap($object, $expected) {
+    public function testDumpObjectAsMap($object, $expected)
+    {
         $yaml = $this->dumper->dump($object, 0, 0, Yaml::DUMP_OBJECT_AS_MAP);
 
         $this->assertEquals($expected, Yaml::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP));
     }
 
-    public function objectAsMapProvider() {
+    public function objectAsMapProvider()
+    {
         $tests = array();
 
         $bar = new \stdClass();
@@ -315,7 +333,8 @@ EOF;
         return $tests;
     }
 
-    public function testDumpMultiLineStringAsScalarBlock() {
+    public function testDumpMultiLineStringAsScalarBlock()
+    {
         $data = array(
             'data' => array(
                 'single_line' => 'foo bar baz',
@@ -326,14 +345,15 @@ EOF;
             ),
         );
 
-        $this->assertSame(file_get_contents(__DIR__ . '/Fixtures/multiple_lines_as_literal_block.yml'), $this->dumper->dump($data, 2, 0, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK));
+        $this->assertSame(file_get_contents(__DIR__.'/Fixtures/multiple_lines_as_literal_block.yml'), $this->dumper->dump($data, 2, 0, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK));
     }
 
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testZeroIndentationThrowsException() {
+    public function testZeroIndentationThrowsException()
+    {
         new Dumper(0);
     }
 
@@ -341,14 +361,13 @@ EOF;
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testNegativeIndentationThrowsException() {
+    public function testNegativeIndentationThrowsException()
+    {
         new Dumper(-4);
     }
-
 }
 
-class A {
-
+class A
+{
     public $a = 'foo';
-
 }

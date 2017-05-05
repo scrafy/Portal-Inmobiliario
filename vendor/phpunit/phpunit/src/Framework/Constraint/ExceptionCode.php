@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Constraint
+{
     /**
      * @var int
      */
@@ -19,7 +18,8 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
     /**
      * @param int $expected
      */
-    public function __construct($expected) {
+    public function __construct($expected)
+    {
         parent::__construct();
         $this->expectedCode = $expected;
     }
@@ -32,7 +32,8 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return (string) $other->getCode() == (string) $this->expectedCode;
     }
 
@@ -46,17 +47,20 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return sprintf(
-                '%s is equal to expected exception code %s', $this->exporter->export($other->getCode()), $this->exporter->export($this->expectedCode)
+            '%s is equal to expected exception code %s',
+            $this->exporter->export($other->getCode()),
+            $this->exporter->export($this->expectedCode)
         );
     }
 
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'exception code is ';
     }
-
 }

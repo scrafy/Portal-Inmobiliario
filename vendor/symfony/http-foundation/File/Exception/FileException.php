@@ -16,6 +16,6 @@ namespace Symfony\Component\HttpFoundation\File\Exception;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class FileException extends \RuntimeException {
-    
+class FileException extends \RuntimeException
+{
 }

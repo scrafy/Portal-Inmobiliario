@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * An interface to define how a test suite should be loaded.
  */
-interface PHPUnit_Runner_TestSuiteLoader {
-
+interface PHPUnit_Runner_TestSuiteLoader
+{
     /**
      * @param string $suiteClassName
      * @param string $suiteClassFile

@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Plugins_Decorator_Replacements {
-
+interface Swift_Plugins_Decorator_Replacements
+{
     /**
      * Return the array of replacements for $address.
      *

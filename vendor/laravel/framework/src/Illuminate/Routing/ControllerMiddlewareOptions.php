@@ -2,8 +2,8 @@
 
 namespace Illuminate\Routing;
 
-class ControllerMiddlewareOptions {
-
+class ControllerMiddlewareOptions
+{
     /**
      * The middleware options.
      *
@@ -17,7 +17,8 @@ class ControllerMiddlewareOptions {
      * @param  array  $options
      * @return void
      */
-    public function __construct(array &$options) {
+    public function __construct(array &$options)
+    {
         $this->options = &$options;
     }
 
@@ -27,7 +28,8 @@ class ControllerMiddlewareOptions {
      * @param  array|string|dynamic  $methods
      * @return $this
      */
-    public function only($methods) {
+    public function only($methods)
+    {
         $this->options['only'] = is_array($methods) ? $methods : func_get_args();
 
         return $this;
@@ -39,10 +41,10 @@ class ControllerMiddlewareOptions {
      * @param  array|string|dynamic  $methods
      * @return $this
      */
-    public function except($methods) {
+    public function except($methods)
+    {
         $this->options['except'] = is_array($methods) ? $methods : func_get_args();
 
         return $this;
     }
-
 }

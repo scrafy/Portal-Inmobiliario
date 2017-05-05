@@ -8,8 +8,8 @@ use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class DatabaseTokenRepository implements TokenRepositoryInterface {
-
+class DatabaseTokenRepository implements TokenRepositoryInterface
+{
     /**
      * The database connection instance.
      *
@@ -55,7 +55,9 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  int  $expires
      * @return void
      */
-    public function __construct(ConnectionInterface $connection, HasherContract $hasher, $table, $hashKey, $expires = 60) {
+    public function __construct(ConnectionInterface $connection, HasherContract $hasher,
+                                $table, $hashKey, $expires = 60)
+    {
         $this->table = $table;
         $this->hasher = $hasher;
         $this->hashKey = $hashKey;
@@ -69,7 +71,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return string
      */
-    public function create(CanResetPasswordContract $user) {
+    public function create(CanResetPasswordContract $user)
+    {
         $email = $user->getEmailForPasswordReset();
 
         $this->deleteExisting($user);
@@ -90,7 +93,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return int
      */
-    protected function deleteExisting(CanResetPasswordContract $user) {
+    protected function deleteExisting(CanResetPasswordContract $user)
+    {
         return $this->getTable()->where('email', $user->getEmailForPasswordReset())->delete();
     }
 
@@ -101,7 +105,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  string  $token
      * @return array
      */
-    protected function getPayload($email, $token) {
+    protected function getPayload($email, $token)
+    {
         return ['email' => $email, 'token' => $this->hasher->make($token), 'created_at' => new Carbon];
     }
 
@@ -112,14 +117,15 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  string  $token
      * @return bool
      */
-    public function exists(CanResetPasswordContract $user, $token) {
+    public function exists(CanResetPasswordContract $user, $token)
+    {
         $record = (array) $this->getTable()->where(
-                        'email', $user->getEmailForPasswordReset()
-                )->first();
+            'email', $user->getEmailForPasswordReset()
+        )->first();
 
         return $record &&
-                !$this->tokenExpired($record['created_at']) &&
-                $this->hasher->check($token, $record['token']);
+               ! $this->tokenExpired($record['created_at']) &&
+                 $this->hasher->check($token, $record['token']);
     }
 
     /**
@@ -128,7 +134,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  string  $createdAt
      * @return bool
      */
-    protected function tokenExpired($createdAt) {
+    protected function tokenExpired($createdAt)
+    {
         return Carbon::parse($createdAt)->addSeconds($this->expires)->isPast();
     }
 
@@ -138,7 +145,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
      * @return void
      */
-    public function delete(CanResetPasswordContract $user) {
+    public function delete(CanResetPasswordContract $user)
+    {
         $this->deleteExisting($user);
     }
 
@@ -147,7 +155,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      *
      * @return void
      */
-    public function deleteExpired() {
+    public function deleteExpired()
+    {
         $expiredAt = Carbon::now()->subSeconds($this->expires);
 
         $this->getTable()->where('created_at', '<', $expiredAt)->delete();
@@ -158,7 +167,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      *
      * @return string
      */
-    public function createNewToken() {
+    public function createNewToken()
+    {
         return hash_hmac('sha256', Str::random(40), $this->hashKey);
     }
 
@@ -167,7 +177,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      *
      * @return \Illuminate\Database\ConnectionInterface
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 
@@ -176,7 +187,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function getTable() {
+    protected function getTable()
+    {
         return $this->connection->table($this->table);
     }
 
@@ -185,8 +197,8 @@ class DatabaseTokenRepository implements TokenRepositoryInterface {
      *
      * @return \Illuminate\Contracts\Hashing\Hasher
      */
-    public function getHasher() {
+    public function getHasher()
+    {
         return $this->hasher;
     }
-
 }

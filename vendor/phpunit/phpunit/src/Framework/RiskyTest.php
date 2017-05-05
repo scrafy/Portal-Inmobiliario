@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * A marker interface for marking any exception/error as result of an unit
  * test as risky.
  */
-interface PHPUnit_Framework_RiskyTest {
-    
+interface PHPUnit_Framework_RiskyTest
+{
 }

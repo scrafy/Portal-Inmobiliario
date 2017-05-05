@@ -18,48 +18,53 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  *
  * @author Drak <drak@zikula.org>
  */
-class NullSessionHandler implements \SessionHandlerInterface {
-
+class NullSessionHandler implements \SessionHandlerInterface
+{
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId) {
+    public function read($sessionId)
+    {
         return '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data) {
+    public function write($sessionId, $data)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId) {
+    public function destroy($sessionId)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime)
+    {
         return true;
     }
-
 }

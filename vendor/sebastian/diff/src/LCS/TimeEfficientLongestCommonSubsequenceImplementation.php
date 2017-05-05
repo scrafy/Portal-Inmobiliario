@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Diff package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Diff\LCS;
 /**
  * Time-efficient implementation of longest common subsequence calculation.
  */
-class TimeEfficientImplementation implements LongestCommonSubsequence {
-
+class TimeEfficientImplementation implements LongestCommonSubsequence
+{
     /**
      * Calculates the longest common subsequence of two arrays.
      *
@@ -24,12 +23,13 @@ class TimeEfficientImplementation implements LongestCommonSubsequence {
      *
      * @return array
      */
-    public function calculate(array $from, array $to) {
-        $common = array();
+    public function calculate(array $from, array $to)
+    {
+        $common     = array();
         $fromLength = count($from);
-        $toLength = count($to);
-        $width = $fromLength + 1;
-        $matrix = new \SplFixedArray($width * ($toLength + 1));
+        $toLength   = count($to);
+        $width      = $fromLength + 1;
+        $matrix     = new \SplFixedArray($width * ($toLength + 1));
 
         for ($i = 0; $i <= $fromLength; ++$i) {
             $matrix[$i] = 0;
@@ -41,9 +41,11 @@ class TimeEfficientImplementation implements LongestCommonSubsequence {
 
         for ($i = 1; $i <= $fromLength; ++$i) {
             for ($j = 1; $j <= $toLength; ++$j) {
-                $o = ($j * $width) + $i;
+                $o          = ($j * $width) + $i;
                 $matrix[$o] = max(
-                        $matrix[$o - 1], $matrix[$o - $width], $from[$i - 1] === $to[$j - 1] ? $matrix[$o - $width - 1] + 1 : 0
+                    $matrix[$o - 1],
+                    $matrix[$o - $width],
+                    $from[$i - 1] === $to[$j - 1] ? $matrix[$o - $width - 1] + 1 : 0
                 );
             }
         }
@@ -52,8 +54,8 @@ class TimeEfficientImplementation implements LongestCommonSubsequence {
         $j = $toLength;
 
         while ($i > 0 && $j > 0) {
-            if ($from[$i - 1] === $to[$j - 1]) {
-                $common[] = $from[$i - 1];
+            if ($from[$i-1] === $to[$j-1]) {
+                $common[] = $from[$i-1];
                 --$i;
                 --$j;
             } else {
@@ -68,5 +70,4 @@ class TimeEfficientImplementation implements LongestCommonSubsequence {
 
         return array_reverse($common);
     }
-
 }

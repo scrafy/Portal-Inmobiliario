@@ -12,8 +12,8 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as LengthAwarePaginatorContract;
 
-class LengthAwarePaginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Jsonable, LengthAwarePaginatorContract {
-
+class LengthAwarePaginator extends AbstractPaginator implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable, Jsonable, LengthAwarePaginatorContract
+{
     /**
      * The total number of items before slicing.
      *
@@ -38,7 +38,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  array  $options (path, query, fragment, pageName)
      * @return void
      */
-    public function __construct($items, $total, $perPage, $currentPage = null, array $options = []) {
+    public function __construct($items, $total, $perPage, $currentPage = null, array $options = [])
+    {
         foreach ($options as $key => $value) {
             $this->{$key} = $value;
         }
@@ -58,7 +59,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  string  $pageName
      * @return int
      */
-    protected function setCurrentPage($currentPage, $pageName) {
+    protected function setCurrentPage($currentPage, $pageName)
+    {
         $currentPage = $currentPage ?: static::resolveCurrentPage($pageName);
 
         return $this->isValidPageNumber($currentPage) ? (int) $currentPage : 1;
@@ -71,7 +73,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  array  $data
      * @return string
      */
-    public function links($view = null, $data = []) {
+    public function links($view = null, $data = [])
+    {
         return $this->render($view, $data);
     }
 
@@ -82,11 +85,12 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  array  $data
      * @return string
      */
-    public function render($view = null, $data = []) {
+    public function render($view = null, $data = [])
+    {
         return new HtmlString(static::viewFactory()->make($view ?: static::$defaultView, array_merge($data, [
-                    'paginator' => $this,
-                    'elements' => $this->elements(),
-                ]))->render());
+            'paginator' => $this,
+            'elements' => $this->elements(),
+        ]))->render());
     }
 
     /**
@@ -94,7 +98,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    protected function elements() {
+    protected function elements()
+    {
         $window = UrlWindow::make($this);
 
         return array_filter([
@@ -111,7 +116,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return int
      */
-    public function total() {
+    public function total()
+    {
         return $this->total;
     }
 
@@ -120,7 +126,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return bool
      */
-    public function hasMorePages() {
+    public function hasMorePages()
+    {
         return $this->currentPage() < $this->lastPage();
     }
 
@@ -129,7 +136,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return string|null
      */
-    public function nextPageUrl() {
+    public function nextPageUrl()
+    {
         if ($this->lastPage() > $this->currentPage()) {
             return $this->url($this->currentPage() + 1);
         }
@@ -140,7 +148,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return int
      */
-    public function lastPage() {
+    public function lastPage()
+    {
         return $this->lastPage;
     }
 
@@ -149,7 +158,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return [
             'total' => $this->total(),
             'per_page' => $this->perPage(),
@@ -168,7 +178,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      *
      * @return array
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return $this->toArray();
     }
 
@@ -178,8 +189,8 @@ class LengthAwarePaginator extends AbstractPaginator implements Arrayable, Array
      * @param  int  $options
      * @return string
      */
-    public function toJson($options = 0) {
+    public function toJson($options = 0)
+    {
         return json_encode($this->jsonSerialize(), $options);
     }
-
 }

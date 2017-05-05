@@ -4,11 +4,10 @@ namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
 
-class Const_ extends NodeAbstract {
-
+class Const_ extends NodeAbstract
+{
     /** @var string Name */
     public $name;
-
     /** @var Expr Value */
     public $value;
 
@@ -28,5 +27,4 @@ class Const_ extends NodeAbstract {
     public function getSubNodeNames() {
         return array('name', 'value');
     }
-
 }

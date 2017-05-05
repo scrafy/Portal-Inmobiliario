@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHP_TokenStream package.
  *
@@ -21,12 +20,13 @@
  * @link       http://github.com/sebastianbergmann/php-token-stream/
  * @since      Class available since Release 1.0.2
  */
-class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
-
+class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase
+{
     protected $class;
     protected $function;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'source2.php');
 
         foreach ($ts as $token) {
@@ -44,25 +44,29 @@ class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers PHP_Token_CLASS::getKeywords
      */
-    public function testGetClassKeywords() {
+    public function testGetClassKeywords()
+    {
         $this->assertEquals('abstract', $this->class->getKeywords());
     }
 
     /**
      * @covers PHP_Token_FUNCTION::getKeywords
      */
-    public function testGetFunctionKeywords() {
+    public function testGetFunctionKeywords()
+    {
         $this->assertEquals('abstract,static', $this->function->getKeywords());
     }
 
     /**
      * @covers PHP_Token_FUNCTION::getVisibility
      */
-    public function testGetFunctionVisibility() {
+    public function testGetFunctionVisibility()
+    {
         $this->assertEquals('public', $this->function->getVisibility());
     }
 
-    public function testIssue19() {
+    public function testIssue19()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'issue19.php');
 
         foreach ($ts as $token) {
@@ -72,7 +76,8 @@ class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testIssue30() {
+    public function testIssue30()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'issue30.php');
         $this->assertCount(1, $ts->getClasses());
     }
@@ -80,7 +85,8 @@ class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
     /**
      * @requires PHP 7
      */
-    public function testAnonymousClassesAreHandledCorrectly() {
+    public function testAnonymousClassesAreHandledCorrectly()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'class_with_method_that_declares_anonymous_class.php');
 
         $classes = $ts->getClasses();
@@ -92,7 +98,8 @@ class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
      * @requires PHP 7
      * @ticket   https://github.com/sebastianbergmann/php-token-stream/issues/52
      */
-    public function testAnonymousClassesAreHandledCorrectly2() {
+    public function testAnonymousClassesAreHandledCorrectly2()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'class_with_method_that_declares_anonymous_class2.php');
 
         $classes = $ts->getClasses();
@@ -106,11 +113,11 @@ class PHP_Token_ClassTest extends PHPUnit_Framework_TestCase {
     /**
      * @requires PHP 5.6
      */
-    public function testImportedFunctionsAreHandledCorrectly() {
+    public function testImportedFunctionsAreHandledCorrectly()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'classUsesNamespacedFunction.php');
 
         $this->assertEmpty($ts->getFunctions());
         $this->assertCount(1, $ts->getClasses());
     }
-
 }

@@ -17,14 +17,16 @@ namespace Psy;
  * This class encapsulates the current variables, most recent return value and
  * exception, and the current namespace.
  */
-class Context {
-
+class Context
+{
     private static $specialNames = array('_', '_e', '__psysh__', 'this');
+
     // Whitelist a very limited number of command-scope magic variable names.
     // This might be a bad idea, but future me can sort it out.
     private static $commandScopeNames = array(
         '__function', '__method', '__class', '__namespace', '__file', '__line', '__dir',
     );
+
     private $scopeVariables = array();
     private $commandScopeVariables = array();
     private $lastException;
@@ -40,7 +42,8 @@ class Context {
      *
      * @return mixed
      */
-    public function get($name) {
+    public function get($name)
+    {
         switch ($name) {
             case '_':
                 return $this->returnValue;
@@ -84,7 +87,8 @@ class Context {
      *
      * @return array
      */
-    public function getAll() {
+    public function getAll()
+    {
         return array_merge($this->scopeVariables, $this->getSpecialVariables());
     }
 
@@ -93,7 +97,8 @@ class Context {
      *
      * @return array
      */
-    public function getSpecialVariables() {
+    public function getSpecialVariables()
+    {
         $vars = array(
             '_' => $this->returnValue,
         );
@@ -116,7 +121,8 @@ class Context {
      *
      * @param array $vars
      */
-    public function setAll(array $vars) {
+    public function setAll(array $vars)
+    {
         foreach (self::$specialNames as $key) {
             unset($vars[$key]);
         }
@@ -133,7 +139,8 @@ class Context {
      *
      * @param mixed $value
      */
-    public function setReturnValue($value) {
+    public function setReturnValue($value)
+    {
         $this->returnValue = $value;
     }
 
@@ -142,7 +149,8 @@ class Context {
      *
      * @return mixed
      */
-    public function getReturnValue() {
+    public function getReturnValue()
+    {
         return $this->returnValue;
     }
 
@@ -151,7 +159,8 @@ class Context {
      *
      * @param \Exception $e
      */
-    public function setLastException(\Exception $e) {
+    public function setLastException(\Exception $e)
+    {
         $this->lastException = $e;
     }
 
@@ -162,7 +171,8 @@ class Context {
      *
      * @return null|Exception
      */
-    public function getLastException() {
+    public function getLastException()
+    {
         if (!isset($this->lastException)) {
             throw new \InvalidArgumentException('No most-recent exception');
         }
@@ -175,7 +185,8 @@ class Context {
      *
      * @param object|null $boundObject
      */
-    public function setBoundObject($boundObject) {
+    public function setBoundObject($boundObject)
+    {
         $this->boundObject = is_object($boundObject) ? $boundObject : null;
     }
 
@@ -184,7 +195,8 @@ class Context {
      *
      * @return object|null
      */
-    public function getBoundObject() {
+    public function getBoundObject()
+    {
         return $this->boundObject;
     }
 
@@ -193,7 +205,8 @@ class Context {
      *
      * @param array $commandScopeVariables
      */
-    public function setCommandScopeVariables(array $commandScopeVariables) {
+    public function setCommandScopeVariables(array $commandScopeVariables)
+    {
         $vars = array();
         foreach ($commandScopeVariables as $key => $value) {
             // kind of type check
@@ -210,7 +223,8 @@ class Context {
      *
      * @return array
      */
-    public function getCommandScopeVariables() {
+    public function getCommandScopeVariables()
+    {
         return $this->commandScopeVariables;
     }
 
@@ -222,7 +236,8 @@ class Context {
      *
      * @return array Array of unused variable names
      */
-    public function getUnusedCommandScopeVariableNames() {
+    public function getUnusedCommandScopeVariableNames()
+    {
         return array_diff(self::$commandScopeNames, array_keys($this->commandScopeVariables));
     }
 
@@ -233,8 +248,8 @@ class Context {
      *
      * @return bool
      */
-    public static function isSpecialVariableName($name) {
+    public static function isSpecialVariableName($name)
+    {
         return in_array($name, self::$specialNames) || in_array($name, self::$commandScopeNames);
     }
-
 }

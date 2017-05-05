@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node\Stmt;
 
-class InlineHTML extends Stmt {
-
+class InlineHTML extends Stmt
+{
     /** @var string String */
     public $value;
 
@@ -23,5 +23,4 @@ class InlineHTML extends Stmt {
     public function getSubNodeNames() {
         return array('value');
     }
-
 }

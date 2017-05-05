@@ -6,8 +6,8 @@ use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Container\Container;
 
-class CallQueuedHandler {
-
+class CallQueuedHandler
+{
     /**
      * The container instance.
      *
@@ -21,7 +21,8 @@ class CallQueuedHandler {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
-    public function __construct(Container $container) {
+    public function __construct(Container $container)
+    {
         $this->container = $container;
     }
 
@@ -32,16 +33,17 @@ class CallQueuedHandler {
      * @param  array  $data
      * @return void
      */
-    public function call(Job $job, array $data) {
+    public function call(Job $job, array $data)
+    {
         $handler = $this->setJobInstanceIfNecessary(
-                $job, $this->container->make($data['class'])
+            $job, $this->container->make($data['class'])
         );
 
         call_user_func_array(
-                [$handler, $data['method']], unserialize($data['data'])
+            [$handler, $data['method']], unserialize($data['data'])
         );
 
-        if (!$job->isDeletedOrReleased()) {
+        if (! $job->isDeletedOrReleased()) {
             $job->delete();
         }
     }
@@ -53,7 +55,8 @@ class CallQueuedHandler {
      * @param  mixed  $instance
      * @return mixed
      */
-    protected function setJobInstanceIfNecessary(Job $job, $instance) {
+    protected function setJobInstanceIfNecessary(Job $job, $instance)
+    {
         if (in_array(InteractsWithQueue::class, class_uses_recursive(get_class($instance)))) {
             $instance->setJob($job);
         }
@@ -70,7 +73,8 @@ class CallQueuedHandler {
      * @param  \Exception  $e
      * @return void
      */
-    public function failed(array $data, $e) {
+    public function failed(array $data, $e)
+    {
         $handler = $this->container->make($data['class']);
 
         $parameters = array_merge(unserialize($data['data']), [$e]);
@@ -79,5 +83,4 @@ class CallQueuedHandler {
             call_user_func_array([$handler, 'failed'], $parameters);
         }
     }
-
 }

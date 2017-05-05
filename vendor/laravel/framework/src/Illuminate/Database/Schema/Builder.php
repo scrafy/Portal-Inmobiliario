@@ -5,8 +5,8 @@ namespace Illuminate\Database\Schema;
 use Closure;
 use Illuminate\Database\Connection;
 
-class Builder {
-
+class Builder
+{
     /**
      * The database connection instance.
      *
@@ -41,7 +41,8 @@ class Builder {
      * @param  \Illuminate\Database\Connection  $connection
      * @return void
      */
-    public function __construct(Connection $connection) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
         $this->grammar = $connection->getSchemaGrammar();
     }
@@ -52,7 +53,8 @@ class Builder {
      * @param  int  $length
      * @return void
      */
-    public static function defaultStringLength($length) {
+    public static function defaultStringLength($length)
+    {
         static::$defaultStringLength = $length;
     }
 
@@ -62,12 +64,13 @@ class Builder {
      * @param  string  $table
      * @return bool
      */
-    public function hasTable($table) {
-        $table = $this->connection->getTablePrefix() . $table;
+    public function hasTable($table)
+    {
+        $table = $this->connection->getTablePrefix().$table;
 
         return count($this->connection->select(
-                                $this->grammar->compileTableExists(), [$table]
-                )) > 0;
+            $this->grammar->compileTableExists(), [$table]
+        )) > 0;
     }
 
     /**
@@ -77,9 +80,10 @@ class Builder {
      * @param  string  $column
      * @return bool
      */
-    public function hasColumn($table, $column) {
+    public function hasColumn($table, $column)
+    {
         return in_array(
-                strtolower($column), array_map('strtolower', $this->getColumnListing($table))
+            strtolower($column), array_map('strtolower', $this->getColumnListing($table))
         );
     }
 
@@ -90,11 +94,12 @@ class Builder {
      * @param  array   $columns
      * @return bool
      */
-    public function hasColumns($table, array $columns) {
+    public function hasColumns($table, array $columns)
+    {
         $tableColumns = array_map('strtolower', $this->getColumnListing($table));
 
         foreach ($columns as $column) {
-            if (!in_array(strtolower($column), $tableColumns)) {
+            if (! in_array(strtolower($column), $tableColumns)) {
                 return false;
             }
         }
@@ -109,8 +114,9 @@ class Builder {
      * @param  string  $column
      * @return string
      */
-    public function getColumnType($table, $column) {
-        $table = $this->connection->getTablePrefix() . $table;
+    public function getColumnType($table, $column)
+    {
+        $table = $this->connection->getTablePrefix().$table;
 
         return $this->connection->getDoctrineColumn($table, $column)->getType()->getName();
     }
@@ -121,8 +127,9 @@ class Builder {
      * @param  string  $table
      * @return array
      */
-    public function getColumnListing($table) {
-        $table = $this->connection->getTablePrefix() . $table;
+    public function getColumnListing($table)
+    {
+        $table = $this->connection->getTablePrefix().$table;
 
         $results = $this->connection->select($this->grammar->compileColumnListing($table));
 
@@ -136,7 +143,8 @@ class Builder {
      * @param  \Closure  $callback
      * @return void
      */
-    public function table($table, Closure $callback) {
+    public function table($table, Closure $callback)
+    {
         $this->build($this->createBlueprint($table, $callback));
     }
 
@@ -147,12 +155,13 @@ class Builder {
      * @param  \Closure  $callback
      * @return void
      */
-    public function create($table, Closure $callback) {
+    public function create($table, Closure $callback)
+    {
         $this->build(tap($this->createBlueprint($table), function ($blueprint) use ($callback) {
-                    $blueprint->create();
+            $blueprint->create();
 
-                    $callback($blueprint);
-                }));
+            $callback($blueprint);
+        }));
     }
 
     /**
@@ -161,10 +170,11 @@ class Builder {
      * @param  string  $table
      * @return void
      */
-    public function drop($table) {
+    public function drop($table)
+    {
         $this->build(tap($this->createBlueprint($table), function ($blueprint) {
-                    $blueprint->drop();
-                }));
+            $blueprint->drop();
+        }));
     }
 
     /**
@@ -173,10 +183,11 @@ class Builder {
      * @param  string  $table
      * @return void
      */
-    public function dropIfExists($table) {
+    public function dropIfExists($table)
+    {
         $this->build(tap($this->createBlueprint($table), function ($blueprint) {
-                    $blueprint->dropIfExists();
-                }));
+            $blueprint->dropIfExists();
+        }));
     }
 
     /**
@@ -186,10 +197,11 @@ class Builder {
      * @param  string  $to
      * @return void
      */
-    public function rename($from, $to) {
+    public function rename($from, $to)
+    {
         $this->build(tap($this->createBlueprint($from), function ($blueprint) use ($to) {
-                    $blueprint->rename($to);
-                }));
+            $blueprint->rename($to);
+        }));
     }
 
     /**
@@ -197,9 +209,10 @@ class Builder {
      *
      * @return bool
      */
-    public function enableForeignKeyConstraints() {
+    public function enableForeignKeyConstraints()
+    {
         return $this->connection->statement(
-                        $this->grammar->compileEnableForeignKeyConstraints()
+            $this->grammar->compileEnableForeignKeyConstraints()
         );
     }
 
@@ -208,9 +221,10 @@ class Builder {
      *
      * @return bool
      */
-    public function disableForeignKeyConstraints() {
+    public function disableForeignKeyConstraints()
+    {
         return $this->connection->statement(
-                        $this->grammar->compileDisableForeignKeyConstraints()
+            $this->grammar->compileDisableForeignKeyConstraints()
         );
     }
 
@@ -220,7 +234,8 @@ class Builder {
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
      * @return void
      */
-    protected function build(Blueprint $blueprint) {
+    protected function build(Blueprint $blueprint)
+    {
         $blueprint->build($this->connection, $this->grammar);
     }
 
@@ -231,7 +246,8 @@ class Builder {
      * @param  \Closure|null  $callback
      * @return \Illuminate\Database\Schema\Blueprint
      */
-    protected function createBlueprint($table, Closure $callback = null) {
+    protected function createBlueprint($table, Closure $callback = null)
+    {
         if (isset($this->resolver)) {
             return call_user_func($this->resolver, $table, $callback);
         }
@@ -244,7 +260,8 @@ class Builder {
      *
      * @return \Illuminate\Database\Connection
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 
@@ -254,7 +271,8 @@ class Builder {
      * @param  \Illuminate\Database\Connection  $connection
      * @return $this
      */
-    public function setConnection(Connection $connection) {
+    public function setConnection(Connection $connection)
+    {
         $this->connection = $connection;
 
         return $this;
@@ -266,8 +284,8 @@ class Builder {
      * @param  \Closure  $resolver
      * @return void
      */
-    public function blueprintResolver(Closure $resolver) {
+    public function blueprintResolver(Closure $resolver)
+    {
         $this->resolver = $resolver;
     }
-
 }

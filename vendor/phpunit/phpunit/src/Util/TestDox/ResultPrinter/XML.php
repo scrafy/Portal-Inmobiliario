@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener {
-
+class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+{
     /**
      * @var DOMDocument
      */
@@ -34,8 +33,9 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
     /**
      * @param string|resource $out
      */
-    public function __construct($out = null) {
-        $this->document = new DOMDocument('1.0', 'UTF-8');
+    public function __construct($out = null)
+    {
+        $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
 
         $this->root = $this->document->createElement('tests');
@@ -49,7 +49,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
     /**
      * Flush buffer and close output.
      */
-    public function flush() {
+    public function flush()
+    {
         $this->write($this->document->saveXML());
 
         parent::flush();
@@ -62,7 +63,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
         $this->exception = $e;
     }
 
@@ -73,8 +75,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time) {
-        
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
     }
 
     /**
@@ -84,7 +86,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param PHPUnit_Framework_AssertionFailedError $e
      * @param float                                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    {
         $this->exception = $e;
     }
 
@@ -95,8 +98,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
-        
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
     }
 
     /**
@@ -106,8 +109,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
-        
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
     }
 
     /**
@@ -117,8 +120,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param Exception              $e
      * @param float                  $time
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time) {
-        
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
     }
 
     /**
@@ -126,8 +129,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      *
      * @param PHPUnit_Framework_TestSuite $suite
      */
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {
-        
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
     }
 
     /**
@@ -135,8 +138,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      *
      * @param PHPUnit_Framework_TestSuite $suite
      */
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {
-        
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    {
     }
 
     /**
@@ -144,7 +147,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      *
      * @param PHPUnit_Framework_Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test) {
+    public function startTest(PHPUnit_Framework_Test $test)
+    {
         $this->exception = null;
     }
 
@@ -154,7 +158,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * @param PHPUnit_Framework_Test $test
      * @param float                  $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time) {
+    public function endTest(PHPUnit_Framework_Test $test, $time)
+    {
         if (!$test instanceof PHPUnit_Framework_TestCase) {
             return;
         }
@@ -162,13 +167,14 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         /* @var PHPUnit_Framework_TestCase $test */
 
         $groups = array_filter(
-                $test->getGroups(), function ($group) {
-            if ($group == 'small' || $group == 'medium' || $group == 'large') {
-                return false;
-            }
+            $test->getGroups(),
+            function ($group) {
+                if ($group == 'small' || $group == 'medium' || $group == 'large') {
+                    return false;
+                }
 
-            return true;
-        }
+                return true;
+            }
         );
 
         $node = $this->document->createElement('test');
@@ -201,7 +207,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
             }
 
             $class = new ReflectionClass($test);
-            $file = $class->getFileName();
+            $file  = $class->getFileName();
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] == $file) {
@@ -216,5 +222,4 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
 
         $this->root->appendChild($node);
     }
-
 }

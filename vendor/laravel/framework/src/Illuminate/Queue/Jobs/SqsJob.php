@@ -6,8 +6,8 @@ use Aws\Sqs\SqsClient;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-class SqsJob extends Job implements JobContract {
-
+class SqsJob extends Job implements JobContract
+{
     /**
      * The Amazon SQS client instance.
      *
@@ -32,7 +32,8 @@ class SqsJob extends Job implements JobContract {
      * @param  string  $queue
      * @return void
      */
-    public function __construct(Container $container, SqsClient $sqs, array $job, $connectionName, $queue) {
+    public function __construct(Container $container, SqsClient $sqs, array $job, $connectionName, $queue)
+    {
         $this->sqs = $sqs;
         $this->job = $job;
         $this->queue = $queue;
@@ -46,7 +47,8 @@ class SqsJob extends Job implements JobContract {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         parent::release($delay);
 
         $this->sqs->changeMessageVisibility([
@@ -61,7 +63,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         parent::delete();
 
         $this->sqs->deleteMessage([
@@ -74,7 +77,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         return (int) $this->job['Attributes']['ApproximateReceiveCount'];
     }
 
@@ -83,7 +87,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getJobId() {
+    public function getJobId()
+    {
         return $this->job['MessageId'];
     }
 
@@ -92,7 +97,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return string
      */
-    public function getRawBody() {
+    public function getRawBody()
+    {
         return $this->job['Body'];
     }
 
@@ -101,7 +107,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return \Aws\Sqs\SqsClient
      */
-    public function getSqs() {
+    public function getSqs()
+    {
         return $this->sqs;
     }
 
@@ -110,8 +117,8 @@ class SqsJob extends Job implements JobContract {
      *
      * @return array
      */
-    public function getSqsJob() {
+    public function getSqsJob()
+    {
         return $this->job;
     }
-
 }

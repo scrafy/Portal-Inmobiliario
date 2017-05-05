@@ -18,12 +18,13 @@ use Symfony\Component\Translation\Exception\InvalidResourceException;
  *
  * @author singles
  */
-class JsonFileLoader extends FileLoader {
-
+class JsonFileLoader extends FileLoader
+{
     /**
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         $messages = array();
         if ($data = file_get_contents($resource)) {
             $messages = json_decode($data, true);
@@ -43,7 +44,8 @@ class JsonFileLoader extends FileLoader {
      *
      * @return string Message string
      */
-    private function getJSONErrorMessage($errorCode) {
+    private function getJSONErrorMessage($errorCode)
+    {
         switch ($errorCode) {
             case JSON_ERROR_DEPTH:
                 return 'Maximum stack depth exceeded';
@@ -59,5 +61,4 @@ class JsonFileLoader extends FileLoader {
                 return 'Unknown error';
         }
     }
-
 }

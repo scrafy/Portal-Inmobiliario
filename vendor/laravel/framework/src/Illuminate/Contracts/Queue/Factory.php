@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Queue;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Resolve a queue connection instance.
      *

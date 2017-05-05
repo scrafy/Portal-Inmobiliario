@@ -22,8 +22,8 @@ use Psy\ContextAware;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-abstract class AbstractContextAwareMatcher extends AbstractMatcher implements ContextAware {
-
+abstract class AbstractContextAwareMatcher extends AbstractMatcher implements ContextAware
+{
     /**
      * Context instance (for ContextAware interface).
      *
@@ -36,7 +36,8 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
      *
      * @param Context $context
      */
-    public function setContext(Context $context) {
+    public function setContext(Context $context)
+    {
         $this->context = $context;
     }
 
@@ -47,7 +48,8 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
      *
      * @return mixed
      */
-    protected function getVariable($var) {
+    protected function getVariable($var)
+    {
         return $this->context->get($var);
     }
 
@@ -56,8 +58,8 @@ abstract class AbstractContextAwareMatcher extends AbstractMatcher implements Co
      *
      * @return array
      */
-    protected function getVariables() {
+    protected function getVariables()
+    {
         return $this->context->getAll();
     }
-
 }

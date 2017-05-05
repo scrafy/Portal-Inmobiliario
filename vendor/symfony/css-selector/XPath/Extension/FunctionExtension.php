@@ -28,12 +28,13 @@ use Symfony\Component\CssSelector\XPath\XPathExpr;
  *
  * @internal
  */
-class FunctionExtension extends AbstractExtension {
-
+class FunctionExtension extends AbstractExtension
+{
     /**
      * {@inheritdoc}
      */
-    public function getFunctionTranslators() {
+    public function getFunctionTranslators()
+    {
         return array(
             'nth-child' => array($this, 'translateNthChild'),
             'nth-last-child' => array($this, 'translateNthLastChild'),
@@ -54,7 +55,8 @@ class FunctionExtension extends AbstractExtension {
      *
      * @throws ExpressionErrorException
      */
-    public function translateNthChild(XPathExpr $xpath, FunctionNode $function, $last = false, $addNameTest = true) {
+    public function translateNthChild(XPathExpr $xpath, FunctionNode $function, $last = false, $addNameTest = true)
+    {
         try {
             list($a, $b) = Parser::parseSeries($function->getArguments());
         } catch (SyntaxErrorException $e) {
@@ -67,7 +69,7 @@ class FunctionExtension extends AbstractExtension {
         }
 
         if (0 === $a) {
-            return $xpath->addCondition('position() = ' . ($last ? 'last() - ' . ($b - 1) : $b));
+            return $xpath->addCondition('position() = '.($last ? 'last() - '.($b - 1) : $b));
         }
 
         if ($a < 0) {
@@ -83,12 +85,12 @@ class FunctionExtension extends AbstractExtension {
         $expr = 'position()';
 
         if ($last) {
-            $expr = 'last() - ' . $expr;
+            $expr = 'last() - '.$expr;
             --$b;
         }
 
         if (0 !== $b) {
-            $expr .= ' - ' . $b;
+            $expr .= ' - '.$b;
         }
 
         $conditions = array(sprintf('%s %s 0', $expr, $sign));
@@ -114,7 +116,8 @@ class FunctionExtension extends AbstractExtension {
      *
      * @return XPathExpr
      */
-    public function translateNthLastChild(XPathExpr $xpath, FunctionNode $function) {
+    public function translateNthLastChild(XPathExpr $xpath, FunctionNode $function)
+    {
         return $this->translateNthChild($xpath, $function, true);
     }
 
@@ -124,7 +127,8 @@ class FunctionExtension extends AbstractExtension {
      *
      * @return XPathExpr
      */
-    public function translateNthOfType(XPathExpr $xpath, FunctionNode $function) {
+    public function translateNthOfType(XPathExpr $xpath, FunctionNode $function)
+    {
         return $this->translateNthChild($xpath, $function, false, false);
     }
 
@@ -136,7 +140,8 @@ class FunctionExtension extends AbstractExtension {
      *
      * @throws ExpressionErrorException
      */
-    public function translateNthLastOfType(XPathExpr $xpath, FunctionNode $function) {
+    public function translateNthLastOfType(XPathExpr $xpath, FunctionNode $function)
+    {
         if ('*' === $xpath->getElement()) {
             throw new ExpressionErrorException('"*:nth-of-type()" is not implemented.');
         }
@@ -152,19 +157,21 @@ class FunctionExtension extends AbstractExtension {
      *
      * @throws ExpressionErrorException
      */
-    public function translateContains(XPathExpr $xpath, FunctionNode $function) {
+    public function translateContains(XPathExpr $xpath, FunctionNode $function)
+    {
         $arguments = $function->getArguments();
         foreach ($arguments as $token) {
             if (!($token->isString() || $token->isIdentifier())) {
                 throw new ExpressionErrorException(
-                'Expected a single string or identifier for :contains(), got '
-                . implode(', ', $arguments)
+                    'Expected a single string or identifier for :contains(), got '
+                    .implode(', ', $arguments)
                 );
             }
         }
 
         return $xpath->addCondition(sprintf(
-                                'contains(string(.), %s)', Translator::getXpathLiteral($arguments[0]->getValue())
+            'contains(string(.), %s)',
+            Translator::getXpathLiteral($arguments[0]->getValue())
         ));
     }
 
@@ -176,27 +183,29 @@ class FunctionExtension extends AbstractExtension {
      *
      * @throws ExpressionErrorException
      */
-    public function translateLang(XPathExpr $xpath, FunctionNode $function) {
+    public function translateLang(XPathExpr $xpath, FunctionNode $function)
+    {
         $arguments = $function->getArguments();
         foreach ($arguments as $token) {
             if (!($token->isString() || $token->isIdentifier())) {
                 throw new ExpressionErrorException(
-                'Expected a single string or identifier for :lang(), got '
-                . implode(', ', $arguments)
+                    'Expected a single string or identifier for :lang(), got '
+                    .implode(', ', $arguments)
                 );
             }
         }
 
         return $xpath->addCondition(sprintf(
-                                'lang(%s)', Translator::getXpathLiteral($arguments[0]->getValue())
+            'lang(%s)',
+            Translator::getXpathLiteral($arguments[0]->getValue())
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'function';
     }
-
 }

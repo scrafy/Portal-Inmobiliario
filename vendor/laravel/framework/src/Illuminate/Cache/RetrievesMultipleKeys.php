@@ -2,8 +2,8 @@
 
 namespace Illuminate\Cache;
 
-trait RetrievesMultipleKeys {
-
+trait RetrievesMultipleKeys
+{
     /**
      * Retrieve multiple items from the cache by key.
      *
@@ -12,7 +12,8 @@ trait RetrievesMultipleKeys {
      * @param  array  $keys
      * @return array
      */
-    public function many(array $keys) {
+    public function many(array $keys)
+    {
         $return = [];
 
         foreach ($keys as $key) {
@@ -29,10 +30,10 @@ trait RetrievesMultipleKeys {
      * @param  float|int  $minutes
      * @return void
      */
-    public function putMany(array $values, $minutes) {
+    public function putMany(array $values, $minutes)
+    {
         foreach ($values as $key => $value) {
             $this->put($key, $value, $minutes);
         }
     }
-
 }

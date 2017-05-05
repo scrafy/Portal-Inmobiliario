@@ -4,8 +4,8 @@ namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\Store;
 
-class TagSet {
-
+class TagSet
+{
     /**
      * The cache store implementation.
      *
@@ -27,7 +27,8 @@ class TagSet {
      * @param  array  $names
      * @return void
      */
-    public function __construct(Store $store, array $names = []) {
+    public function __construct(Store $store, array $names = [])
+    {
         $this->store = $store;
         $this->names = $names;
     }
@@ -37,7 +38,8 @@ class TagSet {
      *
      * @return void
      */
-    public function reset() {
+    public function reset()
+    {
         array_walk($this->names, [$this, 'resetTag']);
     }
 
@@ -47,7 +49,8 @@ class TagSet {
      * @param  string  $name
      * @return string
      */
-    public function resetTag($name) {
+    public function resetTag($name)
+    {
         $this->store->forever($this->tagKey($name), $id = str_replace('.', '', uniqid('', true)));
 
         return $id;
@@ -58,7 +61,8 @@ class TagSet {
      *
      * @return string
      */
-    public function getNamespace() {
+    public function getNamespace()
+    {
         return implode('|', $this->tagIds());
     }
 
@@ -67,7 +71,8 @@ class TagSet {
      *
      * @return array
      */
-    protected function tagIds() {
+    protected function tagIds()
+    {
         return array_map([$this, 'tagId'], $this->names);
     }
 
@@ -77,7 +82,8 @@ class TagSet {
      * @param  string  $name
      * @return string
      */
-    public function tagId($name) {
+    public function tagId($name)
+    {
         return $this->store->get($this->tagKey($name)) ?: $this->resetTag($name);
     }
 
@@ -87,8 +93,9 @@ class TagSet {
      * @param  string  $name
      * @return string
      */
-    public function tagKey($name) {
-        return 'tag:' . $name . ':key';
+    public function tagKey($name)
+    {
+        return 'tag:'.$name.':key';
     }
 
     /**
@@ -96,8 +103,8 @@ class TagSet {
      *
      * @return array
      */
-    public function getNames() {
+    public function getNames()
+    {
         return $this->names;
     }
-
 }

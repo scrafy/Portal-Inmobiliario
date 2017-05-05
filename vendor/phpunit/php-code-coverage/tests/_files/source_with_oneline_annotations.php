@@ -1,20 +1,20 @@
 <?php
 
 /** Docblock */
-interface Foo {
-
+interface Foo
+{
     public function bar();
 }
 
-class Foo {
-
-    public function bar() {
-        
+class Foo
+{
+    public function bar()
+    {
     }
-
 }
 
-function baz() {
+function baz()
+{
     // a one-line comment
     print '*'; // a one-line comment
 
@@ -24,7 +24,7 @@ function baz() {
     /* a one-line comment
      */
     print '*'; /* a one-line comment
-     */
+    */
 
     print '*'; // @codeCoverageIgnore
 

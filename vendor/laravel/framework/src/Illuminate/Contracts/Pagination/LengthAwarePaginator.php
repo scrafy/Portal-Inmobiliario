@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Pagination;
 
-interface LengthAwarePaginator extends Paginator {
-
+interface LengthAwarePaginator extends Paginator
+{
     /**
      * Create a range of pagination URLs.
      *

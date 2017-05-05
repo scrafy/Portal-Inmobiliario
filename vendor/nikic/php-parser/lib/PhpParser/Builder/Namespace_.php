@@ -6,8 +6,8 @@ use PhpParser;
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 
-class Namespace_ extends PhpParser\BuilderAbstract {
-
+class Namespace_ extends PhpParser\BuilderAbstract
+{
     private $name;
     private $stmts = array();
 
@@ -56,5 +56,4 @@ class Namespace_ extends PhpParser\BuilderAbstract {
     public function getNode() {
         return new Stmt\Namespace_($this->name, $this->stmts);
     }
-
 }

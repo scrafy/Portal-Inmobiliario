@@ -19,9 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MemoryDataCollector extends DataCollector implements LateDataCollectorInterface {
-
-    public function __construct() {
+class MemoryDataCollector extends DataCollector implements LateDataCollectorInterface
+{
+    public function __construct()
+    {
         $this->data = array(
             'memory' => 0,
             'memory_limit' => $this->convertToBytes(ini_get('memory_limit')),
@@ -31,14 +32,16 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         $this->updateMemoryUsage();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function lateCollect() {
+    public function lateCollect()
+    {
         $this->updateMemoryUsage();
     }
 
@@ -47,7 +50,8 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
      *
      * @return int The memory
      */
-    public function getMemory() {
+    public function getMemory()
+    {
         return $this->data['memory'];
     }
 
@@ -56,25 +60,29 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
      *
      * @return int The memory limit
      */
-    public function getMemoryLimit() {
+    public function getMemoryLimit()
+    {
         return $this->data['memory_limit'];
     }
 
     /**
      * Updates the memory usage data.
      */
-    public function updateMemoryUsage() {
+    public function updateMemoryUsage()
+    {
         $this->data['memory'] = memory_get_peak_usage(true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'memory';
     }
 
-    private function convertToBytes($memoryLimit) {
+    private function convertToBytes($memoryLimit)
+    {
         if ('-1' === $memoryLimit) {
             return -1;
         }
@@ -98,5 +106,4 @@ class MemoryDataCollector extends DataCollector implements LateDataCollectorInte
 
         return $max;
     }
-
 }

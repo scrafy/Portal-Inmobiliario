@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHP_TokenStream package.
  *
@@ -21,11 +20,12 @@
  * @link       http://github.com/sebastianbergmann/php-token-stream/
  * @since      Class available since Release 1.0.0
  */
-class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase {
-
+class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase
+{
     protected $functions;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'closure.php');
 
         foreach ($ts as $token) {
@@ -38,7 +38,8 @@ class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers PHP_Token_FUNCTION::getArguments
      */
-    public function testGetArguments() {
+    public function testGetArguments()
+    {
         $this->assertEquals(array('$foo' => null, '$bar' => null), $this->functions[0]->getArguments());
         $this->assertEquals(array('$foo' => 'Foo', '$bar' => null), $this->functions[1]->getArguments());
         $this->assertEquals(array('$foo' => null, '$bar' => null, '$baz' => null), $this->functions[2]->getArguments());
@@ -50,7 +51,8 @@ class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers PHP_Token_FUNCTION::getName
      */
-    public function testGetName() {
+    public function testGetName()
+    {
         $this->assertEquals('anonymous function', $this->functions[0]->getName());
         $this->assertEquals('anonymous function', $this->functions[1]->getName());
         $this->assertEquals('anonymous function', $this->functions[2]->getName());
@@ -62,7 +64,8 @@ class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers PHP_Token::getLine
      */
-    public function testGetLine() {
+    public function testGetLine()
+    {
         $this->assertEquals(2, $this->functions[0]->getLine());
         $this->assertEquals(3, $this->functions[1]->getLine());
         $this->assertEquals(4, $this->functions[2]->getLine());
@@ -72,11 +75,11 @@ class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase {
     /**
      * @covers PHP_TokenWithScope::getEndLine
      */
-    public function testGetEndLine() {
+    public function testGetEndLine()
+    {
         $this->assertEquals(2, $this->functions[0]->getLine());
         $this->assertEquals(3, $this->functions[1]->getLine());
         $this->assertEquals(4, $this->functions[2]->getLine());
         $this->assertEquals(5, $this->functions[3]->getLine());
     }
-
 }

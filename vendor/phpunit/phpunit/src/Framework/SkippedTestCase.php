@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * A skipped test case
  */
-class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase {
-
+class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
+{
     /**
      * @var string
      */
@@ -47,7 +46,8 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase {
     /**
      * @param string $message
      */
-    public function __construct($className, $methodName, $message = '') {
+    public function __construct($className, $methodName, $message = '')
+    {
         $this->message = $message;
         parent::__construct($className . '::' . $methodName);
     }
@@ -55,14 +55,16 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase {
     /**
      * @throws PHPUnit_Framework_Exception
      */
-    protected function runTest() {
+    protected function runTest()
+    {
         $this->markTestSkipped($this->message);
     }
 
     /**
      * @return string
      */
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 
@@ -71,8 +73,8 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase {
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return $this->getName();
     }
-
 }

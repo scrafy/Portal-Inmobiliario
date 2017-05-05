@@ -23,8 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class CommandTester {
-
+class CommandTester
+{
     private $command;
     private $input;
     private $output;
@@ -36,7 +36,8 @@ class CommandTester {
      *
      * @param Command $command A Command instance to test
      */
-    public function __construct(Command $command) {
+    public function __construct(Command $command)
+    {
         $this->command = $command;
     }
 
@@ -54,10 +55,13 @@ class CommandTester {
      *
      * @return int The command exit code
      */
-    public function execute(array $input, array $options = array()) {
+    public function execute(array $input, array $options = array())
+    {
         // set the command name automatically if the application requires
         // this argument and no command name was passed
-        if (!isset($input['command']) && (null !== $application = $this->command->getApplication()) && $application->getDefinition()->hasArgument('command')
+        if (!isset($input['command'])
+            && (null !== $application = $this->command->getApplication())
+            && $application->getDefinition()->hasArgument('command')
         ) {
             $input = array_merge(array('command' => $this->command->getName()), $input);
         }
@@ -89,7 +93,8 @@ class CommandTester {
      *
      * @return string The display
      */
-    public function getDisplay($normalize = false) {
+    public function getDisplay($normalize = false)
+    {
         rewind($this->output->getStream());
 
         $display = stream_get_contents($this->output->getStream());
@@ -106,7 +111,8 @@ class CommandTester {
      *
      * @return InputInterface The current input instance
      */
-    public function getInput() {
+    public function getInput()
+    {
         return $this->input;
     }
 
@@ -115,7 +121,8 @@ class CommandTester {
      *
      * @return OutputInterface The current output instance
      */
-    public function getOutput() {
+    public function getOutput()
+    {
         return $this->output;
     }
 
@@ -124,7 +131,8 @@ class CommandTester {
      *
      * @return int The status code
      */
-    public function getStatusCode() {
+    public function getStatusCode()
+    {
         return $this->statusCode;
     }
 
@@ -136,13 +144,15 @@ class CommandTester {
      *
      * @return CommandTester
      */
-    public function setInputs(array $inputs) {
+    public function setInputs(array $inputs)
+    {
         $this->inputs = $inputs;
 
         return $this;
     }
 
-    private static function createStream(array $inputs) {
+    private static function createStream(array $inputs)
+    {
         $stream = fopen('php://memory', 'r+', false);
 
         fwrite($stream, implode(PHP_EOL, $inputs));
@@ -150,5 +160,4 @@ class CommandTester {
 
         return $stream;
     }
-
 }

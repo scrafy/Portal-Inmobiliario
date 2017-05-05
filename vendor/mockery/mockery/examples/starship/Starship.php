@@ -1,14 +1,17 @@
 <?php
 
-class Starship {
+class Starship
+{
 
     protected $_engineering = null;
 
-    public function __construct($engineering) {
+    public function __construct($engineering)
+    {
         $this->_engineering = $engineering;
     }
 
-    public function enterOrbit() {
+    public function enterOrbit()
+    {
         $this->_engineering->disengageWarp();
         $this->_engineering->runDiagnosticLevel(5);
         $this->_engineering->divertPower(0.40, 'sensors');
@@ -18,5 +21,4 @@ class Starship {
         // We can add more runDiagnosticLevel() calls without failing the test
         // anywhere above since they are unordered.
     }
-
 }

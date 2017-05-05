@@ -2,6 +2,6 @@
 
 namespace Fixtures\Prophecy;
 
-class EmptyClass {
-    
+class EmptyClass
+{
 }

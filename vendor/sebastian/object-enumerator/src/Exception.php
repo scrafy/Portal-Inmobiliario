@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of Object Enumerator.
  *
@@ -11,6 +10,6 @@
 
 namespace SebastianBergmann\ObjectEnumerator;
 
-interface Exception {
-    
+interface Exception
+{
 }

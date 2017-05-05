@@ -21,8 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Pierre Minnieur <pierre.minnieur@sensiolabs.de>
  */
-interface TerminableInterface {
-
+interface TerminableInterface
+{
     /**
      * Terminates a request/response cycle.
      *

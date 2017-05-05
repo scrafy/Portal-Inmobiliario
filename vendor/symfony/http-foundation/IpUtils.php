@@ -16,13 +16,13 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class IpUtils {
-
+class IpUtils
+{
     /**
      * This class should not be instantiated.
      */
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
     /**
@@ -33,7 +33,8 @@ class IpUtils {
      *
      * @return bool Whether the IP is valid
      */
-    public static function checkIp($requestIp, $ips) {
+    public static function checkIp($requestIp, $ips)
+    {
         if (!is_array($ips)) {
             $ips = array($ips);
         }
@@ -58,7 +59,8 @@ class IpUtils {
      *
      * @return bool Whether the request IP matches the IP, or whether the request IP is within the CIDR subnet
      */
-    public static function checkIp4($requestIp, $ip) {
+    public static function checkIp4($requestIp, $ip)
+    {
         if (!filter_var($requestIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             return false;
         }
@@ -96,7 +98,8 @@ class IpUtils {
      *
      * @throws \RuntimeException When IPV6 support is not enabled
      */
-    public static function checkIp6($requestIp, $ip) {
+    public static function checkIp6($requestIp, $ip)
+    {
         if (!((extension_loaded('sockets') && defined('AF_INET6')) || @inet_pton('::1'))) {
             throw new \RuntimeException('Unable to check Ipv6. Check that PHP was not compiled with option "disable-ipv6".');
         }
@@ -130,5 +133,4 @@ class IpUtils {
 
         return true;
     }
-
 }

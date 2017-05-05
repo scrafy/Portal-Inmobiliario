@@ -2,8 +2,8 @@
 
 namespace Illuminate\Validation\Rules;
 
-class Dimensions {
-
+class Dimensions
+{
     /**
      * The constraints for the dimensions rule.
      *
@@ -17,7 +17,8 @@ class Dimensions {
      * @param  array  $constraints;
      * @return void
      */
-    public function __construct(array $constraints = []) {
+    public function __construct(array $constraints = [])
+    {
         $this->constraints = $constraints;
     }
 
@@ -27,7 +28,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function width($value) {
+    public function width($value)
+    {
         $this->constraints['width'] = $value;
 
         return $this;
@@ -39,7 +41,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function height($value) {
+    public function height($value)
+    {
         $this->constraints['height'] = $value;
 
         return $this;
@@ -51,7 +54,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function minWidth($value) {
+    public function minWidth($value)
+    {
         $this->constraints['min_width'] = $value;
 
         return $this;
@@ -63,7 +67,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function minHeight($value) {
+    public function minHeight($value)
+    {
         $this->constraints['min_height'] = $value;
 
         return $this;
@@ -75,7 +80,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function maxWidth($value) {
+    public function maxWidth($value)
+    {
         $this->constraints['max_width'] = $value;
 
         return $this;
@@ -87,7 +93,8 @@ class Dimensions {
      * @param  int  $value
      * @return $this
      */
-    public function maxHeight($value) {
+    public function maxHeight($value)
+    {
         $this->constraints['max_height'] = $value;
 
         return $this;
@@ -99,7 +106,8 @@ class Dimensions {
      * @param  float  $value
      * @return $this
      */
-    public function ratio($value) {
+    public function ratio($value)
+    {
         $this->constraints['ratio'] = $value;
 
         return $this;
@@ -110,14 +118,14 @@ class Dimensions {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         $result = '';
 
         foreach ($this->constraints as $key => $value) {
             $result .= "$key=$value,";
         }
 
-        return 'dimensions:' . substr($result, 0, -1);
+        return 'dimensions:'.substr($result, 0, -1);
     }
-
 }

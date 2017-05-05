@@ -16,9 +16,10 @@ namespace Symfony\Component\VarDumper\Caster;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class LinkStub extends ConstStub {
-
-    public function __construct($label, $line = 0, $href = null) {
+class LinkStub extends ConstStub
+{
+    public function __construct($label, $line = 0, $href = null)
+    {
         $this->value = $label;
 
         if (null === $href) {
@@ -47,5 +48,4 @@ class LinkStub extends ConstStub {
             }
         }
     }
-
 }

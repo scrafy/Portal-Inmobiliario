@@ -16,8 +16,8 @@ namespace Symfony\Component\Translation;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface MetadataAwareInterface {
-
+interface MetadataAwareInterface
+{
     /**
      * Gets metadata for the given domain and key.
      *

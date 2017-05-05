@@ -6,8 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputOption;
 
-class RefreshCommand extends Command {
-
+class RefreshCommand extends Command
+{
     use ConfirmableTrait;
 
     /**
@@ -29,8 +29,9 @@ class RefreshCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
-        if (!$this->confirmToProceed()) {
+    public function fire()
+    {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
@@ -77,7 +78,8 @@ class RefreshCommand extends Command {
      * @param  bool  $force
      * @return void
      */
-    protected function runRollback($database, $path, $step, $force) {
+    protected function runRollback($database, $path, $step, $force)
+    {
         $this->call('migrate:rollback', [
             '--database' => $database,
             '--path' => $path,
@@ -94,7 +96,8 @@ class RefreshCommand extends Command {
      * @param  bool  $force
      * @return void
      */
-    protected function runReset($database, $path, $force) {
+    protected function runReset($database, $path, $force)
+    {
         $this->call('migrate:reset', [
             '--database' => $database,
             '--path' => $path,
@@ -107,7 +110,8 @@ class RefreshCommand extends Command {
      *
      * @return bool
      */
-    protected function needsSeeding() {
+    protected function needsSeeding()
+    {
         return $this->option('seed') || $this->option('seeder');
     }
 
@@ -117,7 +121,8 @@ class RefreshCommand extends Command {
      * @param  string  $database
      * @return void
      */
-    protected function runSeeder($database) {
+    protected function runSeeder($database)
+    {
         $this->call('db:seed', [
             '--database' => $database,
             '--class' => $this->option('seeder') ?: 'DatabaseSeeder',
@@ -130,15 +135,20 @@ class RefreshCommand extends Command {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to use.'],
+
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
+
             ['path', null, InputOption::VALUE_OPTIONAL, 'The path of migrations files to be executed.'],
+
             ['seed', null, InputOption::VALUE_NONE, 'Indicates if the seed task should be re-run.'],
+
             ['seeder', null, InputOption::VALUE_OPTIONAL, 'The class name of the root seeder.'],
+
             ['step', null, InputOption::VALUE_OPTIONAL, 'The number of migrations to be reverted & re-run.'],
         ];
     }
-
 }

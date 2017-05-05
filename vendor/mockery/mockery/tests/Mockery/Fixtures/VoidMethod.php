@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -22,7 +21,7 @@
 
 namespace test\Mockery\Fixtures;
 
-interface VoidMethod {
-
+interface VoidMethod
+{
     public function foo(): void;
 }

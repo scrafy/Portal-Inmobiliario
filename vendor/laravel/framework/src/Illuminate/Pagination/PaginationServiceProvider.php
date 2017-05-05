@@ -4,20 +4,21 @@ namespace Illuminate\Pagination;
 
 use Illuminate\Support\ServiceProvider;
 
-class PaginationServiceProvider extends ServiceProvider {
-
+class PaginationServiceProvider extends ServiceProvider
+{
     /**
      * Bootstrap any application services.
      *
      * @return void
      */
-    public function boot() {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'pagination');
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'pagination');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/resources/views' => resource_path('views/vendor/pagination'),
-                    ], 'laravel-pagination');
+                __DIR__.'/resources/views' => resource_path('views/vendor/pagination'),
+            ], 'laravel-pagination');
         }
     }
 
@@ -26,7 +27,8 @@ class PaginationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         Paginator::viewFactoryResolver(function () {
             return $this->app['view'];
         });
@@ -45,5 +47,4 @@ class PaginationServiceProvider extends ServiceProvider {
             return 1;
         });
     }
-
 }

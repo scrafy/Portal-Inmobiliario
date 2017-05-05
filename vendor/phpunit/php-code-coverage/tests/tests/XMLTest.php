@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -13,17 +12,19 @@ namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
 use SebastianBergmann\CodeCoverage\TestCase;
 
-class XMLTest extends TestCase {
-
+class XMLTest extends TestCase
+{
     private static $TEST_REPORT_PATH_SOURCE;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         parent::setUpBeforeClass();
 
         self::$TEST_REPORT_PATH_SOURCE = TEST_FILES_PATH . 'Report' . DIRECTORY_SEPARATOR . 'XML';
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         parent::tearDown();
 
         $tmpFilesIterator = new \FilesystemIterator(self::$TEST_TMP_PATH);
@@ -34,7 +35,8 @@ class XMLTest extends TestCase {
         }
     }
 
-    public function testForBankAccountTest() {
+    public function testForBankAccountTest()
+    {
         $expectedFilesPath = self::$TEST_REPORT_PATH_SOURCE . DIRECTORY_SEPARATOR . 'CoverageForBankAccount';
 
         $xml = new Facade;
@@ -43,7 +45,8 @@ class XMLTest extends TestCase {
         $this->assertFilesEquals($expectedFilesPath, self::$TEST_TMP_PATH);
     }
 
-    public function testForFileWithIgnoredLines() {
+    public function testForFileWithIgnoredLines()
+    {
         $expectedFilesPath = self::$TEST_REPORT_PATH_SOURCE . DIRECTORY_SEPARATOR . 'CoverageForFileWithIgnoredLines';
 
         $xml = new Facade;
@@ -52,8 +55,10 @@ class XMLTest extends TestCase {
         $this->assertFilesEquals($expectedFilesPath, self::$TEST_TMP_PATH);
     }
 
-    public function testForClassWithAnonymousFunction() {
-        $expectedFilesPath = self::$TEST_REPORT_PATH_SOURCE . DIRECTORY_SEPARATOR . 'CoverageForClassWithAnonymousFunction';
+    public function testForClassWithAnonymousFunction()
+    {
+        $expectedFilesPath =
+            self::$TEST_REPORT_PATH_SOURCE . DIRECTORY_SEPARATOR . 'CoverageForClassWithAnonymousFunction';
 
         $xml = new Facade;
         $xml->process($this->getCoverageForClassWithAnonymousFunction(), self::$TEST_TMP_PATH);
@@ -65,12 +70,15 @@ class XMLTest extends TestCase {
      * @param string $expectedFilesPath
      * @param string $actualFilesPath
      */
-    private function assertFilesEquals($expectedFilesPath, $actualFilesPath) {
+    private function assertFilesEquals($expectedFilesPath, $actualFilesPath)
+    {
         $expectedFilesIterator = new \FilesystemIterator($expectedFilesPath);
-        $actualFilesIterator = new \FilesystemIterator($actualFilesPath);
+        $actualFilesIterator   = new \FilesystemIterator($actualFilesPath);
 
         $this->assertEquals(
-                iterator_count($expectedFilesIterator), iterator_count($actualFilesIterator), 'Generated files and expected files not match'
+            iterator_count($expectedFilesIterator),
+            iterator_count($actualFilesIterator),
+            'Generated files and expected files not match'
         );
 
         foreach ($expectedFilesIterator as $path => $fileInfo) {
@@ -82,9 +90,10 @@ class XMLTest extends TestCase {
             $this->assertFileExists($actualFile);
 
             $this->assertStringMatchesFormatFile(
-                    $fileInfo->getPathname(), file_get_contents($actualFile), "${filename} not match"
+                $fileInfo->getPathname(),
+                file_get_contents($actualFile),
+                "${filename} not match"
             );
         }
     }
-
 }

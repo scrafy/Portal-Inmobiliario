@@ -15,15 +15,16 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
  *
  * The exceptions are converted to HTTP responses for proper middleware handling.
  */
-class Pipeline extends BasePipeline {
-
+class Pipeline extends BasePipeline
+{
     /**
      * Get the final piece of the Closure onion.
      *
      * @param  \Closure  $destination
      * @return \Closure
      */
-    protected function prepareDestination(Closure $destination) {
+    protected function prepareDestination(Closure $destination)
+    {
         return function ($passable) use ($destination) {
             try {
                 return $destination($passable);
@@ -40,7 +41,8 @@ class Pipeline extends BasePipeline {
      *
      * @return \Closure
      */
-    protected function carry() {
+    protected function carry()
+    {
         return function ($stack, $pipe) {
             return function ($passable) use ($stack, $pipe) {
                 try {
@@ -67,8 +69,9 @@ class Pipeline extends BasePipeline {
      *
      * @throws \Exception
      */
-    protected function handleException($passable, Exception $e) {
-        if (!$this->container->bound(ExceptionHandler::class) || !$passable instanceof Request) {
+    protected function handleException($passable, Exception $e)
+    {
+        if (! $this->container->bound(ExceptionHandler::class) || ! $passable instanceof Request) {
             throw $e;
         }
 
@@ -84,5 +87,4 @@ class Pipeline extends BasePipeline {
 
         return $response;
     }
-
 }

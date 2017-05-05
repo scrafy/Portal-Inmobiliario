@@ -2,22 +2,24 @@
 
 namespace Faker\Provider\fi_FI;
 
-class Person extends \Faker\Provider\Person {
-
+class Person extends \Faker\Provider\Person
+{
     protected static $maleNameFormats = array(
         '{{firstNameMale}} {{lastName}}',
         '{{firstNameMale}} {{lastName}}',
         '{{firstNameMale}} {{lastName}}',
         '{{titleMale}} {{firstNameMale}} {{lastName}}',
     );
+
     protected static $femaleNameFormats = array(
         '{{firstNameFemale}} {{lastName}}',
         '{{firstNameFemale}} {{lastName}}',
         '{{firstNameFemale}} {{lastName}}',
         '{{titleFemale}} {{firstNameFemale}} {{lastName}}',
     );
+
     protected static $firstNameMale = array(
-        'Aleksi', 'Anssi', 'Antero', 'Antti', 'Ari', 'Arttu', 'Daniel', 'Eero', 'Eetu', 'Elias', 'Elmo', 'Emil', 'Erkki',
+         'Aleksi', 'Anssi', 'Antero', 'Antti', 'Ari', 'Arttu', 'Daniel', 'Eero', 'Eetu', 'Elias', 'Elmo', 'Emil', 'Erkki',
         'Hampus', 'Hannu', 'Harri', 'Heikki', 'Helmi', 'Henri', 'Hermanni', 'Ilja', 'Jaakko', 'Jake', 'Jani', 'Janne',
         'Jari', 'Jarno', 'Jere', 'Jeremy', 'Jesper', 'Jesse', 'Jimi', 'Joakim', 'Joel', 'Joona', 'Joonas', 'Juha',
         'Juho', 'Jukka', 'Julius', 'Jussi', 'Justus', 'Juuso', 'Kalle', 'Kasperi', 'Konsta', 'Kristian', 'Lassi', 'Leevi',
@@ -30,7 +32,9 @@ class Person extends \Faker\Provider\Person {
         'Aune', 'Beeda', 'Briitta', 'Eeli', 'Eelis', 'Eemeli', 'Ekku', 'Eljas', 'Erkko', 'Iiro', 'Ilmari', 'Isto',
         'Jirko', 'Joonatan', 'Jore', 'Junnu', 'Jusu', 'Kaste', 'Kauto', 'Luukas', 'Nuutti', 'Onni', 'Osmo', 'Pekko',
         'Sampo', 'Santtu', 'Sauli', 'Simo,', 'Sisu', 'Teijo', 'Unto', 'Urho', 'Veeti', 'Veikko', 'Vilho', 'Werneri', 'Wiljami',
+
     );
+
     protected static $firstNameFemale = array(
         'Aada', 'Ada', 'Aina', 'Aino', 'Aki', 'Aliisa', 'Amalia', 'Amanda', 'Amelia', 'Amira', 'Anissa', 'Anita', 'Anna',
         'Anne', 'Anni', 'Anniina', 'Annu', 'Anu', 'Asta', 'Atte', 'Atte', 'Aura', 'Aurora', 'Bella', 'Cara',
@@ -51,6 +55,7 @@ class Person extends \Faker\Provider\Person {
         'Kaisu', 'Loviisa', 'Malla', 'Martta', 'Matleena', 'Miina', 'Mimmu', 'Minea', 'Minttu', 'Mirva', 'Nelli', 'Ninni',
         'Oliivia', 'Peppi', 'Pihla', 'Pirkko', 'Riia', 'Roosa', 'Taika', 'Venla', 'Viivi', 'Vilja',
     );
+
     protected static $lastName = array(
         'Aakula', 'Aalto', 'Aaltonen', 'Aarnio', 'Aaronen', 'Aavikkola', 'Ahmala', 'Aho', 'Ahokas', 'Ahola', 'Ahomaa', 'Ahonen', 'Ahoniemi', 'Ahopelto', 'Ahovaara', 'Ahtila', 'Ahtiluoto', 'Ahtio', 'Ahtisaari', 'Ahto', 'Ahtola', 'Ahtonen', 'Ahtorinne', 'Aija', 'Aijala', 'Ainola', 'Aitio', 'Aitolahti', 'Aitomaa', 'Aittasalmi', 'Akkala', 'Akkanen', 'Alahuhta', 'Alajoki', 'Alajärvi', 'Alanen', 'Alatalo', 'Alasalmi', 'Alapuro', 'Alhola', 'Alijoki', 'Ankkala', 'Ankkuri', 'Annala', 'Annunen', 'Anttila', 'Anttinen', 'Anttonen', 'Ara', 'Arhila', 'Arhinmäki', 'Arhosuo,', 'Arinen', 'Arjamaa', 'Arjanen', 'Arkkila', 'Armio', 'Arnio', 'Aronen', 'Arosuo', 'Arponen', 'Arvola', 'Asikainen', 'Astala', 'Attila', 'Aunela', 'Aura', 'Auramies', 'Auranen', 'Autio', 'Auvinen', 'Auvola', 'Avonius', 'Avotie',
         'Bräysy',
@@ -76,7 +81,8 @@ class Person extends \Faker\Provider\Person {
         'Äijälä', 'Ämmälä', 'Änäkkälä', 'Äyräs', 'Äärynen',
         'Översti', 'Öysti', 'Öörni'
     );
-    protected static $titleMale = array('Hra.', 'Tri.');
-    protected static $titleFemale = array('Rva.', 'Nti.', 'Tri.');
 
+    protected static $titleMale = array('Hra.', 'Tri.');
+
+    protected static $titleFemale = array('Rva.', 'Nti.', 'Tri.');
 }

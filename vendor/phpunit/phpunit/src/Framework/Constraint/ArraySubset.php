@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -15,8 +14,8 @@
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
  */
-class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
+{
     /**
      * @var array|ArrayAccess
      */
@@ -31,7 +30,8 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      * @param array|ArrayAccess $subset
      * @param bool              $strict Check for object identity
      */
-    public function __construct($subset, $strict = false) {
+    public function __construct($subset, $strict = false)
+    {
         parent::__construct();
         $this->strict = $strict;
         $this->subset = $subset;
@@ -45,7 +45,8 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
         if ($other instanceof ArrayAccess) {
@@ -70,7 +71,8 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'has the subset ' . $this->exporter->export($this->subset);
     }
 
@@ -84,8 +86,8 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return 'an array ' . $this->toString();
     }
-
 }

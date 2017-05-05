@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,8 +12,8 @@
  * Constraint that asserts that the string it is evaluated for begins with a
  * given prefix.
  */
-class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Constraint
+{
     /**
      * @var string
      */
@@ -23,7 +22,8 @@ class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Co
     /**
      * @param string $prefix
      */
-    public function __construct($prefix) {
+    public function __construct($prefix)
+    {
         parent::__construct();
         $this->prefix = $prefix;
     }
@@ -36,7 +36,8 @@ class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Co
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return strpos($other, $this->prefix) === 0;
     }
 
@@ -45,8 +46,8 @@ class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Co
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'starts with "' . $this->prefix . '"';
     }
-
 }

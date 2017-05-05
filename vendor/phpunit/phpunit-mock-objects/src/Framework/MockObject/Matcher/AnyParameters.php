@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,12 +13,13 @@
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation {
-
+class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
+{
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'with any parameters';
     }
 
@@ -28,8 +28,8 @@ class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framewo
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation) {
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
         return true;
     }
-
 }

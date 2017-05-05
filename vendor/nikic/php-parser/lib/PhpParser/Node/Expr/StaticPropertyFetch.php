@@ -5,11 +5,10 @@ namespace PhpParser\Node\Expr;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Name;
 
-class StaticPropertyFetch extends Expr {
-
+class StaticPropertyFetch extends Expr
+{
     /** @var Name|Expr Class name */
     public $class;
-
     /** @var string|Expr Property name */
     public $name;
 
@@ -29,5 +28,4 @@ class StaticPropertyFetch extends Expr {
     public function getSubNodeNames() {
         return array('class', 'name');
     }
-
 }

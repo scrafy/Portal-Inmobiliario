@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
-class Authenticate {
-
+class Authenticate
+{
     /**
      * The authentication factory instance.
      *
@@ -21,7 +21,8 @@ class Authenticate {
      * @param  \Illuminate\Contracts\Auth\Factory  $auth
      * @return void
      */
-    public function __construct(Auth $auth) {
+    public function __construct(Auth $auth)
+    {
         $this->auth = $auth;
     }
 
@@ -35,7 +36,8 @@ class Authenticate {
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function handle($request, Closure $next, ...$guards) {
+    public function handle($request, Closure $next, ...$guards)
+    {
         $this->authenticate($guards);
 
         return $next($request);
@@ -49,7 +51,8 @@ class Authenticate {
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    protected function authenticate(array $guards) {
+    protected function authenticate(array $guards)
+    {
         if (empty($guards)) {
             return $this->auth->authenticate();
         }
@@ -62,5 +65,4 @@ class Authenticate {
 
         throw new AuthenticationException('Unauthenticated.', $guards);
     }
-
 }

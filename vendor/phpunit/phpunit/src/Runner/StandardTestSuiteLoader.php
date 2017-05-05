@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * The standard test suite loader.
  */
-class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader {
-
+class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
+{
     /**
      * @param string $suiteClassName
      * @param string $suiteClassFile
@@ -22,12 +21,13 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function load($suiteClassName, $suiteClassFile = '') {
+    public function load($suiteClassName, $suiteClassFile = '')
+    {
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 
         if (empty($suiteClassFile)) {
             $suiteClassFile = PHPUnit_Util_Filesystem::classNameToFilename(
-                            $suiteClassName
+                $suiteClassName
             );
         }
 
@@ -37,7 +37,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = array_values(
-                    array_diff(get_declared_classes(), $loadedClasses)
+                array_diff(get_declared_classes(), $loadedClasses)
             );
         }
 
@@ -47,7 +47,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
                 if (substr($loadedClass, $offset) === $suiteClassName &&
-                        $class->getFileName() == $filename) {
+                    $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;
                     break;
                 }
@@ -58,13 +58,13 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $testCaseClass = 'PHPUnit_Framework_TestCase';
 
             foreach ($loadedClasses as $loadedClass) {
-                $class = new ReflectionClass($loadedClass);
+                $class     = new ReflectionClass($loadedClass);
                 $classFile = $class->getFileName();
 
                 if ($class->isSubclassOf($testCaseClass) &&
-                        !$class->isAbstract()) {
+                    !$class->isAbstract()) {
                     $suiteClassName = $loadedClass;
-                    $testCaseClass = $loadedClass;
+                    $testCaseClass  = $loadedClass;
 
                     if ($classFile == realpath($suiteClassFile)) {
                         break;
@@ -75,8 +75,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                     $method = $class->getMethod('suite');
 
                     if (!$method->isAbstract() &&
-                            $method->isPublic() &&
-                            $method->isStatic()) {
+                        $method->isPublic() &&
+                        $method->isStatic()) {
                         $suiteClassName = $loadedClass;
 
                         if ($classFile == realpath($suiteClassFile)) {
@@ -96,9 +96,11 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         throw new PHPUnit_Framework_Exception(
-        sprintf(
-                "Class '%s' could not be found in '%s'.", $suiteClassName, $suiteClassFile
-        )
+            sprintf(
+                "Class '%s' could not be found in '%s'.",
+                $suiteClassName,
+                $suiteClassFile
+            )
         );
     }
 
@@ -107,8 +109,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      *
      * @return ReflectionClass
      */
-    public function reload(ReflectionClass $aClass) {
+    public function reload(ReflectionClass $aClass)
+    {
         return $aClass;
     }
-
 }

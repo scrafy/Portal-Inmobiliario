@@ -32,8 +32,8 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
  *
  * @author Jean-François Simon <jeanfrancois.simon@sensiolabs.com>
  */
-interface OperationInterface {
-
+interface OperationInterface
+{
     /**
      * Returns domains affected by operation.
      *

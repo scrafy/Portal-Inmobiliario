@@ -1,5 +1,4 @@
 <?php
-
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,29 +31,33 @@ use ReflectionClass;
  *
  * @covers \Doctrine\Instantiator\Exception\UnexpectedValueException
  */
-class UnexpectedValueExceptionTest extends PHPUnit_Framework_TestCase {
-
-    public function testFromSerializationTriggeredException() {
+class UnexpectedValueExceptionTest extends PHPUnit_Framework_TestCase
+{
+    public function testFromSerializationTriggeredException()
+    {
         $reflectionClass = new ReflectionClass($this);
-        $previous = new Exception();
-        $exception = UnexpectedValueException::fromSerializationTriggeredException($reflectionClass, $previous);
+        $previous        = new Exception();
+        $exception       = UnexpectedValueException::fromSerializationTriggeredException($reflectionClass, $previous);
 
         $this->assertInstanceOf('Doctrine\\Instantiator\\Exception\\UnexpectedValueException', $exception);
         $this->assertSame($previous, $exception->getPrevious());
         $this->assertSame(
-                'An exception was raised while trying to instantiate an instance of "'
-                . __CLASS__ . '" via un-serialization', $exception->getMessage()
+            'An exception was raised while trying to instantiate an instance of "'
+            . __CLASS__  . '" via un-serialization',
+            $exception->getMessage()
         );
     }
 
-    public function testFromUncleanUnSerialization() {
+    public function testFromUncleanUnSerialization()
+    {
         $reflection = new ReflectionClass('DoctrineTest\\InstantiatorTestAsset\\AbstractClassAsset');
-        $exception = UnexpectedValueException::fromUncleanUnSerialization($reflection, 'foo', 123, 'bar', 456);
+        $exception  = UnexpectedValueException::fromUncleanUnSerialization($reflection, 'foo', 123, 'bar', 456);
 
         $this->assertInstanceOf('Doctrine\\Instantiator\\Exception\\UnexpectedValueException', $exception);
         $this->assertSame(
-                'Could not produce an instance of "DoctrineTest\\InstantiatorTestAsset\\AbstractClassAsset" '
-                . 'via un-serialization, since an error was triggered in file "bar" at line "456"', $exception->getMessage()
+            'Could not produce an instance of "DoctrineTest\\InstantiatorTestAsset\\AbstractClassAsset" '
+            . 'via un-serialization, since an error was triggered in file "bar" at line "456"',
+            $exception->getMessage()
         );
 
         $previous = $exception->getPrevious();
@@ -63,5 +66,4 @@ class UnexpectedValueExceptionTest extends PHPUnit_Framework_TestCase {
         $this->assertSame('foo', $previous->getMessage());
         $this->assertSame(123, $previous->getCode());
     }
-
 }

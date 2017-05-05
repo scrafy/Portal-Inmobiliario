@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -17,8 +16,8 @@ namespace phpDocumentor\Reflection;
  *
  * @link https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc-meta.md
  */
-final class Fqsen {
-
+final class Fqsen
+{
     /**
      * @var string full quallified class name
      */
@@ -36,13 +35,14 @@ final class Fqsen {
      *
      * @throws \InvalidArgumentException when $fqsen is not matching the format.
      */
-    public function __construct($fqsen) {
+    public function __construct($fqsen)
+    {
         $matches = array();
         $result = preg_match('/^\\\\([\\w_\\\\]*)(?:[:]{2}\\$?([\\w_]+))?(?:\\(\\))?$/', $fqsen, $matches);
 
         if ($result === 0) {
             throw new \InvalidArgumentException(
-            sprintf('"%s" is not a valid Fqsen.', $fqsen)
+                sprintf('"%s" is not a valid Fqsen.', $fqsen)
             );
         }
 
@@ -61,7 +61,8 @@ final class Fqsen {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->fqsen;
     }
 
@@ -70,8 +71,8 @@ final class Fqsen {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-
 }

@@ -14,16 +14,18 @@ namespace Symfony\Component\Process\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\ProcessUtils;
 
-class ProcessUtilsTest extends TestCase {
-
+class ProcessUtilsTest extends TestCase
+{
     /**
      * @dataProvider dataArguments
      */
-    public function testEscapeArgument($result, $argument) {
+    public function testEscapeArgument($result, $argument)
+    {
         $this->assertSame($result, ProcessUtils::escapeArgument($argument));
     }
 
-    public function dataArguments() {
+    public function dataArguments()
+    {
         if ('\\' === DIRECTORY_SEPARATOR) {
             return array(
                 array('"\"php\" \"-v\""', '"php" "-v"'),
@@ -45,5 +47,4 @@ class ProcessUtilsTest extends TestCase {
             array("'withNonAsciiAccentLikeéÉèÈàÀöä'", 'withNonAsciiAccentLikeéÉèÈàÀöä'),
         );
     }
-
 }

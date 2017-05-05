@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,15 +20,16 @@ use phpDocumentor\Reflection\Types\Context;
  * @covers ::<private>
  * @uses \Webmozart\Assert\Assert
  */
-class DocBlockTest extends \PHPUnit_Framework_TestCase {
-
+class DocBlockTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::__construct
      * @covers ::getSummary
      *
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testDocBlockCanHaveASummary() {
+    public function testDocBlockCanHaveASummary()
+    {
         $summary = 'This is a summary';
 
         $fixture = new DocBlock($summary);
@@ -42,7 +42,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfSummaryIsNotAString() {
+    public function testExceptionIsThrownIfSummaryIsNotAString()
+    {
         new DocBlock([]);
     }
 
@@ -51,7 +52,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfTemplateStartIsNotABoolean() {
+    public function testExceptionIsThrownIfTemplateStartIsNotABoolean()
+    {
         new DocBlock('', null, [], null, null, ['is not boolean']);
     }
 
@@ -60,7 +62,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfTemplateEndIsNotABoolean() {
+    public function testExceptionIsThrownIfTemplateEndIsNotABoolean()
+    {
         new DocBlock('', null, [], null, null, false, ['is not boolean']);
     }
 
@@ -70,7 +73,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testDocBlockCanHaveADescription() {
+    public function testDocBlockCanHaveADescription()
+    {
         $description = new DocBlock\Description('');
 
         $fixture = new DocBlock('', $description);
@@ -85,7 +89,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\DocBlock\Tag
      */
-    public function testDocBlockCanHaveTags() {
+    public function testDocBlockCanHaveTags()
+    {
         $tags = [
             m::mock(DocBlock\Tag::class)
         ];
@@ -104,7 +109,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @expectedException \InvalidArgumentException
      */
-    public function testDocBlockAllowsOnlyTags() {
+    public function testDocBlockAllowsOnlyTags()
+    {
         $tags = [
             null
         ];
@@ -120,7 +126,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\DocBlock\Tag
      */
-    public function testFindTagsInDocBlockByName() {
+    public function testFindTagsInDocBlockByName()
+    {
         $tag1 = m::mock(DocBlock\Tag::class);
         $tag2 = m::mock(DocBlock\Tag::class);
         $tag3 = m::mock(DocBlock\Tag::class);
@@ -142,7 +149,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfNameForTagsIsNotString() {
+    public function testExceptionIsThrownIfNameForTagsIsNotString()
+    {
         $fixture = new DocBlock();
         $fixture->getTagsByName([]);
     }
@@ -155,7 +163,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\DocBlock\Tag
      */
-    public function testCheckIfThereAreTagsWithAGivenName() {
+    public function testCheckIfThereAreTagsWithAGivenName()
+    {
         $tag1 = m::mock(DocBlock\Tag::class);
         $tag2 = m::mock(DocBlock\Tag::class);
         $tag3 = m::mock(DocBlock\Tag::class);
@@ -177,7 +186,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfNameForCheckingTagsIsNotString() {
+    public function testExceptionIsThrownIfNameForCheckingTagsIsNotString()
+    {
         $fixture = new DocBlock();
         $fixture->hasTag([]);
     }
@@ -189,7 +199,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testDocBlockKnowsInWhichNamespaceItIsAndWhichAliasesThereAre() {
+    public function testDocBlockKnowsInWhichNamespaceItIsAndWhichAliasesThereAre()
+    {
         $context = new Context('');
 
         $fixture = new DocBlock('', null, [], $context);
@@ -204,7 +215,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Location
      */
-    public function testDocBlockKnowsAtWhichLineItIs() {
+    public function testDocBlockKnowsAtWhichLineItIs()
+    {
         $location = new Location(10);
 
         $fixture = new DocBlock('', null, [], null, $location);
@@ -218,7 +230,8 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testDocBlockKnowsIfItIsTheStartOfADocBlockTemplate() {
+    public function testDocBlockKnowsIfItIsTheStartOfADocBlockTemplate()
+    {
         $fixture = new DocBlock('', null, [], null, null, true);
 
         $this->assertTrue($fixture->isTemplateStart());
@@ -230,10 +243,10 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase {
      *
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testDocBlockKnowsIfItIsTheEndOfADocBlockTemplate() {
+    public function testDocBlockKnowsIfItIsTheEndOfADocBlockTemplate()
+    {
         $fixture = new DocBlock('', null, [], null, null, false, true);
 
         $this->assertTrue($fixture->isTemplateEnd());
     }
-
 }

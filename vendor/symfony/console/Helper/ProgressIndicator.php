@@ -18,8 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-class ProgressIndicator {
-
+class ProgressIndicator
+{
     private $output;
     private $startTime;
     private $format;
@@ -29,6 +29,7 @@ class ProgressIndicator {
     private $indicatorChangeInterval;
     private $indicatorUpdateTime;
     private $started = false;
+
     private static $formatters;
     private static $formats;
 
@@ -38,7 +39,8 @@ class ProgressIndicator {
      * @param int             $indicatorChangeInterval Change interval in milliseconds
      * @param array|null      $indicatorValues         Animated indicator characters
      */
-    public function __construct(OutputInterface $output, $format = null, $indicatorChangeInterval = 100, $indicatorValues = null) {
+    public function __construct(OutputInterface $output, $format = null, $indicatorChangeInterval = 100, $indicatorValues = null)
+    {
         $this->output = $output;
 
         if (null === $format) {
@@ -66,7 +68,8 @@ class ProgressIndicator {
      *
      * @param string|null $message
      */
-    public function setMessage($message) {
+    public function setMessage($message)
+    {
         $this->message = $message;
 
         $this->display();
@@ -77,7 +80,8 @@ class ProgressIndicator {
      *
      * @param $message
      */
-    public function start($message) {
+    public function start($message)
+    {
         if ($this->started) {
             throw new LogicException('Progress indicator already started.');
         }
@@ -94,7 +98,8 @@ class ProgressIndicator {
     /**
      * Advances the indicator.
      */
-    public function advance() {
+    public function advance()
+    {
         if (!$this->started) {
             throw new LogicException('Progress indicator has not yet been started.');
         }
@@ -120,7 +125,8 @@ class ProgressIndicator {
      *
      * @param $message
      */
-    public function finish($message) {
+    public function finish($message)
+    {
         if (!$this->started) {
             throw new LogicException('Progress indicator has not yet been started.');
         }
@@ -138,7 +144,8 @@ class ProgressIndicator {
      *
      * @return string|null A format string
      */
-    public static function getFormatDefinition($name) {
+    public static function getFormatDefinition($name)
+    {
         if (!self::$formats) {
             self::$formats = self::initFormats();
         }
@@ -154,7 +161,8 @@ class ProgressIndicator {
      * @param string   $name     The placeholder name (including the delimiter char like %)
      * @param callable $callable A PHP callable
      */
-    public static function setPlaceholderFormatterDefinition($name, $callable) {
+    public static function setPlaceholderFormatterDefinition($name, $callable)
+    {
         if (!self::$formatters) {
             self::$formatters = self::initPlaceholderFormatters();
         }
@@ -169,7 +177,8 @@ class ProgressIndicator {
      *
      * @return callable|null A PHP callable
      */
-    public static function getPlaceholderFormatterDefinition($name) {
+    public static function getPlaceholderFormatterDefinition($name)
+    {
         if (!self::$formatters) {
             self::$formatters = self::initPlaceholderFormatters();
         }
@@ -177,7 +186,8 @@ class ProgressIndicator {
         return isset(self::$formatters[$name]) ? self::$formatters[$name] : null;
     }
 
-    private function display() {
+    private function display()
+    {
         if (OutputInterface::VERBOSITY_QUIET === $this->output->getVerbosity()) {
             return;
         }
@@ -185,15 +195,16 @@ class ProgressIndicator {
         $self = $this;
 
         $this->overwrite(preg_replace_callback("{%([a-z\-_]+)(?:\:([^%]+))?%}i", function ($matches) use ($self) {
-                    if ($formatter = $self::getPlaceholderFormatterDefinition($matches[1])) {
-                        return call_user_func($formatter, $self);
-                    }
+            if ($formatter = $self::getPlaceholderFormatterDefinition($matches[1])) {
+                return call_user_func($formatter, $self);
+            }
 
-                    return $matches[0];
-                }, $this->format));
+            return $matches[0];
+        }, $this->format));
     }
 
-    private function determineBestFormat() {
+    private function determineBestFormat()
+    {
         switch ($this->output->getVerbosity()) {
             // OutputInterface::VERBOSITY_QUIET: display is disabled anyway
             case OutputInterface::VERBOSITY_VERBOSE:
@@ -211,7 +222,8 @@ class ProgressIndicator {
      *
      * @param string $message The message
      */
-    private function overwrite($message) {
+    private function overwrite($message)
+    {
         if ($this->output->isDecorated()) {
             $this->output->write("\x0D\x1B[2K");
             $this->output->write($message);
@@ -220,11 +232,13 @@ class ProgressIndicator {
         }
     }
 
-    private function getCurrentTimeInMilliseconds() {
+    private function getCurrentTimeInMilliseconds()
+    {
         return round(microtime(true) * 1000);
     }
 
-    private static function initPlaceholderFormatters() {
+    private static function initPlaceholderFormatters()
+    {
         return array(
             'indicator' => function (ProgressIndicator $indicator) {
                 return $indicator->indicatorValues[$indicator->indicatorCurrent % count($indicator->indicatorValues)];
@@ -241,15 +255,17 @@ class ProgressIndicator {
         );
     }
 
-    private static function initFormats() {
+    private static function initFormats()
+    {
         return array(
             'normal' => ' %indicator% %message%',
             'normal_no_ansi' => ' %message%',
+
             'verbose' => ' %indicator% %message% (%elapsed:6s%)',
             'verbose_no_ansi' => ' %message% (%elapsed:6s%)',
+
             'very_verbose' => ' %indicator% %message% (%elapsed:6s%, %memory:6s%)',
             'very_verbose_no_ansi' => ' %message% (%elapsed:6s%, %memory:6s%)',
         );
     }
-
 }

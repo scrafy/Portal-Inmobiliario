@@ -2,8 +2,8 @@
 
 namespace Illuminate\Auth\Events;
 
-class Failed {
-
+class Failed
+{
     /**
      * The user the attempter was trying to authenticate as.
      *
@@ -24,9 +24,9 @@ class Failed {
      * @param  \Illuminate\Contracts\Auth\Authenticatable|null  $user
      * @param  array  $credentials
      */
-    public function __construct($user, $credentials) {
+    public function __construct($user, $credentials)
+    {
         $this->user = $user;
         $this->credentials = $credentials;
     }
-
 }

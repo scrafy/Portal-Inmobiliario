@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * Utility class for code filtering.
  */
-class PHPUnit_Util_Filter {
-
+class PHPUnit_Util_Filter
+{
     /**
      * Filters stack frames from PHPUnit classes.
      *
@@ -22,7 +21,8 @@ class PHPUnit_Util_Filter {
      *
      * @return string
      */
-    public static function getFilteredStacktrace($e, $asString = true) {
+    public static function getFilteredStacktrace($e, $asString = true)
+    {
         $prefix = false;
         $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
@@ -38,24 +38,25 @@ class PHPUnit_Util_Filter {
 
         if ($e instanceof PHPUnit_Framework_SyntheticError) {
             $eTrace = $e->getSyntheticTrace();
-            $eFile = $e->getSyntheticFile();
-            $eLine = $e->getSyntheticLine();
+            $eFile  = $e->getSyntheticFile();
+            $eLine  = $e->getSyntheticLine();
         } elseif ($e instanceof PHPUnit_Framework_Exception) {
             $eTrace = $e->getSerializableTrace();
-            $eFile = $e->getFile();
-            $eLine = $e->getLine();
+            $eFile  = $e->getFile();
+            $eLine  = $e->getLine();
         } else {
             if ($e->getPrevious()) {
                 $e = $e->getPrevious();
             }
             $eTrace = $e->getTrace();
-            $eFile = $e->getFile();
-            $eLine = $e->getLine();
+            $eFile  = $e->getFile();
+            $eLine  = $e->getLine();
         }
 
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
             array_unshift(
-                    $eTrace, ['file' => $eFile, 'line' => $eLine]
+                $eTrace,
+                ['file' => $eFile, 'line' => $eLine]
             );
         }
 
@@ -63,12 +64,14 @@ class PHPUnit_Util_Filter {
 
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
-                    !$blacklist->isBlacklisted($frame['file']) &&
-                    ($prefix === false || strpos($frame['file'], $prefix) !== 0) &&
-                    $frame['file'] !== $script) {
+                !$blacklist->isBlacklisted($frame['file']) &&
+                ($prefix === false || strpos($frame['file'], $prefix) !== 0) &&
+                $frame['file'] !== $script) {
                 if ($asString === true) {
                     $filteredStacktrace .= sprintf(
-                            "%s:%s\n", $frame['file'], isset($frame['line']) ? $frame['line'] : '?'
+                        "%s:%s\n",
+                        $frame['file'],
+                        isset($frame['line']) ? $frame['line'] : '?'
                     );
                 } else {
                     $filteredStacktrace[] = $frame;
@@ -86,15 +89,15 @@ class PHPUnit_Util_Filter {
      *
      * @return bool
      */
-    private static function frameExists(array $trace, $file, $line) {
+    private static function frameExists(array $trace, $file, $line)
+    {
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] == $file &&
-                    isset($frame['line']) && $frame['line'] == $line) {
+                isset($frame['line']) && $frame['line'] == $line) {
                 return true;
             }
         }
 
         return false;
     }
-
 }

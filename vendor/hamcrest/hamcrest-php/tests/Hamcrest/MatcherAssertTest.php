@@ -1,21 +1,24 @@
 <?php
-
 namespace Hamcrest;
 
-class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
+class MatcherAssertTest extends \PhpUnit_Framework_TestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         \Hamcrest\MatcherAssert::resetCount();
     }
 
-    public function testResetCount() {
+    public function testResetCount()
+    {
         \Hamcrest\MatcherAssert::assertThat(true);
         self::assertEquals(1, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
         \Hamcrest\MatcherAssert::resetCount();
         self::assertEquals(0, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithTrueArgPasses() {
+    public function testAssertThatWithTrueArgPasses()
+    {
         \Hamcrest\MatcherAssert::assertThat(true);
         \Hamcrest\MatcherAssert::assertThat('non-empty');
         \Hamcrest\MatcherAssert::assertThat(1);
@@ -24,7 +27,8 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         self::assertEquals(5, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithFalseArgFails() {
+    public function testAssertThatWithFalseArgFails()
+    {
         try {
             \Hamcrest\MatcherAssert::assertThat(false);
             self::fail('expected assertion failure');
@@ -64,7 +68,8 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         self::assertEquals(6, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithIdentifierAndTrueArgPasses() {
+    public function testAssertThatWithIdentifierAndTrueArgPasses()
+    {
         \Hamcrest\MatcherAssert::assertThat('identifier', true);
         \Hamcrest\MatcherAssert::assertThat('identifier', 'non-empty');
         \Hamcrest\MatcherAssert::assertThat('identifier', 1);
@@ -73,7 +78,8 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         self::assertEquals(5, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithIdentifierAndFalseArgFails() {
+    public function testAssertThatWithIdentifierAndFalseArgFails()
+    {
         try {
             \Hamcrest\MatcherAssert::assertThat('identifier', false);
             self::fail('expected assertion failure');
@@ -113,17 +119,20 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         self::assertEquals(6, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithActualValueAndMatcherArgsThatMatchPasses() {
+    public function testAssertThatWithActualValueAndMatcherArgsThatMatchPasses()
+    {
         \Hamcrest\MatcherAssert::assertThat(true, is(true));
         self::assertEquals(1, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithActualValueAndMatcherArgsThatDontMatchFails() {
+    public function testAssertThatWithActualValueAndMatcherArgsThatDontMatchFails()
+    {
         $expected = 'expected';
         $actual = 'actual';
 
-        $expectedMessage = 'Expected: "expected"' . PHP_EOL .
-                '     but: was "actual"';
+        $expectedMessage =
+            'Expected: "expected"' . PHP_EOL .
+            '     but: was "actual"';
 
         try {
             \Hamcrest\MatcherAssert::assertThat($actual, equalTo($expected));
@@ -134,18 +143,21 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         }
     }
 
-    public function testAssertThatWithIdentifierAndActualValueAndMatcherArgsThatMatchPasses() {
+    public function testAssertThatWithIdentifierAndActualValueAndMatcherArgsThatMatchPasses()
+    {
         \Hamcrest\MatcherAssert::assertThat('identifier', true, is(true));
         self::assertEquals(1, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
     }
 
-    public function testAssertThatWithIdentifierAndActualValueAndMatcherArgsThatDontMatchFails() {
+    public function testAssertThatWithIdentifierAndActualValueAndMatcherArgsThatDontMatchFails()
+    {
         $expected = 'expected';
         $actual = 'actual';
 
-        $expectedMessage = 'identifier' . PHP_EOL .
-                'Expected: "expected"' . PHP_EOL .
-                '     but: was "actual"';
+        $expectedMessage =
+            'identifier' . PHP_EOL .
+            'Expected: "expected"' . PHP_EOL .
+            '     but: was "actual"';
 
         try {
             \Hamcrest\MatcherAssert::assertThat('identifier', $actual, equalTo($expected));
@@ -156,7 +168,8 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         }
     }
 
-    public function testAssertThatWithNoArgsThrowsErrorAndDoesntIncrementCount() {
+    public function testAssertThatWithNoArgsThrowsErrorAndDoesntIncrementCount()
+    {
         try {
             \Hamcrest\MatcherAssert::assertThat();
             self::fail('expected invalid argument exception');
@@ -165,7 +178,8 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
         }
     }
 
-    public function testAssertThatWithFourArgsThrowsErrorAndDoesntIncrementCount() {
+    public function testAssertThatWithFourArgsThrowsErrorAndDoesntIncrementCount()
+    {
         try {
             \Hamcrest\MatcherAssert::assertThat(1, 2, 3, 4);
             self::fail('expected invalid argument exception');
@@ -173,5 +187,4 @@ class MatcherAssertTest extends \PhpUnit_Framework_TestCase {
             self::assertEquals(0, \Hamcrest\MatcherAssert::getCount(), 'assertion count');
         }
     }
-
 }

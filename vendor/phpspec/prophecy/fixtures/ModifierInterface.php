@@ -2,8 +2,8 @@
 
 namespace Fixtures\Prophecy;
 
-interface ModifierInterface {
-
+interface ModifierInterface
+{
     public function isAbstract();
 
     public function getVisibility();

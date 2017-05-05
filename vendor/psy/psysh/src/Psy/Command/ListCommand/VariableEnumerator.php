@@ -18,12 +18,13 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Variable Enumerator class.
  */
-class VariableEnumerator extends Enumerator {
-
+class VariableEnumerator extends Enumerator
+{
     // n.b. this array is the order in which special variables will be listed
     private static $specialNames = array(
         '_', '_e', '__function', '__method', '__class', '__namespace', '__file', '__line', '__dir',
     );
+
     private $context;
 
     /**
@@ -35,7 +36,8 @@ class VariableEnumerator extends Enumerator {
      * @param Presenter $presenter
      * @param Context   $context
      */
-    public function __construct(Presenter $presenter, Context $context) {
+    public function __construct(Presenter $presenter, Context $context)
+    {
         $this->context = $context;
         parent::__construct($presenter);
     }
@@ -43,7 +45,8 @@ class VariableEnumerator extends Enumerator {
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         // only list variables when no Reflector is present.
         if ($reflector !== null || $target !== null) {
             return;
@@ -54,7 +57,7 @@ class VariableEnumerator extends Enumerator {
             return;
         }
 
-        $showAll = $input->getOption('all');
+        $showAll   = $input->getOption('all');
         $variables = $this->prepareVariables($this->getVariables($showAll));
 
         if (empty($variables)) {
@@ -73,7 +76,8 @@ class VariableEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function getVariables($showAll) {
+    protected function getVariables($showAll)
+    {
         $scopeVars = $this->context->getAll();
         uksort($scopeVars, function ($a, $b) {
             $aIndex = array_search($a, self::$specialNames);
@@ -114,14 +118,15 @@ class VariableEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function prepareVariables(array $variables) {
+    protected function prepareVariables(array $variables)
+    {
         // My kingdom for a generator.
         $ret = array();
         foreach ($variables as $name => $val) {
             if ($this->showItem($name)) {
                 $fname = '$' . $name;
                 $ret[$fname] = array(
-                    'name' => $fname,
+                    'name'  => $fname,
                     'style' => in_array($name, self::$specialNames) ? self::IS_PRIVATE : self::IS_PUBLIC,
                     'value' => $this->presentRef($val), // TODO: add types to variable signatures
                 );
@@ -130,5 +135,4 @@ class VariableEnumerator extends Enumerator {
 
         return $ret;
     }
-
 }

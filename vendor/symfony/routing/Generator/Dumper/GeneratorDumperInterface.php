@@ -18,8 +18,8 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface GeneratorDumperInterface {
-
+interface GeneratorDumperInterface
+{
     /**
      * Dumps a set of routes to a string representation of executable code
      * that can then be used to generate a URL of such a route.

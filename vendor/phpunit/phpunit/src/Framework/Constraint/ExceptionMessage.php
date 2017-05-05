@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Constraint
+{
     /**
      * @var int
      */
@@ -19,7 +18,8 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     /**
      * @param string $expected
      */
-    public function __construct($expected) {
+    public function __construct($expected)
+    {
         parent::__construct();
         $this->expectedMessage = $expected;
     }
@@ -32,7 +32,8 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         return strpos($other->getMessage(), $this->expectedMessage) !== false;
     }
 
@@ -46,17 +47,20 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return sprintf(
-                "exception message '%s' contains '%s'", $other->getMessage(), $this->expectedMessage
+            "exception message '%s' contains '%s'",
+            $other->getMessage(),
+            $this->expectedMessage
         );
     }
 
     /**
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return 'exception message contains ';
     }
-
 }

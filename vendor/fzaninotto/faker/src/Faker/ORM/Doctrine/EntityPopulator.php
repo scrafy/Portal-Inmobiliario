@@ -9,18 +9,16 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 /**
  * Service class for populating a table through a Doctrine Entity class.
  */
-class EntityPopulator {
-
+class EntityPopulator
+{
     /**
      * @var ClassMetadata
      */
     protected $class;
-
     /**
      * @var array
      */
     protected $columnFormatters = array();
-
     /**
      * @var array
      */
@@ -31,53 +29,61 @@ class EntityPopulator {
      *
      * @param ClassMetadata $class
      */
-    public function __construct(ClassMetadata $class) {
+    public function __construct(ClassMetadata $class)
+    {
         $this->class = $class;
     }
 
     /**
      * @return string
      */
-    public function getClass() {
+    public function getClass()
+    {
         return $this->class->getName();
     }
 
     /**
      * @param $columnFormatters
      */
-    public function setColumnFormatters($columnFormatters) {
+    public function setColumnFormatters($columnFormatters)
+    {
         $this->columnFormatters = $columnFormatters;
     }
 
     /**
      * @return array
      */
-    public function getColumnFormatters() {
+    public function getColumnFormatters()
+    {
         return $this->columnFormatters;
     }
 
-    public function mergeColumnFormattersWith($columnFormatters) {
+    public function mergeColumnFormattersWith($columnFormatters)
+    {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
     }
 
     /**
      * @param array $modifiers
      */
-    public function setModifiers(array $modifiers) {
+    public function setModifiers(array $modifiers)
+    {
         $this->modifiers = $modifiers;
     }
 
     /**
      * @return array
      */
-    public function getModifiers() {
+    public function getModifiers()
+    {
         return $this->modifiers;
     }
 
     /**
      * @param array $modifiers
      */
-    public function mergeModifiersWith(array $modifiers) {
+    public function mergeModifiersWith(array $modifiers)
+    {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
     }
 
@@ -85,7 +91,8 @@ class EntityPopulator {
      * @param \Faker\Generator $generator
      * @return array
      */
-    public function guessColumnFormatters(\Faker\Generator $generator) {
+    public function guessColumnFormatters(\Faker\Generator $generator)
+    {
         $formatters = array();
         $nameGuesser = new \Faker\Guesser\Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
@@ -155,7 +162,8 @@ class EntityPopulator {
      * @param bool $generateId
      * @return EntityPopulator
      */
-    public function execute(ObjectManager $manager, $insertedEntities, $generateId = false) {
+    public function execute(ObjectManager $manager, $insertedEntities, $generateId = false)
+    {
         $obj = $this->class->newInstance();
 
         $this->fillColumns($obj, $insertedEntities);
@@ -174,7 +182,8 @@ class EntityPopulator {
         return $obj;
     }
 
-    private function fillColumns($obj, $insertedEntities) {
+    private function fillColumns($obj, $insertedEntities)
+    {
         foreach ($this->columnFormatters as $field => $format) {
             if (null !== $format) {
                 // Add some extended debugging information to any errors thrown by the formatter
@@ -182,7 +191,10 @@ class EntityPopulator {
                     $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
                 } catch (\InvalidArgumentException $ex) {
                     throw new \InvalidArgumentException(sprintf(
-                            "Failed to generate a value for %s::%s: %s", get_class($obj), $field, $ex->getMessage()
+                        "Failed to generate a value for %s::%s: %s",
+                        get_class($obj),
+                        $field,
+                        $ex->getMessage()
                     ));
                 }
                 // Try a standard setter if it's available, otherwise fall back on reflection
@@ -196,7 +208,8 @@ class EntityPopulator {
         }
     }
 
-    private function callMethods($obj, $insertedEntities) {
+    private function callMethods($obj, $insertedEntities)
+    {
         foreach ($this->getModifiers() as $modifier) {
             $modifier($obj, $insertedEntities);
         }
@@ -206,7 +219,8 @@ class EntityPopulator {
      * @param EntityManagerInterface $manager
      * @return int|null
      */
-    private function generateId($obj, $column, EntityManagerInterface $manager) {
+    private function generateId($obj, $column, EntityManagerInterface $manager)
+    {
         /* @var $repository \Doctrine\ORM\EntityRepository */
         $repository = $manager->getRepository(get_class($obj));
         $result = $repository->createQueryBuilder('e')
@@ -222,5 +236,4 @@ class EntityPopulator {
 
         return $id;
     }
-
 }

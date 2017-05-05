@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 
-class SqlServerProcessor extends Processor {
-
+class SqlServerProcessor extends Processor
+{
     /**
      * Process an "insert get ID" query.
      *
@@ -17,7 +17,8 @@ class SqlServerProcessor extends Processor {
      * @param  string  $sequence
      * @return int
      */
-    public function processInsertGetId(Builder $query, $sql, $values, $sequence = null) {
+    public function processInsertGetId(Builder $query, $sql, $values, $sequence = null)
+    {
         $connection = $query->getConnection();
 
         $connection->insert($sql, $values);
@@ -38,12 +39,13 @@ class SqlServerProcessor extends Processor {
      * @return int
      * @throws \Exception
      */
-    protected function processInsertGetIdForOdbc(Connection $connection) {
+    protected function processInsertGetIdForOdbc(Connection $connection)
+    {
         $result = $connection->selectFromWriteConnection(
-                'SELECT CAST(COALESCE(SCOPE_IDENTITY(), @@IDENTITY) AS int) AS insertid'
+            'SELECT CAST(COALESCE(SCOPE_IDENTITY(), @@IDENTITY) AS int) AS insertid'
         );
 
-        if (!$result) {
+        if (! $result) {
             throw new Exception('Unable to retrieve lastInsertID for ODBC.');
         }
 
@@ -58,10 +60,10 @@ class SqlServerProcessor extends Processor {
      * @param  array  $results
      * @return array
      */
-    public function processColumnListing($results) {
+    public function processColumnListing($results)
+    {
         return array_map(function ($result) {
             return with((object) $result)->name;
         }, $results);
     }
-
 }

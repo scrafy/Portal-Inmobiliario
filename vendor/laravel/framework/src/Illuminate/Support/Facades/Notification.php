@@ -8,14 +8,15 @@ use Illuminate\Support\Testing\Fakes\NotificationFake;
 /**
  * @see \Illuminate\Notifications\ChannelManager
  */
-class Notification extends Facade {
-
+class Notification extends Facade
+{
     /**
      * Replace the bound instance with a fake.
      *
      * @return void
      */
-    public static function fake() {
+    public static function fake()
+    {
         static::swap(new NotificationFake);
     }
 
@@ -24,8 +25,8 @@ class Notification extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeAccessor() {
+    protected static function getFacadeAccessor()
+    {
         return ChannelManager::class;
     }
-
 }

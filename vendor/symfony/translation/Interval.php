@@ -33,8 +33,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
  *
  * @see    http://en.wikipedia.org/wiki/Interval_%28mathematics%29#The_ISO_notation
  */
-class Interval {
-
+class Interval
+{
     /**
      * Tests if the given number is in the math interval.
      *
@@ -45,10 +45,11 @@ class Interval {
      *
      * @throws InvalidArgumentException
      */
-    public static function test($number, $interval) {
+    public static function test($number, $interval)
+    {
         $interval = trim($interval);
 
-        if (!preg_match('/^' . self::getIntervalRegexp() . '$/x', $interval, $matches)) {
+        if (!preg_match('/^'.self::getIntervalRegexp().'$/x', $interval, $matches)) {
             throw new InvalidArgumentException(sprintf('"%s" is not a valid interval.', $interval));
         }
 
@@ -63,7 +64,8 @@ class Interval {
             $rightNumber = self::convertNumber($matches['right']);
 
             return
-                    ('[' === $matches['left_delimiter'] ? $number >= $leftNumber : $number > $leftNumber) && (']' === $matches['right_delimiter'] ? $number <= $rightNumber : $number < $rightNumber)
+                ('[' === $matches['left_delimiter'] ? $number >= $leftNumber : $number > $leftNumber)
+                && (']' === $matches['right_delimiter'] ? $number <= $rightNumber : $number < $rightNumber)
             ;
         }
 
@@ -75,7 +77,8 @@ class Interval {
      *
      * @return string A Regexp (without the delimiters)
      */
-    public static function getIntervalRegexp() {
+    public static function getIntervalRegexp()
+    {
         return <<<EOF
         ({\s*
             (\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)
@@ -93,7 +96,8 @@ class Interval {
 EOF;
     }
 
-    private static function convertNumber($number) {
+    private static function convertNumber($number)
+    {
         if ('-Inf' === $number) {
             return log(0);
         } elseif ('+Inf' === $number || 'Inf' === $number) {
@@ -102,5 +106,4 @@ EOF;
 
         return (float) $number;
     }
-
 }

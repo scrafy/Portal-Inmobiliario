@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesEchos {
-
+trait CompilesEchos
+{
     /**
      * Compile Blade echos into valid PHP.
      *
      * @param  string  $value
      * @return string
      */
-    protected function compileEchos($value) {
+    protected function compileEchos($value)
+    {
         foreach ($this->getEchoMethods() as $method) {
             $value = $this->$method($value);
         }
@@ -23,7 +24,8 @@ trait CompilesEchos {
      *
      * @return array
      */
-    protected function getEchoMethods() {
+    protected function getEchoMethods()
+    {
         return [
             'compileRawEchos',
             'compileEscapedEchos',
@@ -37,11 +39,12 @@ trait CompilesEchos {
      * @param  string  $value
      * @return string
      */
-    protected function compileRawEchos($value) {
+    protected function compileRawEchos($value)
+    {
         $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this->rawTags[0], $this->rawTags[1]);
 
         $callback = function ($matches) {
-            $whitespace = empty($matches[3]) ? '' : $matches[3] . $matches[3];
+            $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
 
             return $matches[1] ? substr($matches[0], 1) : "<?php echo {$this->compileEchoDefaults($matches[2])}; ?>{$whitespace}";
         };
@@ -55,11 +58,12 @@ trait CompilesEchos {
      * @param  string  $value
      * @return string
      */
-    protected function compileRegularEchos($value) {
+    protected function compileRegularEchos($value)
+    {
         $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this->contentTags[0], $this->contentTags[1]);
 
         $callback = function ($matches) {
-            $whitespace = empty($matches[3]) ? '' : $matches[3] . $matches[3];
+            $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
 
             $wrapped = sprintf($this->echoFormat, $this->compileEchoDefaults($matches[2]));
 
@@ -75,11 +79,12 @@ trait CompilesEchos {
      * @param  string  $value
      * @return string
      */
-    protected function compileEscapedEchos($value) {
+    protected function compileEscapedEchos($value)
+    {
         $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this->escapedTags[0], $this->escapedTags[1]);
 
         $callback = function ($matches) {
-            $whitespace = empty($matches[3]) ? '' : $matches[3] . $matches[3];
+            $whitespace = empty($matches[3]) ? '' : $matches[3].$matches[3];
 
             return $matches[1] ? $matches[0] : "<?php echo e({$this->compileEchoDefaults($matches[2])}); ?>{$whitespace}";
         };
@@ -93,8 +98,8 @@ trait CompilesEchos {
      * @param  string  $value
      * @return string
      */
-    public function compileEchoDefaults($value) {
+    public function compileEchoDefaults($value)
+    {
         return preg_replace('/^(?=\$)(.+?)(?:\s+or\s+)(.+?)$/s', 'isset($1) ? $1 : $2', $value);
     }
-
 }

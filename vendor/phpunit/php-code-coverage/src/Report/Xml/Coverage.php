@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -13,8 +12,8 @@ namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
 use SebastianBergmann\CodeCoverage\RuntimeException;
 
-class Coverage {
-
+class Coverage
+{
     /**
      * @var \XMLWriter
      */
@@ -30,7 +29,8 @@ class Coverage {
      */
     private $finalized = false;
 
-    public function __construct(\DOMElement $context, $line) {
+    public function __construct(\DOMElement $context, $line)
+    {
         $this->contextNode = $context;
 
         $this->writer = new \XMLWriter;
@@ -39,7 +39,8 @@ class Coverage {
         $this->writer->writeAttribute('nr', $line);
     }
 
-    public function addTest($test) {
+    public function addTest($test)
+    {
         if ($this->finalized) {
             throw new RuntimeException('Coverage Report already finalized');
         }
@@ -49,17 +50,18 @@ class Coverage {
         $this->writer->endElement();
     }
 
-    public function finalize() {
+    public function finalize()
+    {
         $this->writer->endElement();
 
         $fragment = $this->contextNode->ownerDocument->createDocumentFragment();
         $fragment->appendXML($this->writer->outputMemory());
 
         $this->contextNode->parentNode->replaceChild(
-                $fragment, $this->contextNode
+            $fragment,
+            $this->contextNode
         );
 
         $this->finalized = true;
     }
-
 }

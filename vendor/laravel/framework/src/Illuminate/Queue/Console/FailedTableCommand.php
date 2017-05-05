@@ -7,8 +7,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
 
-class FailedTableCommand extends Command {
-
+class FailedTableCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -42,7 +42,8 @@ class FailedTableCommand extends Command {
      * @param  \Illuminate\Support\Composer    $composer
      * @return void
      */
-    public function __construct(Filesystem $files, Composer $composer) {
+    public function __construct(Filesystem $files, Composer $composer)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -54,11 +55,12 @@ class FailedTableCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $table = $this->laravel['config']['queue.failed.table'];
 
         $this->replaceMigration(
-                $this->createBaseMigration($table), $table, Str::studly($table)
+            $this->createBaseMigration($table), $table, Str::studly($table)
         );
 
         $this->info('Migration created successfully!');
@@ -72,9 +74,10 @@ class FailedTableCommand extends Command {
      * @param  string  $table
      * @return string
      */
-    protected function createBaseMigration($table = 'failed_jobs') {
+    protected function createBaseMigration($table = 'failed_jobs')
+    {
         return $this->laravel['migration.creator']->create(
-                        'create_' . $table . '_table', $this->laravel->databasePath() . '/migrations'
+            'create_'.$table.'_table', $this->laravel->databasePath().'/migrations'
         );
     }
 
@@ -86,12 +89,14 @@ class FailedTableCommand extends Command {
      * @param  string  $tableClassName
      * @return void
      */
-    protected function replaceMigration($path, $table, $tableClassName) {
+    protected function replaceMigration($path, $table, $tableClassName)
+    {
         $stub = str_replace(
-                ['{{table}}', '{{tableClassName}}'], [$table, $tableClassName], $this->files->get(__DIR__ . '/stubs/failed_jobs.stub')
+            ['{{table}}', '{{tableClassName}}'],
+            [$table, $tableClassName],
+            $this->files->get(__DIR__.'/stubs/failed_jobs.stub')
         );
 
         $this->files->put($path, $stub);
     }
-
 }

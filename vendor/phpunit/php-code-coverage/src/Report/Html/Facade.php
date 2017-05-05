@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -18,8 +17,8 @@ use SebastianBergmann\CodeCoverage\RuntimeException;
 /**
  * Generates an HTML report from a code coverage object.
  */
-class Facade {
-
+class Facade
+{
     /**
      * @var string
      */
@@ -47,18 +46,20 @@ class Facade {
      * @param int    $highLowerBound
      * @param string $generator
      */
-    public function __construct($lowUpperBound = 50, $highLowerBound = 90, $generator = '') {
-        $this->generator = $generator;
+    public function __construct($lowUpperBound = 50, $highLowerBound = 90, $generator = '')
+    {
+        $this->generator      = $generator;
         $this->highLowerBound = $highLowerBound;
-        $this->lowUpperBound = $lowUpperBound;
-        $this->templatePath = __DIR__ . '/Renderer/Template/';
+        $this->lowUpperBound  = $lowUpperBound;
+        $this->templatePath   = __DIR__ . '/Renderer/Template/';
     }
 
     /**
      * @param CodeCoverage $coverage
      * @param string       $target
      */
-    public function process(CodeCoverage $coverage, $target) {
+    public function process(CodeCoverage $coverage, $target)
+    {
         $target = $this->getDirectory($target);
         $report = $coverage->getReport();
         unset($coverage);
@@ -70,15 +71,27 @@ class Facade {
         $date = date('D M j G:i:s T Y', $_SERVER['REQUEST_TIME']);
 
         $dashboard = new Dashboard(
-                $this->templatePath, $this->generator, $date, $this->lowUpperBound, $this->highLowerBound
+            $this->templatePath,
+            $this->generator,
+            $date,
+            $this->lowUpperBound,
+            $this->highLowerBound
         );
 
         $directory = new Directory(
-                $this->templatePath, $this->generator, $date, $this->lowUpperBound, $this->highLowerBound
+            $this->templatePath,
+            $this->generator,
+            $date,
+            $this->lowUpperBound,
+            $this->highLowerBound
         );
 
         $file = new File(
-                $this->templatePath, $this->generator, $date, $this->lowUpperBound, $this->highLowerBound
+            $this->templatePath,
+            $this->generator,
+            $date,
+            $this->lowUpperBound,
+            $this->highLowerBound
         );
 
         $directory->render($report, $target . 'index.html');
@@ -111,7 +124,8 @@ class Facade {
     /**
      * @param string $target
      */
-    private function copyFiles($target) {
+    private function copyFiles($target)
+    {
         $dir = $this->getDirectory($target . 'css');
         copy($this->templatePath . 'css/bootstrap.min.css', $dir . 'bootstrap.min.css');
         copy($this->templatePath . 'css/nv.d3.min.css', $dir . 'nv.d3.min.css');
@@ -141,7 +155,8 @@ class Facade {
      *
      * @throws RuntimeException
      */
-    private function getDirectory($directory) {
+    private function getDirectory($directory)
+    {
         if (substr($directory, -1, 1) != DIRECTORY_SEPARATOR) {
             $directory .= DIRECTORY_SEPARATOR;
         }
@@ -155,10 +170,10 @@ class Facade {
         }
 
         throw new RuntimeException(
-        sprintf(
-                'Directory "%s" does not exist.', $directory
-        )
+            sprintf(
+                'Directory "%s" does not exist.',
+                $directory
+            )
         );
     }
-
 }

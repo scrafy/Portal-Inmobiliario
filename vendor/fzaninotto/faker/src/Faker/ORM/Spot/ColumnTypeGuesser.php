@@ -4,15 +4,17 @@ namespace Faker\ORM\Spot;
 
 use Faker\Generator;
 
-class ColumnTypeGuesser {
-
+class ColumnTypeGuesser
+{
     protected $generator;
+
 
     /**
      * ColumnTypeGuesser constructor.
      * @param Generator $generator
      */
-    public function __construct(Generator $generator) {
+    public function __construct(Generator $generator)
+    {
         $this->generator = $generator;
     }
 
@@ -20,7 +22,8 @@ class ColumnTypeGuesser {
      * @param array $field
      * @return \Closure|null
      */
-    public function guessFormat(array $field) {
+    public function guessFormat(array $field)
+    {
         $generator = $this->generator;
         $type = $field['type'];
         switch ($type) {
@@ -71,5 +74,4 @@ class ColumnTypeGuesser {
                 return null;
         }
     }
-
 }

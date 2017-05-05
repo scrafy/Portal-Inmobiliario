@@ -7,8 +7,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-trait FormatsMessages {
-
+trait FormatsMessages
+{
     use ReplacesAttributes;
 
     /**
@@ -32,20 +32,21 @@ trait FormatsMessages {
      * @param  string  $rule
      * @return string
      */
-    protected function getMessage($attribute, $rule) {
+    protected function getMessage($attribute, $rule)
+    {
         $inlineMessage = $this->getFromLocalArray(
-                $attribute, $lowerRule = Str::snake($rule)
+            $attribute, $lowerRule = Str::snake($rule)
         );
 
         // First we will retrieve the custom message for the validation rule if one
         // exists. If a custom validation message is being used we'll return the
         // custom message, otherwise we'll keep searching for a valid message.
-        if (!is_null($inlineMessage)) {
+        if (! is_null($inlineMessage)) {
             return $inlineMessage;
         }
 
         $customMessage = $this->getCustomMessageFromTranslator(
-                $customKey = "validation.custom.{$attribute}.{$lowerRule}"
+            $customKey = "validation.custom.{$attribute}.{$lowerRule}"
         );
 
         // First we check for a custom defined validation message for the attribute
@@ -72,8 +73,8 @@ trait FormatsMessages {
         }
 
         return $this->getFromLocalArray(
-                        $attribute, $lowerRule, $this->fallbackMessages
-                ) ?: $key;
+            $attribute, $lowerRule, $this->fallbackMessages
+        ) ?: $key;
     }
 
     /**
@@ -84,7 +85,8 @@ trait FormatsMessages {
      * @param  array   $source
      * @return string|null
      */
-    protected function getFromLocalArray($attribute, $lowerRule, $source = null) {
+    protected function getFromLocalArray($attribute, $lowerRule, $source = null)
+    {
         $source = $source ?: $this->customMessages;
 
         $keys = ["{$attribute}.{$lowerRule}", $lowerRule];
@@ -107,7 +109,8 @@ trait FormatsMessages {
      * @param  string  $key
      * @return string
      */
-    protected function getCustomMessageFromTranslator($key) {
+    protected function getCustomMessageFromTranslator($key)
+    {
         if (($message = $this->translator->trans($key)) !== $key) {
             return $message;
         }
@@ -116,12 +119,12 @@ trait FormatsMessages {
         // messages and loop through them and try to find a wildcard match for the
         // given key. Otherwise, we will simply return the key's value back out.
         $shortKey = preg_replace(
-                '/^validation\.custom\./', '', $key
+            '/^validation\.custom\./', '', $key
         );
 
         return $this->getWildcardCustomMessages(Arr::dot(
-                                (array) $this->translator->trans('validation.custom')
-                        ), $shortKey, $key);
+            (array) $this->translator->trans('validation.custom')
+        ), $shortKey, $key);
     }
 
     /**
@@ -132,7 +135,8 @@ trait FormatsMessages {
      * @param  string  $default
      * @return string
      */
-    protected function getWildcardCustomMessages($messages, $search, $default) {
+    protected function getWildcardCustomMessages($messages, $search, $default)
+    {
         foreach ($messages as $key => $message) {
             if ($search === $key || (Str::contains($key, ['*']) && Str::is($key, $search))) {
                 return $message;
@@ -149,7 +153,8 @@ trait FormatsMessages {
      * @param  string  $rule
      * @return string
      */
-    protected function getSizeMessage($attribute, $rule) {
+    protected function getSizeMessage($attribute, $rule)
+    {
         $lowerRule = Str::snake($rule);
 
         // There are three different types of size validations. The attribute may be
@@ -168,7 +173,8 @@ trait FormatsMessages {
      * @param  string  $attribute
      * @return string
      */
-    protected function getAttributeType($attribute) {
+    protected function getAttributeType($attribute)
+    {
         // We assume that the attributes present in the file array are files so that
         // means that if the attribute does not have a numeric rule and the files
         // list doesn't have it we'll just consider it a string by elimination.
@@ -192,9 +198,10 @@ trait FormatsMessages {
      * @param  array   $parameters
      * @return string
      */
-    public function makeReplacements($message, $attribute, $rule, $parameters) {
+    public function makeReplacements($message, $attribute, $rule, $parameters)
+    {
         $message = $this->replaceAttributePlaceholder(
-                $message, $this->getDisplayableAttribute($attribute)
+            $message, $this->getDisplayableAttribute($attribute)
         );
 
         if (isset($this->replacers[Str::snake($rule)])) {
@@ -212,10 +219,12 @@ trait FormatsMessages {
      * @param  string  $attribute
      * @return string
      */
-    protected function getDisplayableAttribute($attribute) {
+    protected function getDisplayableAttribute($attribute)
+    {
         $primaryAttribute = $this->getPrimaryAttribute($attribute);
 
-        $expectedAttributes = $attribute != $primaryAttribute ? [$attribute, $primaryAttribute] : [$attribute];
+        $expectedAttributes = $attribute != $primaryAttribute
+                    ? [$attribute, $primaryAttribute] : [$attribute];
 
         foreach ($expectedAttributes as $name) {
             // The developer may dynamically specify the array of custom attributes on this
@@ -249,7 +258,8 @@ trait FormatsMessages {
      * @param  string  $name
      * @return string
      */
-    protected function getAttributeFromTranslations($name) {
+    protected function getAttributeFromTranslations($name)
+    {
         return Arr::get($this->translator->trans('validation.attributes'), $name);
     }
 
@@ -260,9 +270,12 @@ trait FormatsMessages {
      * @param  string  $value
      * @return string
      */
-    protected function replaceAttributePlaceholder($message, $value) {
+    protected function replaceAttributePlaceholder($message, $value)
+    {
         return str_replace(
-                [':attribute', ':ATTRIBUTE', ':Attribute'], [$value, Str::upper($value), Str::ucfirst($value)], $message
+            [':attribute', ':ATTRIBUTE', ':Attribute'],
+            [$value, Str::upper($value), Str::ucfirst($value)],
+            $message
         );
     }
 
@@ -273,7 +286,8 @@ trait FormatsMessages {
      * @param  mixed   $value
      * @return string
      */
-    public function getDisplayableValue($attribute, $value) {
+    public function getDisplayableValue($attribute, $value)
+    {
         if (isset($this->customValues[$attribute][$value])) {
             return $this->customValues[$attribute][$value];
         }
@@ -293,7 +307,8 @@ trait FormatsMessages {
      * @param  array  $values
      * @return array
      */
-    protected function getAttributeList(array $values) {
+    protected function getAttributeList(array $values)
+    {
         $attributes = [];
 
         // For each attribute in the list we will simply get its displayable form as
@@ -315,7 +330,8 @@ trait FormatsMessages {
      * @param  array   $parameters
      * @return string|null
      */
-    protected function callReplacer($message, $attribute, $rule, $parameters) {
+    protected function callReplacer($message, $attribute, $rule, $parameters)
+    {
         $callback = $this->replacers[$rule];
 
         if ($callback instanceof Closure) {
@@ -335,10 +351,10 @@ trait FormatsMessages {
      * @param  array   $parameters
      * @return string
      */
-    protected function callClassBasedReplacer($callback, $message, $attribute, $rule, $parameters) {
+    protected function callClassBasedReplacer($callback, $message, $attribute, $rule, $parameters)
+    {
         list($class, $method) = Str::parseCallback($callback, 'replace');
 
         return call_user_func_array([$this->container->make($class), $method], array_slice(func_get_args(), 1));
     }
-
 }

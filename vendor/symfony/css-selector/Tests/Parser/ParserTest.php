@@ -18,19 +18,21 @@ use Symfony\Component\CssSelector\Node\SelectorNode;
 use Symfony\Component\CssSelector\Parser\Parser;
 use Symfony\Component\CssSelector\Parser\Token;
 
-class ParserTest extends TestCase {
-
+class ParserTest extends TestCase
+{
     /** @dataProvider getParserTestData */
-    public function testParser($source, $representation) {
+    public function testParser($source, $representation)
+    {
         $parser = new Parser();
 
         $this->assertEquals($representation, array_map(function (SelectorNode $node) {
-                    return (string) $node->getTree();
-                }, $parser->parse($source)));
+            return (string) $node->getTree();
+        }, $parser->parse($source)));
     }
 
     /** @dataProvider getParserExceptionTestData */
-    public function testParserException($source, $message) {
+    public function testParserException($source, $message)
+    {
         $parser = new Parser();
 
         try {
@@ -42,7 +44,8 @@ class ParserTest extends TestCase {
     }
 
     /** @dataProvider getPseudoElementsTestData */
-    public function testPseudoElements($source, $element, $pseudo) {
+    public function testPseudoElements($source, $element, $pseudo)
+    {
         $parser = new Parser();
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
@@ -54,7 +57,8 @@ class ParserTest extends TestCase {
     }
 
     /** @dataProvider getSpecificityTestData */
-    public function testSpecificity($source, $value) {
+    public function testSpecificity($source, $value)
+    {
         $parser = new Parser();
         $selectors = $parser->parse($source);
         $this->assertCount(1, $selectors);
@@ -65,7 +69,8 @@ class ParserTest extends TestCase {
     }
 
     /** @dataProvider getParseSeriesTestData */
-    public function testParseSeries($series, $a, $b) {
+    public function testParseSeries($series, $a, $b)
+    {
         $parser = new Parser();
         $selectors = $parser->parse(sprintf(':nth-child(%s)', $series));
         $this->assertCount(1, $selectors);
@@ -76,7 +81,8 @@ class ParserTest extends TestCase {
     }
 
     /** @dataProvider getParseSeriesExceptionTestData */
-    public function testParseSeriesException($series) {
+    public function testParseSeriesException($series)
+    {
         $parser = new Parser();
         $selectors = $parser->parse(sprintf(':nth-child(%s)', $series));
         $this->assertCount(1, $selectors);
@@ -87,7 +93,8 @@ class ParserTest extends TestCase {
         Parser::parseSeries($function->getArguments());
     }
 
-    public function getParserTestData() {
+    public function getParserTestData()
+    {
         return array(
             array('*', array('Element[*]')),
             array('*|*', array('Element[*]')),
@@ -131,7 +138,8 @@ class ParserTest extends TestCase {
         );
     }
 
-    public function getParserExceptionTestData() {
+    public function getParserExceptionTestData()
+    {
         return array(
             array('attributes(href)/html/body/a', SyntaxErrorException::unexpectedToken('selector', new Token(Token::TYPE_DELIMITER, '(', 10))->getMessage()),
             array('attributes(href)', SyntaxErrorException::unexpectedToken('selector', new Token(Token::TYPE_DELIMITER, '(', 10))->getMessage()),
@@ -160,7 +168,8 @@ class ParserTest extends TestCase {
         );
     }
 
-    public function getPseudoElementsTestData() {
+    public function getPseudoElementsTestData()
+    {
         return array(
             array('foo', 'Element[foo]', ''),
             array('*', 'Element[*]', ''),
@@ -180,7 +189,8 @@ class ParserTest extends TestCase {
         );
     }
 
-    public function getSpecificityTestData() {
+    public function getSpecificityTestData()
+    {
         return array(
             array('*', 0),
             array(' foo', 1),
@@ -207,7 +217,8 @@ class ParserTest extends TestCase {
         );
     }
 
-    public function getParseSeriesTestData() {
+    public function getParseSeriesTestData()
+    {
         return array(
             array('1n+3', 1, 3),
             array('1n +3', 1, 3),
@@ -228,11 +239,11 @@ class ParserTest extends TestCase {
         );
     }
 
-    public function getParseSeriesExceptionTestData() {
+    public function getParseSeriesExceptionTestData()
+    {
         return array(
             array('foo'),
             array('n+'),
         );
     }
-
 }

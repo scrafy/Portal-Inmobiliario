@@ -4,8 +4,8 @@ namespace Illuminate\Validation;
 
 use Illuminate\Support\ServiceProvider;
 
-class ValidationServiceProvider extends ServiceProvider {
-
+class ValidationServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,7 +18,8 @@ class ValidationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->registerPresenceVerifier();
 
         $this->registerValidationFactory();
@@ -29,7 +30,8 @@ class ValidationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerValidationFactory() {
+    protected function registerValidationFactory()
+    {
         $this->app->singleton('validator', function ($app) {
             $validator = new Factory($app['translator'], $app);
 
@@ -49,7 +51,8 @@ class ValidationServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    protected function registerPresenceVerifier() {
+    protected function registerPresenceVerifier()
+    {
         $this->app->singleton('validation.presence', function ($app) {
             return new DatabasePresenceVerifier($app['db']);
         });
@@ -60,10 +63,10 @@ class ValidationServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'validator', 'validation.presence',
         ];
     }
-
 }

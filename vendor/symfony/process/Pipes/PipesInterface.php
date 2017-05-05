@@ -18,8 +18,8 @@ namespace Symfony\Component\Process\Pipes;
  *
  * @internal
  */
-interface PipesInterface {
-
+interface PipesInterface
+{
     const CHUNK_SIZE = 16384;
 
     /**

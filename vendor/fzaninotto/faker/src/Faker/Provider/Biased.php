@@ -2,8 +2,8 @@
 
 namespace Faker\Provider;
 
-class Biased extends Base {
-
+class Biased extends Base
+{
     /**
      * Returns a biased integer between $min and $max (both inclusive).
      * The distribution depends on $function.
@@ -19,12 +19,13 @@ class Biased extends Base {
      * @param callable $function A function mapping x ∈ [0, 1] onto a double ∈ [0, 1]
      * @return integer An integer between $min and $max.
      */
-    public function biasedNumberBetween($min = 0, $max = 100, $function = 'sqrt') {
+    public function biasedNumberBetween($min = 0, $max = 100, $function = 'sqrt')
+    {
         do {
             $x = mt_rand() / mt_getrandmax();
             $y = mt_rand() / (mt_getrandmax() + 1);
         } while (call_user_func($function, $x) < $y);
-
+        
         return floor($x * ($max - $min + 1) + $min);
     }
 
@@ -34,7 +35,8 @@ class Biased extends Base {
      *
      * @return integer
      */
-    protected static function unbiased($x) {
+    protected static function unbiased($x)
+    {
         return 1;
     }
 
@@ -44,7 +46,8 @@ class Biased extends Base {
      *
      * @return integer
      */
-    protected static function linearLow($x) {
+    protected static function linearLow($x)
+    {
         return 1 - $x;
     }
 
@@ -54,8 +57,8 @@ class Biased extends Base {
      *
      * @return integer
      */
-    protected static function linearHigh($x) {
+    protected static function linearHigh($x)
+    {
         return $x;
     }
-
 }

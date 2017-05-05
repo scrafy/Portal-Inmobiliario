@@ -15,9 +15,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\CssSelector\Parser\Token;
 use Symfony\Component\CssSelector\Parser\TokenStream;
 
-class TokenStreamTest extends TestCase {
-
-    public function testGetNext() {
+class TokenStreamTest extends TestCase
+{
+    public function testGetNext()
+    {
         $stream = new TokenStream();
         $stream->push($t1 = new Token(Token::TYPE_IDENTIFIER, 'h1', 0));
         $stream->push($t2 = new Token(Token::TYPE_DELIMITER, '.', 2));
@@ -28,7 +29,8 @@ class TokenStreamTest extends TestCase {
         $this->assertSame($t3, $stream->getNext());
     }
 
-    public function testGetPeek() {
+    public function testGetPeek()
+    {
         $stream = new TokenStream();
         $stream->push($t1 = new Token(Token::TYPE_IDENTIFIER, 'h1', 0));
         $stream->push($t2 = new Token(Token::TYPE_DELIMITER, '.', 2));
@@ -41,14 +43,16 @@ class TokenStreamTest extends TestCase {
         $this->assertSame($t2, $stream->getNext());
     }
 
-    public function testGetNextIdentifier() {
+    public function testGetNextIdentifier()
+    {
         $stream = new TokenStream();
         $stream->push(new Token(Token::TYPE_IDENTIFIER, 'h1', 0));
 
         $this->assertEquals('h1', $stream->getNextIdentifier());
     }
 
-    public function testFailToGetNextIdentifier() {
+    public function testFailToGetNextIdentifier()
+    {
         $this->{method_exists($this, $_ = 'expectException') ? $_ : 'setExpectedException'}('Symfony\Component\CssSelector\Exception\SyntaxErrorException');
 
         $stream = new TokenStream();
@@ -56,7 +60,8 @@ class TokenStreamTest extends TestCase {
         $stream->getNextIdentifier();
     }
 
-    public function testGetNextIdentifierOrStar() {
+    public function testGetNextIdentifierOrStar()
+    {
         $stream = new TokenStream();
 
         $stream->push(new Token(Token::TYPE_IDENTIFIER, 'h1', 0));
@@ -66,7 +71,8 @@ class TokenStreamTest extends TestCase {
         $this->assertNull($stream->getNextIdentifierOrStar());
     }
 
-    public function testFailToGetNextIdentifierOrStar() {
+    public function testFailToGetNextIdentifierOrStar()
+    {
         $this->{method_exists($this, $_ = 'expectException') ? $_ : 'setExpectedException'}('Symfony\Component\CssSelector\Exception\SyntaxErrorException');
 
         $stream = new TokenStream();
@@ -74,7 +80,8 @@ class TokenStreamTest extends TestCase {
         $stream->getNextIdentifierOrStar();
     }
 
-    public function testSkipWhitespace() {
+    public function testSkipWhitespace()
+    {
         $stream = new TokenStream();
         $stream->push($t1 = new Token(Token::TYPE_IDENTIFIER, 'h1', 0));
         $stream->push($t2 = new Token(Token::TYPE_WHITESPACE, ' ', 2));
@@ -86,5 +93,4 @@ class TokenStreamTest extends TestCase {
         $stream->skipWhitespace();
         $this->assertSame($t3, $stream->getNext());
     }
-
 }

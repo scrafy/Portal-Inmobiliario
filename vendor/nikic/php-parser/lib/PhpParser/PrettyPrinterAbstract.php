@@ -5,74 +5,75 @@ namespace PhpParser;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
-abstract class PrettyPrinterAbstract {
-
+abstract class PrettyPrinterAbstract
+{
     protected $precedenceMap = array(
         // [precedence, associativity] where for the latter -1 is %left, 0 is %nonassoc and 1 is %right
-        'Expr_BinaryOp_Pow' => array(0, 1),
-        'Expr_BitwiseNot' => array(10, 1),
-        'Expr_PreInc' => array(10, 1),
-        'Expr_PreDec' => array(10, 1),
-        'Expr_PostInc' => array(10, -1),
-        'Expr_PostDec' => array(10, -1),
-        'Expr_UnaryPlus' => array(10, 1),
-        'Expr_UnaryMinus' => array(10, 1),
-        'Expr_Cast_Int' => array(10, 1),
-        'Expr_Cast_Double' => array(10, 1),
-        'Expr_Cast_String' => array(10, 1),
-        'Expr_Cast_Array' => array(10, 1),
-        'Expr_Cast_Object' => array(10, 1),
-        'Expr_Cast_Bool' => array(10, 1),
-        'Expr_Cast_Unset' => array(10, 1),
-        'Expr_ErrorSuppress' => array(10, 1),
-        'Expr_Instanceof' => array(20, 0),
-        'Expr_BooleanNot' => array(30, 1),
-        'Expr_BinaryOp_Mul' => array(40, -1),
-        'Expr_BinaryOp_Div' => array(40, -1),
-        'Expr_BinaryOp_Mod' => array(40, -1),
-        'Expr_BinaryOp_Plus' => array(50, -1),
-        'Expr_BinaryOp_Minus' => array(50, -1),
-        'Expr_BinaryOp_Concat' => array(50, -1),
-        'Expr_BinaryOp_ShiftLeft' => array(60, -1),
-        'Expr_BinaryOp_ShiftRight' => array(60, -1),
-        'Expr_BinaryOp_Smaller' => array(70, 0),
-        'Expr_BinaryOp_SmallerOrEqual' => array(70, 0),
-        'Expr_BinaryOp_Greater' => array(70, 0),
-        'Expr_BinaryOp_GreaterOrEqual' => array(70, 0),
-        'Expr_BinaryOp_Equal' => array(80, 0),
-        'Expr_BinaryOp_NotEqual' => array(80, 0),
-        'Expr_BinaryOp_Identical' => array(80, 0),
-        'Expr_BinaryOp_NotIdentical' => array(80, 0),
-        'Expr_BinaryOp_Spaceship' => array(80, 0),
-        'Expr_BinaryOp_BitwiseAnd' => array(90, -1),
-        'Expr_BinaryOp_BitwiseXor' => array(100, -1),
-        'Expr_BinaryOp_BitwiseOr' => array(110, -1),
-        'Expr_BinaryOp_BooleanAnd' => array(120, -1),
-        'Expr_BinaryOp_BooleanOr' => array(130, -1),
-        'Expr_BinaryOp_Coalesce' => array(140, 1),
-        'Expr_Ternary' => array(150, -1),
+        'Expr_BinaryOp_Pow'            => array(  0,  1),
+        'Expr_BitwiseNot'              => array( 10,  1),
+        'Expr_PreInc'                  => array( 10,  1),
+        'Expr_PreDec'                  => array( 10,  1),
+        'Expr_PostInc'                 => array( 10, -1),
+        'Expr_PostDec'                 => array( 10, -1),
+        'Expr_UnaryPlus'               => array( 10,  1),
+        'Expr_UnaryMinus'              => array( 10,  1),
+        'Expr_Cast_Int'                => array( 10,  1),
+        'Expr_Cast_Double'             => array( 10,  1),
+        'Expr_Cast_String'             => array( 10,  1),
+        'Expr_Cast_Array'              => array( 10,  1),
+        'Expr_Cast_Object'             => array( 10,  1),
+        'Expr_Cast_Bool'               => array( 10,  1),
+        'Expr_Cast_Unset'              => array( 10,  1),
+        'Expr_ErrorSuppress'           => array( 10,  1),
+        'Expr_Instanceof'              => array( 20,  0),
+        'Expr_BooleanNot'              => array( 30,  1),
+        'Expr_BinaryOp_Mul'            => array( 40, -1),
+        'Expr_BinaryOp_Div'            => array( 40, -1),
+        'Expr_BinaryOp_Mod'            => array( 40, -1),
+        'Expr_BinaryOp_Plus'           => array( 50, -1),
+        'Expr_BinaryOp_Minus'          => array( 50, -1),
+        'Expr_BinaryOp_Concat'         => array( 50, -1),
+        'Expr_BinaryOp_ShiftLeft'      => array( 60, -1),
+        'Expr_BinaryOp_ShiftRight'     => array( 60, -1),
+        'Expr_BinaryOp_Smaller'        => array( 70,  0),
+        'Expr_BinaryOp_SmallerOrEqual' => array( 70,  0),
+        'Expr_BinaryOp_Greater'        => array( 70,  0),
+        'Expr_BinaryOp_GreaterOrEqual' => array( 70,  0),
+        'Expr_BinaryOp_Equal'          => array( 80,  0),
+        'Expr_BinaryOp_NotEqual'       => array( 80,  0),
+        'Expr_BinaryOp_Identical'      => array( 80,  0),
+        'Expr_BinaryOp_NotIdentical'   => array( 80,  0),
+        'Expr_BinaryOp_Spaceship'      => array( 80,  0),
+        'Expr_BinaryOp_BitwiseAnd'     => array( 90, -1),
+        'Expr_BinaryOp_BitwiseXor'     => array(100, -1),
+        'Expr_BinaryOp_BitwiseOr'      => array(110, -1),
+        'Expr_BinaryOp_BooleanAnd'     => array(120, -1),
+        'Expr_BinaryOp_BooleanOr'      => array(130, -1),
+        'Expr_BinaryOp_Coalesce'       => array(140,  1),
+        'Expr_Ternary'                 => array(150, -1),
         // parser uses %left for assignments, but they really behave as %right
-        'Expr_Assign' => array(160, 1),
-        'Expr_AssignRef' => array(160, 1),
-        'Expr_AssignOp_Plus' => array(160, 1),
-        'Expr_AssignOp_Minus' => array(160, 1),
-        'Expr_AssignOp_Mul' => array(160, 1),
-        'Expr_AssignOp_Div' => array(160, 1),
-        'Expr_AssignOp_Concat' => array(160, 1),
-        'Expr_AssignOp_Mod' => array(160, 1),
-        'Expr_AssignOp_BitwiseAnd' => array(160, 1),
-        'Expr_AssignOp_BitwiseOr' => array(160, 1),
-        'Expr_AssignOp_BitwiseXor' => array(160, 1),
-        'Expr_AssignOp_ShiftLeft' => array(160, 1),
-        'Expr_AssignOp_ShiftRight' => array(160, 1),
-        'Expr_AssignOp_Pow' => array(160, 1),
-        'Expr_YieldFrom' => array(165, 1),
-        'Expr_Print' => array(168, 1),
-        'Expr_BinaryOp_LogicalAnd' => array(170, -1),
-        'Expr_BinaryOp_LogicalXor' => array(180, -1),
-        'Expr_BinaryOp_LogicalOr' => array(190, -1),
-        'Expr_Include' => array(200, -1),
+        'Expr_Assign'                  => array(160,  1),
+        'Expr_AssignRef'               => array(160,  1),
+        'Expr_AssignOp_Plus'           => array(160,  1),
+        'Expr_AssignOp_Minus'          => array(160,  1),
+        'Expr_AssignOp_Mul'            => array(160,  1),
+        'Expr_AssignOp_Div'            => array(160,  1),
+        'Expr_AssignOp_Concat'         => array(160,  1),
+        'Expr_AssignOp_Mod'            => array(160,  1),
+        'Expr_AssignOp_BitwiseAnd'     => array(160,  1),
+        'Expr_AssignOp_BitwiseOr'      => array(160,  1),
+        'Expr_AssignOp_BitwiseXor'     => array(160,  1),
+        'Expr_AssignOp_ShiftLeft'      => array(160,  1),
+        'Expr_AssignOp_ShiftRight'     => array(160,  1),
+        'Expr_AssignOp_Pow'            => array(160,  1),
+        'Expr_YieldFrom'               => array(165,  1),
+        'Expr_Print'                   => array(168,  1),
+        'Expr_BinaryOp_LogicalAnd'     => array(170, -1),
+        'Expr_BinaryOp_LogicalXor'     => array(180, -1),
+        'Expr_BinaryOp_LogicalOr'      => array(190, -1),
+        'Expr_Include'                 => array(200, -1),
     );
+
     protected $noIndentToken;
     protected $docStringEndToken;
     protected $canUseSemicolonNamespaces;
@@ -213,8 +214,8 @@ abstract class PrettyPrinterAbstract {
         list($precedence, $associativity) = $this->precedenceMap[$type];
 
         return $this->pPrec($leftNode, $precedence, $associativity, -1)
-                . $operatorString
-                . $this->pPrec($rightNode, $precedence, $associativity, 1);
+             . $operatorString
+             . $this->pPrec($rightNode, $precedence, $associativity, 1);
     }
 
     protected function pPrefixOp($type, $operatorString, Node $node) {
@@ -243,7 +244,8 @@ abstract class PrettyPrinterAbstract {
         $type = $node->getType();
         if (isset($this->precedenceMap[$type])) {
             $childPrecedence = $this->precedenceMap[$type][0];
-            if ($childPrecedence > $parentPrecedence || ($parentPrecedence == $childPrecedence && $parentAssociativity != $childPosition)
+            if ($childPrecedence > $parentPrecedence
+                || ($parentPrecedence == $childPrecedence && $parentAssociativity != $childPosition)
             ) {
                 return '(' . $this->p($node) . ')';
             }
@@ -311,5 +313,4 @@ abstract class PrettyPrinterAbstract {
 
         return implode("\n", $formattedComments);
     }
-
 }

@@ -4,8 +4,8 @@ namespace Illuminate\Routing;
 
 use Illuminate\Support\Collection;
 
-class SortedMiddleware extends Collection {
-
+class SortedMiddleware extends Collection
+{
     /**
      * Create a new Sorted Middleware container.
      *
@@ -13,7 +13,8 @@ class SortedMiddleware extends Collection {
      * @param  array|Collection  $middlewares
      * @return void
      */
-    public function __construct(array $priorityMap, $middlewares) {
+    public function __construct(array $priorityMap, $middlewares)
+    {
         if ($middlewares instanceof Collection) {
             $middlewares = $middlewares->all();
         }
@@ -30,11 +31,12 @@ class SortedMiddleware extends Collection {
      * @param  array  $middlewares
      * @return array
      */
-    protected function sortMiddleware($priorityMap, $middlewares) {
+    protected function sortMiddleware($priorityMap, $middlewares)
+    {
         $lastIndex = 0;
 
         foreach ($middlewares as $index => $middleware) {
-            if (!is_string($middleware)) {
+            if (! is_string($middleware)) {
                 continue;
             }
 
@@ -48,14 +50,14 @@ class SortedMiddleware extends Collection {
                 // middleware, we will move this middleware to be above the previous encounter.
                 if (isset($lastPriorityIndex) && $priorityIndex < $lastPriorityIndex) {
                     return $this->sortMiddleware(
-                                    $priorityMap, array_values(
-                                            $this->moveMiddleware($middlewares, $index, $lastIndex)
-                                    )
+                        $priorityMap, array_values(
+                            $this->moveMiddleware($middlewares, $index, $lastIndex)
+                        )
                     );
 
-                    // This middleware is in the priority map; but, this is the first middleware we have
-                    // encountered from the map thus far. We'll save its current index plus its index
-                    // from the priority map so we can compare against them on the next iterations.
+                // This middleware is in the priority map; but, this is the first middleware we have
+                // encountered from the map thus far. We'll save its current index plus its index
+                // from the priority map so we can compare against them on the next iterations.
                 } else {
                     $lastIndex = $index;
                     $lastPriorityIndex = $priorityIndex;
@@ -74,12 +76,12 @@ class SortedMiddleware extends Collection {
      * @param  int  $to
      * @return array
      */
-    protected function moveMiddleware($middlewares, $from, $to) {
+    protected function moveMiddleware($middlewares, $from, $to)
+    {
         array_splice($middlewares, $to, 0, $middlewares[$from]);
 
         unset($middlewares[$from + 1]);
 
         return $middlewares;
     }
-
 }

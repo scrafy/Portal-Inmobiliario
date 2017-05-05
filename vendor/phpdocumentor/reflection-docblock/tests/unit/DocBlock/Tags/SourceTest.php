@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -24,14 +23,15 @@ use phpDocumentor\Reflection\Types\String_;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Source
  * @covers ::<private>
  */
-class SourceTest extends \PHPUnit_Framework_TestCase {
-
+class SourceTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Source::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Source(1, null, new Description('Description'));
 
         $this->assertSame('source', $fixture->getName());
@@ -45,7 +45,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new Source(1, 10, new Description('Description'));
         $this->assertSame('@source 1 10 Description', $fixture->render());
 
@@ -60,7 +61,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Source::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Source(1);
 
         $formatter = m::mock(Formatter::class);
@@ -73,7 +75,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getStartingLine
      */
-    public function testHasStartingLine() {
+    public function testHasStartingLine()
+    {
         $expected = 1;
 
         $fixture = new Source($expected);
@@ -85,7 +88,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getLineCount
      */
-    public function testHasLineCount() {
+    public function testHasLineCount()
+    {
         $expected = 2;
 
         $fixture = new Source(1, $expected);
@@ -98,7 +102,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Source('1', null, $expected);
@@ -112,10 +117,11 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\Types\String_
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new Source(1, 10, new Description('Description'));
 
-        $this->assertSame('1 10 Description', (string) $fixture);
+        $this->assertSame('1 10 Description', (string)$fixture);
     }
 
     /**
@@ -125,16 +131,17 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $context = new Context('');
+        $context            = new Context('');
 
         $description = new Description('My Description');
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Source::create('1 10 My Description', $descriptionFactory, $context);
 
-        $this->assertSame('1 10 My Description', (string) $fixture);
+        $this->assertSame('1 10 My Description', (string)$fixture);
         $this->assertSame(1, $fixture->getStartingLine());
         $this->assertSame(10, $fixture->getLineCount());
         $this->assertSame($description, $fixture->getDescription());
@@ -147,7 +154,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfEmptyBodyIsGiven() {
+    public function testFactoryMethodFailsIfEmptyBodyIsGiven()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         Source::create('', $descriptionFactory);
     }
@@ -156,7 +164,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString() {
+    public function testFactoryMethodFailsIfBodyIsNotString()
+    {
         Source::create([]);
     }
 
@@ -165,7 +174,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\TypeResolver
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull() {
+    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    {
         Source::create('1');
     }
 
@@ -173,7 +183,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfStartingLineIsNotInteger() {
+    public function testExceptionIsThrownIfStartingLineIsNotInteger()
+    {
         new Source('blabla');
     }
 
@@ -181,8 +192,8 @@ class SourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfLineCountIsNotIntegerOrNull() {
+    public function testExceptionIsThrownIfLineCountIsNotIntegerOrNull()
+    {
         new Source('1', []);
     }
-
 }

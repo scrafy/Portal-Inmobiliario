@@ -23,8 +23,8 @@ use Symfony\Component\CssSelector\Node\SelectorNode;
  *
  * @internal
  */
-interface TranslatorInterface {
-
+interface TranslatorInterface
+{
     /**
      * Translates a CSS selector to an XPath expression.
      *

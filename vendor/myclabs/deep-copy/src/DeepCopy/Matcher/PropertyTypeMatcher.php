@@ -10,8 +10,8 @@ use ReflectionProperty;
  * @deprecated It is recommended to use {@see DeepCopy\TypeFilter\TypeFilter} instead, as it applies on all occurrences
  *             of given type in copied context (eg. array elements), not just on object properties.
  */
-class PropertyTypeMatcher implements Matcher {
-
+class PropertyTypeMatcher implements Matcher
+{
     /**
      * @var string
      */
@@ -20,18 +20,19 @@ class PropertyTypeMatcher implements Matcher {
     /**
      * @param string $propertyType Property type
      */
-    public function __construct($propertyType) {
+    public function __construct($propertyType)
+    {
         $this->propertyType = $propertyType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function matches($object, $property) {
+    public function matches($object, $property)
+    {
         $reflectionProperty = new ReflectionProperty($object, $property);
         $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty->getValue($object) instanceof $this->propertyType;
     }
-
 }

@@ -13,8 +13,8 @@
  *
  * @author     Chris Corbyn
  */
-interface Swift_Transport_MailInvoker {
-
+interface Swift_Transport_MailInvoker
+{
     /**
      * Send mail via the mail() function.
      *

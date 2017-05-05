@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -18,13 +17,14 @@ use Mockery as m;
 /**
  * @coversDefaultClass \phpDocumentor\Reflection\Types\Context
  */
-class ContextTest extends \PHPUnit_Framework_TestCase {
-
+class ContextTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testProvidesANormalizedNamespace() {
+    public function testProvidesANormalizedNamespace()
+    {
         $fixture = new Context('\My\Space');
         $this->assertSame('My\Space', $fixture->getNamespace());
     }
@@ -33,7 +33,8 @@ class ContextTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedGlobalAsRootNamespace() {
+    public function testInterpretsNamespaceNamedGlobalAsRootNamespace()
+    {
         $fixture = new Context('global');
         $this->assertSame('', $fixture->getNamespace());
     }
@@ -42,7 +43,8 @@ class ContextTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getNamespace
      */
-    public function testInterpretsNamespaceNamedDefaultAsRootNamespace() {
+    public function testInterpretsNamespaceNamedDefaultAsRootNamespace()
+    {
         $fixture = new Context('default');
         $this->assertSame('', $fixture->getNamespace());
     }
@@ -51,9 +53,9 @@ class ContextTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getNamespaceAliases
      */
-    public function testProvidesNormalizedNamespaceAliases() {
+    public function testProvidesNormalizedNamespaceAliases()
+    {
         $fixture = new Context('', ['Space' => '\My\Space']);
         $this->assertSame(['Space' => 'My\Space'], $fixture->getNamespaceAliases());
     }
-
 }

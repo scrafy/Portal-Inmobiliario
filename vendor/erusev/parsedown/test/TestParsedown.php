@@ -1,5 +1,5 @@
 <?php
 
-class TestParsedown extends Parsedown {
-    
+class TestParsedown extends Parsedown
+{
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -18,8 +17,8 @@
  *
  * The expected value is passed in the constructor.
  */
-class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
+{
     /**
      * @var mixed
      */
@@ -59,7 +58,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false) {
+    public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    {
         parent::__construct();
 
         if (!is_numeric($delta)) {
@@ -78,11 +78,11 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
         }
 
-        $this->value = $value;
-        $this->delta = $delta;
-        $this->maxDepth = $maxDepth;
+        $this->value        = $value;
+        $this->delta        = $delta;
+        $this->maxDepth     = $maxDepth;
         $this->canonicalize = $canonicalize;
-        $this->ignoreCase = $ignoreCase;
+        $this->ignoreCase   = $ignoreCase;
     }
 
     /**
@@ -103,7 +103,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = false) {
+    public function evaluate($other, $description = '', $returnResult = false)
+    {
         // If $this->value and $other are identical, they are also equal.
         // This is the most common path and will allow us to skip
         // initialization of all the comparators.
@@ -115,11 +116,16 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
 
         try {
             $comparator = $comparatorFactory->getComparatorFor(
-                    $this->value, $other
+                $this->value,
+                $other
             );
 
             $comparator->assertEquals(
-                    $this->value, $other, $this->delta, $this->canonicalize, $this->ignoreCase
+                $this->value,
+                $other,
+                $this->delta,
+                $this->canonicalize,
+                $this->ignoreCase
             );
         } catch (SebastianBergmann\Comparator\ComparisonFailure $f) {
             if ($returnResult) {
@@ -127,7 +133,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
             }
 
             throw new PHPUnit_Framework_ExpectationFailedException(
-            trim($description . "\n" . $f->getMessage()), $f
+                trim($description . "\n" . $f->getMessage()),
+                $f
             );
         }
 
@@ -139,7 +146,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         $delta = '';
 
         if (is_string($this->value)) {
@@ -147,20 +155,23 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint 
                 return 'is equal to <text>';
             } else {
                 return sprintf(
-                        'is equal to <string:%s>', $this->value
+                    'is equal to <string:%s>',
+                    $this->value
                 );
             }
         } else {
             if ($this->delta != 0) {
                 $delta = sprintf(
-                        ' with delta <%F>', $this->delta
+                    ' with delta <%F>',
+                    $this->delta
                 );
             }
 
             return sprintf(
-                    'is equal to %s%s', $this->exporter->export($this->value), $delta
+                'is equal to %s%s',
+                $this->exporter->export($this->value),
+                $delta
             );
         }
     }
-
 }

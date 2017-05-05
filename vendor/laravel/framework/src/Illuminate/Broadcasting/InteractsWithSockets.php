@@ -4,8 +4,8 @@ namespace Illuminate\Broadcasting;
 
 use Illuminate\Support\Facades\Broadcast;
 
-trait InteractsWithSockets {
-
+trait InteractsWithSockets
+{
     /**
      * The socket ID for the user that raised the event.
      *
@@ -18,7 +18,8 @@ trait InteractsWithSockets {
      *
      * @return $this
      */
-    public function dontBroadcastToCurrentUser() {
+    public function dontBroadcastToCurrentUser()
+    {
         $this->socket = Broadcast::socket();
 
         return $this;
@@ -29,10 +30,10 @@ trait InteractsWithSockets {
      *
      * @return $this
      */
-    public function broadcastToEveryone() {
+    public function broadcastToEveryone()
+    {
         $this->socket = null;
 
         return $this;
     }
-
 }

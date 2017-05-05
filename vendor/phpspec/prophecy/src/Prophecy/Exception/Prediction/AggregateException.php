@@ -13,35 +13,38 @@ namespace Prophecy\Exception\Prediction;
 
 use Prophecy\Prophecy\ObjectProphecy;
 
-class AggregateException extends \RuntimeException implements PredictionException {
-
+class AggregateException extends \RuntimeException implements PredictionException
+{
     private $exceptions = array();
     private $objectProphecy;
 
-    public function append(PredictionException $exception) {
+    public function append(PredictionException $exception)
+    {
         $message = $exception->getMessage();
-        $message = '  ' . strtr($message, array("\n" => "\n  ")) . "\n";
+        $message = '  '.strtr($message, array("\n" => "\n  "))."\n";
 
-        $this->message = rtrim($this->message . $message);
+        $this->message      = rtrim($this->message.$message);
         $this->exceptions[] = $exception;
     }
 
     /**
      * @return PredictionException[]
      */
-    public function getExceptions() {
+    public function getExceptions()
+    {
         return $this->exceptions;
     }
 
-    public function setObjectProphecy(ObjectProphecy $objectProphecy) {
+    public function setObjectProphecy(ObjectProphecy $objectProphecy)
+    {
         $this->objectProphecy = $objectProphecy;
     }
 
     /**
      * @return ObjectProphecy
      */
-    public function getObjectProphecy() {
+    public function getObjectProphecy()
+    {
         return $this->objectProphecy;
     }
-
 }

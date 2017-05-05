@@ -4,8 +4,8 @@ namespace Illuminate\Cache;
 
 use Illuminate\Contracts\Cache\Store;
 
-class TaggedCache extends Repository {
-
+class TaggedCache extends Repository
+{
     use RetrievesMultipleKeys;
 
     /**
@@ -22,7 +22,8 @@ class TaggedCache extends Repository {
      * @param  \Illuminate\Cache\TagSet  $tags
      * @return void
      */
-    public function __construct(Store $store, TagSet $tags) {
+    public function __construct(Store $store, TagSet $tags)
+    {
         parent::__construct($store);
 
         $this->tags = $tags;
@@ -35,7 +36,8 @@ class TaggedCache extends Repository {
      * @param  mixed   $value
      * @return void
      */
-    public function increment($key, $value = 1) {
+    public function increment($key, $value = 1)
+    {
         $this->store->increment($this->itemKey($key), $value);
     }
 
@@ -46,7 +48,8 @@ class TaggedCache extends Repository {
      * @param  mixed   $value
      * @return void
      */
-    public function decrement($key, $value = 1) {
+    public function decrement($key, $value = 1)
+    {
         $this->store->decrement($this->itemKey($key), $value);
     }
 
@@ -55,14 +58,16 @@ class TaggedCache extends Repository {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->tags->reset();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function itemKey($key) {
+    protected function itemKey($key)
+    {
         return $this->taggedItemKey($key);
     }
 
@@ -72,8 +77,9 @@ class TaggedCache extends Repository {
      * @param  string  $key
      * @return string
      */
-    public function taggedItemKey($key) {
-        return sha1($this->tags->getNamespace()) . ':' . $key;
+    public function taggedItemKey($key)
+    {
+        return sha1($this->tags->getNamespace()).':'.$key;
     }
 
     /**
@@ -82,8 +88,8 @@ class TaggedCache extends Repository {
      * @param  string  $event
      * @return void
      */
-    protected function event($event) {
+    protected function event($event)
+    {
         parent::event($event->setTags($this->tags->getNames()));
     }
-
 }

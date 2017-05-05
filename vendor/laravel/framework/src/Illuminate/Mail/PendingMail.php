@@ -4,8 +4,8 @@ namespace Illuminate\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PendingMail {
-
+class PendingMail
+{
     /**
      * The mailer instance.
      *
@@ -40,7 +40,8 @@ class PendingMail {
      * @param  Mailer  $mailer
      * @return void
      */
-    public function __construct(Mailer $mailer) {
+    public function __construct(Mailer $mailer)
+    {
         $this->mailer = $mailer;
     }
 
@@ -50,7 +51,8 @@ class PendingMail {
      * @param  mixed  $users
      * @return $this
      */
-    public function to($users) {
+    public function to($users)
+    {
         $this->to = $users;
 
         return $this;
@@ -62,7 +64,8 @@ class PendingMail {
      * @param  mixed  $users
      * @return $this
      */
-    public function cc($users) {
+    public function cc($users)
+    {
         $this->cc = $users;
 
         return $this;
@@ -74,7 +77,8 @@ class PendingMail {
      * @param  mixed  $users
      * @return $this
      */
-    public function bcc($users) {
+    public function bcc($users)
+    {
         $this->bcc = $users;
 
         return $this;
@@ -86,7 +90,8 @@ class PendingMail {
      * @param  Mailable  $mailable
      * @return mixed
      */
-    public function send(Mailable $mailable) {
+    public function send(Mailable $mailable)
+    {
         if ($mailable instanceof ShouldQueue) {
             return $this->queue($mailable);
         }
@@ -100,7 +105,8 @@ class PendingMail {
      * @param  Mailable  $mailable
      * @return mixed
      */
-    public function sendNow(Mailable $mailable) {
+    public function sendNow(Mailable $mailable)
+    {
         return $this->mailer->send($this->fill($mailable));
     }
 
@@ -110,7 +116,8 @@ class PendingMail {
      * @param  Mailable  $mailable
      * @return mixed
      */
-    public function queue(Mailable $mailable) {
+    public function queue(Mailable $mailable)
+    {
         $mailable = $this->fill($mailable);
 
         if (isset($mailable->delay)) {
@@ -127,7 +134,8 @@ class PendingMail {
      * @param  Mailable  $mailable
      * @return mixed
      */
-    public function later($delay, Mailable $mailable) {
+    public function later($delay, Mailable $mailable)
+    {
         return $this->mailer->later($delay, $this->fill($mailable));
     }
 
@@ -137,10 +145,10 @@ class PendingMail {
      * @param  Mailable  $mailable
      * @return Mailable
      */
-    protected function fill(Mailable $mailable) {
+    protected function fill(Mailable $mailable)
+    {
         return $mailable->to($this->to)
                         ->cc($this->cc)
                         ->bcc($this->bcc);
     }
-
 }

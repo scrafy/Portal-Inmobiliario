@@ -2,8 +2,8 @@
 
 namespace Faker\Provider\ja_JP;
 
-class Internet extends \Faker\Provider\Internet {
-
+class Internet extends \Faker\Provider\Internet
+{
     protected static $userNameFormats = array(
         '{{lastNameAscii}}.{{firstNameAscii}}',
         '{{firstNameAscii}}.{{lastNameAscii}}',
@@ -19,6 +19,7 @@ class Internet extends \Faker\Provider\Internet {
     protected static $tld = array(
         'com', 'com', 'com', 'biz', 'info', 'net', 'org', 'jp', 'jp', 'jp',
     );
+
     protected static $lastNameAscii = array(
         'uno', 'kudo', 'suzuki', 'tanabe', 'nagisa', 'hirokawa', 'yoshimoto'
     );
@@ -26,18 +27,21 @@ class Internet extends \Faker\Provider\Internet {
         'akira', 'kana', 'taro', 'naoko', 'hiroshi', 'momoko', 'rika'
     );
 
-    public static function lastNameAscii() {
+    public static function lastNameAscii()
+    {
         return static::randomElement(static::$lastNameAscii);
     }
 
-    public static function firstNameAscii() {
+    public static function firstNameAscii()
+    {
         return static::randomElement(static::$firstNameAscii);
     }
 
     /**
      * @example 'suzuki.taro'
      */
-    public function userName() {
+    public function userName()
+    {
         $format = static::randomElement(static::$userNameFormats);
 
         return static::bothify($this->generator->parse($format));
@@ -46,8 +50,8 @@ class Internet extends \Faker\Provider\Internet {
     /**
      * @example 'yamada.jp'
      */
-    public function domainName() {
+    public function domainName()
+    {
         return static::randomElement(static::$lastNameAscii) . '.' . $this->tld();
     }
-
 }

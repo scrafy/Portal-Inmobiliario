@@ -7,8 +7,8 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Cache\Repository as Cache;
 
-class CallbackEvent extends Event {
-
+class CallbackEvent extends Event
+{
     /**
      * The callback to call.
      *
@@ -33,10 +33,11 @@ class CallbackEvent extends Event {
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(Cache $cache, $callback, array $parameters = []) {
-        if (!is_string($callback) && !is_callable($callback)) {
+    public function __construct(Cache $cache, $callback, array $parameters = [])
+    {
+        if (! is_string($callback) && ! is_callable($callback)) {
             throw new InvalidArgumentException(
-            'Invalid scheduled callback event. Must be a string or callable.'
+                'Invalid scheduled callback event. Must be a string or callable.'
             );
         }
 
@@ -53,7 +54,8 @@ class CallbackEvent extends Event {
      *
      * @throws \Exception
      */
-    public function run(Container $container) {
+    public function run(Container $container)
+    {
         if ($this->description) {
             $this->cache->put($this->mutexName(), true, 1440);
         }
@@ -74,7 +76,8 @@ class CallbackEvent extends Event {
      *
      * @return void
      */
-    protected function removeMutex() {
+    protected function removeMutex()
+    {
         if ($this->description) {
             $this->cache->forget($this->mutexName());
         }
@@ -87,16 +90,17 @@ class CallbackEvent extends Event {
      *
      * @throws \LogicException
      */
-    public function withoutOverlapping() {
-        if (!isset($this->description)) {
+    public function withoutOverlapping()
+    {
+        if (! isset($this->description)) {
             throw new LogicException(
-            "A scheduled event name is required to prevent overlapping. Use the 'name' method before 'withoutOverlapping'."
+                "A scheduled event name is required to prevent overlapping. Use the 'name' method before 'withoutOverlapping'."
             );
         }
 
         return $this->skip(function () {
-                    return $this->cache->has($this->mutexName());
-                });
+            return $this->cache->has($this->mutexName());
+        });
     }
 
     /**
@@ -104,8 +108,9 @@ class CallbackEvent extends Event {
      *
      * @return string
      */
-    public function mutexName() {
-        return 'framework/schedule-' . sha1($this->description);
+    public function mutexName()
+    {
+        return 'framework/schedule-'.sha1($this->description);
     }
 
     /**
@@ -113,12 +118,12 @@ class CallbackEvent extends Event {
      *
      * @return string
      */
-    public function getSummaryForDisplay() {
+    public function getSummaryForDisplay()
+    {
         if (is_string($this->description)) {
             return $this->description;
         }
 
         return is_string($this->callback) ? $this->callback : 'Closure';
     }
-
 }

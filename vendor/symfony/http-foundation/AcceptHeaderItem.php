@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Jean-François Simon <contact@jfsimon.fr>
  */
-class AcceptHeaderItem {
-
+class AcceptHeaderItem
+{
     /**
      * @var string
      */
@@ -44,7 +44,8 @@ class AcceptHeaderItem {
      * @param string $value
      * @param array  $attributes
      */
-    public function __construct($value, array $attributes = array()) {
+    public function __construct($value, array $attributes = array())
+    {
         $this->value = $value;
         foreach ($attributes as $name => $value) {
             $this->setAttribute($name, $value);
@@ -58,7 +59,8 @@ class AcceptHeaderItem {
      *
      * @return self
      */
-    public static function fromString($itemValue) {
+    public static function fromString($itemValue)
+    {
         $bits = preg_split('/\s*(?:;*("[^"]+");*|;*(\'[^\']+\');*|;+)\s*/', $itemValue, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
         $value = array_shift($bits);
         $attributes = array();
@@ -84,12 +86,13 @@ class AcceptHeaderItem {
      *
      * @return string
      */
-    public function __toString() {
-        $string = $this->value . ($this->quality < 1 ? ';q=' . $this->quality : '');
+    public function __toString()
+    {
+        $string = $this->value.($this->quality < 1 ? ';q='.$this->quality : '');
         if (count($this->attributes) > 0) {
-            $string .= ';' . implode(';', array_map(function ($name, $value) {
-                                return sprintf(preg_match('/[,;=]/', $value) ? '%s="%s"' : '%s=%s', $name, $value);
-                            }, array_keys($this->attributes), $this->attributes));
+            $string .= ';'.implode(';', array_map(function ($name, $value) {
+                return sprintf(preg_match('/[,;=]/', $value) ? '%s="%s"' : '%s=%s', $name, $value);
+            }, array_keys($this->attributes), $this->attributes));
         }
 
         return $string;
@@ -102,7 +105,8 @@ class AcceptHeaderItem {
      *
      * @return $this
      */
-    public function setValue($value) {
+    public function setValue($value)
+    {
         $this->value = $value;
 
         return $this;
@@ -113,7 +117,8 @@ class AcceptHeaderItem {
      *
      * @return string
      */
-    public function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 
@@ -124,7 +129,8 @@ class AcceptHeaderItem {
      *
      * @return $this
      */
-    public function setQuality($quality) {
+    public function setQuality($quality)
+    {
         $this->quality = $quality;
 
         return $this;
@@ -135,7 +141,8 @@ class AcceptHeaderItem {
      *
      * @return float
      */
-    public function getQuality() {
+    public function getQuality()
+    {
         return $this->quality;
     }
 
@@ -146,7 +153,8 @@ class AcceptHeaderItem {
      *
      * @return $this
      */
-    public function setIndex($index) {
+    public function setIndex($index)
+    {
         $this->index = $index;
 
         return $this;
@@ -157,7 +165,8 @@ class AcceptHeaderItem {
      *
      * @return int
      */
-    public function getIndex() {
+    public function getIndex()
+    {
         return $this->index;
     }
 
@@ -168,7 +177,8 @@ class AcceptHeaderItem {
      *
      * @return bool
      */
-    public function hasAttribute($name) {
+    public function hasAttribute($name)
+    {
         return isset($this->attributes[$name]);
     }
 
@@ -180,7 +190,8 @@ class AcceptHeaderItem {
      *
      * @return mixed
      */
-    public function getAttribute($name, $default = null) {
+    public function getAttribute($name, $default = null)
+    {
         return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
     }
 
@@ -189,7 +200,8 @@ class AcceptHeaderItem {
      *
      * @return array
      */
-    public function getAttributes() {
+    public function getAttributes()
+    {
         return $this->attributes;
     }
 
@@ -201,7 +213,8 @@ class AcceptHeaderItem {
      *
      * @return $this
      */
-    public function setAttribute($name, $value) {
+    public function setAttribute($name, $value)
+    {
         if ('q' === $name) {
             $this->quality = (float) $value;
         } else {
@@ -210,5 +223,4 @@ class AcceptHeaderItem {
 
         return $this;
     }
-
 }

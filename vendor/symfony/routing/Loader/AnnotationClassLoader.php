@@ -55,8 +55,8 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class AnnotationClassLoader implements LoaderInterface {
-
+abstract class AnnotationClassLoader implements LoaderInterface
+{
     /**
      * @var Reader
      */
@@ -77,7 +77,8 @@ abstract class AnnotationClassLoader implements LoaderInterface {
      *
      * @param Reader $reader
      */
-    public function __construct(Reader $reader) {
+    public function __construct(Reader $reader)
+    {
         $this->reader = $reader;
     }
 
@@ -86,7 +87,8 @@ abstract class AnnotationClassLoader implements LoaderInterface {
      *
      * @param string $class A fully-qualified class name
      */
-    public function setRouteAnnotationClass($class) {
+    public function setRouteAnnotationClass($class)
+    {
         $this->routeAnnotationClass = $class;
     }
 
@@ -100,7 +102,8 @@ abstract class AnnotationClassLoader implements LoaderInterface {
      *
      * @throws \InvalidArgumentException When route can't be parsed
      */
-    public function load($class, $type = null) {
+    public function load($class, $type = null)
+    {
         if (!class_exists($class)) {
             throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
@@ -127,7 +130,8 @@ abstract class AnnotationClassLoader implements LoaderInterface {
         return $collection;
     }
 
-    protected function addRoute(RouteCollection $collection, $annot, $globals, \ReflectionClass $class, \ReflectionMethod $method) {
+    protected function addRoute(RouteCollection $collection, $annot, $globals, \ReflectionClass $class, \ReflectionMethod $method)
+    {
         $name = $annot->getName();
         if (null === $name) {
             $name = $this->getDefaultRouteName($class, $method);
@@ -135,7 +139,7 @@ abstract class AnnotationClassLoader implements LoaderInterface {
 
         $defaults = array_replace($globals['defaults'], $annot->getDefaults());
         foreach ($method->getParameters() as $param) {
-            if (false !== strpos($globals['path'] . $annot->getPath(), sprintf('{%s}', $param->getName())) && !isset($defaults[$param->getName()]) && $param->isDefaultValueAvailable()) {
+            if (false !== strpos($globals['path'].$annot->getPath(), sprintf('{%s}', $param->getName())) && !isset($defaults[$param->getName()]) && $param->isDefaultValueAvailable()) {
                 $defaults[$param->getName()] = $param->getDefaultValue();
             }
         }
@@ -154,7 +158,7 @@ abstract class AnnotationClassLoader implements LoaderInterface {
             $condition = $globals['condition'];
         }
 
-        $route = $this->createRoute($globals['path'] . $annot->getPath(), $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
+        $route = $this->createRoute($globals['path'].$annot->getPath(), $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
 
         $this->configureRoute($route, $class, $method, $annot);
 
@@ -164,22 +168,23 @@ abstract class AnnotationClassLoader implements LoaderInterface {
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null) {
+    public function supports($resource, $type = null)
+    {
         return is_string($resource) && preg_match('/^(?:\\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+$/', $resource) && (!$type || 'annotation' === $type);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setResolver(LoaderResolverInterface $resolver) {
-        
+    public function setResolver(LoaderResolverInterface $resolver)
+    {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getResolver() {
-        
+    public function getResolver()
+    {
     }
 
     /**
@@ -190,17 +195,19 @@ abstract class AnnotationClassLoader implements LoaderInterface {
      *
      * @return string
      */
-    protected function getDefaultRouteName(\ReflectionClass $class, \ReflectionMethod $method) {
-        $name = strtolower(str_replace('\\', '_', $class->name) . '_' . $method->name);
+    protected function getDefaultRouteName(\ReflectionClass $class, \ReflectionMethod $method)
+    {
+        $name = strtolower(str_replace('\\', '_', $class->name).'_'.$method->name);
         if ($this->defaultRouteIndex > 0) {
-            $name .= '_' . $this->defaultRouteIndex;
+            $name .= '_'.$this->defaultRouteIndex;
         }
         ++$this->defaultRouteIndex;
 
         return $name;
     }
 
-    protected function getGlobals(\ReflectionClass $class) {
+    protected function getGlobals(\ReflectionClass $class)
+    {
         $globals = array(
             'path' => '',
             'requirements' => array(),
@@ -249,7 +256,8 @@ abstract class AnnotationClassLoader implements LoaderInterface {
         return $globals;
     }
 
-    protected function createRoute($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
+    protected function createRoute($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition)
+    {
         return new Route($path, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
     }
 

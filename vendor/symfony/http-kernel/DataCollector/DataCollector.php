@@ -28,8 +28,8 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bernhard Schussek <bschussek@symfony.com>
  */
-abstract class DataCollector implements DataCollectorInterface, \Serializable {
-
+abstract class DataCollector implements DataCollectorInterface, \Serializable
+{
     protected $data = array();
 
     /**
@@ -41,13 +41,16 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable {
      * @var ClonerInterface
      */
     private $cloner;
+
     private static $stubsCache = array();
 
-    public function serialize() {
+    public function serialize()
+    {
         return serialize($this->data);
     }
 
-    public function unserialize($data) {
+    public function unserialize($data)
+    {
         $this->data = unserialize($data);
     }
 
@@ -61,7 +64,8 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable {
      *
      * @return Data
      */
-    protected function cloneVar($var) {
+    protected function cloneVar($var)
+    {
         if (null === $this->cloner) {
             if (class_exists(ClassStub::class)) {
                 $this->cloner = new VarCloner();
@@ -96,7 +100,8 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable {
      *
      * @deprecated Deprecated since version 3.2, to be removed in 4.0. Use cloneVar() instead.
      */
-    protected function varToString($var) {
+    protected function varToString($var)
+    {
         @trigger_error(sprintf('The %s() method is deprecated since version 3.2 and will be removed in 4.0. Use cloneVar() instead.', __METHOD__), E_USER_DEPRECATED);
 
         if (null === $this->valueExporter) {
@@ -106,7 +111,8 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable {
         return $this->valueExporter->exportValue($var);
     }
 
-    private function decorateVar($var) {
+    private function decorateVar($var)
+    {
         if (is_array($var)) {
             if (isset($var[0], $var[1]) && is_callable($var)) {
                 return ClassStub::wrapCallable($var);
@@ -136,5 +142,4 @@ abstract class DataCollector implements DataCollectorInterface, \Serializable {
 
         return $var;
     }
-
 }

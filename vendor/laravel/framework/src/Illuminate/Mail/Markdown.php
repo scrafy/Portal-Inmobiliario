@@ -8,8 +8,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
-class Markdown {
-
+class Markdown
+{
     /**
      * The view factory implementation.
      *
@@ -38,7 +38,8 @@ class Markdown {
      * @param  array  $options
      * @return void
      */
-    public function __construct(ViewFactory $view, array $options = []) {
+    public function __construct(ViewFactory $view, array $options = [])
+    {
         $this->view = $view;
         $this->theme = Arr::get($options, 'theme', 'default');
         $this->loadComponentsFrom(Arr::get($options, 'paths', []));
@@ -52,15 +53,16 @@ class Markdown {
      * @param  \TijsVerkoyen\CssToInlineStyles\CssToInlineStyles|null  $inliner
      * @return \Illuminate\Support\HtmlString
      */
-    public function render($view, array $data = [], $inliner = null) {
+    public function render($view, array $data = [], $inliner = null)
+    {
         $this->view->flushFinderCache();
 
         $contents = $this->view->replaceNamespace(
-                        'mail', $this->htmlComponentPaths()
-                )->make($view, $data)->render();
+            'mail', $this->htmlComponentPaths()
+        )->make($view, $data)->render();
 
         return new HtmlString(with($inliner ?: new CssToInlineStyles)->convert(
-                        $contents, $this->view->make('mail::themes.' . $this->theme)->render()
+            $contents, $this->view->make('mail::themes.'.$this->theme)->render()
         ));
     }
 
@@ -71,12 +73,13 @@ class Markdown {
      * @param  array  $data
      * @return \Illuminate\Support\HtmlString
      */
-    public function renderText($view, array $data = []) {
+    public function renderText($view, array $data = [])
+    {
         $this->view->flushFinderCache();
 
         return new HtmlString(preg_replace("/[\r\n]{2,}/", "\n\n", $this->view->replaceNamespace(
-                                'mail', $this->markdownComponentPaths()
-                        )->make($view, $data)->render()));
+            'mail', $this->markdownComponentPaths()
+        )->make($view, $data)->render()));
     }
 
     /**
@@ -85,7 +88,8 @@ class Markdown {
      * @param  string  $text
      * @return string
      */
-    public static function parse($text) {
+    public static function parse($text)
+    {
         $parsedown = new Parsedown;
 
         return new HtmlString($parsedown->text($text));
@@ -96,9 +100,10 @@ class Markdown {
      *
      * @return array
      */
-    public function htmlComponentPaths() {
+    public function htmlComponentPaths()
+    {
         return array_map(function ($path) {
-            return $path . '/html';
+            return $path.'/html';
         }, $this->componentPaths());
     }
 
@@ -107,9 +112,10 @@ class Markdown {
      *
      * @return array
      */
-    public function markdownComponentPaths() {
+    public function markdownComponentPaths()
+    {
         return array_map(function ($path) {
-            return $path . '/markdown';
+            return $path.'/markdown';
         }, $this->componentPaths());
     }
 
@@ -118,9 +124,10 @@ class Markdown {
      *
      * @return array
      */
-    protected function componentPaths() {
+    protected function componentPaths()
+    {
         return array_unique(array_merge($this->componentPaths, [
-            __DIR__ . '/resources/views',
+            __DIR__.'/resources/views',
         ]));
     }
 
@@ -130,8 +137,8 @@ class Markdown {
      * @param  array  $paths
      * @return void
      */
-    public function loadComponentsFrom(array $paths = []) {
+    public function loadComponentsFrom(array $paths = [])
+    {
         $this->componentPaths = $paths;
     }
-
 }

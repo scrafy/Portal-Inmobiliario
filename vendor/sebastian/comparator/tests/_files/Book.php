@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -15,9 +14,8 @@ namespace SebastianBergmann\Comparator;
  * A book.
  *
  */
-class Book {
-
+class Book
+{
     // the order of properties is important for testing the cycle!
     public $author = null;
-
 }

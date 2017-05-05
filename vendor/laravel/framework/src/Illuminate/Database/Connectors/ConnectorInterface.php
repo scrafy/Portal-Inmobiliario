@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Connectors;
 
-interface ConnectorInterface {
-
+interface ConnectorInterface
+{
     /**
      * Establish a database connection.
      *

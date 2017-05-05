@@ -2,8 +2,8 @@
 
 namespace Illuminate\Auth\Access;
 
-class Response {
-
+class Response
+{
     /**
      * The response message.
      *
@@ -16,7 +16,8 @@ class Response {
      *
      * @param  string|null  $message
      */
-    public function __construct($message = null) {
+    public function __construct($message = null)
+    {
         $this->message = $message;
     }
 
@@ -25,7 +26,8 @@ class Response {
      *
      * @return string|null
      */
-    public function message() {
+    public function message()
+    {
         return $this->message;
     }
 
@@ -34,8 +36,8 @@ class Response {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->message();
     }
-
 }

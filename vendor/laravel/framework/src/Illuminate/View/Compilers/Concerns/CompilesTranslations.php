@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesTranslations {
-
+trait CompilesTranslations
+{
     /**
      * Compile the lang statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileLang($expression) {
+    protected function compileLang($expression)
+    {
         if (is_null($expression)) {
             return '<?php $__env->startTranslation(); ?>';
         } elseif ($expression[1] === '[') {
@@ -25,7 +26,8 @@ trait CompilesTranslations {
      *
      * @return string
      */
-    protected function compileEndlang() {
+    protected function compileEndlang()
+    {
         return '<?php echo $__env->renderTranslation(); ?>';
     }
 
@@ -35,8 +37,8 @@ trait CompilesTranslations {
      * @param  string  $expression
      * @return string
      */
-    protected function compileChoice($expression) {
+    protected function compileChoice($expression)
+    {
         return "<?php echo app('translator')->choice{$expression}; ?>";
     }
-
 }

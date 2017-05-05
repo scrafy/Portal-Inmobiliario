@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Auth;
 
-interface SupportsBasicAuth {
-
+interface SupportsBasicAuth
+{
     /**
      * Attempt to authenticate using HTTP Basic Auth.
      *

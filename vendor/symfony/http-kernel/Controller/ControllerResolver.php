@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ControllerResolver implements ArgumentResolverInterface, ControllerResolverInterface {
-
+class ControllerResolver implements ArgumentResolverInterface, ControllerResolverInterface
+{
     private $logger;
 
     /**
@@ -48,7 +48,8 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      *
      * @param LoggerInterface $logger A LoggerInterface instance
      */
-    public function __construct(LoggerInterface $logger = null) {
+    public function __construct(LoggerInterface $logger = null)
+    {
         $this->logger = $logger;
 
         $this->supportsVariadic = method_exists('ReflectionParameter', 'isVariadic');
@@ -61,7 +62,8 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      * This method looks for a '_controller' request attribute that represents
      * the controller name (a string like ClassName::MethodName).
      */
-    public function getController(Request $request) {
+    public function getController(Request $request)
+    {
         if (!$controller = $request->attributes->get('_controller')) {
             if (null !== $this->logger) {
                 $this->logger->warning('Unable to look for the controller as the "_controller" parameter is missing.');
@@ -104,7 +106,8 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      *
      * @deprecated This method is deprecated as of 3.1 and will be removed in 4.0. Implement the ArgumentResolverInterface and inject it in the HttpKernel instead.
      */
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         @trigger_error(sprintf('%s is deprecated as of 3.1 and will be removed in 4.0. Implement the %s and inject it in the HttpKernel instead.', __METHOD__, ArgumentResolverInterface::class), E_USER_DEPRECATED);
 
         if (is_array($controller)) {
@@ -128,7 +131,8 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      *
      * @deprecated This method is deprecated as of 3.1 and will be removed in 4.0. Implement the ArgumentResolverInterface and inject it in the HttpKernel instead.
      */
-    protected function doGetArguments(Request $request, $controller, array $parameters) {
+    protected function doGetArguments(Request $request, $controller, array $parameters)
+    {
         @trigger_error(sprintf('%s is deprecated as of 3.1 and will be removed in 4.0. Implement the %s and inject it in the HttpKernel instead.', __METHOD__, ArgumentResolverInterface::class), E_USER_DEPRECATED);
 
         $attributes = $request->attributes->all();
@@ -171,7 +175,8 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      *
      * @throws \InvalidArgumentException
      */
-    protected function createController($controller) {
+    protected function createController($controller)
+    {
         if (false === strpos($controller, '::')) {
             throw new \InvalidArgumentException(sprintf('Unable to find controller "%s".', $controller));
         }
@@ -192,11 +197,13 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
      *
      * @return object
      */
-    protected function instantiateController($class) {
+    protected function instantiateController($class)
+    {
         return new $class();
     }
 
-    private function getControllerError($callable) {
+    private function getControllerError($callable)
+    {
         if (is_string($callable)) {
             if (false !== strpos($callable, '::')) {
                 $callable = explode('::', $callable);
@@ -255,5 +262,4 @@ class ControllerResolver implements ArgumentResolverInterface, ControllerResolve
 
         return $message;
     }
-
 }

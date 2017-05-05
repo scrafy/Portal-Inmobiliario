@@ -10,7 +10,6 @@ use PhpParser\Node\Stmt;
  * @method $this as(string $alias) Sets alias for used name.
  */
 class Use_ extends BuilderAbstract {
-
     protected $name;
     protected $type;
     protected $alias = null;
@@ -37,7 +36,6 @@ class Use_ extends BuilderAbstract {
         $this->alias = $alias;
         return $this;
     }
-
     public function __call($name, $args) {
         if (method_exists($this, $name . '_')) {
             return call_user_func_array(array($this, $name . '_'), $args);
@@ -55,7 +53,6 @@ class Use_ extends BuilderAbstract {
         $alias = null !== $this->alias ? $this->alias : $this->name->getLast();
         return new Stmt\Use_(array(
             new Stmt\UseUse($this->name, $alias)
-                ), $this->type);
+        ), $this->type);
     }
-
 }

@@ -16,12 +16,13 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Global Variable Enumerator class.
  */
-class GlobalVariableEnumerator extends Enumerator {
-
+class GlobalVariableEnumerator extends Enumerator
+{
     /**
      * {@inheritdoc}
      */
-    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         // only list globals when no Reflector is present.
         if ($reflector !== null || $target !== null) {
             return;
@@ -48,7 +49,8 @@ class GlobalVariableEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function getGlobals() {
+    protected function getGlobals()
+    {
         global $GLOBALS;
 
         $names = array_keys($GLOBALS);
@@ -69,7 +71,8 @@ class GlobalVariableEnumerator extends Enumerator {
      *
      * @return array
      */
-    protected function prepareGlobals($globals) {
+    protected function prepareGlobals($globals)
+    {
         // My kingdom for a generator.
         $ret = array();
 
@@ -77,7 +80,7 @@ class GlobalVariableEnumerator extends Enumerator {
             if ($this->showItem($name)) {
                 $fname = '$' . $name;
                 $ret[$fname] = array(
-                    'name' => $fname,
+                    'name'  => $fname,
                     'style' => self::IS_GLOBAL,
                     'value' => $this->presentRef($value),
                 );
@@ -86,5 +89,4 @@ class GlobalVariableEnumerator extends Enumerator {
 
         return $ret;
     }
-
 }

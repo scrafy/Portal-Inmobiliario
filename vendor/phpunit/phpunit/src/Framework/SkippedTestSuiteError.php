@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a skipped test suite.
  */
-class PHPUnit_Framework_SkippedTestSuiteError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest {
-    
+class PHPUnit_Framework_SkippedTestSuiteError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
+{
 }

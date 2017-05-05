@@ -18,8 +18,8 @@ use Symfony\Component\VarDumper\Cloner\Stub;
 /**
  * A Presenter service.
  */
-class Presenter {
-
+class Presenter
+{
     const VERBOSE = 1;
 
     private $cloner;
@@ -32,36 +32,37 @@ class Presenter {
         "\0Exception\0previous",
     );
     private $styles = array(
-        'num' => 'number',
-        'const' => 'const',
-        'str' => 'string',
-        'cchr' => 'default',
-        'note' => 'class',
-        'ref' => 'default',
-        'public' => 'public',
+        'num'       => 'number',
+        'const'     => 'const',
+        'str'       => 'string',
+        'cchr'      => 'default',
+        'note'      => 'class',
+        'ref'       => 'default',
+        'public'    => 'public',
         'protected' => 'protected',
-        'private' => 'private',
-        'meta' => 'comment',
-        'key' => 'comment',
-        'index' => 'number',
+        'private'   => 'private',
+        'meta'      => 'comment',
+        'key'       => 'comment',
+        'index'     => 'number',
     );
 
-    public function __construct(OutputFormatter $formatter) {
+    public function __construct(OutputFormatter $formatter)
+    {
         $this->dumper = new Dumper($formatter);
         $this->dumper->setStyles($this->styles);
 
         $this->cloner = new Cloner();
         $this->cloner->addCasters(array('*' => function ($obj, array $a, Stub $stub, $isNested, $filter = 0) {
-                if ($filter || $isNested) {
-                    if ($obj instanceof \Exception) {
-                        $a = Caster::filter($a, Caster::EXCLUDE_NOT_IMPORTANT | Caster::EXCLUDE_EMPTY, $this->exceptionsImportants);
-                    } else {
-                        $a = Caster::filter($a, Caster::EXCLUDE_PROTECTED | Caster::EXCLUDE_PRIVATE);
-                    }
+            if ($filter || $isNested) {
+                if ($obj instanceof \Exception) {
+                    $a = Caster::filter($a, Caster::EXCLUDE_NOT_IMPORTANT | Caster::EXCLUDE_EMPTY, $this->exceptionsImportants);
+                } else {
+                    $a = Caster::filter($a, Caster::EXCLUDE_PROTECTED | Caster::EXCLUDE_PRIVATE);
                 }
+            }
 
-                return $a;
-            }));
+            return $a;
+        }));
     }
 
     /**
@@ -71,7 +72,8 @@ class Presenter {
      *
      * @param callable[] $casters A map of casters
      */
-    public function addCasters(array $casters) {
+    public function addCasters(array $casters)
+    {
         $this->cloner->addCasters($casters);
     }
 
@@ -82,7 +84,8 @@ class Presenter {
      *
      * @return string
      */
-    public function presentRef($value) {
+    public function presentRef($value)
+    {
         return $this->present($value, 0);
     }
 
@@ -97,7 +100,8 @@ class Presenter {
      *
      * @return string
      */
-    public function present($value, $depth = null, $options = 0) {
+    public function present($value, $depth = null, $options = 0)
+    {
         $data = $this->cloner->cloneVar($value, !($options & self::VERBOSE) ? Caster::EXCLUDE_VERBOSE : 0);
 
         if (null !== $depth) {
@@ -116,5 +120,4 @@ class Presenter {
 
         return OutputFormatter::escape($output);
     }
-
 }

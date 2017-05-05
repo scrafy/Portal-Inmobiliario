@@ -13,8 +13,8 @@ use Illuminate\Validation\ValidatesWhenResolvedTrait;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
-class FormRequest extends Request implements ValidatesWhenResolved {
-
+class FormRequest extends Request implements ValidatesWhenResolved
+{
     use ValidatesWhenResolvedTrait;
 
     /**
@@ -71,7 +71,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function getValidatorInstance() {
+    protected function getValidatorInstance()
+    {
         $factory = $this->container->make(ValidationFactory::class);
 
         if (method_exists($this, 'validator')) {
@@ -93,9 +94,11 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      * @param  \Illuminate\Contracts\Validation\Factory  $factory
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function createDefaultValidator(ValidationFactory $factory) {
+    protected function createDefaultValidator(ValidationFactory $factory)
+    {
         return $factory->make(
-                        $this->validationData(), $this->container->call([$this, 'rules']), $this->messages(), $this->attributes()
+            $this->validationData(), $this->container->call([$this, 'rules']),
+            $this->messages(), $this->attributes()
         );
     }
 
@@ -104,7 +107,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return array
      */
-    protected function validationData() {
+    protected function validationData()
+    {
         return $this->all();
     }
 
@@ -116,9 +120,10 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function failedValidation(Validator $validator) {
+    protected function failedValidation(Validator $validator)
+    {
         throw new ValidationException($validator, $this->response(
-                $this->formatErrors($validator)
+            $this->formatErrors($validator)
         ));
     }
 
@@ -128,14 +133,15 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      * @param  array  $errors
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function response(array $errors) {
+    public function response(array $errors)
+    {
         if ($this->expectsJson()) {
             return new JsonResponse($errors, 422);
         }
 
         return $this->redirector->to($this->getRedirectUrl())
-                        ->withInput($this->except($this->dontFlash))
-                        ->withErrors($errors, $this->errorBag);
+                                        ->withInput($this->except($this->dontFlash))
+                                        ->withErrors($errors, $this->errorBag);
     }
 
     /**
@@ -144,7 +150,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return array
      */
-    protected function formatErrors(Validator $validator) {
+    protected function formatErrors(Validator $validator)
+    {
         return $validator->getMessageBag()->toArray();
     }
 
@@ -153,7 +160,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return string
      */
-    protected function getRedirectUrl() {
+    protected function getRedirectUrl()
+    {
         $url = $this->redirector->getUrlGenerator();
 
         if ($this->redirect) {
@@ -172,7 +180,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return bool
      */
-    protected function passesAuthorization() {
+    protected function passesAuthorization()
+    {
         if (method_exists($this, 'authorize')) {
             return $this->container->call([$this, 'authorize']);
         }
@@ -187,7 +196,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    protected function failedAuthorization() {
+    protected function failedAuthorization()
+    {
         throw new AuthorizationException('This action is unauthorized.');
     }
 
@@ -196,7 +206,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return array
      */
-    public function messages() {
+    public function messages()
+    {
         return [];
     }
 
@@ -205,7 +216,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      *
      * @return array
      */
-    public function attributes() {
+    public function attributes()
+    {
         return [];
     }
 
@@ -215,7 +227,8 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      * @param  \Illuminate\Routing\Redirector  $redirector
      * @return $this
      */
-    public function setRedirector(Redirector $redirector) {
+    public function setRedirector(Redirector $redirector)
+    {
         $this->redirector = $redirector;
 
         return $this;
@@ -227,10 +240,10 @@ class FormRequest extends Request implements ValidatesWhenResolved {
      * @param  \Illuminate\Contracts\Container\Container  $container
      * @return $this
      */
-    public function setContainer(Container $container) {
+    public function setContainer(Container $container)
+    {
         $this->container = $container;
 
         return $this;
     }
-
 }

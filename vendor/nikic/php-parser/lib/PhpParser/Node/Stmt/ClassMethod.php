@@ -5,23 +5,18 @@ namespace PhpParser\Node\Stmt;
 use PhpParser\Node;
 use PhpParser\Node\FunctionLike;
 
-class ClassMethod extends Node\Stmt implements FunctionLike {
-
+class ClassMethod extends Node\Stmt implements FunctionLike
+{
     /** @var int Flags */
     public $flags;
-
     /** @var bool Whether to return by reference */
     public $byRef;
-
     /** @var string Name */
     public $name;
-
     /** @var Node\Param[] Parameters */
     public $params;
-
     /** @var null|string|Node\Name|Node\NullableType Return type */
     public $returnType;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -42,9 +37,10 @@ class ClassMethod extends Node\Stmt implements FunctionLike {
      */
     public function __construct($name, array $subNodes = array(), array $attributes = array()) {
         parent::__construct($attributes);
-        $this->flags = isset($subNodes['flags']) ? $subNodes['flags'] : (isset($subNodes['type']) ? $subNodes['type'] : 0);
+        $this->flags = isset($subNodes['flags']) ? $subNodes['flags']
+            : (isset($subNodes['type']) ? $subNodes['type'] : 0);
         $this->type = $this->flags;
-        $this->byRef = isset($subNodes['byRef']) ? $subNodes['byRef'] : false;
+        $this->byRef = isset($subNodes['byRef'])  ? $subNodes['byRef']  : false;
         $this->name = $name;
         $this->params = isset($subNodes['params']) ? $subNodes['params'] : array();
         $this->returnType = isset($subNodes['returnType']) ? $subNodes['returnType'] : null;
@@ -72,7 +68,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike {
     }
 
     public function isPublic() {
-        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0 || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
+        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
+            || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
     }
 
     public function isProtected() {
@@ -94,5 +91,4 @@ class ClassMethod extends Node\Stmt implements FunctionLike {
     public function isStatic() {
         return (bool) ($this->flags & Class_::MODIFIER_STATIC);
     }
-
 }

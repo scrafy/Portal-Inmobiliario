@@ -20,8 +20,8 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class FragmentRendererPass implements CompilerPassInterface {
-
+class FragmentRendererPass implements CompilerPassInterface
+{
     private $handlerService;
     private $rendererTag;
 
@@ -29,12 +29,14 @@ class FragmentRendererPass implements CompilerPassInterface {
      * @param string $handlerService Service name of the fragment handler in the container
      * @param string $rendererTag    Tag name used for fragments
      */
-    public function __construct($handlerService = 'fragment.handler', $rendererTag = 'kernel.fragment_renderer') {
+    public function __construct($handlerService = 'fragment.handler', $rendererTag = 'kernel.fragment_renderer')
+    {
         $this->handlerService = $handlerService;
         $this->rendererTag = $rendererTag;
     }
 
-    public function process(ContainerBuilder $container) {
+    public function process(ContainerBuilder $container)
+    {
         if (!$container->hasDefinition($this->handlerService)) {
             return;
         }
@@ -66,5 +68,4 @@ class FragmentRendererPass implements CompilerPassInterface {
             }
         }
     }
-
 }

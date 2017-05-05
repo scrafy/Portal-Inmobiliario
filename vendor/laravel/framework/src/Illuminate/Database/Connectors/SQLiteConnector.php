@@ -4,8 +4,8 @@ namespace Illuminate\Database\Connectors;
 
 use InvalidArgumentException;
 
-class SQLiteConnector extends Connector implements ConnectorInterface {
-
+class SQLiteConnector extends Connector implements ConnectorInterface
+{
     /**
      * Establish a database connection.
      *
@@ -14,7 +14,8 @@ class SQLiteConnector extends Connector implements ConnectorInterface {
      *
      * @throws \InvalidArgumentException
      */
-    public function connect(array $config) {
+    public function connect(array $config)
+    {
         $options = $this->getOptions($config);
 
         // SQLite supports "in-memory" databases that only last as long as the owning
@@ -35,5 +36,4 @@ class SQLiteConnector extends Connector implements ConnectorInterface {
 
         return $this->createConnection("sqlite:{$path}", $config, $options);
     }
-
 }

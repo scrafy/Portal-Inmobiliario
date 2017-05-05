@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface {
-
+class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, ArgumentResolverInterface
+{
     protected $body;
     protected $status;
     protected $headers;
@@ -29,7 +29,8 @@ class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, 
     protected $catch = false;
     protected $backendRequest;
 
-    public function __construct($body, $status, $headers, \Closure $customizer = null) {
+    public function __construct($body, $status, $headers, \Closure $customizer = null)
+    {
         $this->body = $body;
         $this->status = $status;
         $this->headers = $headers;
@@ -38,30 +39,36 @@ class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, 
         parent::__construct(new EventDispatcher(), $this, null, $this);
     }
 
-    public function getBackendRequest() {
+    public function getBackendRequest()
+    {
         return $this->backendRequest;
     }
 
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false) {
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = false)
+    {
         $this->catch = $catch;
         $this->backendRequest = $request;
 
         return parent::handle($request, $type, $catch);
     }
 
-    public function isCatchingExceptions() {
+    public function isCatchingExceptions()
+    {
         return $this->catch;
     }
 
-    public function getController(Request $request) {
+    public function getController(Request $request)
+    {
         return array($this, 'callController');
     }
 
-    public function getArguments(Request $request, $controller) {
+    public function getArguments(Request $request, $controller)
+    {
         return array($request);
     }
 
-    public function callController(Request $request) {
+    public function callController(Request $request)
+    {
         $this->called = true;
 
         $response = new Response($this->body, $this->status, $this->headers);
@@ -73,12 +80,13 @@ class TestHttpKernel extends HttpKernel implements ControllerResolverInterface, 
         return $response;
     }
 
-    public function hasBeenCalled() {
+    public function hasBeenCalled()
+    {
         return $this->called;
     }
 
-    public function reset() {
+    public function reset()
+    {
         $this->called = false;
     }
-
 }

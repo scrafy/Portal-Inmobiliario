@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class Registered {
-
+class Registered
+{
     use SerializesModels;
 
     /**
@@ -21,8 +21,8 @@ class Registered {
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
      */
-    public function __construct($user) {
+    public function __construct($user)
+    {
         $this->user = $user;
     }
-
 }

@@ -1,59 +1,66 @@
 <?php
 
-class Swift_Bug51Test extends \SwiftMailerTestCase {
-
+class Swift_Bug51Test extends \SwiftMailerTestCase
+{
     private $_attachmentFile;
     private $_outputFile;
 
-    protected function setUp() {
-        $this->_attachmentFile = sys_get_temp_dir() . '/attach.rand.bin';
+    protected function setUp()
+    {
+        $this->_attachmentFile = sys_get_temp_dir().'/attach.rand.bin';
         file_put_contents($this->_attachmentFile, '');
 
-        $this->_outputFile = sys_get_temp_dir() . '/attach.out.bin';
+        $this->_outputFile = sys_get_temp_dir().'/attach.out.bin';
         file_put_contents($this->_outputFile, '');
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         unlink($this->_attachmentFile);
         unlink($this->_outputFile);
     }
 
-    public function testAttachmentsDoNotGetTruncatedUsingToByteStream() {
+    public function testAttachmentsDoNotGetTruncatedUsingToByteStream()
+    {
         //Run 100 times with 10KB attachments
         for ($i = 0; $i < 10; ++$i) {
             $message = $this->_createMessageWithRandomAttachment(
-                    10000, $this->_attachmentFile
+                10000, $this->_attachmentFile
             );
 
             file_put_contents($this->_outputFile, '');
             $message->toByteStream(
-                    new Swift_ByteStream_FileByteStream($this->_outputFile, true)
+                new Swift_ByteStream_FileByteStream($this->_outputFile, true)
             );
 
             $emailSource = file_get_contents($this->_outputFile);
 
             $this->assertAttachmentFromSourceMatches(
-                    file_get_contents($this->_attachmentFile), $emailSource
+                file_get_contents($this->_attachmentFile),
+                $emailSource
             );
         }
     }
 
-    public function testAttachmentsDoNotGetTruncatedUsingToString() {
+    public function testAttachmentsDoNotGetTruncatedUsingToString()
+    {
         //Run 100 times with 10KB attachments
         for ($i = 0; $i < 10; ++$i) {
             $message = $this->_createMessageWithRandomAttachment(
-                    10000, $this->_attachmentFile
+                10000, $this->_attachmentFile
             );
 
             $emailSource = $message->toString();
 
             $this->assertAttachmentFromSourceMatches(
-                    file_get_contents($this->_attachmentFile), $emailSource
+                file_get_contents($this->_attachmentFile),
+                $emailSource
             );
         }
     }
 
-    public function assertAttachmentFromSourceMatches($attachmentData, $source) {
+    public function assertAttachmentFromSourceMatches($attachmentData, $source)
+    {
         $encHeader = 'Content-Transfer-Encoding: base64';
         $base64declaration = strpos($source, $encHeader);
 
@@ -64,14 +71,16 @@ class Swift_Bug51Test extends \SwiftMailerTestCase {
             $attachmentBase64 = trim(substr($source, $attachmentDataStart));
         } else {
             $attachmentBase64 = trim(substr(
-                            $source, $attachmentDataStart, $attachmentDataEnd - $attachmentDataStart
+                $source, $attachmentDataStart,
+                $attachmentDataEnd - $attachmentDataStart
             ));
         }
 
         $this->assertIdenticalBinary($attachmentData, base64_decode($attachmentBase64));
     }
 
-    private function _fillFileWithRandomBytes($byteCount, $file) {
+    private function _fillFileWithRandomBytes($byteCount, $file)
+    {
         // I was going to use dd with if=/dev/random but this way seems more
         // cross platform even if a hella expensive!!
 
@@ -84,18 +93,18 @@ class Swift_Bug51Test extends \SwiftMailerTestCase {
         fclose($fp);
     }
 
-    private function _createMessageWithRandomAttachment($size, $attachmentPath) {
+    private function _createMessageWithRandomAttachment($size, $attachmentPath)
+    {
         $this->_fillFileWithRandomBytes($size, $attachmentPath);
 
         $message = Swift_Message::newInstance()
-                ->setSubject('test')
-                ->setBody('test')
-                ->setFrom('a@b.c')
-                ->setTo('d@e.f')
-                ->attach(Swift_Attachment::fromPath($attachmentPath))
-        ;
+            ->setSubject('test')
+            ->setBody('test')
+            ->setFrom('a@b.c')
+            ->setTo('d@e.f')
+            ->attach(Swift_Attachment::fromPath($attachmentPath))
+            ;
 
         return $message;
     }
-
 }

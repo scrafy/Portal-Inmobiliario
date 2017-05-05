@@ -4,9 +4,10 @@ use \Mockery as M;
 
 require_once 'Starship.php';
 
-class StarshipTest extends PHPUnit_Framework_TestCase {
-
-    public function testEngineeringResponseToEnteringOrbit() {
+class StarshipTest extends PHPUnit_Framework_TestCase
+{
+    public function testEngineeringResponseToEnteringOrbit()
+    {
         $mock = M::mock('Engineering');
         $mock->shouldReceive('disengageWarp')->once()->ordered();
         $mock->shouldReceive('divertPower')->with(0.40, 'sensors')->once()->ordered();
@@ -17,5 +18,4 @@ class StarshipTest extends PHPUnit_Framework_TestCase {
         $starship = new Starship($mock);
         $starship->enterOrbit();
     }
-
 }

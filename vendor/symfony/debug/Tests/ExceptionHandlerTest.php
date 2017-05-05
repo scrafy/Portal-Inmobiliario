@@ -17,19 +17,22 @@ use Symfony\Component\Debug\Exception\OutOfMemoryException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
-require_once __DIR__ . '/HeaderMock.php';
+require_once __DIR__.'/HeaderMock.php';
 
-class ExceptionHandlerTest extends TestCase {
-
-    protected function setUp() {
+class ExceptionHandlerTest extends TestCase
+{
+    protected function setUp()
+    {
         testHeader();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         testHeader();
     }
 
-    public function testDebug() {
+    public function testDebug()
+    {
         $handler = new ExceptionHandler(false);
 
         ob_start();
@@ -49,7 +52,8 @@ class ExceptionHandlerTest extends TestCase {
         $this->assertContains('<h2 class="block_exception clear_fix">', $response);
     }
 
-    public function testStatusCode() {
+    public function testStatusCode()
+    {
         $handler = new ExceptionHandler(false, 'iso8859-1');
 
         ob_start();
@@ -66,7 +70,8 @@ class ExceptionHandlerTest extends TestCase {
         $this->assertSame($expectedHeaders, testHeader());
     }
 
-    public function testHeaders() {
+    public function testHeaders()
+    {
         $handler = new ExceptionHandler(false, 'iso8859-1');
 
         ob_start();
@@ -82,7 +87,8 @@ class ExceptionHandlerTest extends TestCase {
         $this->assertSame($expectedHeaders, testHeader());
     }
 
-    public function testNestedExceptions() {
+    public function testNestedExceptions()
+    {
         $handler = new ExceptionHandler(true);
         ob_start();
         $handler->sendPhpResponse(new \RuntimeException('Foo', 0, new \RuntimeException('Bar')));
@@ -91,13 +97,14 @@ class ExceptionHandlerTest extends TestCase {
         $this->assertStringMatchesFormat('%A<span class="exception_message">Foo</span>%A<span class="exception_message">Bar</span>%A', $response);
     }
 
-    public function testHandle() {
+    public function testHandle()
+    {
         $exception = new \Exception('foo');
 
         $handler = $this->getMockBuilder('Symfony\Component\Debug\ExceptionHandler')->setMethods(array('sendPhpResponse'))->getMock();
         $handler
-                ->expects($this->exactly(2))
-                ->method('sendPhpResponse');
+            ->expects($this->exactly(2))
+            ->method('sendPhpResponse');
 
         $handler->handle($exception);
 
@@ -108,13 +115,14 @@ class ExceptionHandlerTest extends TestCase {
         $handler->handle($exception);
     }
 
-    public function testHandleOutOfMemoryException() {
+    public function testHandleOutOfMemoryException()
+    {
         $exception = new OutOfMemoryException('foo', 0, E_ERROR, __FILE__, __LINE__);
 
         $handler = $this->getMockBuilder('Symfony\Component\Debug\ExceptionHandler')->setMethods(array('sendPhpResponse'))->getMock();
         $handler
-                ->expects($this->once())
-                ->method('sendPhpResponse');
+            ->expects($this->once())
+            ->method('sendPhpResponse');
 
         $handler->setHandler(function ($e) {
             $this->fail('OutOfMemoryException should bypass the handler');
@@ -122,5 +130,4 @@ class ExceptionHandlerTest extends TestCase {
 
         $handler->handle($exception);
     }
-
 }

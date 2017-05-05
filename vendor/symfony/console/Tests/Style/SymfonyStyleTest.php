@@ -15,21 +15,22 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class SymfonyStyleTest extends TestCase {
-
+class SymfonyStyleTest extends TestCase
+{
     /** @var Command */
     protected $command;
-
     /** @var CommandTester */
     protected $tester;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         putenv('COLUMNS=121');
         $this->command = new Command('sfstyle');
         $this->tester = new CommandTester($this->command);
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         putenv('COLUMNS');
         $this->command = null;
         $this->tester = null;
@@ -38,7 +39,8 @@ class SymfonyStyleTest extends TestCase {
     /**
      * @dataProvider inputCommandToOutputFilesProvider
      */
-    public function testOutputs($inputCommandFilepath, $outputFilepath) {
+    public function testOutputs($inputCommandFilepath, $outputFilepath)
+    {
         $code = require $inputCommandFilepath;
         $this->command->setCode($code);
         $this->tester->execute(array(), array('interactive' => false, 'decorated' => false));
@@ -48,23 +50,25 @@ class SymfonyStyleTest extends TestCase {
     /**
      * @dataProvider inputInteractiveCommandToOutputFilesProvider
      */
-    public function testInteractiveOutputs($inputCommandFilepath, $outputFilepath) {
+    public function testInteractiveOutputs($inputCommandFilepath, $outputFilepath)
+    {
         $code = require $inputCommandFilepath;
         $this->command->setCode($code);
         $this->tester->execute(array(), array('interactive' => true, 'decorated' => false));
         $this->assertStringEqualsFile($outputFilepath, $this->tester->getDisplay(true));
     }
 
-    public function inputInteractiveCommandToOutputFilesProvider() {
-        $baseDir = __DIR__ . '/../Fixtures/Style/SymfonyStyle';
+    public function inputInteractiveCommandToOutputFilesProvider()
+    {
+        $baseDir = __DIR__.'/../Fixtures/Style/SymfonyStyle';
 
-        return array_map(null, glob($baseDir . '/command/interactive_command_*.php'), glob($baseDir . '/output/interactive_output_*.txt'));
+        return array_map(null, glob($baseDir.'/command/interactive_command_*.php'), glob($baseDir.'/output/interactive_output_*.txt'));
     }
 
-    public function inputCommandToOutputFilesProvider() {
-        $baseDir = __DIR__ . '/../Fixtures/Style/SymfonyStyle';
+    public function inputCommandToOutputFilesProvider()
+    {
+        $baseDir = __DIR__.'/../Fixtures/Style/SymfonyStyle';
 
-        return array_map(null, glob($baseDir . '/command/command_*.php'), glob($baseDir . '/output/output_*.txt'));
+        return array_map(null, glob($baseDir.'/command/command_*.php'), glob($baseDir.'/output/output_*.txt'));
     }
-
 }

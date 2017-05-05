@@ -2,24 +2,29 @@
 
 namespace Mockery\Generator;
 
-class Parameter {
-
+class Parameter
+{
     private static $parameterCounter;
+
     private $rfp;
 
-    public function __construct(\ReflectionParameter $rfp) {
+    public function __construct(\ReflectionParameter $rfp)
+    {
         $this->rfp = $rfp;
     }
 
-    public function __call($method, array $args) {
+    public function __call($method, array $args)
+    {
         return call_user_func_array(array($this->rfp, $method), $args);
     }
 
-    public function getClass() {
+    public function getClass()
+    {
         return new DefinedTargetClass($this->rfp->getClass());
     }
 
-    public function getTypeHintAsString() {
+    public function getTypeHintAsString()
+    {
         if (method_exists($this->rfp, 'getTypehintText')) {
             // Available in HHVM
             $typehint = $this->rfp->getTypehintText();
@@ -63,7 +68,8 @@ class Parameter {
         return '';
     }
 
-    private function getOptionalSign() {
+    private function getOptionalSign()
+    {
         if (version_compare(PHP_VERSION, '7.1.0-dev', '>=') && $this->rfp->allowsNull() && !$this->rfp->isVariadic()) {
             return '?';
         }
@@ -74,7 +80,8 @@ class Parameter {
     /**
      * Some internal classes have funny looking definitions...
      */
-    public function getName() {
+    public function getName()
+    {
         $name = $this->rfp->getName();
         if (!$name || $name == '...') {
             $name = 'arg' . static::$parameterCounter++;
@@ -83,11 +90,12 @@ class Parameter {
         return $name;
     }
 
+
     /**
      * Variadics only introduced in 5.6
      */
-    public function isVariadic() {
+    public function isVariadic()
+    {
         return version_compare(PHP_VERSION, '5.6.0') >= 0 && $this->rfp->isVariadic();
     }
-
 }

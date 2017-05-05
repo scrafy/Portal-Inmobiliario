@@ -4,8 +4,8 @@ namespace Illuminate\Database\Eloquent;
 
 use RuntimeException;
 
-class ModelNotFoundException extends RuntimeException {
-
+class ModelNotFoundException extends RuntimeException
+{
     /**
      * Name of the affected Eloquent model.
      *
@@ -27,14 +27,15 @@ class ModelNotFoundException extends RuntimeException {
      * @param  int|array  $ids
      * @return $this
      */
-    public function setModel($model, $ids = []) {
+    public function setModel($model, $ids = [])
+    {
         $this->model = $model;
         $this->ids = array_wrap($ids);
 
         $this->message = "No query results for model [{$model}]";
 
         if (count($this->ids) > 0) {
-            $this->message .= ' ' . implode(', ', $this->ids);
+            $this->message .= ' '.implode(', ', $this->ids);
         } else {
             $this->message .= '.';
         }
@@ -47,7 +48,8 @@ class ModelNotFoundException extends RuntimeException {
      *
      * @return string
      */
-    public function getModel() {
+    public function getModel()
+    {
         return $this->model;
     }
 
@@ -56,8 +58,8 @@ class ModelNotFoundException extends RuntimeException {
      *
      * @return int|array
      */
-    public function getIds() {
+    public function getIds()
+    {
         return $this->ids;
     }
-
 }

@@ -19,19 +19,21 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
-class Ssi extends AbstractSurrogate {
-
+class Ssi extends AbstractSurrogate
+{
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'ssi';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSurrogateControl(Response $response) {
+    public function addSurrogateControl(Response $response)
+    {
         if (false !== strpos($response->getContent(), '<!--#include')) {
             $response->headers->set('Surrogate-Control', 'content="SSI/1.0"');
         }
@@ -40,14 +42,16 @@ class Ssi extends AbstractSurrogate {
     /**
      * {@inheritdoc}
      */
-    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '') {
+    public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
+    {
         return sprintf('<!--#include virtual="%s" -->', $uri);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(Request $request, Response $response) {
+    public function process(Request $request, Response $response)
+    {
         $type = $response->headers->get('Content-Type');
         if (empty($type)) {
             $type = 'text/html';
@@ -76,7 +80,8 @@ class Ssi extends AbstractSurrogate {
                 throw new \RuntimeException('Unable to process an SSI tag without a "virtual" attribute.');
             }
 
-            $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, \'\', false) ?>' . "\n", var_export($options['virtual'], true)
+            $chunks[$i] = sprintf('<?php echo $this->surrogate->handle($this, %s, \'\', false) ?>'."\n",
+                var_export($options['virtual'], true)
             );
             ++$i;
             $chunks[$i] = str_replace($this->phpEscapeMap[0], $this->phpEscapeMap[1], $chunks[$i]);
@@ -90,5 +95,4 @@ class Ssi extends AbstractSurrogate {
         // remove SSI/1.0 from the Surrogate-Control header
         $this->removeFromControl($response);
     }
-
 }

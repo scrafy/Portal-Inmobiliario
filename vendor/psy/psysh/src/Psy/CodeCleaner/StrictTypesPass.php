@@ -26,8 +26,8 @@ use Psy\Exception\FatalErrorException;
  * ... which it then applies implicitly to all future evaluated code, until it
  * is replaced by a new declaration.
  */
-class StrictTypesPass extends CodeCleanerPass {
-
+class StrictTypesPass extends CodeCleanerPass
+{
     private $strictTypes = false;
 
     /**
@@ -40,7 +40,8 @@ class StrictTypesPass extends CodeCleanerPass {
      *
      * @param array $nodes
      */
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         if (version_compare(PHP_VERSION, '7.0', '<')) {
             return;
         }
@@ -72,5 +73,4 @@ class StrictTypesPass extends CodeCleanerPass {
 
         return $nodes;
     }
-
 }

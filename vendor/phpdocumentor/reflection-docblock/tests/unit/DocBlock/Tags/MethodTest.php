@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -29,13 +28,14 @@ use phpDocumentor\Reflection\Types\Void_;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Method
  * @covers ::<private>
  */
-class MethodTest extends \PHPUnit_Framework_TestCase {
-
+class MethodTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Method::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Method('myMethod');
 
         $this->assertSame('method', $fixture->getName());
@@ -50,7 +50,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $arguments = [
             ['name' => 'argument1', 'type' => new String_()],
             ['name' => 'argument2', 'type' => new Object_()]
@@ -58,7 +59,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
         $fixture = new Method('myMethod', $arguments, new Void_(), true, new Description('My Description'));
 
         $this->assertSame(
-                '@method static void myMethod(string $argument1, object $argument2) My Description', $fixture->render()
+            '@method static void myMethod(string $argument1, object $argument2) My Description',
+            $fixture->render()
         );
     }
 
@@ -67,7 +69,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Method('myMethod');
 
         $formatter = m::mock(Formatter::class);
@@ -80,7 +83,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getMethodName
      */
-    public function testHasMethodName() {
+    public function testHasMethodName()
+    {
         $expected = 'myMethod';
 
         $fixture = new Method($expected);
@@ -92,9 +96,10 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getArguments
      */
-    public function testHasArguments() {
+    public function testHasArguments()
+    {
         $arguments = [
-            ['name' => 'argument1', 'type' => new String_()]
+            [ 'name' => 'argument1', 'type' => new String_() ]
         ];
 
         $fixture = new Method('myMethod', $arguments);
@@ -106,10 +111,11 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getArguments
      */
-    public function testArgumentsMayBePassedAsString() {
+    public function testArgumentsMayBePassedAsString()
+    {
         $arguments = ['argument1'];
         $expected = [
-            ['name' => $arguments[0], 'type' => new Void_()]
+            [ 'name' => $arguments[0], 'type' => new Void_() ]
         ];
 
         $fixture = new Method('myMethod', $arguments);
@@ -121,10 +127,11 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getArguments
      */
-    public function testArgumentTypeCanBeInferredAsVoid() {
-        $arguments = [['name' => 'argument1']];
+    public function testArgumentTypeCanBeInferredAsVoid()
+    {
+        $arguments = [ [ 'name' => 'argument1' ] ];
         $expected = [
-            ['name' => $arguments[0]['name'], 'type' => new Void_()]
+            [ 'name' => $arguments[0]['name'], 'type' => new Void_() ]
         ];
 
         $fixture = new Method('myMethod', $arguments);
@@ -135,21 +142,25 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers ::create
      */
-    public function testRestArgumentIsParsedAsRegularArg() {
+    public function testRestArgumentIsParsedAsRegularArg()
+    {
         $expected = [
-            ['name' => 'arg1', 'type' => new Void_()],
-            ['name' => 'rest', 'type' => new Void_()],
-            ['name' => 'rest2', 'type' => new Array_()],
+            [ 'name' => 'arg1', 'type' => new Void_() ],
+            [ 'name' => 'rest', 'type' => new Void_() ],
+            [ 'name' => 'rest2', 'type' => new Array_() ],
         ];
 
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $resolver = new TypeResolver();
-        $context = new Context('');
-        $description = new Description('');
+        $resolver           = new TypeResolver();
+        $context            = new Context('');
+        $description  = new Description('');
         $descriptionFactory->shouldReceive('create')->with('', $context)->andReturn($description);
 
         $fixture = Method::create(
-                        'void myMethod($arg1, ...$rest, array ... $rest2)', $resolver, $descriptionFactory, $context
+            'void myMethod($arg1, ...$rest, array ... $rest2)',
+            $resolver,
+            $descriptionFactory,
+            $context
         );
 
         $this->assertEquals($expected, $fixture->getArguments());
@@ -159,7 +170,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getReturnType
      */
-    public function testHasReturnType() {
+    public function testHasReturnType()
+    {
         $expected = new String_();
 
         $fixture = new Method('myMethod', [], $expected);
@@ -171,7 +183,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getReturnType
      */
-    public function testReturnTypeCanBeInferredAsVoid() {
+    public function testReturnTypeCanBeInferredAsVoid()
+    {
         $fixture = new Method('myMethod', []);
 
         $this->assertEquals(new Void_(), $fixture->getReturnType());
@@ -181,7 +194,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::isStatic
      */
-    public function testMethodCanBeStatic() {
+    public function testMethodCanBeStatic()
+    {
         $expected = false;
         $fixture = new Method('myMethod', [], null, $expected);
         $this->assertSame($expected, $fixture->isStatic());
@@ -196,7 +210,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Method('myMethod', [], null, false, $expected);
@@ -210,7 +225,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Method::isStatic
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $arguments = [
             ['name' => 'argument1', 'type' => new String_()],
             ['name' => 'argument2', 'type' => new Object_()]
@@ -218,7 +234,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
         $fixture = new Method('myMethod', $arguments, new Void_(), true, new Description('My Description'));
 
         $this->assertSame(
-                'static void myMethod(string $argument1, object $argument2) My Description', (string) $fixture
+            'static void myMethod(string $argument1, object $argument2) My Description',
+            (string)$fixture
         );
     }
 
@@ -231,36 +248,41 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $resolver = new TypeResolver();
-        $context = new Context('');
+        $resolver           = new TypeResolver();
+        $context            = new Context('');
 
-        $description = new Description('My Description');
+        $description  = new Description('My Description');
         $expectedArguments = [
-            ['name' => 'argument1', 'type' => new String_()],
-            ['name' => 'argument2', 'type' => new Void_()]
+            [ 'name' => 'argument1', 'type' => new String_() ],
+            [ 'name' => 'argument2', 'type' => new Void_() ]
         ];
 
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Method::create(
-                        'static void myMethod(string $argument1, $argument2) My Description', $resolver, $descriptionFactory, $context
+            'static void myMethod(string $argument1, $argument2) My Description',
+            $resolver,
+            $descriptionFactory,
+            $context
         );
 
-        $this->assertSame('static void myMethod(string $argument1, void $argument2) My Description', (string) $fixture);
+        $this->assertSame('static void myMethod(string $argument1, void $argument2) My Description', (string)$fixture);
         $this->assertSame('myMethod', $fixture->getMethodName());
         $this->assertEquals($expectedArguments, $fixture->getArguments());
         $this->assertInstanceOf(Void_::class, $fixture->getReturnType());
         $this->assertSame($description, $fixture->getDescription());
     }
 
-    public function collectionReturnTypesProvider() {
+    public function collectionReturnTypesProvider()
+    {
         return [
-            ['int[]', Array_::class, Integer::class, Compound::class],
-            ['int[][]', Array_::class, Array_::class, Compound::class],
+            ['int[]',    Array_::class, Integer::class, Compound::class],
+            ['int[][]',  Array_::class, Array_::class,  Compound::class],
             ['Object[]', Array_::class, Object_::class, Compound::class],
-            ['array[]', Array_::class, Array_::class, Compound::class],
+            ['array[]',  Array_::class, Array_::class,  Compound::class],
         ];
     }
 
@@ -281,9 +303,11 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @param string null $expectedKeyType
      */
     public function testCollectionReturnTypes(
-    $returnType, $expectedType, $expectedValueType = null, $expectedKeyType = null
-    ) {
-        $resolver = new TypeResolver();
+        $returnType,
+        $expectedType,
+        $expectedValueType = null,
+        $expectedKeyType = null
+    ) { $resolver           = new TypeResolver();
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $descriptionFactory->shouldReceive('create')->with('', null)->andReturn(new Description(''));
 
@@ -301,7 +325,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString() {
+    public function testFactoryMethodFailsIfBodyIsNotString()
+    {
         Method::create([]);
     }
 
@@ -309,7 +334,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsEmpty() {
+    public function testFactoryMethodFailsIfBodyIsEmpty()
+    {
         Method::create('');
     }
 
@@ -317,7 +343,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodReturnsNullIfBodyIsIncorrect() {
+    public function testFactoryMethodReturnsNullIfBodyIsIncorrect()
+    {
         $this->assertNull(Method::create('body('));
     }
 
@@ -325,7 +352,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull() {
+    public function testFactoryMethodFailsIfResolverIsNull()
+    {
         Method::create('body');
     }
 
@@ -333,7 +361,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull() {
+    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    {
         Method::create('body', new TypeResolver());
     }
 
@@ -341,7 +370,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testCreationFailsIfBodyIsNotString() {
+    public function testCreationFailsIfBodyIsNotString()
+    {
         new Method([]);
     }
 
@@ -349,7 +379,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testCreationFailsIfBodyIsEmpty() {
+    public function testCreationFailsIfBodyIsEmpty()
+    {
         new Method('');
     }
 
@@ -357,7 +388,8 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testCreationFailsIfStaticIsNotBoolean() {
+    public function testCreationFailsIfStaticIsNotBoolean()
+    {
         new Method('body', [], null, []);
     }
 
@@ -365,8 +397,9 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testCreationFailsIfArgumentRecordContainsInvalidEntry() {
-        new Method('body', [['name' => 'myName', 'unknown' => 'nah']]);
+    public function testCreationFailsIfArgumentRecordContainsInvalidEntry()
+    {
+        new Method('body', [ [ 'name' => 'myName', 'unknown' => 'nah' ] ]);
     }
 
     /**
@@ -378,24 +411,27 @@ class MethodTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\Fqsen
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testCreateMethodParenthesisMissing() {
+    public function testCreateMethodParenthesisMissing()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $resolver = new TypeResolver();
-        $context = new Context('');
+        $resolver           = new TypeResolver();
+        $context            = new Context('');
 
-        $description = new Description('My Description');
+        $description  = new Description('My Description');
 
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Method::create(
-                        'static void myMethod My Description', $resolver, $descriptionFactory, $context
+            'static void myMethod My Description',
+            $resolver,
+            $descriptionFactory,
+            $context
         );
 
-        $this->assertSame('static void myMethod() My Description', (string) $fixture);
+        $this->assertSame('static void myMethod() My Description', (string)$fixture);
         $this->assertSame('myMethod', $fixture->getMethodName());
         $this->assertEquals([], $fixture->getArguments());
         $this->assertInstanceOf(Void_::class, $fixture->getReturnType());
         $this->assertSame($description, $fixture->getDescription());
     }
-
 }

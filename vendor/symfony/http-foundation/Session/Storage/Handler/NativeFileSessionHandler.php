@@ -18,8 +18,8 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  *
  * @author Drak <drak@zikula.org>
  */
-class NativeFileSessionHandler extends NativeSessionHandler {
-
+class NativeFileSessionHandler extends NativeSessionHandler
+{
     /**
      * Constructor.
      *
@@ -31,7 +31,8 @@ class NativeFileSessionHandler extends NativeSessionHandler {
      *
      * @throws \InvalidArgumentException On invalid $savePath
      */
-    public function __construct($savePath = null) {
+    public function __construct($savePath = null)
+    {
         if (null === $savePath) {
             $savePath = ini_get('session.save_path');
         }
@@ -54,5 +55,4 @@ class NativeFileSessionHandler extends NativeSessionHandler {
         ini_set('session.save_path', $savePath);
         ini_set('session.save_handler', 'files');
     }
-
 }

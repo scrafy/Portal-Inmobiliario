@@ -20,21 +20,23 @@ use Psy\Util\Str;
  * support for `readline_list_history` since PHP decided it was a good idea to
  * ship a fake Readline implementation that is missing history support.
  */
-class Libedit extends GNUReadline {
-
+class Libedit extends GNUReadline
+{
     /**
      * Let's emulate GNU Readline by manually reading and parsing the history file!
      *
      * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return function_exists('readline') && !function_exists('readline_list_history');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function listHistory() {
+    public function listHistory()
+    {
         $history = file_get_contents($this->historyFile);
         if (!$history) {
             return array();
@@ -64,7 +66,8 @@ class Libedit extends GNUReadline {
      *
      * @return string | null
      */
-    protected function parseHistoryLine($line) {
+    protected function parseHistoryLine($line)
+    {
         // empty line, comment or timestamp
         if (!$line || $line[0] === "\0") {
             return;
@@ -77,5 +80,4 @@ class Libedit extends GNUReadline {
 
         return ($line !== '') ? Str::unvis($line) : null;
     }
-
 }

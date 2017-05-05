@@ -2,15 +2,15 @@
 
 namespace PhpParser\Node\Stmt;
 
-class ClassConstTest extends \PHPUnit_Framework_TestCase {
-
+class ClassConstTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider provideModifiers
      */
     public function testModifiers($modifier) {
         $node = new ClassConst(
-                array(), // invalid
-                constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier))
+            array(), // invalid
+            constant('PhpParser\Node\Stmt\Class_::MODIFIER_' . strtoupper($modifier))
         );
 
         $this->assertTrue($node->{'is' . $modifier}());
@@ -32,5 +32,4 @@ class ClassConstTest extends \PHPUnit_Framework_TestCase {
             array('private'),
         );
     }
-
 }

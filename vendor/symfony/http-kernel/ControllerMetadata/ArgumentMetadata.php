@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\ControllerMetadata;
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
  */
-class ArgumentMetadata {
-
+class ArgumentMetadata
+{
     private $name;
     private $type;
     private $isVariadic;
@@ -33,7 +33,8 @@ class ArgumentMetadata {
      * @param mixed  $defaultValue
      * @param bool   $isNullable
      */
-    public function __construct($name, $type, $isVariadic, $hasDefaultValue, $defaultValue, $isNullable = false) {
+    public function __construct($name, $type, $isVariadic, $hasDefaultValue, $defaultValue, $isNullable = false)
+    {
         $this->name = $name;
         $this->type = $type;
         $this->isVariadic = $isVariadic;
@@ -47,7 +48,8 @@ class ArgumentMetadata {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -58,7 +60,8 @@ class ArgumentMetadata {
      *
      * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
@@ -67,7 +70,8 @@ class ArgumentMetadata {
      *
      * @return bool
      */
-    public function isVariadic() {
+    public function isVariadic()
+    {
         return $this->isVariadic;
     }
 
@@ -78,7 +82,8 @@ class ArgumentMetadata {
      *
      * @return bool
      */
-    public function hasDefaultValue() {
+    public function hasDefaultValue()
+    {
         return $this->hasDefaultValue;
     }
 
@@ -87,7 +92,8 @@ class ArgumentMetadata {
      *
      * @return bool
      */
-    public function isNullable() {
+    public function isNullable()
+    {
         return $this->isNullable;
     }
 
@@ -98,12 +104,12 @@ class ArgumentMetadata {
      *
      * @return mixed
      */
-    public function getDefaultValue() {
+    public function getDefaultValue()
+    {
         if (!$this->hasDefaultValue) {
             throw new \LogicException(sprintf('Argument $%s does not have a default value. Use %s::hasDefaultValue() to avoid this exception.', $this->name, __CLASS__));
         }
 
         return $this->defaultValue;
     }
-
 }

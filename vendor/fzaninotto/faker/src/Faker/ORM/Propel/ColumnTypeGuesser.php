@@ -5,14 +5,15 @@ namespace Faker\ORM\Propel;
 use \PropelColumnTypes;
 use \ColumnMap;
 
-class ColumnTypeGuesser {
-
+class ColumnTypeGuesser
+{
     protected $generator;
 
     /**
      * @param \Faker\Generator $generator
      */
-    public function __construct(\Faker\Generator $generator) {
+    public function __construct(\Faker\Generator $generator)
+    {
         $this->generator = $generator;
     }
 
@@ -20,7 +21,8 @@ class ColumnTypeGuesser {
      * @param ColumnMap $column
      * @return \Closure|null
      */
-    public function guessFormat(ColumnMap $column) {
+    public function guessFormat(ColumnMap $column)
+    {
         $generator = $this->generator;
         if ($column->isTemporal()) {
             if ($column->isEpochTemporal()) {
@@ -65,12 +67,12 @@ class ColumnTypeGuesser {
                 };
             case PropelColumnTypes::FLOAT:
                 return function () {
-                    return mt_rand(0, intval('2147483647')) / mt_rand(1, intval('2147483647'));
+                    return mt_rand(0, intval('2147483647'))/mt_rand(1, intval('2147483647'));
                 };
             case PropelColumnTypes::DOUBLE:
             case PropelColumnTypes::REAL:
                 return function () {
-                    return mt_rand(0, intval('9223372036854775807')) / mt_rand(1, intval('9223372036854775807'));
+                    return mt_rand(0, intval('9223372036854775807'))/mt_rand(1, intval('9223372036854775807'));
                 };
             case PropelColumnTypes::CHAR:
             case PropelColumnTypes::VARCHAR:
@@ -98,9 +100,8 @@ class ColumnTypeGuesser {
             case PropelColumnTypes::OBJECT:
             case PropelColumnTypes::PHP_ARRAY:
             default:
-                // no smart way to guess what the user expects here
+            // no smart way to guess what the user expects here
                 return null;
         }
     }
-
 }

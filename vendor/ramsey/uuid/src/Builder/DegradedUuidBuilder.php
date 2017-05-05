@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -22,8 +21,8 @@ use Ramsey\Uuid\DegradedUuid;
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
  */
-class DegradedUuidBuilder implements UuidBuilderInterface {
-
+class DegradedUuidBuilder implements UuidBuilderInterface
+{
     /**
      * @var NumberConverterInterface
      */
@@ -34,7 +33,8 @@ class DegradedUuidBuilder implements UuidBuilderInterface {
      *
      * @param NumberConverterInterface $converter The number converter to use when constructing the DegradedUuid
      */
-    public function __construct(NumberConverterInterface $converter) {
+    public function __construct(NumberConverterInterface $converter)
+    {
         $this->converter = $converter;
     }
 
@@ -46,8 +46,8 @@ class DegradedUuidBuilder implements UuidBuilderInterface {
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      * @return DegradedUuid
      */
-    public function build(CodecInterface $codec, array $fields) {
+    public function build(CodecInterface $codec, array $fields)
+    {
         return new DegradedUuid($fields, $this->converter, $codec);
     }
-
 }

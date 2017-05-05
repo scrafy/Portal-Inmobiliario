@@ -4,15 +4,16 @@ namespace Illuminate\Queue;
 
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 
-class NullQueue extends Queue implements QueueContract {
-
+class NullQueue extends Queue implements QueueContract
+{
     /**
      * Get the size of the queue.
      *
      * @param  string  $queue
      * @return int
      */
-    public function size($queue = null) {
+    public function size($queue = null)
+    {
         return 0;
     }
 
@@ -24,7 +25,8 @@ class NullQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function push($job, $data = '', $queue = null) {
+    public function push($job, $data = '', $queue = null)
+    {
         //
     }
 
@@ -36,7 +38,8 @@ class NullQueue extends Queue implements QueueContract {
      * @param  array   $options
      * @return mixed
      */
-    public function pushRaw($payload, $queue = null, array $options = []) {
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
         //
     }
 
@@ -49,7 +52,8 @@ class NullQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function later($delay, $job, $data = '', $queue = null) {
+    public function later($delay, $job, $data = '', $queue = null)
+    {
         //
     }
 
@@ -59,8 +63,8 @@ class NullQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
-    public function pop($queue = null) {
+    public function pop($queue = null)
+    {
         //
     }
-
 }

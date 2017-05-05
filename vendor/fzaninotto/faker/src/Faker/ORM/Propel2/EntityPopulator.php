@@ -8,8 +8,8 @@ use \Propel\Runtime\Map\ColumnMap;
 /**
  * Service class for populating a table through a Propel ActiveRecord class.
  */
-class EntityPopulator {
-
+class EntityPopulator
+{
     protected $class;
     protected $columnFormatters = array();
     protected $modifiers = array();
@@ -19,29 +19,34 @@ class EntityPopulator {
      *
      * @param string $class A Propel ActiveRecord classname
      */
-    public function __construct($class) {
+    public function __construct($class)
+    {
         $this->class = $class;
     }
 
     /**
      * @return string
      */
-    public function getClass() {
+    public function getClass()
+    {
         return $this->class;
     }
 
-    public function setColumnFormatters($columnFormatters) {
+    public function setColumnFormatters($columnFormatters)
+    {
         $this->columnFormatters = $columnFormatters;
     }
 
     /**
      * @return array
      */
-    public function getColumnFormatters() {
+    public function getColumnFormatters()
+    {
         return $this->columnFormatters;
     }
 
-    public function mergeColumnFormattersWith($columnFormatters) {
+    public function mergeColumnFormattersWith($columnFormatters)
+    {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
     }
 
@@ -49,7 +54,8 @@ class EntityPopulator {
      * @param \Faker\Generator $generator
      * @return array
      */
-    public function guessColumnFormatters(\Faker\Generator $generator) {
+    public function guessColumnFormatters(\Faker\Generator $generator)
+    {
         $formatters = array();
         $class = $this->class;
         $peerClass = $class::TABLE_MAP;
@@ -89,7 +95,8 @@ class EntityPopulator {
      * @param ColumnMap $columnMap
      * @return bool
      */
-    protected function isColumnBehavior(ColumnMap $columnMap) {
+    protected function isColumnBehavior(ColumnMap $columnMap)
+    {
         foreach ($columnMap->getTable()->getBehaviors() as $name => $params) {
             $columnName = Base::toLower($columnMap->getName());
             switch ($name) {
@@ -111,18 +118,21 @@ class EntityPopulator {
         return false;
     }
 
-    public function setModifiers($modifiers) {
+    public function setModifiers($modifiers)
+    {
         $this->modifiers = $modifiers;
     }
 
     /**
      * @return array
      */
-    public function getModifiers() {
+    public function getModifiers()
+    {
         return $this->modifiers;
     }
 
-    public function mergeModifiersWith($modifiers) {
+    public function mergeModifiersWith($modifiers)
+    {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
     }
 
@@ -130,7 +140,8 @@ class EntityPopulator {
      * @param \Faker\Generator $generator
      * @return array
      */
-    public function guessModifiers(\Faker\Generator $generator) {
+    public function guessModifiers(\Faker\Generator $generator)
+    {
         $modifiers = array();
         $class = $this->class;
         $peerClass = $class::TABLE_MAP;
@@ -163,7 +174,8 @@ class EntityPopulator {
     /**
      * Insert one new record using the Entity class.
      */
-    public function execute($con, $insertedEntities) {
+    public function execute($con, $insertedEntities)
+    {
         $obj = new $this->class();
         foreach ($this->getColumnFormatters() as $column => $format) {
             if (null !== $format) {
@@ -177,5 +189,4 @@ class EntityPopulator {
 
         return $obj->getPrimaryKey();
     }
-
 }

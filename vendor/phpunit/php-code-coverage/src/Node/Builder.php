@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -13,22 +12,27 @@ namespace SebastianBergmann\CodeCoverage\Node;
 
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 
-class Builder {
-
+class Builder
+{
     /**
      * @param CodeCoverage $coverage
      *
      * @return Directory
      */
-    public function build(CodeCoverage $coverage) {
-        $files = $coverage->getData();
+    public function build(CodeCoverage $coverage)
+    {
+        $files      = $coverage->getData();
         $commonPath = $this->reducePaths($files);
-        $root = new Directory(
-                $commonPath, null
+        $root       = new Directory(
+            $commonPath,
+            null
         );
 
         $this->addItems(
-                $root, $this->buildDirectoryStructure($files), $coverage->getTests(), $coverage->getCacheTokens()
+            $root,
+            $this->buildDirectoryStructure($files),
+            $coverage->getTests(),
+            $coverage->getCacheTokens()
         );
 
         return $root;
@@ -40,7 +44,8 @@ class Builder {
      * @param array     $tests
      * @param bool      $cacheTokens
      */
-    private function addItems(Directory $root, array $items, array $tests, $cacheTokens) {
+    private function addItems(Directory $root, array $items, array $tests, $cacheTokens)
+    {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {
                 $key = substr($key, 0, -2);
@@ -99,13 +104,14 @@ class Builder {
      *
      * @return array
      */
-    private function buildDirectoryStructure($files) {
+    private function buildDirectoryStructure($files)
+    {
         $result = [];
 
         foreach ($files as $path => $file) {
-            $path = explode('/', $path);
+            $path    = explode('/', $path);
             $pointer = &$result;
-            $max = count($path);
+            $max     = count($path);
 
             for ($i = 0; $i < $max; $i++) {
                 if ($i == ($max - 1)) {
@@ -164,16 +170,17 @@ class Builder {
      *
      * @return string
      */
-    private function reducePaths(&$files) {
+    private function reducePaths(&$files)
+    {
         if (empty($files)) {
             return '.';
         }
 
         $commonPath = '';
-        $paths = array_keys($files);
+        $paths      = array_keys($files);
 
         if (count($files) == 1) {
-            $commonPath = dirname($paths[0]) . '/';
+            $commonPath                 = dirname($paths[0]) . '/';
             $files[basename($paths[0])] = $files[$paths[0]];
 
             unset($files[$paths[0]]);
@@ -197,13 +204,13 @@ class Builder {
         }
 
         $done = false;
-        $max = count($paths);
+        $max  = count($paths);
 
         while (!$done) {
             for ($i = 0; $i < $max - 1; $i++) {
                 if (!isset($paths[$i][0]) ||
-                        !isset($paths[$i + 1][0]) ||
-                        $paths[$i][0] != $paths[$i + 1][0]) {
+                    !isset($paths[$i+1][0]) ||
+                    $paths[$i][0] != $paths[$i+1][0]) {
                     $done = true;
                     break;
                 }
@@ -223,7 +230,7 @@ class Builder {
         }
 
         $original = array_keys($files);
-        $max = count($original);
+        $max      = count($original);
 
         for ($i = 0; $i < $max; $i++) {
             $files[implode('/', $paths[$i])] = $files[$original[$i]];
@@ -234,5 +241,4 @@ class Builder {
 
         return substr($commonPath, 0, -1);
     }
-
 }

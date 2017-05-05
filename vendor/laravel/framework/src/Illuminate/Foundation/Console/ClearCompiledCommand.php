@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\Command;
 
-class ClearCompiledCommand extends Command {
-
+class ClearCompiledCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -25,7 +25,8 @@ class ClearCompiledCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $servicesPath = $this->laravel->getCachedServicesPath();
 
         if (file_exists($servicesPath)) {
@@ -34,5 +35,4 @@ class ClearCompiledCommand extends Command {
 
         $this->info('The compiled services file has been removed.');
     }
-
 }

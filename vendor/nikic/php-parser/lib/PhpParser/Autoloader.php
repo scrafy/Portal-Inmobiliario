@@ -5,8 +5,8 @@ namespace PhpParser;
 /**
  * @codeCoverageIgnore
  */
-class Autoloader {
-
+class Autoloader
+{
     /** @var bool Whether the autoloader has been registered. */
     private static $registered = false;
 
@@ -37,5 +37,4 @@ class Autoloader {
             }
         }
     }
-
 }

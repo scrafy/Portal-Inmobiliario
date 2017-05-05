@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,9 +20,10 @@ use phpDocumentor\Reflection\DocBlock\Tags\See;
 /**
  * @coversNothing
  */
-class ReconstitutingADocBlockTest extends \PHPUnit_Framework_TestCase {
-
-    public function testReconstituteADocBlock() {
+class ReconstitutingADocBlockTest extends \PHPUnit_Framework_TestCase
+{
+    public function testReconstituteADocBlock()
+    {
         /**
          * @var string $docComment
          * @var string $reconstitutedDocComment
@@ -32,5 +32,4 @@ class ReconstitutingADocBlockTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertSame($docComment, $reconstitutedDocComment);
     }
-
 }

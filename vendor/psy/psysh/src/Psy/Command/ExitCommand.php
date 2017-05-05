@@ -20,32 +20,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Just what it says on the tin.
  */
-class ExitCommand extends Command {
-
+class ExitCommand extends Command
+{
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('exit')
-                ->setAliases(array('quit', 'q'))
-                ->setDefinition(array())
-                ->setDescription('End the current session and return to caller.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('exit')
+            ->setAliases(array('quit', 'q'))
+            ->setDefinition(array())
+            ->setDescription('End the current session and return to caller.')
+            ->setHelp(
+                <<<'HELP'
 End the current session and return to caller.
 
 e.g.
 <return>>>> exit</return>
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         throw new BreakException('Goodbye.');
     }
-
 }

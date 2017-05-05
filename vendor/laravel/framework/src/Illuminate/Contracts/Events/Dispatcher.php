@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Events;
 
-interface Dispatcher {
-
+interface Dispatcher
+{
     /**
      * Register an event listener with the dispatcher.
      *

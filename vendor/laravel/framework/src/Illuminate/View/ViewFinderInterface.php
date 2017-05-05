@@ -2,8 +2,8 @@
 
 namespace Illuminate\View;
 
-interface ViewFinderInterface {
-
+interface ViewFinderInterface
+{
     /**
      * Hint path delimiter value.
      *

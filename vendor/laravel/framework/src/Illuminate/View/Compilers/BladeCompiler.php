@@ -5,8 +5,8 @@ namespace Illuminate\View\Compilers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class BladeCompiler extends Compiler implements CompilerInterface {
-
+class BladeCompiler extends Compiler implements CompilerInterface
+{
     use Concerns\CompilesAuthorizations,
         Concerns\CompilesComments,
         Concerns\CompilesComponents,
@@ -110,12 +110,13 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $path
      * @return void
      */
-    public function compile($path = null) {
+    public function compile($path = null)
+    {
         if ($path) {
             $this->setPath($path);
         }
 
-        if (!is_null($this->cachePath)) {
+        if (! is_null($this->cachePath)) {
             $contents = $this->compileString($this->files->get($this->getPath()));
 
             $this->files->put($this->getCompiledPath($this->getPath()), $contents);
@@ -127,7 +128,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      *
      * @return string
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
 
@@ -137,7 +139,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $path
      * @return void
      */
-    public function setPath($path) {
+    public function setPath($path)
+    {
         $this->path = $path;
     }
 
@@ -147,7 +150,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $value
      * @return string
      */
-    public function compileString($value) {
+    public function compileString($value)
+    {
         $result = '';
 
         if (strpos($value, '@verbatim') !== false) {
@@ -163,7 +167,7 @@ class BladeCompiler extends Compiler implements CompilerInterface {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
 
-        if (!empty($this->verbatimBlocks)) {
+        if (! empty($this->verbatimBlocks)) {
             $result = $this->restoreVerbatimBlocks($result);
         }
 
@@ -183,7 +187,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $value
      * @return string
      */
-    protected function storeVerbatimBlocks($value) {
+    protected function storeVerbatimBlocks($value)
+    {
         return preg_replace_callback('/(?<!@)@verbatim(.*?)@endverbatim/s', function ($matches) {
             $this->verbatimBlocks[] = $matches[1];
 
@@ -197,8 +202,9 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $result
      * @return string
      */
-    protected function restoreVerbatimBlocks($result) {
-        $result = preg_replace_callback('/' . preg_quote($this->verbatimPlaceholder) . '/', function () {
+    protected function restoreVerbatimBlocks($result)
+    {
+        $result = preg_replace_callback('/'.preg_quote($this->verbatimPlaceholder).'/', function () {
             return array_shift($this->verbatimBlocks);
         }, $result);
 
@@ -213,9 +219,10 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $result
      * @return string
      */
-    protected function addFooters($result) {
+    protected function addFooters($result)
+    {
         return ltrim($result, PHP_EOL)
-                . PHP_EOL . implode(PHP_EOL, array_reverse($this->footer));
+                .PHP_EOL.implode(PHP_EOL, array_reverse($this->footer));
     }
 
     /**
@@ -224,7 +231,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  array  $token
      * @return string
      */
-    protected function parseToken($token) {
+    protected function parseToken($token)
+    {
         list($id, $content) = $token;
 
         if ($id == T_INLINE_HTML) {
@@ -242,7 +250,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $value
      * @return string
      */
-    protected function compileExtensions($value) {
+    protected function compileExtensions($value)
+    {
         foreach ($this->extensions as $compiler) {
             $value = call_user_func($compiler, $value, $this);
         }
@@ -256,11 +265,12 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $value
      * @return string
      */
-    protected function compileStatements($value) {
+    protected function compileStatements($value)
+    {
         return preg_replace_callback(
-                '/\B@(@?\w+(?:::\w+)?)([ \t]*)(\( ( (?>[^()]+) | (?3) )* \))?/x', function ($match) {
-            return $this->compileStatement($match);
-        }, $value
+            '/\B@(@?\w+(?:::\w+)?)([ \t]*)(\( ( (?>[^()]+) | (?3) )* \))?/x', function ($match) {
+                return $this->compileStatement($match);
+            }, $value
         );
     }
 
@@ -270,16 +280,17 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  array  $match
      * @return string
      */
-    protected function compileStatement($match) {
+    protected function compileStatement($match)
+    {
         if (Str::contains($match[1], '@')) {
-            $match[0] = isset($match[3]) ? $match[1] . $match[3] : $match[1];
+            $match[0] = isset($match[3]) ? $match[1].$match[3] : $match[1];
         } elseif (isset($this->customDirectives[$match[1]])) {
             $match[0] = $this->callCustomDirective($match[1], Arr::get($match, 3));
-        } elseif (method_exists($this, $method = 'compile' . ucfirst($match[1]))) {
+        } elseif (method_exists($this, $method = 'compile'.ucfirst($match[1]))) {
             $match[0] = $this->$method(Arr::get($match, 3));
         }
 
-        return isset($match[3]) ? $match[0] : $match[0] . $match[2];
+        return isset($match[3]) ? $match[0] : $match[0].$match[2];
     }
 
     /**
@@ -289,7 +300,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string|null  $value
      * @return string
      */
-    protected function callCustomDirective($name, $value) {
+    protected function callCustomDirective($name, $value)
+    {
         if (Str::startsWith($value, '(') && Str::endsWith($value, ')')) {
             $value = Str::substr($value, 1, -1);
         }
@@ -303,7 +315,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $expression
      * @return string
      */
-    public function stripParentheses($expression) {
+    public function stripParentheses($expression)
+    {
         if (Str::startsWith($expression, '(')) {
             $expression = substr($expression, 1, -1);
         }
@@ -317,7 +330,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  callable  $compiler
      * @return void
      */
-    public function extend(callable $compiler) {
+    public function extend(callable $compiler)
+    {
         $this->extensions[] = $compiler;
     }
 
@@ -326,7 +340,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      *
      * @return array
      */
-    public function getExtensions() {
+    public function getExtensions()
+    {
         return $this->extensions;
     }
 
@@ -337,7 +352,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  callable  $handler
      * @return void
      */
-    public function directive($name, callable $handler) {
+    public function directive($name, callable $handler)
+    {
         $this->customDirectives[$name] = $handler;
     }
 
@@ -346,7 +362,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      *
      * @return array
      */
-    public function getCustomDirectives() {
+    public function getCustomDirectives()
+    {
         return $this->customDirectives;
     }
 
@@ -356,8 +373,8 @@ class BladeCompiler extends Compiler implements CompilerInterface {
      * @param  string  $format
      * @return void
      */
-    public function setEchoFormat($format) {
+    public function setEchoFormat($format)
+    {
         $this->echoFormat = $format;
     }
-
 }

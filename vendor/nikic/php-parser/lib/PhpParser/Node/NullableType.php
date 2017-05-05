@@ -4,8 +4,8 @@ namespace PhpParser\Node;
 
 use PhpParser\NodeAbstract;
 
-class NullableType extends NodeAbstract {
-
+class NullableType extends NodeAbstract
+{
     /** @var string|Name Type */
     public $type;
 
@@ -23,5 +23,4 @@ class NullableType extends NodeAbstract {
     public function getSubNodeNames() {
         return array('type');
     }
-
 }

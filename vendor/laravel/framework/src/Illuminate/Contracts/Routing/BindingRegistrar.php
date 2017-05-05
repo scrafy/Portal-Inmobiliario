@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Routing;
 
-interface BindingRegistrar {
-
+interface BindingRegistrar
+{
     /**
      * Add a new route parameter binder.
      *

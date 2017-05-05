@@ -23,14 +23,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Show the code for an object, class, constant, method or property.
  */
-class ShowCommand extends ReflectingCommand {
-
+class ShowCommand extends ReflectingCommand
+{
     private $colorMode;
 
     /**
      * @param null|string $colorMode (default: null)
      */
-    public function __construct($colorMode = null) {
+    public function __construct($colorMode = null)
+    {
         $this->colorMode = $colorMode ?: Configuration::COLOR_MODE_AUTO;
 
         return parent::__construct();
@@ -39,28 +40,30 @@ class ShowCommand extends ReflectingCommand {
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('show')
-                ->setDefinition(array(
-                    new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to show.'),
-                ))
-                ->setDescription('Show the code for an object, class, constant, method or property.')
-                ->setHelp(
-                        <<<HELP
+            ->setName('show')
+            ->setDefinition(array(
+                new InputArgument('value', InputArgument::REQUIRED, 'Function, class, instance, constant, method or property to show.'),
+            ))
+            ->setDescription('Show the code for an object, class, constant, method or property.')
+            ->setHelp(
+                <<<HELP
 Show the code for an object, class, constant, method or property.
 
 e.g.
 <return>>>> show \$myObject</return>
 <return>>>> show Psy\Shell::debug</return>
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         list($value, $reflector) = $this->getTargetAndReflector($input->getArgument('value'));
 
         // Set some magic local variables
@@ -73,5 +76,4 @@ HELP
             throw $e;
         }
     }
-
 }

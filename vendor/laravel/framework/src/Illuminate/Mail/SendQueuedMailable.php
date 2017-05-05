@@ -5,8 +5,8 @@ namespace Illuminate\Mail;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
-class SendQueuedMailable {
-
+class SendQueuedMailable
+{
     /**
      * The mailable message instance.
      *
@@ -34,7 +34,8 @@ class SendQueuedMailable {
      * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
      * @return void
      */
-    public function __construct(MailableContract $mailable) {
+    public function __construct(MailableContract $mailable)
+    {
         $this->mailable = $mailable;
         $this->tries = property_exists($mailable, 'tries') ? $mailable->tries : null;
         $this->timeout = property_exists($mailable, 'timeout') ? $mailable->timeout : null;
@@ -46,7 +47,8 @@ class SendQueuedMailable {
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function handle(MailerContract $mailer) {
+    public function handle(MailerContract $mailer)
+    {
         $this->mailable->send($mailer);
     }
 
@@ -55,8 +57,8 @@ class SendQueuedMailable {
      *
      * @return string
      */
-    public function displayName() {
+    public function displayName()
+    {
         return get_class($this->mailable);
     }
-
 }

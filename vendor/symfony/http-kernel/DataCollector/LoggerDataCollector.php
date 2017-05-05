@@ -21,11 +21,12 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class LoggerDataCollector extends DataCollector implements LateDataCollectorInterface {
-
+class LoggerDataCollector extends DataCollector implements LateDataCollectorInterface
+{
     private $logger;
 
-    public function __construct($logger = null) {
+    public function __construct($logger = null)
+    {
         if (null !== $logger && $logger instanceof DebugLoggerInterface) {
             $this->logger = $logger;
         }
@@ -34,14 +35,16 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         // everything is done as late as possible
     }
 
     /**
      * {@inheritdoc}
      */
-    public function lateCollect() {
+    public function lateCollect()
+    {
         if (null !== $this->logger) {
             $this->data = $this->computeErrorsCount();
             $this->data['logs'] = $this->sanitizeLogs($this->logger->getLogs());
@@ -53,38 +56,46 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
      *
      * @return array An array of logs
      */
-    public function getLogs() {
+    public function getLogs()
+    {
         return isset($this->data['logs']) ? $this->data['logs'] : array();
     }
 
-    public function getPriorities() {
+    public function getPriorities()
+    {
         return isset($this->data['priorities']) ? $this->data['priorities'] : array();
     }
 
-    public function countErrors() {
+    public function countErrors()
+    {
         return isset($this->data['error_count']) ? $this->data['error_count'] : 0;
     }
 
-    public function countDeprecations() {
+    public function countDeprecations()
+    {
         return isset($this->data['deprecation_count']) ? $this->data['deprecation_count'] : 0;
     }
 
-    public function countWarnings() {
+    public function countWarnings()
+    {
         return isset($this->data['warning_count']) ? $this->data['warning_count'] : 0;
     }
 
-    public function countScreams() {
+    public function countScreams()
+    {
         return isset($this->data['scream_count']) ? $this->data['scream_count'] : 0;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'logger';
     }
 
-    private function sanitizeLogs($logs) {
+    private function sanitizeLogs($logs)
+    {
         $sanitizedLogs = array();
 
         foreach ($logs as $log) {
@@ -96,7 +107,7 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
             }
 
             $exception = $log['context']['exception'];
-            $errorId = md5("{$exception->getSeverity()}/{$exception->getLine()}/{$exception->getFile()}" . ($exception instanceof \Exception ? "\0" . $exception->getMessage() : ''), true);
+            $errorId = md5("{$exception->getSeverity()}/{$exception->getLine()}/{$exception->getFile()}".($exception instanceof \Exception ? "\0".$exception->getMessage() : ''), true);
 
             if (isset($sanitizedLogs[$errorId])) {
                 ++$sanitizedLogs[$errorId]['errorCount'];
@@ -115,7 +126,8 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
         return array_values($sanitizedLogs);
     }
 
-    private function isSilencedOrDeprecationErrorLog(array $log) {
+    private function isSilencedOrDeprecationErrorLog(array $log)
+    {
         if (!isset($log['context']['exception'])) {
             return false;
         }
@@ -133,7 +145,8 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
         return false;
     }
 
-    private function computeErrorsCount() {
+    private function computeErrorsCount()
+    {
         $count = array(
             'error_count' => $this->logger->countErrors(),
             'deprecation_count' => 0,
@@ -168,5 +181,4 @@ class LoggerDataCollector extends DataCollector implements LateDataCollectorInte
 
         return $count;
     }
-
 }

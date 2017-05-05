@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
  * @author Florian Eckerstorfer <florian@eckerstorfer.org>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class UploadedFile extends File {
-
+class UploadedFile extends File
+{
     /**
      * Whether the test mode is activated.
      *
@@ -85,7 +85,8 @@ class UploadedFile extends File {
      * @throws FileException         If file_uploads is disabled
      * @throws FileNotFoundException If the file does not exist
      */
-    public function __construct($path, $originalName, $mimeType = null, $size = null, $error = null, $test = false) {
+    public function __construct($path, $originalName, $mimeType = null, $size = null, $error = null, $test = false)
+    {
         $this->originalName = $this->getName($originalName);
         $this->mimeType = $mimeType ?: 'application/octet-stream';
         $this->size = $size;
@@ -103,7 +104,8 @@ class UploadedFile extends File {
      *
      * @return string|null The original name
      */
-    public function getClientOriginalName() {
+    public function getClientOriginalName()
+    {
         return $this->originalName;
     }
 
@@ -115,7 +117,8 @@ class UploadedFile extends File {
      *
      * @return string The extension
      */
-    public function getClientOriginalExtension() {
+    public function getClientOriginalExtension()
+    {
         return pathinfo($this->originalName, PATHINFO_EXTENSION);
     }
 
@@ -132,7 +135,8 @@ class UploadedFile extends File {
      *
      * @see getMimeType()
      */
-    public function getClientMimeType() {
+    public function getClientMimeType()
+    {
         return $this->mimeType;
     }
 
@@ -153,7 +157,8 @@ class UploadedFile extends File {
      * @see guessExtension()
      * @see getClientMimeType()
      */
-    public function guessClientExtension() {
+    public function guessClientExtension()
+    {
         $type = $this->getClientMimeType();
         $guesser = ExtensionGuesser::getInstance();
 
@@ -168,7 +173,8 @@ class UploadedFile extends File {
      *
      * @return int|null The file size
      */
-    public function getClientSize() {
+    public function getClientSize()
+    {
         return $this->size;
     }
 
@@ -180,7 +186,8 @@ class UploadedFile extends File {
      *
      * @return int The upload error
      */
-    public function getError() {
+    public function getError()
+    {
         return $this->error;
     }
 
@@ -189,7 +196,8 @@ class UploadedFile extends File {
      *
      * @return bool True if the file has been uploaded with HTTP and no error occurred
      */
-    public function isValid() {
+    public function isValid()
+    {
         $isOk = $this->error === UPLOAD_ERR_OK;
 
         return $this->test ? $isOk : $isOk && is_uploaded_file($this->getPathname());
@@ -205,7 +213,8 @@ class UploadedFile extends File {
      *
      * @throws FileException if, for any reason, the file could not have been moved
      */
-    public function move($directory, $name = null) {
+    public function move($directory, $name = null)
+    {
         if ($this->isValid()) {
             if ($this->test) {
                 return parent::move($directory, $name);
@@ -231,7 +240,8 @@ class UploadedFile extends File {
      *
      * @return int The maximum size of an uploaded file in bytes
      */
-    public static function getMaxFilesize() {
+    public static function getMaxFilesize()
+    {
         $iniMax = strtolower(ini_get('upload_max_filesize'));
 
         if ('' === $iniMax) {
@@ -262,7 +272,8 @@ class UploadedFile extends File {
      *
      * @return string The error message regarding the specified error code
      */
-    public function getErrorMessage() {
+    public function getErrorMessage()
+    {
         static $errors = array(
             UPLOAD_ERR_INI_SIZE => 'The file "%s" exceeds your upload_max_filesize ini directive (limit is %d KiB).',
             UPLOAD_ERR_FORM_SIZE => 'The file "%s" exceeds the upload limit defined in your form.',
@@ -279,5 +290,4 @@ class UploadedFile extends File {
 
         return sprintf($message, $this->getClientOriginalName(), $maxFilesize);
     }
-
 }

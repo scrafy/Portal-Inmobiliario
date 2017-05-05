@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -24,13 +23,16 @@ namespace test\Mockery;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
-class MockClassWithFinalWakeupTest extends MockeryTestCase {
+class MockClassWithFinalWakeupTest extends MockeryTestCase
+{
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->container = new \Mockery\Container;
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         $this->container->mockery_close();
     }
 
@@ -41,7 +43,8 @@ class MockClassWithFinalWakeupTest extends MockeryTestCase {
      * a __wakeup method marked as final. As long as __wakeup is not one of the
      * mocked methods.
      */
-    public function testCreateMockForClassWithFinalWakeup() {
+    public function testCreateMockForClassWithFinalWakeup()
+    {
         $mock = $this->container->mock("test\Mockery\TestWithFinalWakeup");
         $this->assertInstanceOf("test\Mockery\TestWithFinalWakeup", $mock);
         $this->assertEquals('test\Mockery\TestWithFinalWakeup::__wakeup', $mock->__wakeup());
@@ -51,40 +54,43 @@ class MockClassWithFinalWakeupTest extends MockeryTestCase {
         $this->assertEquals('test\Mockery\TestWithFinalWakeup::__wakeup', $mock->__wakeup());
     }
 
-    public function testCreateMockForClassWithNonFinalWakeup() {
+    public function testCreateMockForClassWithNonFinalWakeup()
+    {
         $mock = $this->container->mock('test\Mockery\TestWithNonFinalWakeup');
         $this->assertInstanceOf('test\Mockery\TestWithNonFinalWakeup', $mock);
 
         // Make sure __wakeup is overridden and doesn't return anything.
         $this->assertNull($mock->__wakeup());
     }
-
 }
 
-class TestWithFinalWakeup {
+class TestWithFinalWakeup
+{
 
-    public function foo() {
+    public function foo()
+    {
         return 'foo';
     }
 
-    public function bar() {
+    public function bar()
+    {
         return 'bar';
     }
 
-    final public function __wakeup() {
+    final public function __wakeup()
+    {
         return __METHOD__;
     }
-
 }
 
-class SubclassWithFinalWakeup extends TestWithFinalWakeup {
-    
+class SubclassWithFinalWakeup extends TestWithFinalWakeup
+{
 }
 
-class TestWithNonFinalWakeup {
-
-    public function __wakeup() {
+class TestWithNonFinalWakeup
+{
+    public function __wakeup()
+    {
         return __METHOD__;
     }
-
 }

@@ -13,13 +13,15 @@ namespace Psy\Test\CodeCleaner;
 
 use Psy\CodeCleaner\LeavePsyshAlonePass;
 
-class LeavePsyshAlonePassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
+class LeavePsyshAlonePassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
         $this->setPass(new LeavePsyshAlonePass());
     }
 
-    public function testPassesInlineHtmlThroughJustFine() {
+    public function testPassesInlineHtmlThroughJustFine()
+    {
         $inline = $this->parse('not php at all!', '');
         $this->traverse($inline);
     }
@@ -27,12 +29,14 @@ class LeavePsyshAlonePassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code) {
+    public function testProcessStatementPasses($code)
+    {
         $stmts = $this->parse($code);
         $this->traverse($stmts);
     }
 
-    public function validStatements() {
+    public function validStatements()
+    {
         return array(
             array('array_merge()'),
             array('__psysh__()'),
@@ -47,12 +51,14 @@ class LeavePsyshAlonePassTest extends CodeCleanerTestCase {
      * @dataProvider invalidStatements
      * @expectedException \Psy\Exception\RuntimeException
      */
-    public function testProcessStatementFails($code) {
+    public function testProcessStatementFails($code)
+    {
         $stmts = $this->parse($code);
         $this->traverse($stmts);
     }
 
-    public function invalidStatements() {
+    public function invalidStatements()
+    {
         return array(
             array('$__psysh__'),
             array('var_dump($__psysh__)'),
@@ -60,5 +66,4 @@ class LeavePsyshAlonePassTest extends CodeCleanerTestCase {
             array('$__psysh__->fakeFunctionCall()'),
         );
     }
-
 }

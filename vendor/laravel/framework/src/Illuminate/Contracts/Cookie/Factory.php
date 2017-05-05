@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Cookie;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Create a new cookie instance.
      *

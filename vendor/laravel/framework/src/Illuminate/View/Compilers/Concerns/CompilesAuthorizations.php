@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesAuthorizations {
-
+trait CompilesAuthorizations
+{
     /**
      * Compile the can statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileCan($expression) {
+    protected function compileCan($expression)
+    {
         return "<?php if (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->check{$expression}): ?>";
     }
 
@@ -20,7 +21,8 @@ trait CompilesAuthorizations {
      * @param  string  $expression
      * @return string
      */
-    protected function compileCannot($expression) {
+    protected function compileCannot($expression)
+    {
         return "<?php if (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->denies{$expression}): ?>";
     }
 
@@ -30,7 +32,8 @@ trait CompilesAuthorizations {
      * @param  string  $expression
      * @return string
      */
-    protected function compileElsecan($expression) {
+    protected function compileElsecan($expression)
+    {
         return "<?php elseif (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->check{$expression}): ?>";
     }
 
@@ -40,7 +43,8 @@ trait CompilesAuthorizations {
      * @param  string  $expression
      * @return string
      */
-    protected function compileElsecannot($expression) {
+    protected function compileElsecannot($expression)
+    {
         return "<?php elseif (app(\Illuminate\\Contracts\\Auth\\Access\\Gate::class)->denies{$expression}): ?>";
     }
 
@@ -49,7 +53,8 @@ trait CompilesAuthorizations {
      *
      * @return string
      */
-    protected function compileEndcan() {
+    protected function compileEndcan()
+    {
         return '<?php endif; ?>';
     }
 
@@ -58,8 +63,8 @@ trait CompilesAuthorizations {
      *
      * @return string
      */
-    protected function compileEndcannot() {
+    protected function compileEndcannot()
+    {
         return '<?php endif; ?>';
     }
-
 }

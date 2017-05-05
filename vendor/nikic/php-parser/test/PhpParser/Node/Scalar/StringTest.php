@@ -2,14 +2,15 @@
 
 namespace PhpParser\Node\Scalar;
 
-class StringTest extends \PHPUnit_Framework_TestCase {
-
+class StringTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @dataProvider provideTestParseEscapeSequences
      */
     public function testParseEscapeSequences($expected, $string, $quote) {
         $this->assertSame(
-                $expected, String_::parseEscapeSequences($string, $quote)
+            $expected,
+            String_::parseEscapeSequences($string, $quote)
         );
     }
 
@@ -18,22 +19,23 @@ class StringTest extends \PHPUnit_Framework_TestCase {
      */
     public function testCreate($expected, $string) {
         $this->assertSame(
-                $expected, String_::parse($string)
+            $expected,
+            String_::parse($string)
         );
     }
 
     public function provideTestParseEscapeSequences() {
         return array(
-            array('"', '\\"', '"'),
-            array('\\"', '\\"', '`'),
-            array('\\"\\`', '\\"\\`', null),
+            array('"',              '\\"',              '"'),
+            array('\\"',            '\\"',              '`'),
+            array('\\"\\`',         '\\"\\`',           null),
             array("\\\$\n\r\t\f\v", '\\\\\$\n\r\t\f\v', null),
-            array("\x1B", '\e', null),
-            array(chr(255), '\xFF', null),
-            array(chr(255), '\377', null),
-            array(chr(0), '\400', null),
-            array("\0", '\0', null),
-            array('\xFF', '\\\\xFF', null),
+            array("\x1B",           '\e',               null),
+            array(chr(255),         '\xFF',             null),
+            array(chr(255),         '\377',             null),
+            array(chr(0),           '\400',             null),
+            array("\0",             '\0',               null),
+            array('\xFF',           '\\\\xFF',          null),
         );
     }
 
@@ -56,5 +58,4 @@ class StringTest extends \PHPUnit_Framework_TestCase {
 
         return $tests;
     }
-
 }

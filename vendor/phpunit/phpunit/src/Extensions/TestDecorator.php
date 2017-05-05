@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -16,8 +15,8 @@
  * test decorators. Test decorator subclasses can be introduced
  * to add behaviour before or after a test is run.
  */
-class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing {
-
+class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+{
     /**
      * The Test to be decorated.
      *
@@ -30,7 +29,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @param PHPUnit_Framework_Test $test
      */
-    public function __construct(PHPUnit_Framework_Test $test) {
+    public function __construct(PHPUnit_Framework_Test $test)
+    {
         $this->test = $test;
     }
 
@@ -39,7 +39,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         return $this->test->toString();
     }
 
@@ -49,7 +50,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @param PHPUnit_Framework_TestResult $result
      */
-    public function basicRun(PHPUnit_Framework_TestResult $result) {
+    public function basicRun(PHPUnit_Framework_TestResult $result)
+    {
         $this->test->run($result);
     }
 
@@ -59,7 +61,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return count($this->test);
     }
 
@@ -68,7 +71,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return PHPUnit_Framework_TestResult
      */
-    protected function createResult() {
+    protected function createResult()
+    {
         return new PHPUnit_Framework_TestResult;
     }
 
@@ -77,7 +81,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return PHPUnit_Framework_Test
      */
-    public function getTest() {
+    public function getTest()
+    {
         return $this->test;
     }
 
@@ -89,7 +94,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return PHPUnit_Framework_TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = null) {
+    public function run(PHPUnit_Framework_TestResult $result = null)
+    {
         if ($result === null) {
             $result = $this->createResult();
         }
@@ -98,5 +104,4 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
 
         return $result;
     }
-
 }

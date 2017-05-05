@@ -2,13 +2,15 @@
 
 namespace Faker\Provider\zh_TW;
 
-class DateTime extends \Faker\Provider\DateTime {
-
-    public static function amPm($max = 'now') {
+class DateTime extends \Faker\Provider\DateTime
+{
+    public static function amPm($max = 'now')
+    {
         return static::dateTime($max)->format('a') === 'am' ? '上午' : '下午';
     }
 
-    public static function dayOfWeek($max = 'now') {
+    public static function dayOfWeek($max = 'now')
+    {
         $map = array(
             'Sunday' => '星期日',
             'Monday' => '星期一',
@@ -22,7 +24,8 @@ class DateTime extends \Faker\Provider\DateTime {
         return isset($map[$week]) ? $map[$week] : $week;
     }
 
-    public static function monthName($max = 'now') {
+    public static function monthName($max = 'now')
+    {
         $map = array(
             'January' => '一月',
             'February' => '二月',
@@ -40,5 +43,4 @@ class DateTime extends \Faker\Provider\DateTime {
         $month = static::dateTime($max)->format('F');
         return isset($map[$month]) ? $map[$month] : $month;
     }
-
 }

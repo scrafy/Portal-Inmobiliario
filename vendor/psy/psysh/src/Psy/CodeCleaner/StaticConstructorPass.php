@@ -27,16 +27,18 @@ use Psy\Exception\FatalErrorException;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class StaticConstructorPass extends CodeCleanerPass {
-
+class StaticConstructorPass extends CodeCleanerPass
+{
     private $isPHP533;
     private $namespace;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->isPHP533 = version_compare(PHP_VERSION, '5.3.3', '>=');
     }
 
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         $this->namespace = array();
     }
 
@@ -47,7 +49,8 @@ class StaticConstructorPass extends CodeCleanerPass {
      *
      * @param Node $node
      */
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         if ($node instanceof NamespaceStmt) {
             $this->namespace = isset($node->name) ? $node->name->parts : array();
         } elseif ($node instanceof ClassStmt) {
@@ -74,10 +77,11 @@ class StaticConstructorPass extends CodeCleanerPass {
 
             if ($constructor && $constructor->isStatic()) {
                 throw new FatalErrorException(sprintf(
-                        'Constructor %s::%s() cannot be static', implode('\\', array_merge($this->namespace, (array) $node->name)), $constructor->name
+                    'Constructor %s::%s() cannot be static',
+                    implode('\\', array_merge($this->namespace, (array) $node->name)),
+                    $constructor->name
                 ));
             }
         }
     }
-
 }

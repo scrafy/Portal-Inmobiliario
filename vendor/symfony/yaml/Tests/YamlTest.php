@@ -14,9 +14,10 @@ namespace Symfony\Component\Yaml\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
-class YamlTest extends TestCase {
-
-    public function testParseAndDump() {
+class YamlTest extends TestCase
+{
+    public function testParseAndDump()
+    {
         $data = array('lorem' => 'ipsum', 'dolor' => 'sit');
         $yml = Yaml::dump($data);
         $parsed = Yaml::parse($yml);
@@ -27,7 +28,8 @@ class YamlTest extends TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testZeroIndentationThrowsException() {
+    public function testZeroIndentationThrowsException()
+    {
         Yaml::dump(array('lorem' => 'ipsum', 'dolor' => 'sit'), 2, 0);
     }
 
@@ -35,8 +37,8 @@ class YamlTest extends TestCase {
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The indentation must be greater than zero
      */
-    public function testNegativeIndentationThrowsException() {
+    public function testNegativeIndentationThrowsException()
+    {
         Yaml::dump(array('lorem' => 'ipsum', 'dolor' => 'sit'), 2, -4);
     }
-
 }

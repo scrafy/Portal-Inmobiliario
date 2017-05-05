@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -16,15 +15,16 @@ namespace phpDocumentor\Reflection;
  * Class FqsenTest
  * @coversDefaultClass phpDocumentor\Reflection\Fqsen
  */
-class FqsenTest extends \PHPUnit_Framework_TestCase {
-
+class FqsenTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @param string $fqsen
      * @covers ::__construct
      * @dataProvider validFqsenProvider
      */
-    public function testValidFormats($fqsen, $name) {
-        $instance = new Fqsen($fqsen);
+    public function testValidFormats($fqsen, $name)
+    {
+        $instance  = new Fqsen($fqsen);
         $this->assertEquals($name, $instance->getName());
     }
 
@@ -33,7 +33,8 @@ class FqsenTest extends \PHPUnit_Framework_TestCase {
      *
      * @return array
      */
-    public function validFqsenProvider() {
+    public function validFqsenProvider()
+    {
         return [
             ['\\', ''],
             ['\My\Space', 'Space'],
@@ -55,7 +56,8 @@ class FqsenTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider invalidFqsenProvider
      * @expectedException \InvalidArgumentException
      */
-    public function testInValidFormats($fqsen) {
+    public function testInValidFormats($fqsen)
+    {
         new Fqsen($fqsen);
     }
 
@@ -64,7 +66,8 @@ class FqsenTest extends \PHPUnit_Framework_TestCase {
      *
      * @return array
      */
-    public function invalidFqsenProvider() {
+    public function invalidFqsenProvider()
+    {
         return [
             ['\My\*'],
             ['\My\Space\.()'],
@@ -76,10 +79,10 @@ class FqsenTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::__toString
      */
-    public function testToString() {
+    public function testToString()
+    {
         $className = new Fqsen('\\phpDocumentor\\Application');
 
-        $this->assertEquals('\\phpDocumentor\\Application', (string) $className);
+        $this->assertEquals('\\phpDocumentor\\Application', (string)$className);
     }
-
 }

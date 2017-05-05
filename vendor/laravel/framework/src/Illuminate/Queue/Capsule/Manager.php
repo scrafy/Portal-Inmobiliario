@@ -7,8 +7,8 @@ use Illuminate\Container\Container;
 use Illuminate\Queue\QueueServiceProvider;
 use Illuminate\Support\Traits\CapsuleManagerTrait;
 
-class Manager {
-
+class Manager
+{
     use CapsuleManagerTrait;
 
     /**
@@ -24,7 +24,8 @@ class Manager {
      * @param  \Illuminate\Container\Container  $container
      * @return void
      */
-    public function __construct(Container $container = null) {
+    public function __construct(Container $container = null)
+    {
         $this->setupContainer($container ?: new Container);
 
         // Once we have the container setup, we will setup the default configuration
@@ -42,7 +43,8 @@ class Manager {
      *
      * @return void
      */
-    protected function setupDefaultConfiguration() {
+    protected function setupDefaultConfiguration()
+    {
         $this->container['config']['queue.default'] = 'default';
     }
 
@@ -51,7 +53,8 @@ class Manager {
      *
      * @return void
      */
-    protected function setupManager() {
+    protected function setupManager()
+    {
         $this->manager = new QueueManager($this->container);
     }
 
@@ -60,7 +63,8 @@ class Manager {
      *
      * @return void
      */
-    protected function registerConnectors() {
+    protected function registerConnectors()
+    {
         $provider = new QueueServiceProvider($this->container);
 
         $provider->registerConnectors($this->manager);
@@ -72,7 +76,8 @@ class Manager {
      * @param  string  $connection
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public static function connection($connection = null) {
+    public static function connection($connection = null)
+    {
         return static::$instance->getConnection($connection);
     }
 
@@ -85,7 +90,8 @@ class Manager {
      * @param  string  $connection
      * @return mixed
      */
-    public static function push($job, $data = '', $queue = null, $connection = null) {
+    public static function push($job, $data = '', $queue = null, $connection = null)
+    {
         return static::$instance->connection($connection)->push($job, $data, $queue);
     }
 
@@ -98,7 +104,8 @@ class Manager {
      * @param  string  $connection
      * @return mixed
      */
-    public static function bulk($jobs, $data = '', $queue = null, $connection = null) {
+    public static function bulk($jobs, $data = '', $queue = null, $connection = null)
+    {
         return static::$instance->connection($connection)->bulk($jobs, $data, $queue);
     }
 
@@ -112,7 +119,8 @@ class Manager {
      * @param  string  $connection
      * @return mixed
      */
-    public static function later($delay, $job, $data = '', $queue = null, $connection = null) {
+    public static function later($delay, $job, $data = '', $queue = null, $connection = null)
+    {
         return static::$instance->connection($connection)->later($delay, $job, $data, $queue);
     }
 
@@ -122,7 +130,8 @@ class Manager {
      * @param  string  $name
      * @return \Illuminate\Contracts\Queue\Queue
      */
-    public function getConnection($name = null) {
+    public function getConnection($name = null)
+    {
         return $this->manager->connection($name);
     }
 
@@ -133,7 +142,8 @@ class Manager {
      * @param  string  $name
      * @return void
      */
-    public function addConnection(array $config, $name = 'default') {
+    public function addConnection(array $config, $name = 'default')
+    {
         $this->container['config']["queue.connections.{$name}"] = $config;
     }
 
@@ -142,7 +152,8 @@ class Manager {
      *
      * @return \Illuminate\Queue\QueueManager
      */
-    public function getQueueManager() {
+    public function getQueueManager()
+    {
         return $this->manager;
     }
 
@@ -153,7 +164,8 @@ class Manager {
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         return $this->manager->$method(...$parameters);
     }
 
@@ -164,8 +176,8 @@ class Manager {
      * @param  array   $parameters
      * @return mixed
      */
-    public static function __callStatic($method, $parameters) {
+    public static function __callStatic($method, $parameters)
+    {
         return static::connection()->$method(...$parameters);
     }
-
 }

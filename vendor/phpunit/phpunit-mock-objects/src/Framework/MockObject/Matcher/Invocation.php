@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -15,8 +14,8 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framework_SelfDescribing, PHPUnit_Framework_MockObject_Verifiable {
-
+interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framework_SelfDescribing, PHPUnit_Framework_MockObject_Verifiable
+{
     /**
      * Registers the invocation $invocation in the object as being invoked.
      * This will only occur after matches() returns true which means the

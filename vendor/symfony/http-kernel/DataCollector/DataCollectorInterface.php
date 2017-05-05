@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface DataCollectorInterface {
-
+interface DataCollectorInterface
+{
     /**
      * Collects data for the given Request and Response.
      *

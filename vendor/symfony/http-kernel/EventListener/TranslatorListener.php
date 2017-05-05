@@ -24,21 +24,24 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TranslatorListener implements EventSubscriberInterface {
-
+class TranslatorListener implements EventSubscriberInterface
+{
     private $translator;
     private $requestStack;
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack) {
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack)
+    {
         $this->translator = $translator;
         $this->requestStack = $requestStack;
     }
 
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(GetResponseEvent $event)
+    {
         $this->setLocale($event->getRequest());
     }
 
-    public function onKernelFinishRequest(FinishRequestEvent $event) {
+    public function onKernelFinishRequest(FinishRequestEvent $event)
+    {
         if (null === $parentRequest = $this->requestStack->getParentRequest()) {
             return;
         }
@@ -46,7 +49,8 @@ class TranslatorListener implements EventSubscriberInterface {
         $this->setLocale($parentRequest);
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             // must be registered after the Locale listener
             KernelEvents::REQUEST => array(array('onKernelRequest', 10)),
@@ -54,12 +58,12 @@ class TranslatorListener implements EventSubscriberInterface {
         );
     }
 
-    private function setLocale(Request $request) {
+    private function setLocale(Request $request)
+    {
         try {
             $this->translator->setLocale($request->getLocale());
         } catch (\InvalidArgumentException $e) {
             $this->translator->setLocale($request->getDefaultLocale());
         }
     }
-
 }

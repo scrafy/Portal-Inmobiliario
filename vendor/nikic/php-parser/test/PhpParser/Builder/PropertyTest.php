@@ -8,66 +8,75 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
-class PropertyTest extends \PHPUnit_Framework_TestCase {
-
+class PropertyTest extends \PHPUnit_Framework_TestCase
+{
     public function createPropertyBuilder($name) {
         return new Property($name);
     }
 
     public function testModifiers() {
         $node = $this->createPropertyBuilder('test')
-                ->makePrivate()
-                ->makeStatic()
-                ->getNode()
+            ->makePrivate()
+            ->makeStatic()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Property(
-                Stmt\Class_::MODIFIER_PRIVATE | Stmt\Class_::MODIFIER_STATIC, array(
-            new Stmt\PropertyProperty('test')
+            new Stmt\Property(
+                Stmt\Class_::MODIFIER_PRIVATE
+              | Stmt\Class_::MODIFIER_STATIC,
+                array(
+                    new Stmt\PropertyProperty('test')
                 )
-                ), $node
+            ),
+            $node
         );
 
         $node = $this->createPropertyBuilder('test')
-                ->makeProtected()
-                ->getNode()
+            ->makeProtected()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Property(
-                Stmt\Class_::MODIFIER_PROTECTED, array(
-            new Stmt\PropertyProperty('test')
+            new Stmt\Property(
+                Stmt\Class_::MODIFIER_PROTECTED,
+                array(
+                    new Stmt\PropertyProperty('test')
                 )
-                ), $node
+            ),
+            $node
         );
 
         $node = $this->createPropertyBuilder('test')
-                ->makePublic()
-                ->getNode()
+            ->makePublic()
+            ->getNode()
         ;
 
         $this->assertEquals(
-                new Stmt\Property(
-                Stmt\Class_::MODIFIER_PUBLIC, array(
-            new Stmt\PropertyProperty('test')
+            new Stmt\Property(
+                Stmt\Class_::MODIFIER_PUBLIC,
+                array(
+                    new Stmt\PropertyProperty('test')
                 )
-                ), $node
+            ),
+            $node
         );
     }
 
     public function testDocComment() {
         $node = $this->createPropertyBuilder('test')
-                ->setDocComment('/** Test */')
-                ->getNode();
+            ->setDocComment('/** Test */')
+            ->getNode();
 
         $this->assertEquals(new Stmt\Property(
-                Stmt\Class_::MODIFIER_PUBLIC, array(
-            new Stmt\PropertyProperty('test')
-                ), array(
-            'comments' => array(new Comment\Doc('/** Test */'))
-                )
-                ), $node);
+            Stmt\Class_::MODIFIER_PUBLIC,
+            array(
+                new Stmt\PropertyProperty('test')
+            ),
+            array(
+                'comments' => array(new Comment\Doc('/** Test */'))
+            )
+        ), $node);
     }
 
     /**
@@ -75,8 +84,8 @@ class PropertyTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDefaultValues($value, $expectedValueNode) {
         $node = $this->createPropertyBuilder('test')
-                ->setDefault($value)
-                ->getNode()
+            ->setDefault($value)
+            ->getNode()
         ;
 
         $this->assertEquals($expectedValueNode, $node->props[0]->default);
@@ -114,18 +123,20 @@ class PropertyTest extends \PHPUnit_Framework_TestCase {
                     new Expr\ArrayItem(new Scalar\LNumber(1)),
                     new Expr\ArrayItem(new Scalar\LNumber(2)),
                     new Expr\ArrayItem(new Scalar\LNumber(3)),
-                        ))
+                ))
             ),
             array(
                 array('foo' => 'bar', 'bar' => 'foo'),
                 new Expr\Array_(array(
                     new Expr\ArrayItem(
-                            new Scalar\String_('bar'), new Scalar\String_('foo')
+                        new Scalar\String_('bar'),
+                        new Scalar\String_('foo')
                     ),
                     new Expr\ArrayItem(
-                            new Scalar\String_('foo'), new Scalar\String_('bar')
+                        new Scalar\String_('foo'),
+                        new Scalar\String_('bar')
                     ),
-                        ))
+                ))
             ),
             array(
                 new Scalar\MagicConst\Dir,
@@ -133,5 +144,4 @@ class PropertyTest extends \PHPUnit_Framework_TestCase {
             )
         );
     }
-
 }

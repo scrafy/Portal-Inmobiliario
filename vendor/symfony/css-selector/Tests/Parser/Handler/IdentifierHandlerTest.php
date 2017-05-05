@@ -16,9 +16,10 @@ use Symfony\Component\CssSelector\Parser\Token;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerPatterns;
 use Symfony\Component\CssSelector\Parser\Tokenizer\TokenizerEscaping;
 
-class IdentifierHandlerTest extends AbstractHandlerTest {
-
-    public function getHandleValueTestData() {
+class IdentifierHandlerTest extends AbstractHandlerTest
+{
+    public function getHandleValueTestData()
+    {
         return array(
             array('foo', new Token(Token::TYPE_IDENTIFIER, 'foo', 0), ''),
             array('foo|bar', new Token(Token::TYPE_IDENTIFIER, 'foo', 0), '|bar'),
@@ -28,7 +29,8 @@ class IdentifierHandlerTest extends AbstractHandlerTest {
         );
     }
 
-    public function getDontHandleValueTestData() {
+    public function getDontHandleValueTestData()
+    {
         return array(
             array('>'),
             array('+'),
@@ -38,10 +40,10 @@ class IdentifierHandlerTest extends AbstractHandlerTest {
         );
     }
 
-    protected function generateHandler() {
+    protected function generateHandler()
+    {
         $patterns = new TokenizerPatterns();
 
         return new IdentifierHandler($patterns, new TokenizerEscaping($patterns));
     }
-
 }

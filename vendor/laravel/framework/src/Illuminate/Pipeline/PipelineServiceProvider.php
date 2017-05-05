@@ -5,8 +5,8 @@ namespace Illuminate\Pipeline;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Pipeline\Hub as PipelineHubContract;
 
-class PipelineServiceProvider extends ServiceProvider {
-
+class PipelineServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -19,9 +19,10 @@ class PipelineServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton(
-                PipelineHubContract::class, Hub::class
+            PipelineHubContract::class, Hub::class
         );
     }
 
@@ -30,10 +31,10 @@ class PipelineServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             PipelineHubContract::class,
         ];
     }
-
 }

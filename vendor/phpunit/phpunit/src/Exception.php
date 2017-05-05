@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +11,6 @@
 /**
  * Marker interface for PHPUnit exceptions.
  */
-interface PHPUnit_Exception {
-    
+interface PHPUnit_Exception
+{
 }

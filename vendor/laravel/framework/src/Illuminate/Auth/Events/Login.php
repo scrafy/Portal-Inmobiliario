@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class Login {
-
+class Login
+{
     use SerializesModels;
 
     /**
@@ -29,9 +29,9 @@ class Login {
      * @param  bool  $remember
      * @return void
      */
-    public function __construct($user, $remember) {
+    public function __construct($user, $remember)
+    {
         $this->user = $user;
         $this->remember = $remember;
     }
-
 }

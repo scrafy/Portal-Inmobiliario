@@ -1,13 +1,14 @@
 <?php
 
-class Issue498Test extends PHPUnit_Framework_TestCase {
-
+class Issue498Test extends PHPUnit_Framework_TestCase
+{
     /**
      * @test
      * @dataProvider shouldBeTrueDataProvider
      * @group falseOnly
      */
-    public function shouldBeTrue($testData) {
+    public function shouldBeTrue($testData)
+    {
         $this->assertTrue(true);
     }
 
@@ -16,11 +17,13 @@ class Issue498Test extends PHPUnit_Framework_TestCase {
      * @dataProvider shouldBeFalseDataProvider
      * @group trueOnly
      */
-    public function shouldBeFalse($testData) {
+    public function shouldBeFalse($testData)
+    {
         $this->assertFalse(false);
     }
 
-    public function shouldBeTrueDataProvider() {
+    public function shouldBeTrueDataProvider()
+    {
 
         //throw new Exception("Can't create the data");
         return [
@@ -29,7 +32,8 @@ class Issue498Test extends PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function shouldBeFalseDataProvider() {
+    public function shouldBeFalseDataProvider()
+    {
         throw new Exception("Can't create the data");
 
         return [
@@ -37,5 +41,4 @@ class Issue498Test extends PHPUnit_Framework_TestCase {
             [false]
         ];
     }
-
 }

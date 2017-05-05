@@ -4,8 +4,8 @@ namespace Faker\Provider\fr_FR;
 
 use Faker\Calculator\Luhn;
 
-class Company extends \Faker\Provider\Company {
-
+class Company extends \Faker\Provider\Company
+{
     /**
      * @var array French company name formats.
      */
@@ -52,6 +52,7 @@ class Company extends \Faker\Provider\Company {
      * @var array Company suffixes.
      */
     protected static $companySuffix = array('SA', 'S.A.', 'SARL', 'S.A.R.L.', 'S.A.S.', 'et Fils');
+
     protected static $siretNicFormats = array('####', '0###', '00#%');
 
     /**
@@ -59,7 +60,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseNoun() {
+    public function catchPhraseNoun()
+    {
         return static::randomElement(static::$noun);
     }
 
@@ -68,7 +70,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseAttribute() {
+    public function catchPhraseAttribute()
+    {
         return static::randomElement(static::$attribute);
     }
 
@@ -77,7 +80,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhraseVerb() {
+    public function catchPhraseVerb()
+    {
         return static::randomElement(static::$verb);
     }
 
@@ -86,7 +90,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return string
      */
-    public function catchPhrase() {
+    public function catchPhrase()
+    {
         do {
             $format = static::randomElement(static::$catchPhraseFormats);
             $catchPhrase = ucfirst($this->generator->parse($format));
@@ -105,7 +110,8 @@ class Company extends \Faker\Provider\Company {
      * @see http://fr.wikipedia.org/wiki/Syst%C3%A8me_d'identification_du_r%C3%A9pertoire_des_%C3%A9tablissements
      * @return string
      */
-    public function siret($formatted = true) {
+    public function siret($formatted = true)
+    {
         $siret = $this->siren(false);
         $nicFormat = static::randomElement(static::$siretNicFormats);
         $siret .= $this->numerify($nicFormat);
@@ -123,7 +129,8 @@ class Company extends \Faker\Provider\Company {
      * @see http://fr.wikipedia.org/wiki/Syst%C3%A8me_d%27identification_du_r%C3%A9pertoire_des_entreprises
      * @return string
      */
-    public function siren($formatted = true) {
+    public function siren($formatted = true)
+    {
         $siren = $this->numerify('%#######');
         $siren .= Luhn::computeCheckDigit($siren);
         if ($formatted) {
@@ -145,7 +152,8 @@ class Company extends \Faker\Provider\Company {
      *
      * @return boolean (true if valid, false otherwise)
      */
-    protected static function isCatchPhraseValid($catchPhrase) {
+    protected static function isCatchPhraseValid($catchPhrase)
+    {
         foreach (static::$wordsWhichShouldNotAppearTwice as $word) {
             // Fastest way to check if a piece of word does not appear twice.
             $beginPos = strpos($catchPhrase, $word);
@@ -158,5 +166,4 @@ class Company extends \Faker\Provider\Company {
 
         return true;
     }
-
 }

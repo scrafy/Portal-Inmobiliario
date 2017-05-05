@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Faker\ORM\Spot;
 
 use Spot\Locator;
@@ -7,8 +8,8 @@ use Spot\Locator;
 /**
  * Service class for populating a database using the Spot ORM.
  */
-class Populator {
-
+class Populator
+{
     protected $generator;
     protected $locator;
     protected $entities = array();
@@ -19,7 +20,8 @@ class Populator {
      * @param \Faker\Generator $generator
      * @param Locator|null $locator
      */
-    public function __construct(\Faker\Generator $generator, Locator $locator = null) {
+    public function __construct(\Faker\Generator $generator, Locator $locator = null)
+    {
         $this->generator = $generator;
         $this->locator = $locator;
     }
@@ -34,7 +36,11 @@ class Populator {
      * @param $useExistingData bool Should we use existing rows (e.g. roles) to populate relations?
      */
     public function addEntity(
-    $entityName, $number, $customColumnFormatters = array(), $customModifiers = array(), $useExistingData = false
+        $entityName,
+        $number,
+        $customColumnFormatters = array(),
+        $customModifiers = array(),
+        $useExistingData = false
     ) {
         $mapper = $this->locator->mapper($entityName);
         if (null === $mapper) {
@@ -59,7 +65,8 @@ class Populator {
      *
      * @return array A list of the inserted PKs
      */
-    public function execute($locator = null) {
+    public function execute($locator = null)
+    {
         if (null === $locator) {
             $locator = $this->locator;
         }
@@ -71,12 +78,11 @@ class Populator {
         foreach ($this->quantities as $entityName => $number) {
             for ($i = 0; $i < $number; $i++) {
                 $insertedEntities[$entityName][] = $this->entities[$entityName]->execute(
-                        $insertedEntities
+                    $insertedEntities
                 );
             }
         }
 
         return $insertedEntities;
     }
-
 }

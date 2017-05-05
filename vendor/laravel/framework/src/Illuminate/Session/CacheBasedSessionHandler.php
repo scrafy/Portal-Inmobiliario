@@ -5,8 +5,8 @@ namespace Illuminate\Session;
 use SessionHandlerInterface;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 
-class CacheBasedSessionHandler implements SessionHandlerInterface {
-
+class CacheBasedSessionHandler implements SessionHandlerInterface
+{
     /**
      * The cache repository instance.
      *
@@ -28,7 +28,8 @@ class CacheBasedSessionHandler implements SessionHandlerInterface {
      * @param  int  $minutes
      * @return void
      */
-    public function __construct(CacheContract $cache, $minutes) {
+    public function __construct(CacheContract $cache, $minutes)
+    {
         $this->cache = $cache;
         $this->minutes = $minutes;
     }
@@ -36,42 +37,48 @@ class CacheBasedSessionHandler implements SessionHandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName)
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close() {
+    public function close()
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId) {
+    public function read($sessionId)
+    {
         return $this->cache->get($sessionId, '');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data) {
+    public function write($sessionId, $data)
+    {
         return $this->cache->put($sessionId, $data, $this->minutes);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId) {
+    public function destroy($sessionId)
+    {
         return $this->cache->forget($sessionId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function gc($lifetime) {
+    public function gc($lifetime)
+    {
         return true;
     }
 
@@ -80,8 +87,8 @@ class CacheBasedSessionHandler implements SessionHandlerInterface {
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */
-    public function getCache() {
+    public function getCache()
+    {
         return $this->cache;
     }
-
 }

@@ -1,24 +1,26 @@
 <?php
-
-class Mockable {
-
+class Mockable
+{
     public $constructorCalled = false;
-    public $cloned = false;
+    public $cloned            = false;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->constructorCalled = false;
     }
 
-    public function foo() {
+    public function foo()
+    {
         return true;
     }
 
-    public function bar() {
+    public function bar()
+    {
         return true;
     }
 
-    public function __clone() {
+    public function __clone()
+    {
         $this->cloned = true;
     }
-
 }

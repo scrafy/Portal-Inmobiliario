@@ -2,10 +2,12 @@
 
 namespace Faker\Provider\it_CH;
 
-class Address extends \Faker\Provider\it_IT\Address {
-
+class Address extends \Faker\Provider\it_IT\Address
+{
     protected static $buildingNumber = array('###', '##', '#', '#a', '#b', '#c');
+
     protected static $streetPrefix = array('Piazza', 'Strada', 'Via', 'Borgo', 'Contrada', 'Rotonda', 'Incrocio');
+
     protected static $postcode = array('####');
 
     /**
@@ -68,13 +70,16 @@ class Address extends \Faker\Provider\it_IT\Address {
         array('ZG' => 'Zugo'),
         array('ZH' => 'Zurigo')
     );
+
     protected static $cityFormats = array(
         '{{cityName}}',
     );
+
     protected static $streetNameFormats = array(
         '{{streetSuffix}} {{firstName}}',
         '{{streetSuffix}} {{lastName}}'
     );
+
     protected static $streetAddressFormats = array(
         '{{streetName}} {{buildingNumber}}',
     );
@@ -87,7 +92,8 @@ class Address extends \Faker\Provider\it_IT\Address {
      * @example Via
      * @return string
      */
-    public static function streetPrefix() {
+    public static function streetPrefix()
+    {
         return static::randomElement(static::$streetPrefix);
     }
 
@@ -96,7 +102,8 @@ class Address extends \Faker\Provider\it_IT\Address {
      * @example Luzern
      * @return string
      */
-    public function cityName() {
+    public function cityName()
+    {
         return static::randomElement(static::$cityNames);
     }
 
@@ -105,7 +112,8 @@ class Address extends \Faker\Provider\it_IT\Address {
      * @example array('BE' => 'Bern')
      * @return array
      */
-    public static function canton() {
+    public static function canton()
+    {
         return static::randomElement(static::$canton);
     }
 
@@ -113,7 +121,8 @@ class Address extends \Faker\Provider\it_IT\Address {
      * Returns the abbreviation of a canton.
      * @return string
      */
-    public static function cantonShort() {
+    public static function cantonShort()
+    {
         $canton = static::canton();
         return key($canton);
     }
@@ -122,9 +131,9 @@ class Address extends \Faker\Provider\it_IT\Address {
      * Returns the name of canton.
      * @return string
      */
-    public static function cantonName() {
+    public static function cantonName()
+    {
         $canton = static::canton();
         return current($canton);
     }
-
 }

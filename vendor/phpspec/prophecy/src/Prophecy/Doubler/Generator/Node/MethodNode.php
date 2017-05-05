@@ -18,8 +18,8 @@ use Prophecy\Exception\InvalidArgumentException;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class MethodNode {
-
+class MethodNode
+{
     private $name;
     private $code;
     private $visibility = 'public';
@@ -37,69 +37,81 @@ class MethodNode {
      * @param string $name
      * @param string $code
      */
-    public function __construct($name, $code = null) {
+    public function __construct($name, $code = null)
+    {
         $this->name = $name;
         $this->code = $code;
     }
 
-    public function getVisibility() {
+    public function getVisibility()
+    {
         return $this->visibility;
     }
 
     /**
      * @param string $visibility
      */
-    public function setVisibility($visibility) {
+    public function setVisibility($visibility)
+    {
         $visibility = strtolower($visibility);
 
         if (!in_array($visibility, array('public', 'private', 'protected'))) {
             throw new InvalidArgumentException(sprintf(
-                    '`%s` method visibility is not supported.', $visibility
+                '`%s` method visibility is not supported.', $visibility
             ));
         }
 
         $this->visibility = $visibility;
     }
 
-    public function isStatic() {
+    public function isStatic()
+    {
         return $this->static;
     }
 
-    public function setStatic($static = true) {
+    public function setStatic($static = true)
+    {
         $this->static = (bool) $static;
     }
 
-    public function returnsReference() {
+    public function returnsReference()
+    {
         return $this->returnsReference;
     }
 
-    public function setReturnsReference() {
+    public function setReturnsReference()
+    {
         $this->returnsReference = true;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function addArgument(ArgumentNode $argument) {
+    public function addArgument(ArgumentNode $argument)
+    {
         $this->arguments[] = $argument;
     }
 
     /**
      * @return ArgumentNode[]
      */
-    public function getArguments() {
+    public function getArguments()
+    {
         return $this->arguments;
     }
 
-    public function hasReturnType() {
+    public function hasReturnType()
+    {
         return null !== $this->returnType;
     }
 
     /**
      * @param string $type
      */
-    public function setReturnType($type = null) {
+    public function setReturnType($type = null)
+    {
         switch ($type) {
             case '':
                 $this->returnType = null;
@@ -134,54 +146,62 @@ class MethodNode {
         }
     }
 
-    public function getReturnType() {
+    public function getReturnType()
+    {
         return $this->returnType;
     }
 
     /**
      * @param bool $bool
      */
-    public function setNullableReturnType($bool = true) {
+    public function setNullableReturnType($bool = true)
+    {
         $this->nullableReturnType = (bool) $bool;
     }
 
     /**
      * @return bool
      */
-    public function hasNullableReturnType() {
+    public function hasNullableReturnType()
+    {
         return $this->nullableReturnType;
     }
 
     /**
      * @param string $code
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
     }
 
-    public function getCode() {
-        if ($this->returnsReference) {
+    public function getCode()
+    {
+        if ($this->returnsReference)
+        {
             return "throw new \Prophecy\Exception\Doubler\ReturnByReferenceException('Returning by reference not supported', get_class(\$this), '{$this->name}');";
         }
 
         return (string) $this->code;
     }
 
-    public function useParentCode() {
+    public function useParentCode()
+    {
         $this->code = sprintf(
-                'return parent::%s(%s);', $this->getName(), implode(', ', array_map(array($this, 'generateArgument'), $this->arguments)
-                )
+            'return parent::%s(%s);', $this->getName(), implode(', ',
+                array_map(array($this, 'generateArgument'), $this->arguments)
+            )
         );
     }
 
-    private function generateArgument(ArgumentNode $arg) {
-        $argument = '$' . $arg->getName();
+    private function generateArgument(ArgumentNode $arg)
+    {
+        $argument = '$'.$arg->getName();
 
         if ($arg->isVariadic()) {
-            $argument = '...' . $argument;
+            $argument = '...'.$argument;
         }
 
         return $argument;
     }
-
 }

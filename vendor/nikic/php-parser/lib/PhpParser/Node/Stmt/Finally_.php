@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Finally_ extends Node\Stmt {
-
+class Finally_ extends Node\Stmt
+{
     /** @var Node[] Statements */
     public $stmts;
 
@@ -23,5 +23,4 @@ class Finally_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('stmts');
     }
-
 }

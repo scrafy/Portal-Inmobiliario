@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue;
 
-class WorkerOptions {
-
+class WorkerOptions
+{
     /**
      * The number of seconds before a released job will be available.
      *
@@ -56,7 +56,8 @@ class WorkerOptions {
      * @param  int  $maxTries
      * @param  bool  $force
      */
-    public function __construct($delay = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 0, $force = false) {
+    public function __construct($delay = 0, $memory = 128, $timeout = 60, $sleep = 3, $maxTries = 0, $force = false)
+    {
         $this->delay = $delay;
         $this->sleep = $sleep;
         $this->force = $force;
@@ -64,5 +65,4 @@ class WorkerOptions {
         $this->timeout = $timeout;
         $this->maxTries = $maxTries;
     }
-
 }

@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
  *
  * @author Drak <drak@zikula.org>
  */
-interface AttributeBagInterface extends SessionBagInterface {
-
+interface AttributeBagInterface extends SessionBagInterface
+{
     /**
      * Checks if an attribute is defined.
      *

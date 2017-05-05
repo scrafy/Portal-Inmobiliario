@@ -24,8 +24,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This is like var_dump but *way* awesomer.
  */
-class DumpCommand extends ReflectingCommand implements PresenterAware {
-
+class DumpCommand extends ReflectingCommand implements PresenterAware
+{
     private $presenter;
 
     /**
@@ -33,24 +33,26 @@ class DumpCommand extends ReflectingCommand implements PresenterAware {
      *
      * @param Presenter $presenter
      */
-    public function setPresenter(Presenter $presenter) {
+    public function setPresenter(Presenter $presenter)
+    {
         $this->presenter = $presenter;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('dump')
-                ->setDefinition(array(
-                    new InputArgument('target', InputArgument::REQUIRED, 'A target object or primitive to dump.', null),
-                    new InputOption('depth', '', InputOption::VALUE_REQUIRED, 'Depth to parse', 10),
-                    new InputOption('all', 'a', InputOption::VALUE_NONE, 'Include private and protected methods and properties.'),
-                ))
-                ->setDescription('Dump an object or primitive.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('dump')
+            ->setDefinition(array(
+                new InputArgument('target', InputArgument::REQUIRED, 'A target object or primitive to dump.', null),
+                new InputOption('depth', '', InputOption::VALUE_REQUIRED, 'Depth to parse', 10),
+                new InputOption('all', 'a', InputOption::VALUE_NONE, 'Include private and protected methods and properties.'),
+            ))
+            ->setDescription('Dump an object or primitive.')
+            ->setHelp(
+                <<<'HELP'
 Dump an object or primitive.
 
 This is like var_dump but <strong>way</strong> awesomer.
@@ -59,14 +61,15 @@ e.g.
 <return>>>> dump $_</return>
 <return>>>> dump $someVar</return>
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
-        $depth = $input->getOption('depth');
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $depth  = $input->getOption('depth');
         $target = $this->resolveTarget($input->getArgument('target'));
         $output->page($this->presenter->present($target, $depth, $input->getOption('all') ? Presenter::VERBOSE : 0));
 
@@ -84,7 +87,8 @@ HELP
      *
      * @return mixed
      */
-    protected function resolveTarget($target) {
+    protected function resolveTarget($target)
+    {
         $matches = array();
         if (preg_match(self::SUPERGLOBAL, $target, $matches)) {
             if (!array_key_exists($matches[1], $GLOBALS)) {
@@ -98,5 +102,4 @@ HELP
             throw new RuntimeException('Unknown target: ' . $target);
         }
     }
-
 }

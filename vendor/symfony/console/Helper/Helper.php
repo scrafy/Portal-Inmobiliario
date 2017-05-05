@@ -18,8 +18,8 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Helper implements HelperInterface {
-
+abstract class Helper implements HelperInterface
+{
     protected $helperSet = null;
 
     /**
@@ -27,7 +27,8 @@ abstract class Helper implements HelperInterface {
      *
      * @param HelperSet $helperSet A HelperSet instance
      */
-    public function setHelperSet(HelperSet $helperSet = null) {
+    public function setHelperSet(HelperSet $helperSet = null)
+    {
         $this->helperSet = $helperSet;
     }
 
@@ -36,7 +37,8 @@ abstract class Helper implements HelperInterface {
      *
      * @return HelperSet|null
      */
-    public function getHelperSet() {
+    public function getHelperSet()
+    {
         return $this->helperSet;
     }
 
@@ -47,7 +49,8 @@ abstract class Helper implements HelperInterface {
      *
      * @return int The length of the string
      */
-    public static function strlen($string) {
+    public static function strlen($string)
+    {
         if (false === $encoding = mb_detect_encoding($string, null, true)) {
             return strlen($string);
         }
@@ -55,7 +58,8 @@ abstract class Helper implements HelperInterface {
         return mb_strwidth($string, $encoding);
     }
 
-    public static function formatTime($secs) {
+    public static function formatTime($secs)
+    {
         static $timeFormats = array(
             array(0, '< 1 sec'),
             array(1, '1 sec'),
@@ -70,19 +74,21 @@ abstract class Helper implements HelperInterface {
 
         foreach ($timeFormats as $index => $format) {
             if ($secs >= $format[0]) {
-                if ((isset($timeFormats[$index + 1]) && $secs < $timeFormats[$index + 1][0]) || $index == count($timeFormats) - 1
+                if ((isset($timeFormats[$index + 1]) && $secs < $timeFormats[$index + 1][0])
+                    || $index == count($timeFormats) - 1
                 ) {
                     if (2 == count($format)) {
                         return $format[1];
                     }
 
-                    return floor($secs / $format[2]) . ' ' . $format[1];
+                    return floor($secs / $format[2]).' '.$format[1];
                 }
             }
         }
     }
 
-    public static function formatMemory($memory) {
+    public static function formatMemory($memory)
+    {
         if ($memory >= 1024 * 1024 * 1024) {
             return sprintf('%.1f GiB', $memory / 1024 / 1024 / 1024);
         }
@@ -98,7 +104,8 @@ abstract class Helper implements HelperInterface {
         return sprintf('%d B', $memory);
     }
 
-    public static function strlenWithoutDecoration(OutputFormatterInterface $formatter, $string) {
+    public static function strlenWithoutDecoration(OutputFormatterInterface $formatter, $string)
+    {
         $isDecorated = $formatter->isDecorated();
         $formatter->setDecorated(false);
         // remove <...> formatting
@@ -109,5 +116,4 @@ abstract class Helper implements HelperInterface {
 
         return self::strlen($string);
     }
-
 }

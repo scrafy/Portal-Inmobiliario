@@ -6,8 +6,8 @@ use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
 
-abstract class Seeder {
-
+abstract class Seeder
+{
     /**
      * The container instance.
      *
@@ -28,7 +28,8 @@ abstract class Seeder {
      * @param  string  $class
      * @return void
      */
-    public function call($class) {
+    public function call($class)
+    {
         if (isset($this->command)) {
             $this->command->getOutput()->writeln("<info>Seeding:</info> $class");
         }
@@ -42,7 +43,8 @@ abstract class Seeder {
      * @param  string  $class
      * @return \Illuminate\Database\Seeder
      */
-    protected function resolve($class) {
+    protected function resolve($class)
+    {
         if (isset($this->container)) {
             $instance = $this->container->make($class);
 
@@ -64,7 +66,8 @@ abstract class Seeder {
      * @param  \Illuminate\Container\Container  $container
      * @return $this
      */
-    public function setContainer(Container $container) {
+    public function setContainer(Container $container)
+    {
         $this->container = $container;
 
         return $this;
@@ -76,7 +79,8 @@ abstract class Seeder {
      * @param  \Illuminate\Console\Command  $command
      * @return $this
      */
-    public function setCommand(Command $command) {
+    public function setCommand(Command $command)
+    {
         $this->command = $command;
 
         return $this;
@@ -89,12 +93,14 @@ abstract class Seeder {
      *
      * @throws \InvalidArgumentException
      */
-    public function __invoke() {
-        if (!method_exists($this, 'run')) {
-            throw new InvalidArgumentException('Method [run] missing from ' . get_class($this));
+    public function __invoke()
+    {
+        if (! method_exists($this, 'run')) {
+            throw new InvalidArgumentException('Method [run] missing from '.get_class($this));
         }
 
-        return isset($this->container) ? $this->container->call([$this, 'run']) : $this->run();
+        return isset($this->container)
+                    ? $this->container->call([$this, 'run'])
+                    : $this->run();
     }
-
 }

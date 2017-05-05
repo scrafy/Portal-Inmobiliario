@@ -1,13 +1,12 @@
 <?php
-
-class NamespaceCoverageClassExtendedTest extends PHPUnit_Framework_TestCase {
-
+class NamespaceCoverageClassExtendedTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @covers Foo\CoveredClass<extended>
      */
-    public function testSomething() {
+    public function testSomething()
+    {
         $o = new Foo\CoveredClass;
         $o->publicMethod();
     }
-
 }

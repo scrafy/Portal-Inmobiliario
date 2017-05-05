@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Http;
 
-interface Kernel {
-
+interface Kernel
+{
     /**
      * Bootstrap the application for HTTP requests.
      *

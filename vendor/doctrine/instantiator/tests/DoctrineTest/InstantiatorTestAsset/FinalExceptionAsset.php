@@ -1,5 +1,4 @@
 <?php
-
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,15 +27,15 @@ use Exception;
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
-final class FinalExceptionAsset extends Exception {
-
+final class FinalExceptionAsset extends Exception
+{
     /**
      * Constructor - should not be called
      *
      * @throws BadMethodCallException
      */
-    public function __construct() {
+    public function __construct()
+    {
         throw new BadMethodCallException('Not supposed to be called!');
     }
-
 }

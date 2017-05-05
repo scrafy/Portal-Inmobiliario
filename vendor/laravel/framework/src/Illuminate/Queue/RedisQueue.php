@@ -8,8 +8,8 @@ use Illuminate\Queue\Jobs\RedisJob;
 use Illuminate\Contracts\Redis\Factory as Redis;
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 
-class RedisQueue extends Queue implements QueueContract {
-
+class RedisQueue extends Queue implements QueueContract
+{
     /**
      * The Redis factory implementation.
      *
@@ -47,7 +47,8 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  int  $retryAfter
      * @return void
      */
-    public function __construct(Redis $redis, $default = 'default', $connection = null, $retryAfter = 60) {
+    public function __construct(Redis $redis, $default = 'default', $connection = null, $retryAfter = 60)
+    {
         $this->redis = $redis;
         $this->default = $default;
         $this->connection = $connection;
@@ -60,11 +61,12 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return int
      */
-    public function size($queue = null) {
+    public function size($queue = null)
+    {
         $queue = $this->getQueue($queue);
 
         return $this->getConnection()->eval(
-                        LuaScripts::size(), 3, $queue, $queue . ':delayed', $queue . ':reserved'
+            LuaScripts::size(), 3, $queue, $queue.':delayed', $queue.':reserved'
         );
     }
 
@@ -76,7 +78,8 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function push($job, $data = '', $queue = null) {
+    public function push($job, $data = '', $queue = null)
+    {
         return $this->pushRaw($this->createPayload($job, $data), $queue);
     }
 
@@ -88,7 +91,8 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  array   $options
      * @return mixed
      */
-    public function pushRaw($payload, $queue = null, array $options = []) {
+    public function pushRaw($payload, $queue = null, array $options = [])
+    {
         $this->getConnection()->rpush($this->getQueue($queue), $payload);
 
         return Arr::get(json_decode($payload, true), 'id');
@@ -103,7 +107,8 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    public function later($delay, $job, $data = '', $queue = null) {
+    public function later($delay, $job, $data = '', $queue = null)
+    {
         return $this->laterRaw($delay, $this->createPayload($job, $data), $queue);
     }
 
@@ -115,9 +120,10 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return mixed
      */
-    protected function laterRaw($delay, $payload, $queue = null) {
+    protected function laterRaw($delay, $payload, $queue = null)
+    {
         $this->getConnection()->zadd(
-                $this->getQueue($queue) . ':delayed', $this->availableAt($delay), $payload
+            $this->getQueue($queue).':delayed', $this->availableAt($delay), $payload
         );
 
         return Arr::get(json_decode($payload, true), 'id');
@@ -131,7 +137,8 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return string
      */
-    protected function createPayloadArray($job, $data = '', $queue = null) {
+    protected function createPayloadArray($job, $data = '', $queue = null)
+    {
         return array_merge(parent::createPayloadArray($job, $data, $queue), [
             'id' => $this->getRandomId(),
             'attempts' => 0,
@@ -144,14 +151,16 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return \Illuminate\Contracts\Queue\Job|null
      */
-    public function pop($queue = null) {
+    public function pop($queue = null)
+    {
         $this->migrate($prefixed = $this->getQueue($queue));
 
         list($job, $reserved) = $this->retrieveNextJob($prefixed);
 
         if ($reserved) {
             return new RedisJob(
-                    $this->container, $this, $job, $reserved, $this->connectionName, $queue ?: $this->default
+                $this->container, $this, $job,
+                $reserved, $this->connectionName, $queue ?: $this->default
             );
         }
     }
@@ -162,11 +171,12 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return void
      */
-    protected function migrate($queue) {
-        $this->migrateExpiredJobs($queue . ':delayed', $queue);
+    protected function migrate($queue)
+    {
+        $this->migrateExpiredJobs($queue.':delayed', $queue);
 
-        if (!is_null($this->retryAfter)) {
-            $this->migrateExpiredJobs($queue . ':reserved', $queue);
+        if (! is_null($this->retryAfter)) {
+            $this->migrateExpiredJobs($queue.':reserved', $queue);
         }
     }
 
@@ -177,9 +187,10 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $to
      * @return array
      */
-    public function migrateExpiredJobs($from, $to) {
+    public function migrateExpiredJobs($from, $to)
+    {
         return $this->getConnection()->eval(
-                        LuaScripts::migrateExpiredJobs(), 2, $from, $to, $this->currentTime()
+            LuaScripts::migrateExpiredJobs(), 2, $from, $to, $this->currentTime()
         );
     }
 
@@ -189,9 +200,11 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string  $queue
      * @return array
      */
-    protected function retrieveNextJob($queue) {
+    protected function retrieveNextJob($queue)
+    {
         return $this->getConnection()->eval(
-                        LuaScripts::pop(), 2, $queue, $queue . ':reserved', $this->availableAt($this->retryAfter)
+            LuaScripts::pop(), 2, $queue, $queue.':reserved',
+            $this->availableAt($this->retryAfter)
         );
     }
 
@@ -202,8 +215,9 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  \Illuminate\Queue\Jobs\RedisJob  $job
      * @return void
      */
-    public function deleteReserved($queue, $job) {
-        $this->getConnection()->zrem($this->getQueue($queue) . ':reserved', $job->getReservedJob());
+    public function deleteReserved($queue, $job)
+    {
+        $this->getConnection()->zrem($this->getQueue($queue).':reserved', $job->getReservedJob());
     }
 
     /**
@@ -214,11 +228,13 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  int  $delay
      * @return void
      */
-    public function deleteAndRelease($queue, $job, $delay) {
+    public function deleteAndRelease($queue, $job, $delay)
+    {
         $queue = $this->getQueue($queue);
 
         $this->getConnection()->eval(
-                LuaScripts::release(), 2, $queue . ':delayed', $queue . ':reserved', $job->getReservedJob(), $this->availableAt($delay)
+            LuaScripts::release(), 2, $queue.':delayed', $queue.':reserved',
+            $job->getReservedJob(), $this->availableAt($delay)
         );
     }
 
@@ -227,7 +243,8 @@ class RedisQueue extends Queue implements QueueContract {
      *
      * @return string
      */
-    protected function getRandomId() {
+    protected function getRandomId()
+    {
         return Str::random(32);
     }
 
@@ -237,8 +254,9 @@ class RedisQueue extends Queue implements QueueContract {
      * @param  string|null  $queue
      * @return string
      */
-    protected function getQueue($queue) {
-        return 'queues:' . ($queue ?: $this->default);
+    protected function getQueue($queue)
+    {
+        return 'queues:'.($queue ?: $this->default);
     }
 
     /**
@@ -246,7 +264,8 @@ class RedisQueue extends Queue implements QueueContract {
      *
      * @return \Predis\ClientInterface
      */
-    protected function getConnection() {
+    protected function getConnection()
+    {
         return $this->redis->connection($this->connection);
     }
 
@@ -255,8 +274,8 @@ class RedisQueue extends Queue implements QueueContract {
      *
      * @return \Illuminate\Contracts\Redis\Factory
      */
-    public function getRedis() {
+    public function getRedis()
+    {
         return $this->redis;
     }
-
 }

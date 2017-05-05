@@ -4,8 +4,8 @@ namespace Illuminate\Notifications\Messages;
 
 use Illuminate\Notifications\Action;
 
-class SimpleMessage {
-
+class SimpleMessage
+{
     /**
      * The "level" of the notification (info, success, error).
      *
@@ -67,7 +67,8 @@ class SimpleMessage {
      *
      * @return $this
      */
-    public function success() {
+    public function success()
+    {
         $this->level = 'success';
 
         return $this;
@@ -78,7 +79,8 @@ class SimpleMessage {
      *
      * @return $this
      */
-    public function error() {
+    public function error()
+    {
         $this->level = 'error';
 
         return $this;
@@ -90,7 +92,8 @@ class SimpleMessage {
      * @param  string  $level
      * @return $this
      */
-    public function level($level) {
+    public function level($level)
+    {
         $this->level = $level;
 
         return $this;
@@ -102,7 +105,8 @@ class SimpleMessage {
      * @param  string  $subject
      * @return $this
      */
-    public function subject($subject) {
+    public function subject($subject)
+    {
         $this->subject = $subject;
 
         return $this;
@@ -114,7 +118,8 @@ class SimpleMessage {
      * @param  string  $greeting
      * @return $this
      */
-    public function greeting($greeting) {
+    public function greeting($greeting)
+    {
         $this->greeting = $greeting;
 
         return $this;
@@ -126,7 +131,8 @@ class SimpleMessage {
      * @param  string  $salutation
      * @return $this
      */
-    public function salutation($salutation) {
+    public function salutation($salutation)
+    {
         $this->salutation = $salutation;
 
         return $this;
@@ -138,7 +144,8 @@ class SimpleMessage {
      * @param  \Illuminate\Notifications\Action|string  $line
      * @return $this
      */
-    public function line($line) {
+    public function line($line)
+    {
         return $this->with($line);
     }
 
@@ -148,10 +155,11 @@ class SimpleMessage {
      * @param  \Illuminate\Notifications\Action|string|array  $line
      * @return $this
      */
-    public function with($line) {
+    public function with($line)
+    {
         if ($line instanceof Action) {
             $this->action($line->text, $line->url);
-        } elseif (!$this->actionText) {
+        } elseif (! $this->actionText) {
             $this->introLines[] = $this->formatLine($line);
         } else {
             $this->outroLines[] = $this->formatLine($line);
@@ -166,7 +174,8 @@ class SimpleMessage {
      * @param  string|array  $line
      * @return string
      */
-    protected function formatLine($line) {
+    protected function formatLine($line)
+    {
         if (is_array($line)) {
             return implode(' ', array_map('trim', $line));
         }
@@ -181,7 +190,8 @@ class SimpleMessage {
      * @param  string  $url
      * @return $this
      */
-    public function action($text, $url) {
+    public function action($text, $url)
+    {
         $this->actionText = $text;
         $this->actionUrl = $url;
 
@@ -193,7 +203,8 @@ class SimpleMessage {
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return [
             'level' => $this->level,
             'subject' => $this->subject,
@@ -205,5 +216,4 @@ class SimpleMessage {
             'actionUrl' => $this->actionUrl,
         ];
     }
-
 }

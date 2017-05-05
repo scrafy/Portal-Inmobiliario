@@ -18,56 +18,23 @@ class CreateLettingsbypostcodeView extends Migration {
                 SQL SECURITY DEFINER
                 VIEW `lettingsbypostcode` AS
                     SELECT 
-                        `summarylettings`.`PostCode` AS `PostCode`,
-                        GROUP_CONCAT('PropertyId=',
-                            `summarylettings`.`PropertyId`,
-                            ',',
-                            'AreaName=',
-                            `summarylettings`.`AreaName`,
-                            ',',
-                            'ShortAddress=',
-                            `summarylettings`.`ShortAddress`,
-                            ',',
-                            'PostCode=',
-                            `summarylettings`.`PostCode`,
-                            ',',
-                            'PostCodeArea=',
-                            `postcodeareas`.`area`,
-                            ',',
-                            'Price=',
-                            `summarylettings`.`Price`,
-                            ',',
-                            'TypeProperty=',
-                            `summarylettings`.`TypeProperty`,
-                            ',',
-                            'Furnished=',
-                            `summarylettings`.`Furnished`,
-                            ',',
-                            'TotalBathrooms=',
-                            `summarylettings`.`TotalBathrooms`,
-                            ',',
-                            'TotalBedrooms=',
-                            `summarylettings`.`TotalBedrooms`,
-                            ',',
-                            'TotalGarages=',
-                            `summarylettings`.`TotalGarages`,
-                            ',',
-                            'TotalKitchens=',
-                            `summarylettings`.`TotalKitchens`,
-                            ',',
-                            'TotalRooms=',
-                            `summarylettings`.`TotalRooms`,
-                            ',',
-                            'MainPhoto=',
-                            (CASE
-                                WHEN ISNULL(`summarylettings`.`MainPhoto`) THEN ''
-                                ELSE `summarylettings`.`MainPhoto`
-                            END)
-                            SEPARATOR '*') AS `data`
+                        `a`.`PostCode` AS `PostCode`,
+                        `a`.`data` AS `data`,
+                        `b`.`Latitude` AS `Latitude`,
+                        `b`.`Longitude` AS `Longitude`
                     FROM
-                        (`summarylettings`
-                        JOIN `postcode_areas` `postcodeareas` ON ((`summarylettings`.`PostCodeArea` = `postcodeareas`.`postcode_area`)))
-                    GROUP BY `summarylettings`.`PostCode`";
+                        (((SELECT 
+                            `pfp`.`summarylettings`.`PostCode` AS `PostCode`,
+                                GROUP_CONCAT('PropertyId=', `pfp`.`summarylettings`.`PropertyId`, ',', 'AreaName=', `pfp`.`summarylettings`.`AreaName`, ',', 'ShortAddress=', `pfp`.`summarylettings`.`ShortAddress`, ',', 'PostCode=', `pfp`.`summarylettings`.`PostCode`, ',', 'Price=', `pfp`.`summarylettings`.`Price`, ',', 'TypeProperty=', `pfp`.`summarylettings`.`TypeProperty`, ',', 'Furnished=', `pfp`.`summarylettings`.`Furnished`, ',', 'TotalBathrooms=', `pfp`.`summarylettings`.`TotalBathrooms`, ',', 'TotalBedrooms=', `pfp`.`summarylettings`.`TotalBedrooms`, ',', 'TotalGarages=', `pfp`.`summarylettings`.`TotalGarages`, ',', 'TotalKitchens=', `pfp`.`summarylettings`.`TotalKitchens`, ',', 'TotalRooms=', `pfp`.`summarylettings`.`TotalRooms`, ',', 'MainPhoto=', (CASE
+                                    WHEN ISNULL(`pfp`.`summarylettings`.`MainPhoto`) THEN ''
+                                    ELSE `pfp`.`summarylettings`.`MainPhoto`
+                                END)
+                                    SEPARATOR '*') AS `data`
+                        FROM
+                            `pfp`.`summarylettings`
+                        GROUP BY `pfp`.`summarylettings`.`PostCode`)) `a`
+                        JOIN `pfp`.`postcodes` `b` ON ((`a`.`PostCode` = `b`.`PostCode`)))";
+        
         DB::connection()->getPdo()->exec($sql);
     }
 

@@ -12,8 +12,8 @@ use Dotenv\Exception\InvalidPathException;
  * - stripping comments beginning with a `#`,
  * - parsing lines that look shell variable setters, e.g `export key = value`, `key="value"`.
  */
-class Loader {
-
+class Loader
+{
     /**
      * The file path.
      *
@@ -36,7 +36,8 @@ class Loader {
      *
      * @return void
      */
-    public function __construct($filePath, $immutable = false) {
+    public function __construct($filePath, $immutable = false)
+    {
         $this->filePath = $filePath;
         $this->immutable = $immutable;
     }
@@ -46,7 +47,8 @@ class Loader {
      *
      * @return array
      */
-    public function load() {
+    public function load()
+    {
         $this->ensureFileIsReadable();
 
         $filePath = $this->filePath;
@@ -67,7 +69,8 @@ class Loader {
      *
      * @return void
      */
-    protected function ensureFileIsReadable() {
+    protected function ensureFileIsReadable()
+    {
         if (!is_readable($this->filePath) || !is_file($this->filePath)) {
             throw new InvalidPathException(sprintf('Unable to read the environment file at %s.', $this->filePath));
         }
@@ -87,7 +90,8 @@ class Loader {
      *
      * @return array
      */
-    protected function normaliseEnvironmentVariable($name, $value) {
+    protected function normaliseEnvironmentVariable($name, $value)
+    {
         list($name, $value) = $this->splitCompoundStringIntoParts($name, $value);
         list($name, $value) = $this->sanitiseVariableName($name, $value);
         list($name, $value) = $this->sanitiseVariableValue($name, $value);
@@ -107,7 +111,8 @@ class Loader {
      *
      * @return array
      */
-    public function processFilters($name, $value) {
+    public function processFilters($name, $value)
+    {
         list($name, $value) = $this->splitCompoundStringIntoParts($name, $value);
         list($name, $value) = $this->sanitiseVariableName($name, $value);
         list($name, $value) = $this->sanitiseVariableValue($name, $value);
@@ -122,7 +127,8 @@ class Loader {
      *
      * @return array
      */
-    protected function readLinesFromFile($filePath) {
+    protected function readLinesFromFile($filePath)
+    {
         // Read file into an array of lines with auto-detected line endings
         $autodetect = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings', '1');
@@ -139,7 +145,8 @@ class Loader {
      *
      * @return bool
      */
-    protected function isComment($line) {
+    protected function isComment($line)
+    {
         return strpos(ltrim($line), '#') === 0;
     }
 
@@ -150,7 +157,8 @@ class Loader {
      *
      * @return bool
      */
-    protected function looksLikeSetter($line) {
+    protected function looksLikeSetter($line)
+    {
         return strpos($line, '=') !== false;
     }
 
@@ -165,7 +173,8 @@ class Loader {
      *
      * @return array
      */
-    protected function splitCompoundStringIntoParts($name, $value) {
+    protected function splitCompoundStringIntoParts($name, $value)
+    {
         if (strpos($name, '=') !== false) {
             list($name, $value) = array_map('trim', explode('=', $name, 2));
         }
@@ -183,7 +192,8 @@ class Loader {
      *
      * @return array
      */
-    protected function sanitiseVariableValue($name, $value) {
+    protected function sanitiseVariableValue($name, $value)
+    {
         $value = trim($value);
         if (!$value) {
             return array($name, $value);
@@ -192,7 +202,7 @@ class Loader {
         if ($this->beginsWithAQuote($value)) { // value starts with a quote
             $quote = $value[0];
             $regexPattern = sprintf(
-                    '/^
+                '/^
                 %1$s          # match a quote at the start of the value
                 (             # capturing sub-pattern used
                  (?:          # we do not need to capture this
@@ -203,7 +213,8 @@ class Loader {
                 )             # end of the capturing sub-pattern
                 %1$s          # and the closing quote
                 .*$           # and discard any string after the closing quote
-                /mx', $quote
+                /mx',
+                $quote
             );
             $value = preg_replace($regexPattern, '$1', $value);
             $value = str_replace("\\$quote", $quote, $value);
@@ -231,18 +242,21 @@ class Loader {
      *
      * @return mixed
      */
-    protected function resolveNestedVariables($value) {
+    protected function resolveNestedVariables($value)
+    {
         if (strpos($value, '$') !== false) {
             $loader = $this;
             $value = preg_replace_callback(
-                    '/\${([a-zA-Z0-9_]+)}/', function ($matchedPatterns) use ($loader) {
-                $nestedVariable = $loader->getEnvironmentVariable($matchedPatterns[1]);
-                if ($nestedVariable === null) {
-                    return $matchedPatterns[0];
-                } else {
-                    return $nestedVariable;
-                }
-            }, $value
+                '/\${([a-zA-Z0-9_]+)}/',
+                function ($matchedPatterns) use ($loader) {
+                    $nestedVariable = $loader->getEnvironmentVariable($matchedPatterns[1]);
+                    if ($nestedVariable === null) {
+                        return $matchedPatterns[0];
+                    } else {
+                        return $nestedVariable;
+                    }
+                },
+                $value
             );
         }
 
@@ -257,7 +271,8 @@ class Loader {
      *
      * @return array
      */
-    protected function sanitiseVariableName($name, $value) {
+    protected function sanitiseVariableName($name, $value)
+    {
         $name = trim(str_replace(array('export ', '\'', '"'), '', $name));
 
         return array($name, $value);
@@ -270,7 +285,8 @@ class Loader {
      *
      * @return bool
      */
-    protected function beginsWithAQuote($value) {
+    protected function beginsWithAQuote($value)
+    {
         return strpbrk($value[0], '"\'') !== false;
     }
 
@@ -281,7 +297,8 @@ class Loader {
      *
      * @return string|null
      */
-    public function getEnvironmentVariable($name) {
+    public function getEnvironmentVariable($name)
+    {
         switch (true) {
             case array_key_exists($name, $_ENV):
                 return $_ENV[$name];
@@ -308,7 +325,8 @@ class Loader {
      *
      * @return void
      */
-    public function setEnvironmentVariable($name, $value = null) {
+    public function setEnvironmentVariable($name, $value = null)
+    {
         list($name, $value) = $this->normaliseEnvironmentVariable($name, $value);
 
         // Don't overwrite existing environment variables if we're immutable
@@ -347,7 +365,8 @@ class Loader {
      *
      * @return void
      */
-    public function clearEnvironmentVariable($name) {
+    public function clearEnvironmentVariable($name)
+    {
         // Don't clear anything if we're immutable.
         if ($this->immutable) {
             return;
@@ -359,5 +378,4 @@ class Loader {
 
         unset($_ENV[$name], $_SERVER[$name]);
     }
-
 }

@@ -4,8 +4,8 @@ namespace PhpParser\Serializer;
 
 use PhpParser;
 
-class XMLTest extends \PHPUnit_Framework_TestCase {
-
+class XMLTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers PhpParser\Serializer\XML<extended>
      */
@@ -153,7 +153,7 @@ CODE;
 </AST>
 XML;
 
-        $parser = new PhpParser\Parser\Php7(new PhpParser\Lexer);
+        $parser     = new PhpParser\Parser\Php7(new PhpParser\Lexer);
         $serializer = new XML;
 
         $code = str_replace("\r\n", "\n", $code);
@@ -169,5 +169,4 @@ XML;
         $serializer = new XML;
         $serializer->serialize(array(new \stdClass));
     }
-
 }

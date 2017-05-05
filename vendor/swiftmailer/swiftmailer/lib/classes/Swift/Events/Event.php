@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Events_Event {
-
+interface Swift_Events_Event
+{
     /**
      * Get the source object of this event.
      *

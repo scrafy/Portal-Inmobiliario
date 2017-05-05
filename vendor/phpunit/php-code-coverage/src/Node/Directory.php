@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -16,8 +15,8 @@ use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 /**
  * Represents a directory in the code coverage information tree.
  */
-class Directory extends AbstractNode implements \IteratorAggregate {
-
+class Directory extends AbstractNode implements \IteratorAggregate
+{
     /**
      * @var AbstractNode[]
      */
@@ -113,7 +112,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         if ($this->numFiles == -1) {
             $this->numFiles = 0;
 
@@ -130,9 +130,11 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return \RecursiveIteratorIterator
      */
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \RecursiveIteratorIterator(
-                new Iterator($this), \RecursiveIteratorIterator::SELF_FIRST
+            new Iterator($this),
+            \RecursiveIteratorIterator::SELF_FIRST
         );
     }
 
@@ -143,10 +145,11 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return Directory
      */
-    public function addDirectory($name) {
+    public function addDirectory($name)
+    {
         $directory = new self($name, $this);
 
-        $this->children[] = $directory;
+        $this->children[]    = $directory;
         $this->directories[] = &$this->children[count($this->children) - 1];
 
         return $directory;
@@ -164,16 +167,21 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @throws InvalidArgumentException
      */
-    public function addFile($name, array $coverageData, array $testData, $cacheTokens) {
+    public function addFile($name, array $coverageData, array $testData, $cacheTokens)
+    {
         $file = new File(
-                $name, $this, $coverageData, $testData, $cacheTokens
+            $name,
+            $this,
+            $coverageData,
+            $testData,
+            $cacheTokens
         );
 
         $this->children[] = $file;
-        $this->files[] = &$this->children[count($this->children) - 1];
+        $this->files[]    = &$this->children[count($this->children) - 1];
 
         $this->numExecutableLines = -1;
-        $this->numExecutedLines = -1;
+        $this->numExecutedLines   = -1;
 
         return $file;
     }
@@ -183,7 +191,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getDirectories() {
+    public function getDirectories()
+    {
         return $this->directories;
     }
 
@@ -192,7 +201,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getFiles() {
+    public function getFiles()
+    {
         return $this->files;
     }
 
@@ -201,7 +211,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getChildNodes() {
+    public function getChildNodes()
+    {
         return $this->children;
     }
 
@@ -210,13 +221,15 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getClasses() {
+    public function getClasses()
+    {
         if ($this->classes === null) {
             $this->classes = [];
 
             foreach ($this->children as $child) {
                 $this->classes = array_merge(
-                        $this->classes, $child->getClasses()
+                    $this->classes,
+                    $child->getClasses()
                 );
             }
         }
@@ -229,13 +242,15 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getTraits() {
+    public function getTraits()
+    {
         if ($this->traits === null) {
             $this->traits = [];
 
             foreach ($this->children as $child) {
                 $this->traits = array_merge(
-                        $this->traits, $child->getTraits()
+                    $this->traits,
+                    $child->getTraits()
                 );
             }
         }
@@ -248,13 +263,15 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getFunctions() {
+    public function getFunctions()
+    {
         if ($this->functions === null) {
             $this->functions = [];
 
             foreach ($this->children as $child) {
                 $this->functions = array_merge(
-                        $this->functions, $child->getFunctions()
+                    $this->functions,
+                    $child->getFunctions()
                 );
             }
         }
@@ -267,15 +284,16 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return array
      */
-    public function getLinesOfCode() {
+    public function getLinesOfCode()
+    {
         if ($this->linesOfCode === null) {
             $this->linesOfCode = ['loc' => 0, 'cloc' => 0, 'ncloc' => 0];
 
             foreach ($this->children as $child) {
                 $linesOfCode = $child->getLinesOfCode();
 
-                $this->linesOfCode['loc'] += $linesOfCode['loc'];
-                $this->linesOfCode['cloc'] += $linesOfCode['cloc'];
+                $this->linesOfCode['loc']   += $linesOfCode['loc'];
+                $this->linesOfCode['cloc']  += $linesOfCode['cloc'];
                 $this->linesOfCode['ncloc'] += $linesOfCode['ncloc'];
             }
         }
@@ -288,7 +306,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumExecutableLines() {
+    public function getNumExecutableLines()
+    {
         if ($this->numExecutableLines == -1) {
             $this->numExecutableLines = 0;
 
@@ -305,7 +324,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumExecutedLines() {
+    public function getNumExecutedLines()
+    {
         if ($this->numExecutedLines == -1) {
             $this->numExecutedLines = 0;
 
@@ -322,7 +342,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumClasses() {
+    public function getNumClasses()
+    {
         if ($this->numClasses == -1) {
             $this->numClasses = 0;
 
@@ -339,7 +360,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumTestedClasses() {
+    public function getNumTestedClasses()
+    {
         if ($this->numTestedClasses == -1) {
             $this->numTestedClasses = 0;
 
@@ -356,7 +378,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumTraits() {
+    public function getNumTraits()
+    {
         if ($this->numTraits == -1) {
             $this->numTraits = 0;
 
@@ -373,7 +396,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumTestedTraits() {
+    public function getNumTestedTraits()
+    {
         if ($this->numTestedTraits == -1) {
             $this->numTestedTraits = 0;
 
@@ -390,7 +414,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumMethods() {
+    public function getNumMethods()
+    {
         if ($this->numMethods == -1) {
             $this->numMethods = 0;
 
@@ -407,7 +432,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumTestedMethods() {
+    public function getNumTestedMethods()
+    {
         if ($this->numTestedMethods == -1) {
             $this->numTestedMethods = 0;
 
@@ -424,7 +450,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumFunctions() {
+    public function getNumFunctions()
+    {
         if ($this->numFunctions == -1) {
             $this->numFunctions = 0;
 
@@ -441,7 +468,8 @@ class Directory extends AbstractNode implements \IteratorAggregate {
      *
      * @return int
      */
-    public function getNumTestedFunctions() {
+    public function getNumTestedFunctions()
+    {
         if ($this->numTestedFunctions == -1) {
             $this->numTestedFunctions = 0;
 
@@ -452,5 +480,4 @@ class Directory extends AbstractNode implements \IteratorAggregate {
 
         return $this->numTestedFunctions;
     }
-
 }

@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
  */
-interface CacheClearerInterface {
-
+interface CacheClearerInterface
+{
     /**
      * Clears any caches necessary.
      *

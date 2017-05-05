@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\CodeCoverage\Driver;
 /**
  * Interface for code coverage drivers.
  */
-interface Driver {
-
+interface Driver
+{
     /**
      * @var int
      *

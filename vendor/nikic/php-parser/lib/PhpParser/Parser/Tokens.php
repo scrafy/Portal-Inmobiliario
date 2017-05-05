@@ -3,9 +3,8 @@
 namespace PhpParser\Parser;
 
 /* GENERATED file based on grammar/tokens.y */
-
-final class Tokens {
-
+final class Tokens
+{
     const YYERRTOK = 256;
     const T_INCLUDE = 257;
     const T_INCLUDE_ONCE = 258;
@@ -142,5 +141,4 @@ final class Tokens {
     const T_DIR = 389;
     const T_NS_SEPARATOR = 390;
     const T_ELLIPSIS = 391;
-
 }

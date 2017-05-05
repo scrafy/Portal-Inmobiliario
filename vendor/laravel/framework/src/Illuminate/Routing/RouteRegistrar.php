@@ -6,8 +6,8 @@ use Closure;
 use BadMethodCallException;
 use InvalidArgumentException;
 
-class RouteRegistrar {
-
+class RouteRegistrar
+{
     /**
      * The router instance.
      *
@@ -55,7 +55,8 @@ class RouteRegistrar {
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function __construct(Router $router) {
+    public function __construct(Router $router)
+    {
         $this->router = $router;
     }
 
@@ -68,8 +69,9 @@ class RouteRegistrar {
      *
      * @throws \InvalidArgumentException
      */
-    public function attribute($key, $value) {
-        if (!in_array($key, $this->allowedAttributes)) {
+    public function attribute($key, $value)
+    {
+        if (! in_array($key, $this->allowedAttributes)) {
             throw new InvalidArgumentException("Attribute [{$key}] does not exist.");
         }
 
@@ -86,7 +88,8 @@ class RouteRegistrar {
      * @param  array  $options
      * @return void
      */
-    public function resource($name, $controller, array $options = []) {
+    public function resource($name, $controller, array $options = [])
+    {
         $this->router->resource($name, $controller, $this->attributes + $options);
     }
 
@@ -96,7 +99,8 @@ class RouteRegistrar {
      * @param  \Closure  $callback
      * @return void
      */
-    public function group($callback) {
+    public function group($callback)
+    {
         $this->router->group($this->attributes, $callback);
     }
 
@@ -108,7 +112,8 @@ class RouteRegistrar {
      * @param  \Closure|array|string|null  $action
      * @return \Illuminate\Routing\Route
      */
-    public function match($methods, $uri, $action = null) {
+    public function match($methods, $uri, $action = null)
+    {
         return $this->router->match($methods, $uri, $this->compileAction($action));
     }
 
@@ -120,8 +125,9 @@ class RouteRegistrar {
      * @param  \Closure|array|string|null  $action
      * @return \Illuminate\Routing\Route
      */
-    protected function registerRoute($method, $uri, $action = null) {
-        if (!is_array($action)) {
+    protected function registerRoute($method, $uri, $action = null)
+    {
+        if (! is_array($action)) {
             $action = array_merge($this->attributes, $action ? ['uses' => $action] : []);
         }
 
@@ -134,7 +140,8 @@ class RouteRegistrar {
      * @param  \Closure|array|string|null  $action
      * @return array
      */
-    protected function compileAction($action) {
+    protected function compileAction($action)
+    {
         if (is_null($action)) {
             return $this->attributes;
         }
@@ -153,7 +160,8 @@ class RouteRegistrar {
      * @param  array  $parameters
      * @return \Illuminate\Routing\Route|$this
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         if (in_array($method, $this->passthru)) {
             return $this->registerRoute($method, ...$parameters);
         }
@@ -164,5 +172,4 @@ class RouteRegistrar {
 
         throw new BadMethodCallException("Method [{$method}] does not exist.");
     }
-
 }

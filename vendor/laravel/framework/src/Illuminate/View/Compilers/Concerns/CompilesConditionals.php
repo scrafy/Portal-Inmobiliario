@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesConditionals {
-
+trait CompilesConditionals
+{
     /**
      * Compile the has-section statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileHasSection($expression) {
+    protected function compileHasSection($expression)
+    {
         return "<?php if (! empty(trim(\$__env->yieldContent{$expression}))): ?>";
     }
 
@@ -20,7 +21,8 @@ trait CompilesConditionals {
      * @param  string  $expression
      * @return string
      */
-    protected function compileIf($expression) {
+    protected function compileIf($expression)
+    {
         return "<?php if{$expression}: ?>";
     }
 
@@ -30,7 +32,8 @@ trait CompilesConditionals {
      * @param  string  $expression
      * @return string
      */
-    protected function compileUnless($expression) {
+    protected function compileUnless($expression)
+    {
         return "<?php if (! {$expression}): ?>";
     }
 
@@ -40,7 +43,8 @@ trait CompilesConditionals {
      * @param  string  $expression
      * @return string
      */
-    protected function compileElseif($expression) {
+    protected function compileElseif($expression)
+    {
         return "<?php elseif{$expression}: ?>";
     }
 
@@ -49,7 +53,8 @@ trait CompilesConditionals {
      *
      * @return string
      */
-    protected function compileElse() {
+    protected function compileElse()
+    {
         return '<?php else: ?>';
     }
 
@@ -58,7 +63,8 @@ trait CompilesConditionals {
      *
      * @return string
      */
-    protected function compileEndif() {
+    protected function compileEndif()
+    {
         return '<?php endif; ?>';
     }
 
@@ -67,8 +73,8 @@ trait CompilesConditionals {
      *
      * @return string
      */
-    protected function compileEndunless() {
+    protected function compileEndunless()
+    {
         return '<?php endif; ?>';
     }
-
 }

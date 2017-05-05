@@ -1,18 +1,18 @@
 <?php
-
 namespace JakubOnderka\PhpConsoleHighlighter;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-class Highlighter {
-
+class Highlighter
+{
     const TOKEN_DEFAULT = 'token_default',
-            TOKEN_COMMENT = 'token_comment',
-            TOKEN_STRING = 'token_string',
-            TOKEN_HTML = 'token_html',
-            TOKEN_KEYWORD = 'token_keyword';
+        TOKEN_COMMENT = 'token_comment',
+        TOKEN_STRING = 'token_string',
+        TOKEN_HTML = 'token_html',
+        TOKEN_KEYWORD = 'token_keyword';
+
     const ACTUAL_LINE_MARK = 'actual_line_mark',
-            LINE_NUMBER = 'line_number';
+        LINE_NUMBER = 'line_number';
 
     /** @var ConsoleColor */
     private $color;
@@ -24,14 +24,16 @@ class Highlighter {
         self::TOKEN_KEYWORD => 'green',
         self::TOKEN_DEFAULT => 'default',
         self::TOKEN_HTML => 'cyan',
-        self::ACTUAL_LINE_MARK => 'red',
+
+        self::ACTUAL_LINE_MARK  => 'red',
         self::LINE_NUMBER => 'dark_gray',
     );
 
     /**
      * @param ConsoleColor $color
      */
-    public function __construct(ConsoleColor $color) {
+    public function __construct(ConsoleColor $color)
+    {
         $this->color = $color;
 
         foreach ($this->defaultTheme as $name => $styles) {
@@ -50,7 +52,8 @@ class Highlighter {
      * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    public function getCodeSnippet($source, $lineNumber, $linesBefore = 2, $linesAfter = 2) {
+    public function getCodeSnippet($source, $lineNumber, $linesBefore = 2, $linesAfter = 2)
+    {
         $tokenLines = $this->getHighlightedLines($source);
 
         $offset = $lineNumber - $linesBefore - 1;
@@ -69,7 +72,8 @@ class Highlighter {
      * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    public function getWholeFile($source) {
+    public function getWholeFile($source)
+    {
         $tokenLines = $this->getHighlightedLines($source);
         $lines = $this->colorLines($tokenLines);
         return implode(PHP_EOL, $lines);
@@ -81,7 +85,8 @@ class Highlighter {
      * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    public function getWholeFileWithLineNumbers($source) {
+    public function getWholeFileWithLineNumbers($source)
+    {
         $tokenLines = $this->getHighlightedLines($source);
         $lines = $this->colorLines($tokenLines);
         return $this->lineNumbers($lines);
@@ -91,7 +96,8 @@ class Highlighter {
      * @param string $source
      * @return array
      */
-    private function getHighlightedLines($source) {
+    private function getHighlightedLines($source)
+    {
         $source = str_replace(array("\r\n", "\r"), "\n", $source);
         $tokens = $this->tokenize($source);
         return $this->splitToLines($tokens);
@@ -101,7 +107,8 @@ class Highlighter {
      * @param string $source
      * @return array
      */
-    private function tokenize($source) {
+    private function tokenize($source)
+    {
         $tokens = token_get_all($source);
 
         $output = array();
@@ -144,7 +151,7 @@ class Highlighter {
                     case T_LINE:
                     case T_CLASS_C:
                     case T_FUNC_C:
-                        //case T_TRAIT_C:
+                    //case T_TRAIT_C:
                         $newType = self::TOKEN_DEFAULT;
                         break;
 
@@ -184,7 +191,8 @@ class Highlighter {
      * @param array $tokens
      * @return array
      */
-    private function splitToLines(array $tokens) {
+    private function splitToLines(array $tokens)
+    {
         $lines = array();
 
         $line = array();
@@ -214,7 +222,8 @@ class Highlighter {
      * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      * @throws \InvalidArgumentException
      */
-    private function colorLines(array $tokenLines) {
+    private function colorLines(array $tokenLines)
+    {
         $lines = array();
         foreach ($tokenLines as $lineCount => $tokenLine) {
             $line = '';
@@ -238,7 +247,8 @@ class Highlighter {
      * @return string
      * @throws \JakubOnderka\PhpConsoleColor\InvalidStyleException
      */
-    private function lineNumbers(array $lines, $markLine = null) {
+    private function lineNumbers(array $lines, $markLine = null)
+    {
         end($lines);
         $lineStrlen = strlen(key($lines) + 1);
 
@@ -254,5 +264,4 @@ class Highlighter {
 
         return $snippet;
     }
-
 }

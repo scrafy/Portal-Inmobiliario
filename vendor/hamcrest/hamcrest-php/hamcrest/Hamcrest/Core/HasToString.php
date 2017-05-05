@@ -1,11 +1,9 @@
 <?php
-
 namespace Hamcrest\Core;
 
 /*
-  Copyright (c) 2009 hamcrest.org
+ Copyright (c) 2009 hamcrest.org
  */
-
 use Hamcrest\Description;
 use Hamcrest\FeatureMatcher;
 use Hamcrest\Matcher;
@@ -14,15 +12,22 @@ use Hamcrest\Util;
 /**
  * Matches if array size satisfies a nested matcher.
  */
-class HasToString extends FeatureMatcher {
+class HasToString extends FeatureMatcher
+{
 
-    public function __construct(Matcher $toStringMatcher) {
+    public function __construct(Matcher $toStringMatcher)
+    {
         parent::__construct(
-                self::TYPE_OBJECT, null, $toStringMatcher, 'an object with toString()', 'toString()'
+            self::TYPE_OBJECT,
+            null,
+            $toStringMatcher,
+            'an object with toString()',
+            'toString()'
         );
     }
 
-    public function matchesSafelyWithDiagnosticDescription($actual, Description $mismatchDescription) {
+    public function matchesSafelyWithDiagnosticDescription($actual, Description $mismatchDescription)
+    {
         if (method_exists($actual, 'toString') || method_exists($actual, '__toString')) {
             return parent::matchesSafelyWithDiagnosticDescription($actual, $mismatchDescription);
         }
@@ -30,7 +35,8 @@ class HasToString extends FeatureMatcher {
         return false;
     }
 
-    protected function featureValueOf($actual) {
+    protected function featureValueOf($actual)
+    {
         if (method_exists($actual, 'toString')) {
             return $actual->toString();
         }
@@ -43,8 +49,8 @@ class HasToString extends FeatureMatcher {
      *
      * @factory
      */
-    public static function hasToString($matcher) {
+    public static function hasToString($matcher)
+    {
         return new self(Util::wrapValueWithIsEqual($matcher));
     }
-
 }

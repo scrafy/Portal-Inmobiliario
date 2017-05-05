@@ -4,8 +4,8 @@ namespace Illuminate\Contracts\Foundation;
 
 use Illuminate\Contracts\Container\Container;
 
-interface Application extends Container {
-
+interface Application extends Container
+{
     /**
      * Get the version number of the application.
      *

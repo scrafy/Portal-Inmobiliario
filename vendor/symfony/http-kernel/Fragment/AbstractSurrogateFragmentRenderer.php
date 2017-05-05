@@ -22,8 +22,8 @@ use Symfony\Component\HttpKernel\UriSigner;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRenderer {
-
+abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRenderer
+{
     private $surrogate;
     private $inlineStrategy;
     private $signer;
@@ -38,7 +38,8 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
      * @param FragmentRendererInterface $inlineStrategy The inline strategy to use when the surrogate is not supported
      * @param UriSigner                 $signer
      */
-    public function __construct(SurrogateInterface $surrogate = null, FragmentRendererInterface $inlineStrategy, UriSigner $signer = null) {
+    public function __construct(SurrogateInterface $surrogate = null, FragmentRendererInterface $inlineStrategy, UriSigner $signer = null)
+    {
         $this->surrogate = $surrogate;
         $this->inlineStrategy = $inlineStrategy;
         $this->signer = $signer;
@@ -60,7 +61,8 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
      *
      * @see Symfony\Component\HttpKernel\HttpCache\SurrogateInterface
      */
-    public function render($uri, Request $request, array $options = array()) {
+    public function render($uri, Request $request, array $options = array())
+    {
         if (!$this->surrogate || !$this->surrogate->hasSurrogateCapability($request)) {
             if ($uri instanceof ControllerReference && $this->containsNonScalars($uri->attributes)) {
                 @trigger_error('Passing non-scalar values as part of URI attributes to the ESI and SSI rendering strategies is deprecated since version 3.1, and will be removed in 4.0. Use a different rendering strategy or pass scalar values.', E_USER_DEPRECATED);
@@ -83,7 +85,8 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
         return new Response($tag);
     }
 
-    private function generateSignedFragmentUri($uri, Request $request) {
+    private function generateSignedFragmentUri($uri, Request $request)
+    {
         if (null === $this->signer) {
             throw new \LogicException('You must use a URI when using the ESI rendering strategy or set a URL signer.');
         }
@@ -94,7 +97,8 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
         return substr($fragmentUri, strlen($request->getSchemeAndHttpHost()));
     }
 
-    private function containsNonScalars(array $values) {
+    private function containsNonScalars(array $values)
+    {
         foreach ($values as $value) {
             if (is_array($value) && $this->containsNonScalars($value)) {
                 return true;
@@ -105,5 +109,4 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
 
         return false;
     }
-
 }

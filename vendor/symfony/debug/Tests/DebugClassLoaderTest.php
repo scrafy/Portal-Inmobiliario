@@ -15,28 +15,32 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\Debug\ErrorHandler;
 
-class DebugClassLoaderTest extends TestCase {
-
+class DebugClassLoaderTest extends TestCase
+{
     /**
      * @var int Error reporting level before running tests
      */
     private $errorReporting;
+
     private $loader;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->errorReporting = error_reporting(E_ALL);
         $this->loader = new ClassLoader();
         spl_autoload_register(array($this->loader, 'loadClass'), true, true);
         DebugClassLoader::enable();
     }
 
-    protected function tearDown() {
+    protected function tearDown()
+    {
         DebugClassLoader::disable();
         spl_autoload_unregister(array($this->loader, 'loadClass'));
         error_reporting($this->errorReporting);
     }
 
-    public function testIdempotence() {
+    public function testIdempotence()
+    {
         DebugClassLoader::enable();
 
         $functions = spl_autoload_functions();
@@ -55,7 +59,8 @@ class DebugClassLoaderTest extends TestCase {
         $this->fail('DebugClassLoader did not register');
     }
 
-    public function testUnsilencing() {
+    public function testUnsilencing()
+    {
         if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7 throws exceptions, unsilencing is not required anymore.');
         }
@@ -70,14 +75,15 @@ class DebugClassLoaderTest extends TestCase {
 
         // See below: this will fail with parse error
         // but this should not be @-silenced.
-        @class_exists(__NAMESPACE__ . '\TestingUnsilencing', true);
+        @class_exists(__NAMESPACE__.'\TestingUnsilencing', true);
 
         $output = ob_get_clean();
 
         $this->assertStringMatchesFormat('%aParse error%a', $output);
     }
 
-    public function testStacking() {
+    public function testStacking()
+    {
         // the ContextErrorException must not be loaded to test the workaround
         // for https://bugs.php.net/65322.
         if (class_exists('Symfony\Component\Debug\Exception\ContextErrorException', false)) {
@@ -96,7 +102,7 @@ class DebugClassLoaderTest extends TestCase {
             // Error stacking works around the bug above and everything is fine.
 
             eval('
-                namespace ' . __NAMESPACE__ . ';
+                namespace '.__NAMESPACE__.';
                 class ChildTestingStacking extends TestingStacking { function foo($bar) {} }
             ');
             $this->fail('ContextErrorException expected');
@@ -119,52 +125,57 @@ class DebugClassLoaderTest extends TestCase {
     /**
      * @expectedException \RuntimeException
      */
-    public function testNameCaseMismatch() {
-        class_exists(__NAMESPACE__ . '\TestingCaseMismatch', true);
+    public function testNameCaseMismatch()
+    {
+        class_exists(__NAMESPACE__.'\TestingCaseMismatch', true);
     }
 
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Case mismatch between class and real file names
      */
-    public function testFileCaseMismatch() {
-        if (!file_exists(__DIR__ . '/Fixtures/CaseMismatch.php')) {
+    public function testFileCaseMismatch()
+    {
+        if (!file_exists(__DIR__.'/Fixtures/CaseMismatch.php')) {
             $this->markTestSkipped('Can only be run on case insensitive filesystems');
         }
 
-        class_exists(__NAMESPACE__ . '\Fixtures\CaseMismatch', true);
+        class_exists(__NAMESPACE__.'\Fixtures\CaseMismatch', true);
     }
 
     /**
      * @expectedException \RuntimeException
      */
-    public function testPsr4CaseMismatch() {
-        class_exists(__NAMESPACE__ . '\Fixtures\Psr4CaseMismatch', true);
+    public function testPsr4CaseMismatch()
+    {
+        class_exists(__NAMESPACE__.'\Fixtures\Psr4CaseMismatch', true);
     }
 
-    public function testNotPsr0() {
-        $this->assertTrue(class_exists(__NAMESPACE__ . '\Fixtures\NotPSR0', true));
+    public function testNotPsr0()
+    {
+        $this->assertTrue(class_exists(__NAMESPACE__.'\Fixtures\NotPSR0', true));
     }
 
-    public function testNotPsr0Bis() {
-        $this->assertTrue(class_exists(__NAMESPACE__ . '\Fixtures\NotPSR0bis', true));
+    public function testNotPsr0Bis()
+    {
+        $this->assertTrue(class_exists(__NAMESPACE__.'\Fixtures\NotPSR0bis', true));
     }
 
-    public function testClassAlias() {
-        $this->assertTrue(class_exists(__NAMESPACE__ . '\Fixtures\ClassAlias', true));
+    public function testClassAlias()
+    {
+        $this->assertTrue(class_exists(__NAMESPACE__.'\Fixtures\ClassAlias', true));
     }
 
     /**
      * @dataProvider provideDeprecatedSuper
      */
-    public function testDeprecatedSuper($class, $super, $type) {
-        set_error_handler(function () {
-            return false;
-        });
+    public function testDeprecatedSuper($class, $super, $type)
+    {
+        set_error_handler(function () { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_DEPRECATED);
 
-        class_exists('Test\\' . __NAMESPACE__ . '\\' . $class, true);
+        class_exists('Test\\'.__NAMESPACE__.'\\'.$class, true);
 
         error_reporting($e);
         restore_error_handler();
@@ -174,27 +185,27 @@ class DebugClassLoaderTest extends TestCase {
 
         $xError = array(
             'type' => E_USER_DEPRECATED,
-            'message' => 'The Test\Symfony\Component\Debug\Tests\\' . $class . ' class ' . $type . ' Symfony\Component\Debug\Tests\Fixtures\\' . $super . ' that is deprecated but this is a test deprecation notice.',
+            'message' => 'The Test\Symfony\Component\Debug\Tests\\'.$class.' class '.$type.' Symfony\Component\Debug\Tests\Fixtures\\'.$super.' that is deprecated but this is a test deprecation notice.',
         );
 
         $this->assertSame($xError, $lastError);
     }
 
-    public function provideDeprecatedSuper() {
+    public function provideDeprecatedSuper()
+    {
         return array(
             array('DeprecatedInterfaceClass', 'DeprecatedInterface', 'implements'),
             array('DeprecatedParentClass', 'DeprecatedClass', 'extends'),
         );
     }
 
-    public function testInterfaceExtendsDeprecatedInterface() {
-        set_error_handler(function () {
-            return false;
-        });
+    public function testInterfaceExtendsDeprecatedInterface()
+    {
+        set_error_handler(function () { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
-        class_exists('Test\\' . __NAMESPACE__ . '\\NonDeprecatedInterfaceClass', true);
+        class_exists('Test\\'.__NAMESPACE__.'\\NonDeprecatedInterfaceClass', true);
 
         error_reporting($e);
         restore_error_handler();
@@ -210,10 +221,9 @@ class DebugClassLoaderTest extends TestCase {
         $this->assertSame($xError, $lastError);
     }
 
-    public function testDeprecatedSuperInSameNamespace() {
-        set_error_handler(function () {
-            return false;
-        });
+    public function testDeprecatedSuperInSameNamespace()
+    {
+        set_error_handler(function () { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
@@ -233,18 +243,17 @@ class DebugClassLoaderTest extends TestCase {
         $this->assertSame($xError, $lastError);
     }
 
-    public function testReservedForPhp7() {
+    public function testReservedForPhp7()
+    {
         if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7 already prevents using reserved names.');
         }
 
-        set_error_handler(function () {
-            return false;
-        });
+        set_error_handler(function () { return false; });
         $e = error_reporting(0);
         trigger_error('', E_USER_NOTICE);
 
-        class_exists('Test\\' . __NAMESPACE__ . '\\Float', true);
+        class_exists('Test\\'.__NAMESPACE__.'\\Float', true);
 
         error_reporting($e);
         restore_error_handler();
@@ -259,49 +268,49 @@ class DebugClassLoaderTest extends TestCase {
 
         $this->assertSame($xError, $lastError);
     }
-
 }
 
-class ClassLoader {
-
-    public function loadClass($class) {
-        
+class ClassLoader
+{
+    public function loadClass($class)
+    {
     }
 
-    public function getClassMap() {
-        return array(__NAMESPACE__ . '\Fixtures\NotPSR0bis' => __DIR__ . '/Fixtures/notPsr0Bis.php');
+    public function getClassMap()
+    {
+        return array(__NAMESPACE__.'\Fixtures\NotPSR0bis' => __DIR__.'/Fixtures/notPsr0Bis.php');
     }
 
-    public function findFile($class) {
-        $fixtureDir = __DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR;
+    public function findFile($class)
+    {
+        $fixtureDir = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR;
 
-        if (__NAMESPACE__ . '\TestingUnsilencing' === $class) {
+        if (__NAMESPACE__.'\TestingUnsilencing' === $class) {
             eval('-- parse error --');
-        } elseif (__NAMESPACE__ . '\TestingStacking' === $class) {
-            eval('namespace ' . __NAMESPACE__ . '; class TestingStacking { function foo() {} }');
-        } elseif (__NAMESPACE__ . '\TestingCaseMismatch' === $class) {
-            eval('namespace ' . __NAMESPACE__ . '; class TestingCaseMisMatch {}');
-        } elseif (__NAMESPACE__ . '\Fixtures\CaseMismatch' === $class) {
-            return $fixtureDir . 'CaseMismatch.php';
-        } elseif (__NAMESPACE__ . '\Fixtures\Psr4CaseMismatch' === $class) {
-            return $fixtureDir . 'psr4' . DIRECTORY_SEPARATOR . 'Psr4CaseMismatch.php';
-        } elseif (__NAMESPACE__ . '\Fixtures\NotPSR0' === $class) {
-            return $fixtureDir . 'reallyNotPsr0.php';
-        } elseif (__NAMESPACE__ . '\Fixtures\NotPSR0bis' === $class) {
-            return $fixtureDir . 'notPsr0Bis.php';
-        } elseif (__NAMESPACE__ . '\Fixtures\DeprecatedInterface' === $class) {
-            return $fixtureDir . 'DeprecatedInterface.php';
+        } elseif (__NAMESPACE__.'\TestingStacking' === $class) {
+            eval('namespace '.__NAMESPACE__.'; class TestingStacking { function foo() {} }');
+        } elseif (__NAMESPACE__.'\TestingCaseMismatch' === $class) {
+            eval('namespace '.__NAMESPACE__.'; class TestingCaseMisMatch {}');
+        } elseif (__NAMESPACE__.'\Fixtures\CaseMismatch' === $class) {
+            return $fixtureDir.'CaseMismatch.php';
+        } elseif (__NAMESPACE__.'\Fixtures\Psr4CaseMismatch' === $class) {
+            return $fixtureDir.'psr4'.DIRECTORY_SEPARATOR.'Psr4CaseMismatch.php';
+        } elseif (__NAMESPACE__.'\Fixtures\NotPSR0' === $class) {
+            return $fixtureDir.'reallyNotPsr0.php';
+        } elseif (__NAMESPACE__.'\Fixtures\NotPSR0bis' === $class) {
+            return $fixtureDir.'notPsr0Bis.php';
+        } elseif (__NAMESPACE__.'\Fixtures\DeprecatedInterface' === $class) {
+            return $fixtureDir.'DeprecatedInterface.php';
         } elseif ('Symfony\Bridge\Debug\Tests\Fixtures\ExtendsDeprecatedParent' === $class) {
-            eval('namespace Symfony\Bridge\Debug\Tests\Fixtures; class ExtendsDeprecatedParent extends \\' . __NAMESPACE__ . '\Fixtures\DeprecatedClass {}');
-        } elseif ('Test\\' . __NAMESPACE__ . '\DeprecatedParentClass' === $class) {
-            eval('namespace Test\\' . __NAMESPACE__ . '; class DeprecatedParentClass extends \\' . __NAMESPACE__ . '\Fixtures\DeprecatedClass {}');
-        } elseif ('Test\\' . __NAMESPACE__ . '\DeprecatedInterfaceClass' === $class) {
-            eval('namespace Test\\' . __NAMESPACE__ . '; class DeprecatedInterfaceClass implements \\' . __NAMESPACE__ . '\Fixtures\DeprecatedInterface {}');
-        } elseif ('Test\\' . __NAMESPACE__ . '\NonDeprecatedInterfaceClass' === $class) {
-            eval('namespace Test\\' . __NAMESPACE__ . '; class NonDeprecatedInterfaceClass implements \\' . __NAMESPACE__ . '\Fixtures\NonDeprecatedInterface {}');
-        } elseif ('Test\\' . __NAMESPACE__ . '\Float' === $class) {
-            eval('namespace Test\\' . __NAMESPACE__ . '; class Float {}');
+            eval('namespace Symfony\Bridge\Debug\Tests\Fixtures; class ExtendsDeprecatedParent extends \\'.__NAMESPACE__.'\Fixtures\DeprecatedClass {}');
+        } elseif ('Test\\'.__NAMESPACE__.'\DeprecatedParentClass' === $class) {
+            eval('namespace Test\\'.__NAMESPACE__.'; class DeprecatedParentClass extends \\'.__NAMESPACE__.'\Fixtures\DeprecatedClass {}');
+        } elseif ('Test\\'.__NAMESPACE__.'\DeprecatedInterfaceClass' === $class) {
+            eval('namespace Test\\'.__NAMESPACE__.'; class DeprecatedInterfaceClass implements \\'.__NAMESPACE__.'\Fixtures\DeprecatedInterface {}');
+        } elseif ('Test\\'.__NAMESPACE__.'\NonDeprecatedInterfaceClass' === $class) {
+            eval('namespace Test\\'.__NAMESPACE__.'; class NonDeprecatedInterfaceClass implements \\'.__NAMESPACE__.'\Fixtures\NonDeprecatedInterface {}');
+        } elseif ('Test\\'.__NAMESPACE__.'\Float' === $class) {
+            eval('namespace Test\\'.__NAMESPACE__.'; class Float {}');
         }
     }
-
 }

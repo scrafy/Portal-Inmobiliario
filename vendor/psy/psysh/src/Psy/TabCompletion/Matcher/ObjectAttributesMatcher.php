@@ -21,12 +21,13 @@ use InvalidArgumentException;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class ObjectAttributesMatcher extends AbstractContextAwareMatcher {
-
+class ObjectAttributesMatcher extends AbstractContextAwareMatcher
+{
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array()) {
+    public function getMatches(array $tokens, array $info = array())
+    {
         $input = $this->getInput($tokens);
 
         $firstToken = array_pop($tokens);
@@ -47,16 +48,18 @@ class ObjectAttributesMatcher extends AbstractContextAwareMatcher {
         }
 
         return array_filter(
-                array_keys(get_class_vars(get_class($object))), function ($var) use ($input) {
-            return AbstractMatcher::startsWith($input, $var);
-        }
+            array_keys(get_class_vars(get_class($object))),
+            function ($var) use ($input) {
+                return AbstractMatcher::startsWith($input, $var);
+            }
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasMatched(array $tokens) {
+    public function hasMatched(array $tokens)
+    {
         $token = array_pop($tokens);
         $prevToken = array_pop($tokens);
 
@@ -68,5 +71,4 @@ class ObjectAttributesMatcher extends AbstractContextAwareMatcher {
 
         return false;
     }
-
 }

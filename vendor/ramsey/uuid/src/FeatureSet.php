@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -44,8 +43,8 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  * FeatureSet detects and exposes available features in the current environment
  * (32- or 64-bit, available dependencies, etc.)
  */
-class FeatureSet {
-
+class FeatureSet
+{
     /**
      * @var bool
      */
@@ -111,7 +110,11 @@ class FeatureSet {
      *     to generate version 1 UUIDs
      */
     public function __construct(
-    $useGuids = false, $force32Bit = false, $forceNoBigNumber = false, $ignoreSystemNode = false, $enablePecl = false
+        $useGuids = false,
+        $force32Bit = false,
+        $forceNoBigNumber = false,
+        $ignoreSystemNode = false,
+        $enablePecl = false
     ) {
         $this->disableBigNumber = $forceNoBigNumber;
         $this->disable64Bit = $force32Bit;
@@ -131,7 +134,8 @@ class FeatureSet {
      *
      * @return UuidBuilderInterface
      */
-    public function getBuilder() {
+    public function getBuilder()
+    {
         return $this->builder;
     }
 
@@ -140,7 +144,8 @@ class FeatureSet {
      *
      * @return CodecInterface
      */
-    public function getCodec() {
+    public function getCodec()
+    {
         return $this->codec;
     }
 
@@ -149,7 +154,8 @@ class FeatureSet {
      *
      * @return NodeProviderInterface
      */
-    public function getNodeProvider() {
+    public function getNodeProvider()
+    {
         return $this->nodeProvider;
     }
 
@@ -158,7 +164,8 @@ class FeatureSet {
      *
      * @return NumberConverterInterface
      */
-    public function getNumberConverter() {
+    public function getNumberConverter()
+    {
         return $this->numberConverter;
     }
 
@@ -167,7 +174,8 @@ class FeatureSet {
      *
      * @return RandomGeneratorInterface
      */
-    public function getRandomGenerator() {
+    public function getRandomGenerator()
+    {
         return $this->randomGenerator;
     }
 
@@ -176,7 +184,8 @@ class FeatureSet {
      *
      * @return TimeGeneratorInterface
      */
-    public function getTimeGenerator() {
+    public function getTimeGenerator()
+    {
         return $this->timeGenerator;
     }
 
@@ -185,7 +194,8 @@ class FeatureSet {
      *
      * @param TimeProviderInterface $timeProvider
      */
-    public function setTimeProvider(TimeProviderInterface $timeProvider) {
+    public function setTimeProvider(TimeProviderInterface $timeProvider)
+    {
         $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
     }
 
@@ -196,7 +206,8 @@ class FeatureSet {
      * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
      * @return CodecInterface
      */
-    protected function buildCodec($useGuids = false) {
+    protected function buildCodec($useGuids = false)
+    {
         if ($useGuids) {
             return new GuidStringCodec($this->builder);
         }
@@ -210,7 +221,8 @@ class FeatureSet {
      *
      * @return NodeProviderInterface
      */
-    protected function buildNodeProvider() {
+    protected function buildNodeProvider()
+    {
         if ($this->ignoreSystemNode) {
             return new RandomNodeProvider();
         }
@@ -227,7 +239,8 @@ class FeatureSet {
      *
      * @return NumberConverterInterface
      */
-    protected function buildNumberConverter() {
+    protected function buildNumberConverter()
+    {
         if ($this->hasBigNumber()) {
             return new BigNumberConverter();
         }
@@ -241,7 +254,8 @@ class FeatureSet {
      *
      * @return RandomGeneratorInterface
      */
-    protected function buildRandomGenerator() {
+    protected function buildRandomGenerator()
+    {
         return (new RandomGeneratorFactory())->getGenerator();
     }
 
@@ -252,14 +266,17 @@ class FeatureSet {
      * @param TimeProviderInterface $timeProvider
      * @return TimeGeneratorInterface
      */
-    protected function buildTimeGenerator(TimeProviderInterface $timeProvider) {
+    protected function buildTimeGenerator(TimeProviderInterface $timeProvider)
+    {
         if ($this->enablePecl) {
             return new PeclUuidTimeGenerator();
         }
 
         return (new TimeGeneratorFactory(
-                $this->nodeProvider, $this->buildTimeConverter(), $timeProvider
-                ))->getGenerator();
+            $this->nodeProvider,
+            $this->buildTimeConverter(),
+            $timeProvider
+        ))->getGenerator();
     }
 
     /**
@@ -268,7 +285,8 @@ class FeatureSet {
      *
      * @return TimeConverterInterface
      */
-    protected function buildTimeConverter() {
+    protected function buildTimeConverter()
+    {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
         } elseif ($this->hasBigNumber()) {
@@ -284,7 +302,8 @@ class FeatureSet {
      *
      * @return UuidBuilderInterface
      */
-    protected function buildUuidBuilder() {
+    protected function buildUuidBuilder()
+    {
         if ($this->is64BitSystem()) {
             return new DefaultUuidBuilder($this->numberConverter);
         }
@@ -297,7 +316,8 @@ class FeatureSet {
      *
      * @return bool
      */
-    protected function hasBigNumber() {
+    protected function hasBigNumber()
+    {
         return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
     }
 
@@ -306,8 +326,8 @@ class FeatureSet {
      *
      * @return bool
      */
-    protected function is64BitSystem() {
+    protected function is64BitSystem()
+    {
         return PHP_INT_SIZE == 8 && !$this->disable64Bit;
     }
-
 }

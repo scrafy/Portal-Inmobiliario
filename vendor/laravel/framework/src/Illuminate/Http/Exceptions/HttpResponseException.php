@@ -5,8 +5,8 @@ namespace Illuminate\Http\Exceptions;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
-class HttpResponseException extends RuntimeException {
-
+class HttpResponseException extends RuntimeException
+{
     /**
      * The underlying response instance.
      *
@@ -20,7 +20,8 @@ class HttpResponseException extends RuntimeException {
      * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @return void
      */
-    public function __construct(Response $response) {
+    public function __construct(Response $response)
+    {
         $this->response = $response;
     }
 
@@ -29,8 +30,8 @@ class HttpResponseException extends RuntimeException {
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
-
 }

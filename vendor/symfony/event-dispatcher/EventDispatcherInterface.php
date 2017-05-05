@@ -18,8 +18,8 @@ namespace Symfony\Component\EventDispatcher;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-interface EventDispatcherInterface {
-
+interface EventDispatcherInterface
+{
     /**
      * Dispatches an event to all registered listeners.
      *

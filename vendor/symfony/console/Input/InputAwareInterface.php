@@ -17,8 +17,8 @@ namespace Symfony\Component\Console\Input;
  *
  * @author Wouter J <waldio.webdesign@gmail.com>
  */
-interface InputAwareInterface {
-
+interface InputAwareInterface
+{
     /**
      * Sets the Console Input.
      *

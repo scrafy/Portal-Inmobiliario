@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Mailer_RecipientIterator {
-
+interface Swift_Mailer_RecipientIterator
+{
     /**
      * Returns true only if there are more recipients to send to.
      *

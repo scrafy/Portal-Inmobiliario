@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -23,8 +22,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
  * if attempting to use number conversion functionality in an environment that
  * does not support large integers (i.e. when moontoast/math is not available)
  */
-class DegradedNumberConverter implements NumberConverterInterface {
-
+class DegradedNumberConverter implements NumberConverterInterface
+{
     /**
      * Throws an `UnsatisfiedDependencyException`
      *
@@ -32,11 +31,12 @@ class DegradedNumberConverter implements NumberConverterInterface {
      * @return void
      * @throws UnsatisfiedDependencyException
      */
-    public function fromHex($hex) {
+    public function fromHex($hex)
+    {
         throw new UnsatisfiedDependencyException(
-        'Cannot call ' . __METHOD__ . ' without support for large '
-        . 'integers, since integer is an unsigned '
-        . '128-bit integer; Moontoast\Math\BigNumber is required.'
+            'Cannot call ' . __METHOD__ . ' without support for large '
+            . 'integers, since integer is an unsigned '
+            . '128-bit integer; Moontoast\Math\BigNumber is required.'
         );
     }
 
@@ -47,12 +47,12 @@ class DegradedNumberConverter implements NumberConverterInterface {
      * @return void
      * @throws UnsatisfiedDependencyException
      */
-    public function toHex($integer) {
+    public function toHex($integer)
+    {
         throw new UnsatisfiedDependencyException(
-        'Cannot call ' . __METHOD__ . ' without support for large '
-        . 'integers, since integer is an unsigned '
-        . '128-bit integer; Moontoast\Math\BigNumber is required. '
+            'Cannot call ' . __METHOD__ . ' without support for large '
+            . 'integers, since integer is an unsigned '
+            . '128-bit integer; Moontoast\Math\BigNumber is required. '
         );
     }
-
 }

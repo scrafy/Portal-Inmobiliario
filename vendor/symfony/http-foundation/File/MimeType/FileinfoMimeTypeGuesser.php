@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface {
-
+class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
+{
     private $magicFile;
 
     /**
@@ -30,7 +30,8 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface {
      *
      * @see http://www.php.net/manual/en/function.finfo-open.php
      */
-    public function __construct($magicFile = null) {
+    public function __construct($magicFile = null)
+    {
         $this->magicFile = $magicFile;
     }
 
@@ -39,14 +40,16 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface {
      *
      * @return bool
      */
-    public static function isSupported() {
+    public static function isSupported()
+    {
         return function_exists('finfo_open');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function guess($path) {
+    public function guess($path)
+    {
         if (!is_file($path)) {
             throw new FileNotFoundException($path);
         }
@@ -65,5 +68,4 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface {
 
         return $finfo->file($path);
     }
-
 }

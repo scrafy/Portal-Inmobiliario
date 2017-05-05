@@ -2,8 +2,8 @@
 
 namespace League\Flysystem;
 
-interface AdapterInterface extends ReadInterface {
-
+interface AdapterInterface extends ReadInterface
+{
     /**
      * @const  VISIBILITY_PUBLIC  public visibility
      */

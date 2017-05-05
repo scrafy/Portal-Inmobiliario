@@ -26,17 +26,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ExceptionListener implements EventSubscriberInterface {
-
+class ExceptionListener implements EventSubscriberInterface
+{
     protected $controller;
     protected $logger;
 
-    public function __construct($controller, LoggerInterface $logger = null) {
+    public function __construct($controller, LoggerInterface $logger = null)
+    {
         $this->controller = $controller;
         $this->logger = $logger;
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event) {
+    public function onKernelException(GetResponseForExceptionEvent $event)
+    {
         $exception = $event->getException();
         $request = $event->getRequest();
 
@@ -67,7 +69,8 @@ class ExceptionListener implements EventSubscriberInterface {
         $event->setResponse($response);
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             KernelEvents::EXCEPTION => array('onKernelException', -128),
         );
@@ -79,7 +82,8 @@ class ExceptionListener implements EventSubscriberInterface {
      * @param \Exception $exception The \Exception instance
      * @param string     $message   The error message to log
      */
-    protected function logException(\Exception $exception, $message) {
+    protected function logException(\Exception $exception, $message)
+    {
         if (null !== $this->logger) {
             if (!$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
                 $this->logger->critical($message, array('exception' => $exception));
@@ -97,7 +101,8 @@ class ExceptionListener implements EventSubscriberInterface {
      *
      * @return Request $request The cloned request
      */
-    protected function duplicateRequest(\Exception $exception, Request $request) {
+    protected function duplicateRequest(\Exception $exception, Request $request)
+    {
         $attributes = array(
             '_controller' => $this->controller,
             'exception' => FlattenException::create($exception),
@@ -108,5 +113,4 @@ class ExceptionListener implements EventSubscriberInterface {
 
         return $request;
     }
-
 }

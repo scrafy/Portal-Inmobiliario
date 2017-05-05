@@ -13,12 +13,13 @@ namespace Symfony\Component\Finder\Tests\Iterator;
 
 use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
-class RecursiveDirectoryIteratorTest extends IteratorTestCase {
-
+class RecursiveDirectoryIteratorTest extends IteratorTestCase
+{
     /**
      * @group network
      */
-    public function testRewindOnFtp() {
+    public function testRewindOnFtp()
+    {
         try {
             $i = new RecursiveDirectoryIterator('ftp://speedtest.tele2.net/', \RecursiveDirectoryIterator::SKIP_DOTS);
         } catch (\UnexpectedValueException $e) {
@@ -33,7 +34,8 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase {
     /**
      * @group network
      */
-    public function testSeekOnFtp() {
+    public function testSeekOnFtp()
+    {
         try {
             $i = new RecursiveDirectoryIterator('ftp://speedtest.tele2.net/', \RecursiveDirectoryIterator::SKIP_DOTS);
         } catch (\UnexpectedValueException $e) {
@@ -41,8 +43,8 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase {
         }
 
         $contains = array(
-            'ftp://speedtest.tele2.net' . DIRECTORY_SEPARATOR . '1000GB.zip',
-            'ftp://speedtest.tele2.net' . DIRECTORY_SEPARATOR . '100GB.zip',
+            'ftp://speedtest.tele2.net'.DIRECTORY_SEPARATOR.'1000GB.zip',
+            'ftp://speedtest.tele2.net'.DIRECTORY_SEPARATOR.'100GB.zip',
         );
         $actual = array();
 
@@ -54,5 +56,4 @@ class RecursiveDirectoryIteratorTest extends IteratorTestCase {
 
         $this->assertEquals($contains, $actual);
     }
-
 }

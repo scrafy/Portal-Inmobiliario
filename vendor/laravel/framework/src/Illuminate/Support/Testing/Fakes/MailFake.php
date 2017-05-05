@@ -6,8 +6,8 @@ use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Mail\Mailable;
 use PHPUnit_Framework_Assert as PHPUnit;
 
-class MailFake implements Mailer {
-
+class MailFake implements Mailer
+{
     /**
      * All of the mailables that have been sent.
      *
@@ -22,9 +22,11 @@ class MailFake implements Mailer {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertSent($mailable, $callback = null) {
+    public function assertSent($mailable, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->sent($mailable, $callback)->count() > 0, "The expected [{$mailable}] mailable was not sent."
+            $this->sent($mailable, $callback)->count() > 0,
+            "The expected [{$mailable}] mailable was not sent."
         );
     }
 
@@ -35,9 +37,11 @@ class MailFake implements Mailer {
      * @param  callable|null  $callback
      * @return void
      */
-    public function assertNotSent($mailable, $callback = null) {
+    public function assertNotSent($mailable, $callback = null)
+    {
         PHPUnit::assertTrue(
-                $this->sent($mailable, $callback)->count() === 0, "The unexpected [{$mailable}] mailable was sent."
+            $this->sent($mailable, $callback)->count() === 0,
+            "The unexpected [{$mailable}] mailable was sent."
         );
     }
 
@@ -48,8 +52,9 @@ class MailFake implements Mailer {
      * @param  callable|null  $callback
      * @return \Illuminate\Support\Collection
      */
-    public function sent($mailable, $callback = null) {
-        if (!$this->hasSent($mailable)) {
+    public function sent($mailable, $callback = null)
+    {
+        if (! $this->hasSent($mailable)) {
             return collect();
         }
 
@@ -58,8 +63,8 @@ class MailFake implements Mailer {
         };
 
         return $this->mailablesOf($mailable)->filter(function ($mailable) use ($callback) {
-                    return $callback($mailable);
-                });
+            return $callback($mailable);
+        });
     }
 
     /**
@@ -68,7 +73,8 @@ class MailFake implements Mailer {
      * @param  string  $mailable
      * @return bool
      */
-    public function hasSent($mailable) {
+    public function hasSent($mailable)
+    {
         return $this->mailablesOf($mailable)->count() > 0;
     }
 
@@ -78,10 +84,11 @@ class MailFake implements Mailer {
      * @param  string  $type
      * @return \Illuminate\Support\Collection
      */
-    protected function mailablesOf($type) {
+    protected function mailablesOf($type)
+    {
         return collect($this->mailables)->filter(function ($mailable) use ($type) {
-                    return $mailable instanceof $type;
-                });
+            return $mailable instanceof $type;
+        });
     }
 
     /**
@@ -90,7 +97,8 @@ class MailFake implements Mailer {
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
      */
-    public function to($users) {
+    public function to($users)
+    {
         return (new PendingMailFake($this))->to($users);
     }
 
@@ -100,7 +108,8 @@ class MailFake implements Mailer {
      * @param  mixed  $users
      * @return \Illuminate\Mail\PendingMail
      */
-    public function bcc($users) {
+    public function bcc($users)
+    {
         return (new PendingMailFake($this))->bcc($users);
     }
 
@@ -111,7 +120,8 @@ class MailFake implements Mailer {
      * @param  \Closure|string  $callback
      * @return int
      */
-    public function raw($text, $callback) {
+    public function raw($text, $callback)
+    {
         //
     }
 
@@ -123,8 +133,9 @@ class MailFake implements Mailer {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public function send($view, array $data = [], $callback = null) {
-        if (!$view instanceof Mailable) {
+    public function send($view, array $data = [], $callback = null)
+    {
+        if (! $view instanceof Mailable) {
             return;
         }
 
@@ -140,7 +151,8 @@ class MailFake implements Mailer {
      * @param  string|null  $queue
      * @return mixed
      */
-    public function queue($view, array $data = [], $callback = null, $queue = null) {
+    public function queue($view, array $data = [], $callback = null, $queue = null)
+    {
         $this->send($view);
     }
 
@@ -149,8 +161,8 @@ class MailFake implements Mailer {
      *
      * @return array
      */
-    public function failures() {
+    public function failures()
+    {
         //
     }
-
 }

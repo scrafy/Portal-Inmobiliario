@@ -4,8 +4,8 @@ namespace Illuminate\Auth\Passwords;
 
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-interface TokenRepositoryInterface {
-
+interface TokenRepositoryInterface
+{
     /**
      * Create a new token.
      *

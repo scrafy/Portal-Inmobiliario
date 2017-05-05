@@ -6,8 +6,8 @@ use SessionHandlerInterface;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter as EncrypterContract;
 
-class EncryptedStore extends Store {
-
+class EncryptedStore extends Store
+{
     /**
      * The encrypter instance.
      *
@@ -24,7 +24,8 @@ class EncryptedStore extends Store {
      * @param  string|null $id
      * @return void
      */
-    public function __construct($name, SessionHandlerInterface $handler, EncrypterContract $encrypter, $id = null) {
+    public function __construct($name, SessionHandlerInterface $handler, EncrypterContract $encrypter, $id = null)
+    {
         $this->encrypter = $encrypter;
 
         parent::__construct($name, $handler, $id);
@@ -36,7 +37,8 @@ class EncryptedStore extends Store {
      * @param  string  $data
      * @return string
      */
-    protected function prepareForUnserialize($data) {
+    protected function prepareForUnserialize($data)
+    {
         try {
             return $this->encrypter->decrypt($data);
         } catch (DecryptException $e) {
@@ -50,7 +52,8 @@ class EncryptedStore extends Store {
      * @param  string  $data
      * @return string
      */
-    protected function prepareForStorage($data) {
+    protected function prepareForStorage($data)
+    {
         return $this->encrypter->encrypt($data);
     }
 
@@ -59,8 +62,8 @@ class EncryptedStore extends Store {
      *
      * @return \Illuminate\Contracts\Encryption\Encrypter
      */
-    public function getEncrypter() {
+    public function getEncrypter()
+    {
         return $this->encrypter;
     }
-
 }

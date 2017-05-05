@@ -14,15 +14,17 @@ namespace Symfony\Component\HttpKernel\Tests\ControllerMetadata;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class ArgumentMetadataTest extends TestCase {
-
-    public function testWithBcLayerWithDefault() {
+class ArgumentMetadataTest extends TestCase
+{
+    public function testWithBcLayerWithDefault()
+    {
         $argument = new ArgumentMetadata('foo', 'string', false, true, 'default value');
 
         $this->assertFalse($argument->isNullable());
     }
 
-    public function testDefaultValueAvailable() {
+    public function testDefaultValueAvailable()
+    {
         $argument = new ArgumentMetadata('foo', 'string', false, true, 'default value', true);
 
         $this->assertTrue($argument->isNullable());
@@ -33,12 +35,12 @@ class ArgumentMetadataTest extends TestCase {
     /**
      * @expectedException \LogicException
      */
-    public function testDefaultValueUnavailable() {
+    public function testDefaultValueUnavailable()
+    {
         $argument = new ArgumentMetadata('foo', 'string', false, false, null, false);
 
         $this->assertFalse($argument->isNullable());
         $this->assertFalse($argument->hasDefaultValue());
         $argument->getDefaultValue();
     }
-
 }

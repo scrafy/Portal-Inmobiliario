@@ -1,5 +1,4 @@
 <?php
-
 // This file is example#1
 // from http://www.php.net/manual/en/function.get-included-files.php
 

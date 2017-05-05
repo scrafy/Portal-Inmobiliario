@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,6 +8,6 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception {
-    
+class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception
+{
 }

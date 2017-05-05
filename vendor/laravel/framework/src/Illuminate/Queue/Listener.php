@@ -7,8 +7,8 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-class Listener {
-
+class Listener
+{
     /**
      * The command working path.
      *
@@ -57,7 +57,8 @@ class Listener {
      * @param  string  $commandPath
      * @return void
      */
-    public function __construct($commandPath) {
+    public function __construct($commandPath)
+    {
         $this->commandPath = $commandPath;
         $this->workerCommand = $this->buildCommandTemplate();
     }
@@ -67,7 +68,8 @@ class Listener {
      *
      * @return string
      */
-    protected function buildCommandTemplate() {
+    protected function buildCommandTemplate()
+    {
         $command = 'queue:work %s --once --queue=%s --delay=%s --memory=%s --sleep=%s --tries=%s';
 
         return "{$this->phpBinary()} {$this->artisanBinary()} {$command}";
@@ -78,9 +80,10 @@ class Listener {
      *
      * @return string
      */
-    protected function phpBinary() {
+    protected function phpBinary()
+    {
         return ProcessUtils::escapeArgument(
-                        (new PhpExecutableFinder)->find(false)
+            (new PhpExecutableFinder)->find(false)
         );
     }
 
@@ -89,8 +92,11 @@ class Listener {
      *
      * @return string
      */
-    protected function artisanBinary() {
-        return defined('ARTISAN_BINARY') ? ProcessUtils::escapeArgument(ARTISAN_BINARY) : 'artisan';
+    protected function artisanBinary()
+    {
+        return defined('ARTISAN_BINARY')
+                        ? ProcessUtils::escapeArgument(ARTISAN_BINARY)
+                        : 'artisan';
     }
 
     /**
@@ -101,7 +107,8 @@ class Listener {
      * @param  \Illuminate\Queue\ListenerOptions  $options
      * @return void
      */
-    public function listen($connection, $queue, ListenerOptions $options) {
+    public function listen($connection, $queue, ListenerOptions $options)
+    {
         $process = $this->makeProcess($connection, $queue, $options);
 
         while (true) {
@@ -117,7 +124,8 @@ class Listener {
      * @param  \Illuminate\Queue\ListenerOptions  $options
      * @return \Symfony\Component\Process\Process
      */
-    public function makeProcess($connection, $queue, ListenerOptions $options) {
+    public function makeProcess($connection, $queue, ListenerOptions $options)
+    {
         $command = $this->workerCommand;
 
         // If the environment is set, we will append it to the command string so the
@@ -131,11 +139,11 @@ class Listener {
         // options available for the command. This will produce the final command
         // line that we will pass into a Symfony process object for processing.
         $command = $this->formatCommand(
-                $command, $connection, $queue, $options
+            $command, $connection, $queue, $options
         );
 
         return new Process(
-                $command, $this->commandPath, null, null, $options->timeout
+            $command, $this->commandPath, null, null, $options->timeout
         );
     }
 
@@ -146,8 +154,9 @@ class Listener {
      * @param  \Illuminate\Queue\ListenerOptions  $options
      * @return string
      */
-    protected function addEnvironment($command, ListenerOptions $options) {
-        return $command . ' --env=' . ProcessUtils::escapeArgument($options->environment);
+    protected function addEnvironment($command, ListenerOptions $options)
+    {
+        return $command.' --env='.ProcessUtils::escapeArgument($options->environment);
     }
 
     /**
@@ -159,9 +168,14 @@ class Listener {
      * @param  \Illuminate\Queue\ListenerOptions  $options
      * @return string
      */
-    protected function formatCommand($command, $connection, $queue, ListenerOptions $options) {
+    protected function formatCommand($command, $connection, $queue, ListenerOptions $options)
+    {
         return sprintf(
-                $command, ProcessUtils::escapeArgument($connection), ProcessUtils::escapeArgument($queue), $options->delay, $options->memory, $options->sleep, $options->maxTries
+            $command,
+            ProcessUtils::escapeArgument($connection),
+            ProcessUtils::escapeArgument($queue),
+            $options->delay, $options->memory,
+            $options->sleep, $options->maxTries
         );
     }
 
@@ -172,7 +186,8 @@ class Listener {
      * @param  int  $memory
      * @return void
      */
-    public function runProcess(Process $process, $memory) {
+    public function runProcess(Process $process, $memory)
+    {
         $process->run(function ($type, $line) {
             $this->handleWorkerOutput($type, $line);
         });
@@ -192,7 +207,8 @@ class Listener {
      * @param  string  $line
      * @return void
      */
-    protected function handleWorkerOutput($type, $line) {
+    protected function handleWorkerOutput($type, $line)
+    {
         if (isset($this->outputHandler)) {
             call_user_func($this->outputHandler, $type, $line);
         }
@@ -204,7 +220,8 @@ class Listener {
      * @param  int  $memoryLimit
      * @return bool
      */
-    public function memoryExceeded($memoryLimit) {
+    public function memoryExceeded($memoryLimit)
+    {
         return (memory_get_usage() / 1024 / 1024) >= $memoryLimit;
     }
 
@@ -213,7 +230,8 @@ class Listener {
      *
      * @return void
      */
-    public function stop() {
+    public function stop()
+    {
         die;
     }
 
@@ -223,8 +241,8 @@ class Listener {
      * @param  \Closure  $outputHandler
      * @return void
      */
-    public function setOutputHandler(Closure $outputHandler) {
+    public function setOutputHandler(Closure $outputHandler)
+    {
         $this->outputHandler = $outputHandler;
     }
-
 }

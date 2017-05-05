@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Database\ConnectionResolverInterface;
 
-class DatabasePresenceVerifier implements PresenceVerifierInterface {
-
+class DatabasePresenceVerifier implements PresenceVerifierInterface
+{
     /**
      * The database connection instance.
      *
@@ -28,7 +28,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  \Illuminate\Database\ConnectionResolverInterface  $db
      * @return void
      */
-    public function __construct(ConnectionResolverInterface $db) {
+    public function __construct(ConnectionResolverInterface $db)
+    {
         $this->db = $db;
     }
 
@@ -43,10 +44,11 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  array   $extra
      * @return int
      */
-    public function getCount($collection, $column, $value, $excludeId = null, $idColumn = null, array $extra = []) {
+    public function getCount($collection, $column, $value, $excludeId = null, $idColumn = null, array $extra = [])
+    {
         $query = $this->table($collection)->where($column, '=', $value);
 
-        if (!is_null($excludeId) && $excludeId != 'NULL') {
+        if (! is_null($excludeId) && $excludeId != 'NULL') {
             $query->where($idColumn ?: 'id', '<>', $excludeId);
         }
 
@@ -62,7 +64,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  array   $extra
      * @return int
      */
-    public function getMultiCount($collection, $column, array $values, array $extra = []) {
+    public function getMultiCount($collection, $column, array $values, array $extra = [])
+    {
         $query = $this->table($collection)->whereIn($column, $values);
 
         return $this->addConditions($query, $extra)->count();
@@ -75,7 +78,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  array  $conditions
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function addConditions($query, $conditions) {
+    protected function addConditions($query, $conditions)
+    {
         foreach ($conditions as $key => $value) {
             if ($value instanceof Closure) {
                 $query->where(function ($query) use ($value) {
@@ -97,7 +101,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  string  $extraValue
      * @return void
      */
-    protected function addWhere($query, $key, $extraValue) {
+    protected function addWhere($query, $key, $extraValue)
+    {
         if ($extraValue === 'NULL') {
             $query->whereNull($key);
         } elseif ($extraValue === 'NOT_NULL') {
@@ -115,7 +120,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  string  $table
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function table($table) {
+    protected function table($table)
+    {
         return $this->db->connection($this->connection)->table($table)->useWritePdo();
     }
 
@@ -125,8 +131,8 @@ class DatabasePresenceVerifier implements PresenceVerifierInterface {
      * @param  string  $connection
      * @return void
      */
-    public function setConnection($connection) {
+    public function setConnection($connection)
+    {
         $this->connection = $connection;
     }
-
 }

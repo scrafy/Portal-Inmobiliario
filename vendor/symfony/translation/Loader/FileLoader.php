@@ -18,12 +18,13 @@ use Symfony\Component\Config\Resource\FileResource;
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-abstract class FileLoader extends ArrayLoader {
-
+abstract class FileLoader extends ArrayLoader
+{
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $locale, $domain = 'messages') {
+    public function load($resource, $locale, $domain = 'messages')
+    {
         if (!stream_is_local($resource)) {
             throw new InvalidResourceException(sprintf('This is not a local file "%s".', $resource));
         }
@@ -60,6 +61,5 @@ abstract class FileLoader extends ArrayLoader {
      *
      * @throws InvalidResourceException If stream content has an invalid format.
      */
-
     abstract protected function loadResource($resource);
 }

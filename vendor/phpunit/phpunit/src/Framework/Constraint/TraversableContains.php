@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,8 +12,8 @@
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
  */
-class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint {
-
+class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
+{
     /**
      * @var bool
      */
@@ -37,7 +36,8 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false) {
+    public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    {
         parent::__construct();
 
         if (!is_bool($checkForObjectIdentity)) {
@@ -48,9 +48,9 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
         }
 
-        $this->checkForObjectIdentity = $checkForObjectIdentity;
+        $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
-        $this->value = $value;
+        $this->value                     = $value;
     }
 
     /**
@@ -61,7 +61,8 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      *
      * @return bool
      */
-    protected function matches($other) {
+    protected function matches($other)
+    {
         if ($other instanceof SplObjectStorage) {
             return $other->contains($this->value);
         }
@@ -92,7 +93,8 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      *
      * @return string
      */
-    public function toString() {
+    public function toString()
+    {
         if (is_string($this->value) && strpos($this->value, "\n") !== false) {
             return 'contains "' . $this->value . '"';
         } else {
@@ -110,10 +112,12 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      *
      * @return string
      */
-    protected function failureDescription($other) {
+    protected function failureDescription($other)
+    {
         return sprintf(
-                '%s %s', is_array($other) ? 'an array' : 'a traversable', $this->toString()
+            '%s %s',
+            is_array($other) ? 'an array' : 'a traversable',
+            $this->toString()
         );
     }
-
 }

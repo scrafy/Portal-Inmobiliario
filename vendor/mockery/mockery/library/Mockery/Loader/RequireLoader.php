@@ -5,15 +5,17 @@ namespace Mockery\Loader;
 use Mockery\Generator\MockDefinition;
 use Mockery\Loader\Loader;
 
-class RequireLoader implements Loader {
-
+class RequireLoader implements Loader
+{
     protected $path;
 
-    public function __construct($path) {
+    public function __construct($path)
+    {
         $this->path = $path;
     }
 
-    public function load(MockDefinition $definition) {
+    public function load(MockDefinition $definition)
+    {
         if (class_exists($definition->getClassName(), false)) {
             return;
         }
@@ -23,5 +25,4 @@ class RequireLoader implements Loader {
 
         require $tmpfname;
     }
-
 }

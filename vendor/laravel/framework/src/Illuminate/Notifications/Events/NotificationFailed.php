@@ -2,8 +2,8 @@
 
 namespace Illuminate\Notifications\Events;
 
-class NotificationFailed {
-
+class NotificationFailed
+{
     /**
      * The notifiable entity who received the notification.
      *
@@ -41,11 +41,11 @@ class NotificationFailed {
      * @param  array  $data
      * @return void
      */
-    public function __construct($notifiable, $notification, $channel, $data = []) {
+    public function __construct($notifiable, $notification, $channel, $data = [])
+    {
         $this->data = $data;
         $this->channel = $channel;
         $this->notifiable = $notifiable;
         $this->notification = $notification;
     }
-
 }

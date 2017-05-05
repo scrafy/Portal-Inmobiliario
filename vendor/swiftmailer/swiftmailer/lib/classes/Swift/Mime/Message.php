@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-interface Swift_Mime_Message extends Swift_Mime_MimeEntity {
-
+interface Swift_Mime_Message extends Swift_Mime_MimeEntity
+{
     /**
      * Generates a valid Message-ID and switches to it.
      *

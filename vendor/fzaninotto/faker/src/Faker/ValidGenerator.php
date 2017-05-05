@@ -6,8 +6,8 @@ namespace Faker;
  * Proxy for other generators, to return only valid values. Works with
  * Faker\Generator\Base->valid()
  */
-class ValidGenerator {
-
+class ValidGenerator
+{
     protected $generator;
     protected $validator;
     protected $maxRetries;
@@ -15,7 +15,8 @@ class ValidGenerator {
     /**
      * @param Generator $generator
      */
-    public function __construct(Generator $generator, $validator = null, $maxRetries = 10000) {
+    public function __construct(Generator $generator, $validator = null, $maxRetries = 10000)
+    {
         if (is_null($validator)) {
             $validator = function () {
                 return true;
@@ -32,7 +33,8 @@ class ValidGenerator {
      * Catch and proxy all generator calls but return only valid values
      * @param string $attribute
      */
-    public function __get($attribute) {
+    public function __get($attribute)
+    {
         return $this->__call($attribute, array());
     }
 
@@ -41,7 +43,8 @@ class ValidGenerator {
      * @param string $name
      * @param array $arguments
      */
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         $i = 0;
         do {
             $res = call_user_func_array(array($this->generator, $name), $arguments);
@@ -53,5 +56,4 @@ class ValidGenerator {
 
         return $res;
     }
-
 }

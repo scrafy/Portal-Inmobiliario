@@ -2,8 +2,8 @@
 
 namespace Illuminate\Http\Testing;
 
-class MimeType {
-
+class MimeType
+{
     /**
      * An array of extension to MIME types.
      *
@@ -783,10 +783,10 @@ class MimeType {
      * @param  string  $filename
      * @return string
      */
-    public static function from($filename) {
+    public static function from($filename)
+    {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
         return collect(self::$mimes)->get($extension, 'application/octet-stream');
     }
-
 }

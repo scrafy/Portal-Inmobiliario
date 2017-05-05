@@ -4,15 +4,17 @@ namespace Mockery\Generator;
 
 use Mockery\Generator\StringManipulation\Pass\Pass;
 
-class StringManipulationGenerator implements Generator {
-
+class StringManipulationGenerator implements Generator
+{
     protected $passes = array();
 
-    public function __construct(array $passes) {
+    public function __construct(array $passes)
+    {
         $this->passes = $passes;
     }
 
-    public function generate(MockConfiguration $config) {
+    public function generate(MockConfiguration $config)
+    {
         $code = file_get_contents(__DIR__ . '/../Mock.php');
         $className = $config->getName() ?: $config->generateName();
 
@@ -25,8 +27,8 @@ class StringManipulationGenerator implements Generator {
         return new MockDefinition($namedConfig, $code);
     }
 
-    public function addPass(Pass $pass) {
+    public function addPass(Pass $pass)
+    {
         $this->passes[] = $pass;
     }
-
 }

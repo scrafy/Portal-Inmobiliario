@@ -1,5 +1,4 @@
 <?php
-
 /**
  * phpDocumentor
  *
@@ -15,8 +14,8 @@ namespace phpDocumentor\Reflection;
 /**
  * Interface for Api Elements
  */
-interface Element {
-
+interface Element
+{
     /**
      * Returns the Fqsen of the element.
      *

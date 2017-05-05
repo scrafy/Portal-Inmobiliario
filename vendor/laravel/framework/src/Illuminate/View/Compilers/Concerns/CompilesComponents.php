@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesComponents {
-
+trait CompilesComponents
+{
     /**
      * Compile the component statements into valid PHP.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileComponent($expression) {
+    protected function compileComponent($expression)
+    {
         return "<?php \$__env->startComponent{$expression}; ?>";
     }
 
@@ -19,7 +20,8 @@ trait CompilesComponents {
      *
      * @return string
      */
-    protected function compileEndComponent() {
+    protected function compileEndComponent()
+    {
         return '<?php echo $__env->renderComponent(); ?>';
     }
 
@@ -29,7 +31,8 @@ trait CompilesComponents {
      * @param  string  $expression
      * @return string
      */
-    protected function compileSlot($expression) {
+    protected function compileSlot($expression)
+    {
         return "<?php \$__env->slot{$expression}; ?>";
     }
 
@@ -38,8 +41,8 @@ trait CompilesComponents {
      *
      * @return string
      */
-    protected function compileEndSlot() {
+    protected function compileEndSlot()
+    {
         return '<?php $__env->endSlot(); ?>';
     }
-
 }

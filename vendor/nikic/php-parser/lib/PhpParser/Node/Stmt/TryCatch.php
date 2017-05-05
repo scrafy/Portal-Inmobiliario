@@ -4,14 +4,12 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class TryCatch extends Node\Stmt {
-
+class TryCatch extends Node\Stmt
+{
     /** @var Node[] Statements */
     public $stmts;
-
     /** @var Catch_[] Catches */
     public $catches;
-
     /** @var null|Finally_ Optional finally node */
     public $finally;
 
@@ -33,5 +31,4 @@ class TryCatch extends Node\Stmt {
     public function getSubNodeNames() {
         return array('stmts', 'catches', 'finally');
     }
-
 }

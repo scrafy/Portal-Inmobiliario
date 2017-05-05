@@ -13,9 +13,10 @@ namespace Psy\Test\CodeCleaner;
 
 use Psy\CodeCleaner\InstanceOfPass;
 
-class InstanceOfPassTest extends CodeCleanerTestCase {
-
-    protected function setUp() {
+class InstanceOfPassTest extends CodeCleanerTestCase
+{
+    protected function setUp()
+    {
         $this->setPass(new InstanceOfPass());
     }
 
@@ -23,12 +24,14 @@ class InstanceOfPassTest extends CodeCleanerTestCase {
      * @dataProvider invalidStatements
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessInvalidStatement($code) {
+    public function testProcessInvalidStatement($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function invalidStatements() {
+    public function invalidStatements()
+    {
         return array(
             array('null instanceof stdClass'),
             array('true instanceof stdClass'),
@@ -47,12 +50,14 @@ class InstanceOfPassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider validStatements
      */
-    public function testProcessValidStatement($code) {
+    public function testProcessValidStatement($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function validStatements() {
+    public function validStatements()
+    {
         $data = array(
             array('$a instanceof stdClass'),
             array('strtolower("foo") instanceof stdClass'),
@@ -65,5 +70,4 @@ class InstanceOfPassTest extends CodeCleanerTestCase {
 
         return $data;
     }
-
 }

@@ -2,16 +2,18 @@
 
 namespace Mockery\Generator;
 
-class CachingGenerator implements Generator {
-
+class CachingGenerator implements Generator
+{
     protected $generator;
     protected $cache = array();
 
-    public function __construct(Generator $generator) {
+    public function __construct(Generator $generator)
+    {
         $this->generator = $generator;
     }
 
-    public function generate(MockConfiguration $config) {
+    public function generate(MockConfiguration $config)
+    {
         $hash = $config->getHash();
         if (isset($this->cache[$hash])) {
             return $this->cache[$hash];
@@ -22,5 +24,4 @@ class CachingGenerator implements Generator {
 
         return $definition;
     }
-
 }

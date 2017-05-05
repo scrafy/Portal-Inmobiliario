@@ -7,8 +7,8 @@ use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-class ServeCommand extends Command {
-
+class ServeCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -30,7 +30,8 @@ class ServeCommand extends Command {
      *
      * @throws \Exception
      */
-    public function fire() {
+    public function fire()
+    {
         chdir($this->laravel->publicPath());
 
         $this->line("<info>Laravel development server started:</info> <http://{$this->host()}:{$this->port()}>");
@@ -43,8 +44,13 @@ class ServeCommand extends Command {
      *
      * @return string
      */
-    protected function serverCommand() {
-        return sprintf('%s -S %s:%s %s/server.php', ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)), $this->host(), $this->port(), ProcessUtils::escapeArgument($this->laravel->basePath())
+    protected function serverCommand()
+    {
+        return sprintf('%s -S %s:%s %s/server.php',
+            ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)),
+            $this->host(),
+            $this->port(),
+            ProcessUtils::escapeArgument($this->laravel->basePath())
         );
     }
 
@@ -53,7 +59,8 @@ class ServeCommand extends Command {
      *
      * @return string
      */
-    protected function host() {
+    protected function host()
+    {
         return $this->input->getOption('host');
     }
 
@@ -62,7 +69,8 @@ class ServeCommand extends Command {
      *
      * @return string
      */
-    protected function port() {
+    protected function port()
+    {
         return $this->input->getOption('port');
     }
 
@@ -71,11 +79,12 @@ class ServeCommand extends Command {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['host', null, InputOption::VALUE_OPTIONAL, 'The host address to serve the application on.', '127.0.0.1'],
+
             ['port', null, InputOption::VALUE_OPTIONAL, 'The port to serve the application on.', 8000],
         ];
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Queue\Console;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 
-class ListFailedCommand extends Command {
-
+class ListFailedCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -33,7 +33,8 @@ class ListFailedCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         if (count($jobs = $this->getFailedJobs()) == 0) {
             return $this->info('No failed jobs!');
         }
@@ -46,12 +47,13 @@ class ListFailedCommand extends Command {
      *
      * @return array
      */
-    protected function getFailedJobs() {
+    protected function getFailedJobs()
+    {
         $failed = $this->laravel['queue.failer']->all();
 
         return collect($failed)->map(function ($failed) {
-                    return $this->parseFailedJob((array) $failed);
-                })->filter()->all();
+            return $this->parseFailedJob((array) $failed);
+        })->filter()->all();
     }
 
     /**
@@ -60,7 +62,8 @@ class ListFailedCommand extends Command {
      * @param  array  $failed
      * @return array
      */
-    protected function parseFailedJob(array $failed) {
+    protected function parseFailedJob(array $failed)
+    {
         $row = array_values(Arr::except($failed, ['payload', 'exception']));
 
         array_splice($row, 3, 0, $this->extractJobName($failed['payload']));
@@ -74,10 +77,11 @@ class ListFailedCommand extends Command {
      * @param  string  $payload
      * @return string|null
      */
-    private function extractJobName($payload) {
+    private function extractJobName($payload)
+    {
         $payload = json_decode($payload, true);
 
-        if ($payload && (!isset($payload['data']['command']))) {
+        if ($payload && (! isset($payload['data']['command']))) {
             return Arr::get($payload, 'job');
         } elseif ($payload && isset($payload['data']['command'])) {
             return $this->matchJobName($payload);
@@ -90,7 +94,8 @@ class ListFailedCommand extends Command {
      * @param  array  $payload
      * @return string
      */
-    protected function matchJobName($payload) {
+    protected function matchJobName($payload)
+    {
         preg_match('/"([^"]+)"/', $payload['data']['command'], $matches);
 
         if (isset($matches[1])) {
@@ -106,8 +111,8 @@ class ListFailedCommand extends Command {
      * @param  array  $jobs
      * @return void
      */
-    protected function displayFailedJobs(array $jobs) {
+    protected function displayFailedJobs(array $jobs)
+    {
         $this->table($this->headers, $jobs);
     }
-
 }

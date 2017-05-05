@@ -12,10 +12,9 @@ use Illuminate\Contracts\Support\MessageProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse as BaseRedirectResponse;
 
-class RedirectResponse extends BaseRedirectResponse {
-
-    use ResponseTrait,
-        Macroable {
+class RedirectResponse extends BaseRedirectResponse
+{
+    use ResponseTrait, Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -40,7 +39,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  mixed  $value
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function with($key, $value = null) {
+    public function with($key, $value = null)
+    {
         $key = is_array($key) ? $key : [$key => $value];
 
         foreach ($key as $k => $v) {
@@ -56,7 +56,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  array  $cookies
      * @return $this
      */
-    public function withCookies(array $cookies) {
+    public function withCookies(array $cookies)
+    {
         foreach ($cookies as $cookie) {
             $this->headers->setCookie($cookie);
         }
@@ -70,9 +71,10 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  array  $input
      * @return $this
      */
-    public function withInput(array $input = null) {
+    public function withInput(array $input = null)
+    {
         $this->session->flashInput($this->removeFilesFromInput(
-                        !is_null($input) ? $input : $this->request->input()
+            ! is_null($input) ? $input : $this->request->input()
         ));
 
         return $this;
@@ -84,7 +86,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  array  $input
      * @return array
      */
-    protected function removeFilesFromInput(array $input) {
+    protected function removeFilesFromInput(array $input)
+    {
         foreach ($input as $key => $value) {
             if (is_array($value)) {
                 $input[$key] = $this->removeFilesFromInput($value);
@@ -103,7 +106,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @return $this
      */
-    public function onlyInput() {
+    public function onlyInput()
+    {
         return $this->withInput($this->request->only(func_get_args()));
     }
 
@@ -112,7 +116,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function exceptInput() {
+    public function exceptInput()
+    {
         return $this->withInput($this->request->except(func_get_args()));
     }
 
@@ -123,11 +128,12 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  string  $key
      * @return $this
      */
-    public function withErrors($provider, $key = 'default') {
+    public function withErrors($provider, $key = 'default')
+    {
         $value = $this->parseErrors($provider);
 
         $this->session->flash(
-                'errors', $this->session->get('errors', new ViewErrorBag)->put($key, $value)
+            'errors', $this->session->get('errors', new ViewErrorBag)->put($key, $value)
         );
 
         return $this;
@@ -139,7 +145,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  \Illuminate\Contracts\Support\MessageProvider|array|string  $provider
      * @return \Illuminate\Support\MessageBag
      */
-    protected function parseErrors($provider) {
+    protected function parseErrors($provider)
+    {
         if ($provider instanceof MessageProvider) {
             return $provider->getMessageBag();
         }
@@ -152,7 +159,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @return null
      */
-    public function getOriginalContent() {
+    public function getOriginalContent()
+    {
         //
     }
 
@@ -161,7 +169,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @return \Illuminate\Http\Request|null
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -171,7 +180,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
     }
 
@@ -180,7 +190,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @return \Illuminate\Session\Store|null
      */
-    public function getSession() {
+    public function getSession()
+    {
         return $this->session;
     }
 
@@ -190,7 +201,8 @@ class RedirectResponse extends BaseRedirectResponse {
      * @param  \Illuminate\Session\Store  $session
      * @return void
      */
-    public function setSession(SessionStore $session) {
+    public function setSession(SessionStore $session)
+    {
         $this->session = $session;
     }
 
@@ -203,7 +215,8 @@ class RedirectResponse extends BaseRedirectResponse {
      *
      * @throws \BadMethodCallException
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
         }
@@ -213,8 +226,7 @@ class RedirectResponse extends BaseRedirectResponse {
         }
 
         throw new BadMethodCallException(
-        "Method [$method] does not exist on Redirect."
+            "Method [$method] does not exist on Redirect."
         );
     }
-
 }

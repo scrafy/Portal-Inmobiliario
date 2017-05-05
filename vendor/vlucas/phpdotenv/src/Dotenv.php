@@ -8,8 +8,8 @@ namespace Dotenv;
  * It's responsible for loading a `.env` file in the given directory and
  * setting the environment vars.
  */
-class Dotenv {
-
+class Dotenv
+{
     /**
      * The file path.
      *
@@ -32,7 +32,8 @@ class Dotenv {
      *
      * @return void
      */
-    public function __construct($path, $file = '.env') {
+    public function __construct($path, $file = '.env')
+    {
         $this->filePath = $this->getFilePath($path, $file);
         $this->loader = new Loader($this->filePath, true);
     }
@@ -42,7 +43,8 @@ class Dotenv {
      *
      * @return array
      */
-    public function load() {
+    public function load()
+    {
         return $this->loadData();
     }
 
@@ -51,7 +53,8 @@ class Dotenv {
      *
      * @return array
      */
-    public function overload() {
+    public function overload()
+    {
         return $this->loadData(true);
     }
 
@@ -63,12 +66,13 @@ class Dotenv {
      *
      * @return string
      */
-    protected function getFilePath($path, $file) {
+    protected function getFilePath($path, $file)
+    {
         if (!is_string($file)) {
             $file = '.env';
         }
 
-        $filePath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+        $filePath = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
 
         return $filePath;
     }
@@ -80,7 +84,8 @@ class Dotenv {
      *
      * @return array
      */
-    protected function loadData($overload = false) {
+    protected function loadData($overload = false)
+    {
         $this->loader = new Loader($this->filePath, !$overload);
 
         return $this->loader->load();
@@ -93,8 +98,8 @@ class Dotenv {
      *
      * @return \Dotenv\Validator
      */
-    public function required($variable) {
+    public function required($variable)
+    {
         return new Validator((array) $variable, $this->loader);
     }
-
 }

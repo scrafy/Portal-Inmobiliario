@@ -19,8 +19,8 @@ use Prophecy\Prophecy\MethodProphecy;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-class ReturnPromise implements PromiseInterface {
-
+class ReturnPromise implements PromiseInterface
+{
     private $returnValues = array();
 
     /**
@@ -28,7 +28,8 @@ class ReturnPromise implements PromiseInterface {
      *
      * @param array $returnValues Array of values
      */
-    public function __construct(array $returnValues) {
+    public function __construct(array $returnValues)
+    {
         $this->returnValues = $returnValues;
     }
 
@@ -41,7 +42,8 @@ class ReturnPromise implements PromiseInterface {
      *
      * @return mixed
      */
-    public function execute(array $args, ObjectProphecy $object, MethodProphecy $method) {
+    public function execute(array $args, ObjectProphecy $object, MethodProphecy $method)
+    {
         $value = array_shift($this->returnValues);
 
         if (!count($this->returnValues)) {
@@ -50,5 +52,4 @@ class ReturnPromise implements PromiseInterface {
 
         return $value;
     }
-
 }

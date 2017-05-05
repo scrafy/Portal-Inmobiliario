@@ -2,15 +2,17 @@
 
 namespace Mockery;
 
-class ReceivedMethodCalls {
-
+class ReceivedMethodCalls
+{
     private $methodCalls = array();
-
-    public function push(MethodCall $methodCall) {
+    
+    public function push(MethodCall $methodCall)
+    {
         $this->methodCalls[] = $methodCall;
     }
 
-    public function verify(Expectation $expectation) {
+    public function verify(Expectation $expectation)
+    {
         foreach ($this->methodCalls as $methodCall) {
             if ($methodCall->getMethod() !== $expectation->getName()) {
                 continue;
@@ -25,5 +27,4 @@ class ReceivedMethodCalls {
 
         $expectation->verify();
     }
-
 }

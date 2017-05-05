@@ -15,8 +15,8 @@ use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
-class Kernel implements KernelContract {
-
+class Kernel implements KernelContract
+{
     /**
      * The application implementation.
      *
@@ -74,8 +74,9 @@ class Kernel implements KernelContract {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function __construct(Application $app, Dispatcher $events) {
-        if (!defined('ARTISAN_BINARY')) {
+    public function __construct(Application $app, Dispatcher $events)
+    {
+        if (! defined('ARTISAN_BINARY')) {
             define('ARTISAN_BINARY', 'artisan');
         }
 
@@ -92,9 +93,10 @@ class Kernel implements KernelContract {
      *
      * @return void
      */
-    protected function defineConsoleSchedule() {
+    protected function defineConsoleSchedule()
+    {
         $this->app->instance(
-                Schedule::class, $schedule = new Schedule($this->app[Cache::class])
+            Schedule::class, $schedule = new Schedule($this->app[Cache::class])
         );
 
         $this->schedule($schedule);
@@ -107,11 +109,12 @@ class Kernel implements KernelContract {
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return int
      */
-    public function handle($input, $output = null) {
+    public function handle($input, $output = null)
+    {
         try {
             $this->bootstrap();
 
-            if (!$this->commandsLoaded) {
+            if (! $this->commandsLoaded) {
                 $this->commands();
 
                 $this->commandsLoaded = true;
@@ -142,7 +145,8 @@ class Kernel implements KernelContract {
      * @param  int  $status
      * @return void
      */
-    public function terminate($input, $status) {
+    public function terminate($input, $status)
+    {
         $this->app->terminate();
     }
 
@@ -152,7 +156,8 @@ class Kernel implements KernelContract {
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule) {
+    protected function schedule(Schedule $schedule)
+    {
         //
     }
 
@@ -161,7 +166,8 @@ class Kernel implements KernelContract {
      *
      * @return void
      */
-    protected function commands() {
+    protected function commands()
+    {
         //
     }
 
@@ -172,7 +178,8 @@ class Kernel implements KernelContract {
      * @param  Closure  $callback
      * @return \Illuminate\Foundation\Console\ClosureCommand
      */
-    public function command($signature, Closure $callback) {
+    public function command($signature, Closure $callback)
+    {
         $command = new ClosureCommand($signature, $callback);
 
         Artisan::starting(function ($artisan) use ($command) {
@@ -188,7 +195,8 @@ class Kernel implements KernelContract {
      * @param  \Symfony\Component\Console\Command\Command  $command
      * @return void
      */
-    public function registerCommand($command) {
+    public function registerCommand($command)
+    {
         $this->getArtisan()->add($command);
     }
 
@@ -200,10 +208,11 @@ class Kernel implements KernelContract {
      * @param  \Symfony\Component\Console\Output\OutputInterface  $outputBuffer
      * @return int
      */
-    public function call($command, array $parameters = [], $outputBuffer = null) {
+    public function call($command, array $parameters = [], $outputBuffer = null)
+    {
         $this->bootstrap();
 
-        if (!$this->commandsLoaded) {
+        if (! $this->commandsLoaded) {
             $this->commands();
 
             $this->commandsLoaded = true;
@@ -219,9 +228,10 @@ class Kernel implements KernelContract {
      * @param  array   $parameters
      * @return void
      */
-    public function queue($command, array $parameters = []) {
+    public function queue($command, array $parameters = [])
+    {
         $this->app[QueueContract::class]->push(
-                new QueuedCommand(func_get_args())
+            new QueuedCommand(func_get_args())
         );
     }
 
@@ -230,7 +240,8 @@ class Kernel implements KernelContract {
      *
      * @return array
      */
-    public function all() {
+    public function all()
+    {
         $this->bootstrap();
 
         return $this->getArtisan()->all();
@@ -241,7 +252,8 @@ class Kernel implements KernelContract {
      *
      * @return string
      */
-    public function output() {
+    public function output()
+    {
         $this->bootstrap();
 
         return $this->getArtisan()->output();
@@ -252,8 +264,9 @@ class Kernel implements KernelContract {
      *
      * @return void
      */
-    public function bootstrap() {
-        if (!$this->app->hasBeenBootstrapped()) {
+    public function bootstrap()
+    {
+        if (! $this->app->hasBeenBootstrapped()) {
             $this->app->bootstrapWith($this->bootstrappers());
         }
 
@@ -268,10 +281,11 @@ class Kernel implements KernelContract {
      *
      * @return \Illuminate\Console\Application
      */
-    protected function getArtisan() {
+    protected function getArtisan()
+    {
         if (is_null($this->artisan)) {
             return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
-                    ->resolveCommands($this->commands);
+                                ->resolveCommands($this->commands);
         }
 
         return $this->artisan;
@@ -283,7 +297,8 @@ class Kernel implements KernelContract {
      * @param  \Illuminate\Console\Application  $artisan
      * @return void
      */
-    public function setArtisan($artisan) {
+    public function setArtisan($artisan)
+    {
         $this->artisan = $artisan;
     }
 
@@ -292,7 +307,8 @@ class Kernel implements KernelContract {
      *
      * @return array
      */
-    protected function bootstrappers() {
+    protected function bootstrappers()
+    {
         return $this->bootstrappers;
     }
 
@@ -302,7 +318,8 @@ class Kernel implements KernelContract {
      * @param  \Exception  $e
      * @return void
      */
-    protected function reportException(Exception $e) {
+    protected function reportException(Exception $e)
+    {
         $this->app[ExceptionHandler::class]->report($e);
     }
 
@@ -313,8 +330,8 @@ class Kernel implements KernelContract {
      * @param  \Exception  $e
      * @return void
      */
-    protected function renderException($output, Exception $e) {
+    protected function renderException($output, Exception $e)
+    {
         $this->app[ExceptionHandler::class]->renderForConsole($output, $e);
     }
-
 }

@@ -10,29 +10,29 @@ __halt_compiler()
 Hi!
 -----
 array(
-0: Stmt_Declare(
-declares: array(
-0: Stmt_DeclareDeclare(
-key: A
-value: Scalar_String(
-value: B
-)
-)
-)
-stmts: null
-)
-1: Stmt_Namespace(
-name: Name(
-parts: array(
-0: B
-)
-)
-stmts: array(
-)
-)
-2: Stmt_HaltCompiler(
-remaining: Hi!
-)
+    0: Stmt_Declare(
+        declares: array(
+            0: Stmt_DeclareDeclare(
+                key: A
+                value: Scalar_String(
+                    value: B
+                )
+            )
+        )
+        stmts: null
+    )
+    1: Stmt_Namespace(
+        name: Name(
+            parts: array(
+                0: B
+            )
+        )
+        stmts: array(
+        )
+    )
+    2: Stmt_HaltCompiler(
+        remaining: Hi!
+    )
 )
 -----
 <?php
@@ -41,18 +41,18 @@ remaining: Hi!
 namespace Foo;
 -----
 array(
-0: Stmt_Nop(
-comments: array(
-0: /* Comment */
-)
-)
-1: Stmt_Namespace(
-name: Name(
-parts: array(
-0: Foo
-)
-)
-stmts: array(
-)
-)
+    0: Stmt_Nop(
+        comments: array(
+            0: /* Comment */
+        )
+    )
+    1: Stmt_Namespace(
+        name: Name(
+            parts: array(
+                0: Foo
+            )
+        )
+        stmts: array(
+        )
+    )
 )

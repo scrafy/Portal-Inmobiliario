@@ -9,8 +9,8 @@ use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 
-class MailChannel {
-
+class MailChannel
+{
     /**
      * The mailer implementation.
      *
@@ -31,7 +31,8 @@ class MailChannel {
      * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
      * @return void
      */
-    public function __construct(Mailer $mailer) {
+    public function __construct(Mailer $mailer)
+    {
         $this->mailer = $mailer;
     }
 
@@ -42,8 +43,9 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return void
      */
-    public function send($notifiable, Notification $notification) {
-        if (!$notifiable->routeNotificationFor('mail')) {
+    public function send($notifiable, Notification $notification)
+    {
+        if (! $notifiable->routeNotificationFor('mail')) {
             return;
         }
 
@@ -64,7 +66,8 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function buildView($message) {
+    protected function buildView($message)
+    {
         if ($message->view) {
             return $message->view;
         }
@@ -86,16 +89,17 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function buildMessage($mailMessage, $notifiable, $notification, $message) {
+    protected function buildMessage($mailMessage, $notifiable, $notification, $message)
+    {
         $this->addressMessage($mailMessage, $notifiable, $message);
 
         $mailMessage->subject($message->subject ?: Str::title(
-                                Str::snake(class_basename($notification), ' ')
+            Str::snake(class_basename($notification), ' ')
         ));
 
         $this->addAttachments($mailMessage, $message);
 
-        if (!is_null($message->priority)) {
+        if (! is_null($message->priority)) {
             $mailMessage->setPriority($message->priority);
         }
     }
@@ -108,7 +112,8 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function addressMessage($mailMessage, $notifiable, $message) {
+    protected function addressMessage($mailMessage, $notifiable, $message)
+    {
         $this->addSender($mailMessage, $message);
 
         $mailMessage->to($this->getRecipients($notifiable, $message));
@@ -121,12 +126,13 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function addSender($mailMessage, $message) {
-        if (!empty($message->from)) {
+    protected function addSender($mailMessage, $message)
+    {
+        if (! empty($message->from)) {
             $mailMessage->from($message->from[0], Arr::get($message->from, 1));
         }
 
-        if (!empty($message->replyTo)) {
+        if (! empty($message->replyTo)) {
             $mailMessage->replyTo($message->replyTo[0], Arr::get($message->replyTo, 1));
         }
     }
@@ -138,14 +144,15 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return mixed
      */
-    protected function getRecipients($notifiable, $message) {
+    protected function getRecipients($notifiable, $message)
+    {
         if (is_string($recipients = $notifiable->routeNotificationFor('mail'))) {
             $recipients = [$recipients];
         }
 
         return collect($recipients)->map(function ($recipient) {
-                    return is_string($recipient) ? $recipient : $recipient->email;
-                })->all();
+            return is_string($recipient) ? $recipient : $recipient->email;
+        })->all();
     }
 
     /**
@@ -155,7 +162,8 @@ class MailChannel {
      * @param  \Illuminate\Notifications\Messages\MailMessage  $message
      * @return void
      */
-    protected function addAttachments($mailMessage, $message) {
+    protected function addAttachments($mailMessage, $message)
+    {
         foreach ($message->attachments as $attachment) {
             $mailMessage->attach($attachment['file'], $attachment['options']);
         }
@@ -171,10 +179,10 @@ class MailChannel {
      * @param  \Closure  $callback
      * @return $this
      */
-    public function setMarkdownResolver(Closure $callback) {
+    public function setMarkdownResolver(Closure $callback)
+    {
         $this->markdownResolver = $callback;
 
         return $this;
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
-
-class StopOnWarningTestSuite {
-
-    public static function suite() {
+class StopOnWarningTestSuite
+{
+    public static function suite()
+    {
         $suite = new PHPUnit_Framework_TestSuite('Test Warnings');
 
         $suite->addTestSuite('NoTestCases');
@@ -10,5 +10,4 @@ class StopOnWarningTestSuite {
 
         return $suite;
     }
-
 }

@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class ClassConst extends Node\Stmt {
-
+class ClassConst extends Node\Stmt
+{
     /** @var int Modifiers */
     public $flags;
-
     /** @var Node\Const_[] Constant declarations */
     public $consts;
 
@@ -30,7 +29,8 @@ class ClassConst extends Node\Stmt {
     }
 
     public function isPublic() {
-        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0 || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
+        return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
+            || ($this->flags & Class_::VISIBILITY_MODIFER_MASK) === 0;
     }
 
     public function isProtected() {
@@ -44,5 +44,4 @@ class ClassConst extends Node\Stmt {
     public function isStatic() {
         return (bool) ($this->flags & Class_::MODIFIER_STATIC);
     }
-
 }

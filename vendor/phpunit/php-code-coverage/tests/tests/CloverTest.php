@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -16,30 +15,35 @@ use SebastianBergmann\CodeCoverage\TestCase;
 /**
  * @covers SebastianBergmann\CodeCoverage\Report\Clover
  */
-class CloverTest extends TestCase {
-
-    public function testCloverForBankAccountTest() {
+class CloverTest extends TestCase
+{
+    public function testCloverForBankAccountTest()
+    {
         $clover = new Clover;
 
         $this->assertStringMatchesFormatFile(
-                TEST_FILES_PATH . 'BankAccount-clover.xml', $clover->process($this->getCoverageForBankAccount(), null, 'BankAccount')
+            TEST_FILES_PATH . 'BankAccount-clover.xml',
+            $clover->process($this->getCoverageForBankAccount(), null, 'BankAccount')
         );
     }
 
-    public function testCloverForFileWithIgnoredLines() {
+    public function testCloverForFileWithIgnoredLines()
+    {
         $clover = new Clover;
 
         $this->assertStringMatchesFormatFile(
-                TEST_FILES_PATH . 'ignored-lines-clover.xml', $clover->process($this->getCoverageForFileWithIgnoredLines())
+            TEST_FILES_PATH . 'ignored-lines-clover.xml',
+            $clover->process($this->getCoverageForFileWithIgnoredLines())
         );
     }
 
-    public function testCloverForClassWithAnonymousFunction() {
+    public function testCloverForClassWithAnonymousFunction()
+    {
         $clover = new Clover;
 
         $this->assertStringMatchesFormatFile(
-                TEST_FILES_PATH . 'class-with-anonymous-function-clover.xml', $clover->process($this->getCoverageForClassWithAnonymousFunction())
+            TEST_FILES_PATH . 'class-with-anonymous-function-clover.xml',
+            $clover->process($this->getCoverageForClassWithAnonymousFunction())
         );
     }
-
 }

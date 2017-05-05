@@ -25,15 +25,16 @@ use Symfony\Component\Yaml\Parser;
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-class LintCommand extends Command {
-
+class LintCommand extends Command
+{
     private $parser;
     private $format;
     private $displayCorrectFiles;
     private $directoryIteratorProvider;
     private $isReadableProvider;
 
-    public function __construct($name = null, $directoryIteratorProvider = null, $isReadableProvider = null) {
+    public function __construct($name = null, $directoryIteratorProvider = null, $isReadableProvider = null)
+    {
         parent::__construct($name);
 
         $this->directoryIteratorProvider = $directoryIteratorProvider;
@@ -43,13 +44,14 @@ class LintCommand extends Command {
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('lint:yaml')
-                ->setDescription('Lints a file and outputs encountered errors')
-                ->addArgument('filename', null, 'A file or a directory or STDIN')
-                ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
-                ->setHelp(<<<EOF
+            ->setName('lint:yaml')
+            ->setDescription('Lints a file and outputs encountered errors')
+            ->addArgument('filename', null, 'A file or a directory or STDIN')
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
+            ->setHelp(<<<EOF
 The <info>%command.name%</info> command lints a YAML file and outputs to STDOUT
 the first encountered syntax error.
 
@@ -67,11 +69,12 @@ Or of a whole directory:
   <info>php %command.full_name% dirname --format=json</info>
 
 EOF
-                )
+            )
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $io = new SymfonyStyle($input, $output);
         $filename = $input->getArgument('filename');
         $this->format = $input->getOption('format');
@@ -97,7 +100,8 @@ EOF
         return $this->display($io, $filesInfo);
     }
 
-    private function validate($content, $file = null) {
+    private function validate($content, $file = null)
+    {
         try {
             $this->getParser()->parse($content);
         } catch (ParseException $e) {
@@ -107,7 +111,8 @@ EOF
         return array('file' => $file, 'valid' => true);
     }
 
-    private function display(SymfonyStyle $io, array $files) {
+    private function display(SymfonyStyle $io, array $files)
+    {
         switch ($this->format) {
             case 'txt':
                 return $this->displayTxt($io, $files);
@@ -118,16 +123,17 @@ EOF
         }
     }
 
-    private function displayTxt(SymfonyStyle $io, array $filesInfo) {
+    private function displayTxt(SymfonyStyle $io, array $filesInfo)
+    {
         $countFiles = count($filesInfo);
         $erroredFiles = 0;
 
         foreach ($filesInfo as $info) {
             if ($info['valid'] && $this->displayCorrectFiles) {
-                $io->comment('<info>OK</info>' . ($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->comment('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
                 ++$erroredFiles;
-                $io->text('<error> ERROR </error>' . ($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->text('<error> ERROR </error>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
                 $io->text(sprintf('<error> >> %s</error>', $info['message']));
             }
         }
@@ -141,7 +147,8 @@ EOF
         return min($erroredFiles, 1);
     }
 
-    private function displayJson(SymfonyStyle $io, array $filesInfo) {
+    private function displayJson(SymfonyStyle $io, array $filesInfo)
+    {
         $errors = 0;
 
         array_walk($filesInfo, function (&$v) use (&$errors) {
@@ -156,7 +163,8 @@ EOF
         return min($errors, 1);
     }
 
-    private function getFiles($fileOrDirectory) {
+    private function getFiles($fileOrDirectory)
+    {
         if (is_file($fileOrDirectory)) {
             yield new \SplFileInfo($fileOrDirectory);
 
@@ -172,7 +180,8 @@ EOF
         }
     }
 
-    private function getStdin() {
+    private function getStdin()
+    {
         if (0 !== ftell(STDIN)) {
             return;
         }
@@ -185,7 +194,8 @@ EOF
         return $inputs;
     }
 
-    private function getParser() {
+    private function getParser()
+    {
         if (!$this->parser) {
             $this->parser = new Parser();
         }
@@ -193,10 +203,12 @@ EOF
         return $this->parser;
     }
 
-    private function getDirectoryIterator($directory) {
+    private function getDirectoryIterator($directory)
+    {
         $default = function ($directory) {
             return new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS), \RecursiveIteratorIterator::LEAVES_ONLY
+                new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS),
+                \RecursiveIteratorIterator::LEAVES_ONLY
             );
         };
 
@@ -207,7 +219,8 @@ EOF
         return $default($directory);
     }
 
-    private function isReadable($fileOrDirectory) {
+    private function isReadable($fileOrDirectory)
+    {
         $default = function ($fileOrDirectory) {
             return is_readable($fileOrDirectory);
         };
@@ -218,5 +231,4 @@ EOF
 
         return $default($fileOrDirectory);
     }
-
 }

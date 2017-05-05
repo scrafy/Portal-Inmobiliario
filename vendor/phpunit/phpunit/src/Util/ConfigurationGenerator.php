@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Util_ConfigurationGenerator {
-
+class PHPUnit_Util_ConfigurationGenerator
+{
     /**
      * @var string
      */
@@ -46,20 +45,22 @@ EOT;
      *
      * @return string
      */
-    public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory) {
+    public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory)
+    {
         return str_replace(
-                [
-            '{phpunit_version}',
-            '{bootstrap_script}',
-            '{tests_directory}',
-            '{src_directory}'
-                ], [
-            $phpunitVersion,
-            $bootstrapScript,
-            $testsDirectory,
-            $srcDirectory
-                ], $this->defaultTemplate
+            [
+                '{phpunit_version}',
+                '{bootstrap_script}',
+                '{tests_directory}',
+                '{src_directory}'
+            ],
+            [
+                $phpunitVersion,
+                $bootstrapScript,
+                $testsDirectory,
+                $srcDirectory
+            ],
+            $this->defaultTemplate
         );
     }
-
 }

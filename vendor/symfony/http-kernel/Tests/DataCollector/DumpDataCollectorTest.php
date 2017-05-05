@@ -20,9 +20,10 @@ use Symfony\Component\VarDumper\Cloner\Data;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class DumpDataCollectorTest extends TestCase {
-
-    public function testDump() {
+class DumpDataCollectorTest extends TestCase
+{
+    public function testDump()
+    {
         $data = new Data(array(array(123)));
 
         $collector = new DumpDataCollector();
@@ -54,7 +55,8 @@ class DumpDataCollectorTest extends TestCase {
         $this->assertSame('a:2:{i:0;b:0;i:1;s:5:"UTF-8";}', $collector->serialize());
     }
 
-    public function testCollectDefault() {
+    public function testCollectDefault()
+    {
         $data = new Data(array(array(123)));
 
         $collector = new DumpDataCollector();
@@ -71,7 +73,8 @@ class DumpDataCollectorTest extends TestCase {
         $collector->serialize();
     }
 
-    public function testCollectHtml() {
+    public function testCollectHtml()
+    {
         $data = new Data(array(array(123)));
 
         $collector = new DumpDataCollector(null, 'test://%f:%l');
@@ -98,7 +101,8 @@ EOTXT;
         $collector->serialize();
     }
 
-    public function testFlush() {
+    public function testFlush()
+    {
         $data = new Data(array(array(456)));
         $collector = new DumpDataCollector();
         $collector->dump($data);
@@ -108,5 +112,4 @@ EOTXT;
         $collector->__destruct();
         $this->assertSame("DumpDataCollectorTest.php on line {$line}:\n456\n", ob_get_clean());
     }
-
 }

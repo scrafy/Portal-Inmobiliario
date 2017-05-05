@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -21,19 +20,20 @@ use phpDocumentor\Reflection\Types\Context;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\DescriptionFactory
  * @covers ::<private>
  */
-class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
-
+class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::__construct
      * @covers ::create
      * @uses         phpDocumentor\Reflection\DocBlock\Description
      * @dataProvider provideSimpleExampleDescriptions
      */
-    public function testDescriptionCanParseASimpleString($contents) {
+    public function testDescriptionCanParseASimpleString($contents)
+    {
         $tagFactory = m::mock(TagFactory::class);
         $tagFactory->shouldReceive('create')->never();
 
-        $factory = new DescriptionFactory($tagFactory);
+        $factory     = new DescriptionFactory($tagFactory);
         $description = $factory->create($contents, new Context(''));
 
         $this->assertSame($contents, $description->render());
@@ -45,11 +45,12 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
      * @uses         phpDocumentor\Reflection\DocBlock\Description
      * @dataProvider provideEscapeSequences
      */
-    public function testEscapeSequences($contents, $expected) {
+    public function testEscapeSequences($contents, $expected)
+    {
         $tagFactory = m::mock(TagFactory::class);
         $tagFactory->shouldReceive('create')->never();
 
-        $factory = new DescriptionFactory($tagFactory);
+        $factory     = new DescriptionFactory($tagFactory);
         $description = $factory->create($contents, new Context(''));
 
         $this->assertSame($expected, $description->render());
@@ -64,17 +65,18 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
      * @uses   phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   phpDocumentor\Reflection\Types\Context
      */
-    public function testDescriptionCanParseAStringWithInlineTag() {
-        $contents = 'This is text for a {@link http://phpdoc.org/ description} that uses an inline tag.';
-        $context = new Context('');
+    public function testDescriptionCanParseAStringWithInlineTag()
+    {
+        $contents   = 'This is text for a {@link http://phpdoc.org/ description} that uses an inline tag.';
+        $context    = new Context('');
         $tagFactory = m::mock(TagFactory::class);
         $tagFactory->shouldReceive('create')
-                ->once()
-                ->with('@link http://phpdoc.org/ description', $context)
-                ->andReturn(new Link('http://phpdoc.org/', new Description('description')))
+            ->once()
+            ->with('@link http://phpdoc.org/ description', $context)
+            ->andReturn(new Link('http://phpdoc.org/', new Description('description')))
         ;
 
-        $factory = new DescriptionFactory($tagFactory);
+        $factory     = new DescriptionFactory($tagFactory);
         $description = $factory->create($contents, $context);
 
         $this->assertSame($contents, $description->render());
@@ -89,17 +91,18 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
      * @uses   phpDocumentor\Reflection\DocBlock\Tags\Formatter\PassthroughFormatter
      * @uses   phpDocumentor\Reflection\Types\Context
      */
-    public function testDescriptionCanParseAStringStartingWithInlineTag() {
-        $contents = '{@link http://phpdoc.org/ This} is text for a description that starts with an inline tag.';
-        $context = new Context('');
+    public function testDescriptionCanParseAStringStartingWithInlineTag()
+    {
+        $contents   = '{@link http://phpdoc.org/ This} is text for a description that starts with an inline tag.';
+        $context    = new Context('');
         $tagFactory = m::mock(TagFactory::class);
         $tagFactory->shouldReceive('create')
-                ->once()
-                ->with('@link http://phpdoc.org/ This', $context)
-                ->andReturn(new Link('http://phpdoc.org/', new Description('This')))
+            ->once()
+            ->with('@link http://phpdoc.org/ This', $context)
+            ->andReturn(new Link('http://phpdoc.org/', new Description('This')))
         ;
 
-        $factory = new DescriptionFactory($tagFactory);
+        $factory     = new DescriptionFactory($tagFactory);
         $description = $factory->create($contents, $context);
 
         $this->assertSame($contents, $description->render());
@@ -110,8 +113,9 @@ class DescriptionFactoryTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @uses   phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testIfSuperfluousStartingSpacesAreRemoved() {
-        $factory = new DescriptionFactory(m::mock(TagFactory::class));
+    public function testIfSuperfluousStartingSpacesAreRemoved()
+    {
+        $factory         = new DescriptionFactory(m::mock(TagFactory::class));
         $descriptionText = <<<DESCRIPTION
 This is a multiline
   description that you commonly
@@ -150,7 +154,8 @@ DESCRIPTION;
      *
      * @return string[][]
      */
-    public function provideSimpleExampleDescriptions() {
+    public function provideSimpleExampleDescriptions()
+    {
         return [
             ['This is text for a description.'],
             ['This is text for a description containing { that is literal.'],
@@ -159,11 +164,11 @@ DESCRIPTION;
         ];
     }
 
-    public function provideEscapeSequences() {
+    public function provideEscapeSequences()
+    {
         return [
             ['This is text for a description with a {@}.', 'This is text for a description with a @.'],
             ['This is text for a description with a {}.', 'This is text for a description with a }.'],
         ];
     }
-
 }

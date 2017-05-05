@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -16,15 +15,15 @@ namespace SebastianBergmann\CodeCoverage\Driver;
  *
  * @codeCoverageIgnore
  */
-class HHVM extends Xdebug {
-
+class HHVM extends Xdebug
+{
     /**
      * Start collection of code coverage information.
      *
      * @param bool $determineUnusedAndDead
      */
-    public function start($determineUnusedAndDead = true) {
+    public function start($determineUnusedAndDead = true)
+    {
         xdebug_start_code_coverage();
     }
-
 }

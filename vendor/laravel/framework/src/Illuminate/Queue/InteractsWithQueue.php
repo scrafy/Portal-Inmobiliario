@@ -4,8 +4,8 @@ namespace Illuminate\Queue;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
 
-trait InteractsWithQueue {
-
+trait InteractsWithQueue
+{
     /**
      * The underlying queue job instance.
      *
@@ -18,7 +18,8 @@ trait InteractsWithQueue {
      *
      * @return int
      */
-    public function attempts() {
+    public function attempts()
+    {
         return $this->job ? $this->job->attempts() : 1;
     }
 
@@ -27,7 +28,8 @@ trait InteractsWithQueue {
      *
      * @return void
      */
-    public function delete() {
+    public function delete()
+    {
         if ($this->job) {
             return $this->job->delete();
         }
@@ -39,7 +41,8 @@ trait InteractsWithQueue {
      * @param  \Throwable  $exception
      * @return void
      */
-    public function fail($exception = null) {
+    public function fail($exception = null)
+    {
         if ($this->job) {
             FailingJob::handle($this->job->getConnectionName(), $this->job, $exception);
         }
@@ -51,7 +54,8 @@ trait InteractsWithQueue {
      * @param  int   $delay
      * @return void
      */
-    public function release($delay = 0) {
+    public function release($delay = 0)
+    {
         if ($this->job) {
             return $this->job->release($delay);
         }
@@ -63,10 +67,10 @@ trait InteractsWithQueue {
      * @param  \Illuminate\Contracts\Queue\Job  $job
      * @return $this
      */
-    public function setJob(JobContract $job) {
+    public function setJob(JobContract $job)
+    {
         $this->job = $job;
 
         return $this;
     }
-
 }

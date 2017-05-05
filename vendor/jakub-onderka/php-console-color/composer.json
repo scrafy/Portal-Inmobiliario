@@ -9,9 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "JakubOnderka\\PhpConsoleColor": "src/"
-        }
+        "psr-0": {"JakubOnderka\\PhpConsoleColor": "src/"}
     },
     "require": {
         "php": ">=5.3.2"

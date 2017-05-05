@@ -16,36 +16,40 @@ namespace Symfony\Component\Debug\Exception;
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  */
-class SilencedErrorContext implements \JsonSerializable {
-
+class SilencedErrorContext implements \JsonSerializable
+{
     private $severity;
     private $file;
     private $line;
 
-    public function __construct($severity, $file, $line) {
+    public function __construct($severity, $file, $line)
+    {
         $this->severity = $severity;
         $this->file = $file;
         $this->line = $line;
     }
 
-    public function getSeverity() {
+    public function getSeverity()
+    {
         return $this->severity;
     }
 
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
-    public function getLine() {
+    public function getLine()
+    {
         return $this->line;
     }
 
-    public function JsonSerialize() {
+    public function JsonSerialize()
+    {
         return array(
             'severity' => $this->severity,
             'file' => $this->file,
             'line' => $this->line,
         );
     }
-
 }

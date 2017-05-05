@@ -1,13 +1,12 @@
 <?php
-
-class CoverageNotProtectedTest extends PHPUnit_Framework_TestCase {
-
+class CoverageNotProtectedTest extends PHPUnit_Framework_TestCase
+{
     /**
      * @covers CoveredClass::<!protected>
      */
-    public function testSomething() {
+    public function testSomething()
+    {
         $o = new CoveredClass;
         $o->publicMethod();
     }
-
 }

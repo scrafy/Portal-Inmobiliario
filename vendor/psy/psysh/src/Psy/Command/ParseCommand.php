@@ -25,8 +25,8 @@ use Symfony\Component\VarDumper\Caster\Caster;
 /**
  * Parse PHP code and show the abstract syntax tree.
  */
-class ParseCommand extends Command implements PresenterAware {
-
+class ParseCommand extends Command implements PresenterAware
+{
     private $presenter;
     private $parserFactory;
     private $parsers;
@@ -34,7 +34,8 @@ class ParseCommand extends Command implements PresenterAware {
     /**
      * {@inheritdoc}
      */
-    public function __construct($name = null) {
+    public function __construct($name = null)
+    {
         $this->parserFactory = new ParserFactory();
         $this->parsers = array();
 
@@ -46,12 +47,13 @@ class ParseCommand extends Command implements PresenterAware {
      *
      * @param Presenter $presenter
      */
-    public function setPresenter(Presenter $presenter) {
+    public function setPresenter(Presenter $presenter)
+    {
         $this->presenter = clone $presenter;
         $this->presenter->addCasters(array(
             'PhpParser\Node' => function (Node $node, array $a) {
                 $a = array(
-                    Caster::PREFIX_VIRTUAL . 'type' => $node->getType(),
+                    Caster::PREFIX_VIRTUAL . 'type'       => $node->getType(),
                     Caster::PREFIX_VIRTUAL . 'attributes' => $node->getAttributes(),
                 );
 
@@ -67,7 +69,8 @@ class ParseCommand extends Command implements PresenterAware {
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $definition = array(
             new InputArgument('code', InputArgument::REQUIRED, 'PHP code to parse.'),
             new InputOption('depth', '', InputOption::VALUE_REQUIRED, 'Depth to parse', 10),
@@ -75,19 +78,19 @@ class ParseCommand extends Command implements PresenterAware {
 
         if ($this->parserFactory->hasKindsSupport()) {
             $msg = 'One of PhpParser\\ParserFactory constants: '
-                    . implode(', ', ParserFactory::getPossibleKinds())
-                    . " (default is based on current interpreter's version)";
+                . implode(', ', ParserFactory::getPossibleKinds())
+                . " (default is based on current interpreter's version)";
             $defaultKind = $this->parserFactory->getDefaultKind();
 
             $definition[] = new InputOption('kind', '', InputOption::VALUE_REQUIRED, $msg, $defaultKind);
         }
 
         $this
-                ->setName('parse')
-                ->setDefinition($definition)
-                ->setDescription('Parse PHP code and show the abstract syntax tree.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('parse')
+            ->setDefinition($definition)
+            ->setDescription('Parse PHP code and show the abstract syntax tree.')
+            ->setHelp(
+                <<<'HELP'
 Parse PHP code and show the abstract syntax tree.
 
 This command is used in the development of PsySH. Given a string of PHP code,
@@ -97,21 +100,22 @@ See https://github.com/nikic/PHP-Parser
 
 It prolly won't be super useful for most of you, but it's here if you want to play.
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $code = $input->getArgument('code');
         if (strpos('<?', $code) === false) {
             $code = '<?php ' . $code;
         }
 
         $parserKind = $this->parserFactory->hasKindsSupport() ? $input->getOption('kind') : null;
-        $depth = $input->getOption('depth');
-        $nodes = $this->parse($this->getParser($parserKind), $code);
+        $depth      = $input->getOption('depth');
+        $nodes      = $this->parse($this->getParser($parserKind), $code);
         $output->page($this->presenter->present($nodes, $depth));
     }
 
@@ -123,7 +127,8 @@ HELP
      *
      * @return array Statements
      */
-    private function parse(Parser $parser, $code) {
+    private function parse(Parser $parser, $code)
+    {
         try {
             return $parser->parse($code);
         } catch (\PhpParser\Error $e) {
@@ -143,12 +148,12 @@ HELP
      *
      * @return Parser
      */
-    private function getParser($kind = null) {
+    private function getParser($kind = null)
+    {
         if (!array_key_exists($kind, $this->parsers)) {
             $this->parsers[$kind] = $this->parserFactory->createParser($kind);
         }
 
         return $this->parsers[$kind];
     }
-
 }

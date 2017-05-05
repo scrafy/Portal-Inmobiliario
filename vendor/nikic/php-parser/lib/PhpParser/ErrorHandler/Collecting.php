@@ -10,8 +10,8 @@ use PhpParser\ErrorHandler;
  *
  * This allows graceful handling of errors.
  */
-class Collecting implements ErrorHandler {
-
+class Collecting implements ErrorHandler
+{
     /** @var Error[] Collected errors */
     private $errors = [];
 
@@ -43,5 +43,4 @@ class Collecting implements ErrorHandler {
     public function clearErrors() {
         $this->errors = [];
     }
-
 }

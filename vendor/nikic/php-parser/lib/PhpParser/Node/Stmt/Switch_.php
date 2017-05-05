@@ -4,11 +4,10 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Switch_ extends Node\Stmt {
-
+class Switch_ extends Node\Stmt
+{
     /** @var Node\Expr Condition */
     public $cond;
-
     /** @var Case_[] Case list */
     public $cases;
 
@@ -28,5 +27,4 @@ class Switch_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('cond', 'cases');
     }
-
 }

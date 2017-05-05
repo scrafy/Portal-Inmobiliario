@@ -1,55 +1,63 @@
 <?php
 
-class Swift_Events_SendEventTest extends \PHPUnit_Framework_TestCase {
-
-    public function testMessageCanBeFetchedViaGetter() {
+class Swift_Events_SendEventTest extends \PHPUnit_Framework_TestCase
+{
+    public function testMessageCanBeFetchedViaGetter()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
         $evt = $this->_createEvent($transport, $message);
 
         $ref = $evt->getMessage();
-        $this->assertEquals($message, $ref, '%s: Message should be returned from getMessage()'
-        );
+        $this->assertEquals($message, $ref,
+            '%s: Message should be returned from getMessage()'
+            );
     }
 
-    public function testTransportCanBeFetchViaGetter() {
+    public function testTransportCanBeFetchViaGetter()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
         $evt = $this->_createEvent($transport, $message);
 
         $ref = $evt->getTransport();
-        $this->assertEquals($transport, $ref, '%s: Transport should be returned from getTransport()'
-        );
+        $this->assertEquals($transport, $ref,
+            '%s: Transport should be returned from getTransport()'
+            );
     }
 
-    public function testTransportCanBeFetchViaGetSource() {
+    public function testTransportCanBeFetchViaGetSource()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
         $evt = $this->_createEvent($transport, $message);
 
         $ref = $evt->getSource();
-        $this->assertEquals($transport, $ref, '%s: Transport should be returned from getSource()'
-        );
+        $this->assertEquals($transport, $ref,
+            '%s: Transport should be returned from getSource()'
+            );
     }
 
-    public function testResultCanBeSetAndGet() {
+    public function testResultCanBeSetAndGet()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
         $evt = $this->_createEvent($transport, $message);
 
         $evt->setResult(
-                Swift_Events_SendEvent::RESULT_SUCCESS | Swift_Events_SendEvent::RESULT_TENTATIVE
-        );
+            Swift_Events_SendEvent::RESULT_SUCCESS | Swift_Events_SendEvent::RESULT_TENTATIVE
+            );
 
         $this->assertTrue((bool) ($evt->getResult() & Swift_Events_SendEvent::RESULT_SUCCESS));
         $this->assertTrue((bool) ($evt->getResult() & Swift_Events_SendEvent::RESULT_TENTATIVE));
     }
 
-    public function testFailedRecipientsCanBeSetAndGet() {
+    public function testFailedRecipientsCanBeSetAndGet()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
@@ -57,11 +65,13 @@ class Swift_Events_SendEventTest extends \PHPUnit_Framework_TestCase {
 
         $evt->setFailedRecipients(array('foo@bar', 'zip@button'));
 
-        $this->assertEquals(array('foo@bar', 'zip@button'), $evt->getFailedRecipients(), '%s: FailedRecipients should be returned from getter'
-        );
+        $this->assertEquals(array('foo@bar', 'zip@button'), $evt->getFailedRecipients(),
+            '%s: FailedRecipients should be returned from getter'
+            );
     }
 
-    public function testFailedRecipientsGetsPickedUpCorrectly() {
+    public function testFailedRecipientsGetsPickedUpCorrectly()
+    {
         $message = $this->_createMessage();
         $transport = $this->_createTransport();
 
@@ -69,16 +79,19 @@ class Swift_Events_SendEventTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(array(), $evt->getFailedRecipients());
     }
 
-    private function _createEvent(Swift_Transport $source, Swift_Mime_Message $message) {
+    private function _createEvent(Swift_Transport $source,
+        Swift_Mime_Message $message)
+    {
         return new Swift_Events_SendEvent($source, $message);
     }
 
-    private function _createTransport() {
+    private function _createTransport()
+    {
         return $this->getMockBuilder('Swift_Transport')->getMock();
     }
 
-    private function _createMessage() {
+    private function _createMessage()
+    {
         return $this->getMockBuilder('Swift_Mime_Message')->getMock();
     }
-
 }

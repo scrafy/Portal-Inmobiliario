@@ -4,8 +4,8 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class ErrorSuppress extends Expr {
-
+class ErrorSuppress extends Expr
+{
     /** @var Expr Expression */
     public $expr;
 
@@ -23,5 +23,4 @@ class ErrorSuppress extends Expr {
     public function getSubNodeNames() {
         return array('expr');
     }
-
 }

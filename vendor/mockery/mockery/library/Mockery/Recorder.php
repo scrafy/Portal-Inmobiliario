@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Mockery
  *
@@ -21,7 +20,8 @@
 
 namespace Mockery;
 
-class Recorder {
+class Recorder
+{
 
     /**
      * Mock object on which all recorded interactions will be set as
@@ -57,7 +57,8 @@ class Recorder {
      * @param object $subject
      * @return void
      */
-    public function __construct(\Mockery\MockInterface $mock, $subject) {
+    public function __construct(\Mockery\MockInterface $mock, $subject)
+    {
         $this->_mock = $mock;
         $this->_subject = $subject;
     }
@@ -69,7 +70,8 @@ class Recorder {
      *
      * @return void
      */
-    public function shouldBeStrict() {
+    public function shouldBeStrict()
+    {
         $this->_strict = true;
     }
 
@@ -82,7 +84,8 @@ class Recorder {
      * @param array $args
      * @return mixed
      */
-    public function __call($method, array $args) {
+    public function __call($method, array $args)
+    {
         $return = call_user_func_array(array($this->_subject, $method), $args);
         $expectation = $this->_mock->shouldReceive($method)->andReturn($return);
         if ($this->_strict) {
@@ -97,5 +100,4 @@ class Recorder {
         }
         return $return;
     }
-
 }

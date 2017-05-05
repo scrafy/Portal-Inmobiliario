@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Eloquent;
 
-trait SoftDeletes {
-
+trait SoftDeletes
+{
     /**
      * Indicates if the model is currently force deleting.
      *
@@ -16,7 +16,8 @@ trait SoftDeletes {
      *
      * @return void
      */
-    public static function bootSoftDeletes() {
+    public static function bootSoftDeletes()
+    {
         static::addGlobalScope(new SoftDeletingScope);
     }
 
@@ -25,7 +26,8 @@ trait SoftDeletes {
      *
      * @return bool|null
      */
-    public function forceDelete() {
+    public function forceDelete()
+    {
         $this->forceDeleting = true;
 
         $deleted = $this->delete();
@@ -40,7 +42,8 @@ trait SoftDeletes {
      *
      * @return mixed
      */
-    protected function performDeleteOnModel() {
+    protected function performDeleteOnModel()
+    {
         if ($this->forceDeleting) {
             return $this->newQueryWithoutScopes()->where($this->getKeyName(), $this->getKey())->forceDelete();
         }
@@ -53,7 +56,8 @@ trait SoftDeletes {
      *
      * @return void
      */
-    protected function runSoftDelete() {
+    protected function runSoftDelete()
+    {
         $query = $this->newQueryWithoutScopes()->where($this->getKeyName(), $this->getKey());
 
         $this->{$this->getDeletedAtColumn()} = $time = $this->freshTimestamp();
@@ -66,7 +70,8 @@ trait SoftDeletes {
      *
      * @return bool|null
      */
-    public function restore() {
+    public function restore()
+    {
         // If the restoring event does not return false, we will proceed with this
         // restore operation. Otherwise, we bail out so the developer will stop
         // the restore totally. We will clear the deleted timestamp and save.
@@ -93,8 +98,9 @@ trait SoftDeletes {
      *
      * @return bool
      */
-    public function trashed() {
-        return !is_null($this->{$this->getDeletedAtColumn()});
+    public function trashed()
+    {
+        return ! is_null($this->{$this->getDeletedAtColumn()});
     }
 
     /**
@@ -103,7 +109,8 @@ trait SoftDeletes {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function restoring($callback) {
+    public static function restoring($callback)
+    {
         static::registerModelEvent('restoring', $callback);
     }
 
@@ -113,7 +120,8 @@ trait SoftDeletes {
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function restored($callback) {
+    public static function restored($callback)
+    {
         static::registerModelEvent('restored', $callback);
     }
 
@@ -122,7 +130,8 @@ trait SoftDeletes {
      *
      * @return bool
      */
-    public function isForceDeleting() {
+    public function isForceDeleting()
+    {
         return $this->forceDeleting;
     }
 
@@ -131,7 +140,8 @@ trait SoftDeletes {
      *
      * @return string
      */
-    public function getDeletedAtColumn() {
+    public function getDeletedAtColumn()
+    {
         return defined('static::DELETED_AT') ? static::DELETED_AT : 'deleted_at';
     }
 
@@ -140,8 +150,8 @@ trait SoftDeletes {
      *
      * @return string
      */
-    public function getQualifiedDeletedAtColumn() {
-        return $this->getTable() . '.' . $this->getDeletedAtColumn();
+    public function getQualifiedDeletedAtColumn()
+    {
+        return $this->getTable().'.'.$this->getDeletedAtColumn();
     }
-
 }

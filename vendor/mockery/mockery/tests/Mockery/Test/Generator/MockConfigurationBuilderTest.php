@@ -5,12 +5,13 @@ namespace Mockery\Generator;
 use Mockery as m;
 use Mockery\Generator\MockConfigurationBuilder;
 
-class MockConfigurationBuilderTest extends \PHPUnit_Framework_TestCase {
-
+class MockConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @test
      */
-    public function reservedWordsAreBlackListedByDefault() {
+    public function reservedWordsAreBlackListedByDefault()
+    {
         $builder = new MockConfigurationBuilder;
         $this->assertContains('abstract', $builder->getMockConfiguration()->getBlackListedMethods());
 
@@ -21,24 +22,22 @@ class MockConfigurationBuilderTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function magicMethodsAreBlackListedByDefault() {
+    public function magicMethodsAreBlackListedByDefault()
+    {
         $builder = new MockConfigurationBuilder;
         $builder->addTarget("Mockery\Generator\ClassWithMagicCall");
         $methods = $builder->getMockConfiguration()->getMethodsToMock();
         $this->assertEquals(1, count($methods));
         $this->assertEquals("foo", $methods[0]->getName());
     }
-
 }
 
-class ClassWithMagicCall {
-
-    public function foo() {
-        
+class ClassWithMagicCall
+{
+    public function foo()
+    {
     }
-
-    public function __call($method, $args) {
-        
+    public function __call($method, $args)
+    {
     }
-
 }

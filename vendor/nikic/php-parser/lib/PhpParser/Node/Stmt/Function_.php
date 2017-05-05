@@ -5,20 +5,16 @@ namespace PhpParser\Node\Stmt;
 use PhpParser\Node;
 use PhpParser\Node\FunctionLike;
 
-class Function_ extends Node\Stmt implements FunctionLike {
-
+class Function_ extends Node\Stmt implements FunctionLike
+{
     /** @var bool Whether function returns by reference */
     public $byRef;
-
     /** @var string Name */
     public $name;
-
     /** @var Node\Param[] Parameters */
     public $params;
-
     /** @var null|string|Node\Name|Node\NullableType Return type */
     public $returnType;
-
     /** @var Node[] Statements */
     public $stmts;
 
@@ -61,5 +57,4 @@ class Function_ extends Node\Stmt implements FunctionLike {
     public function getStmts() {
         return $this->stmts;
     }
-
 }

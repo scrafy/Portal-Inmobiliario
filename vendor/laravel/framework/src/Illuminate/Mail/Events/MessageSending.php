@@ -2,8 +2,8 @@
 
 namespace Illuminate\Mail\Events;
 
-class MessageSending {
-
+class MessageSending
+{
     /**
      * The Swift message instance.
      *
@@ -17,8 +17,8 @@ class MessageSending {
      * @param  \Swift_Message  $message
      * @return void
      */
-    public function __construct($message) {
+    public function __construct($message)
+    {
         $this->message = $message;
     }
-
 }

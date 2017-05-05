@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the GlobalState package.
  *
@@ -16,8 +15,8 @@ use ArrayObject;
 
 /**
  */
-class SnapshotClass {
-
+class SnapshotClass
+{
     private static $string = 'snapshot';
     private static $dom;
     private static $closure;
@@ -26,15 +25,13 @@ class SnapshotClass {
     private static $resource;
     private static $stdClass;
 
-    public static function init() {
+    public static function init()
+    {
         self::$dom = new DomDocument();
-        self::$closure = function () {
-            
-        };
+        self::$closure = function () {};
         self::$arrayObject = new ArrayObject(array(1, 2, 3));
         self::$snapshotDomDocument = new SnapshotDomDocument();
         self::$resource = fopen('php://memory', 'r');
         self::$stdClass = new \stdClass();
     }
-
 }

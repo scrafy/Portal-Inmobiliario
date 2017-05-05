@@ -4,8 +4,8 @@ namespace League\Flysystem;
 
 use Exception as BaseException;
 
-class FileNotFoundException extends Exception {
-
+class FileNotFoundException extends Exception
+{
     /**
      * @var string
      */
@@ -18,7 +18,8 @@ class FileNotFoundException extends Exception {
      * @param int        $code
      * @param \Exception $previous
      */
-    public function __construct($path, $code = 0, BaseException $previous = null) {
+    public function __construct($path, $code = 0, BaseException $previous = null)
+    {
         $this->path = $path;
 
         parent::__construct('File not found at path: ' . $this->getPath(), $code, $previous);
@@ -29,8 +30,8 @@ class FileNotFoundException extends Exception {
      *
      * @return string
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->path;
     }
-
 }

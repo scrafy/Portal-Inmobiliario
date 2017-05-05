@@ -21,8 +21,8 @@ use Symfony\Component\Translation\Exception\RuntimeException;
  *
  * @author Michel Salib <michelsalib@hotmail.com>
  */
-class TranslationWriter {
-
+class TranslationWriter
+{
     /**
      * Dumpers used for export.
      *
@@ -36,14 +36,16 @@ class TranslationWriter {
      * @param string          $format The format of the dumper
      * @param DumperInterface $dumper The dumper
      */
-    public function addDumper($format, DumperInterface $dumper) {
+    public function addDumper($format, DumperInterface $dumper)
+    {
         $this->dumpers[$format] = $dumper;
     }
 
     /**
      * Disables dumper backup.
      */
-    public function disableBackup() {
+    public function disableBackup()
+    {
         foreach ($this->dumpers as $dumper) {
             if (method_exists($dumper, 'setBackup')) {
                 $dumper->setBackup(false);
@@ -56,7 +58,8 @@ class TranslationWriter {
      *
      * @return array
      */
-    public function getFormats() {
+    public function getFormats()
+    {
         return array_keys($this->dumpers);
     }
 
@@ -69,7 +72,8 @@ class TranslationWriter {
      *
      * @throws InvalidArgumentException
      */
-    public function writeTranslations(MessageCatalogue $catalogue, $format, $options = array()) {
+    public function writeTranslations(MessageCatalogue $catalogue, $format, $options = array())
+    {
         if (!isset($this->dumpers[$format])) {
             throw new InvalidArgumentException(sprintf('There is no dumper associated with format "%s".', $format));
         }
@@ -84,5 +88,4 @@ class TranslationWriter {
         // save
         $dumper->dump($catalogue, $options);
     }
-
 }

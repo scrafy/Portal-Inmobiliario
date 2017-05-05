@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Container;
 
-interface ContextualBindingBuilder {
-
+interface ContextualBindingBuilder
+{
     /**
      * Define the abstract target that depends on the context.
      *

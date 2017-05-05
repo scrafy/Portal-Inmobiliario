@@ -1,6 +1,5 @@
 <?php
-
-interface AnInterfaceWithReturnType {
-
+interface AnInterfaceWithReturnType
+{
     public function returnAnArray(): array;
 }

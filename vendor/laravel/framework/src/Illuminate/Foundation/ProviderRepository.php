@@ -5,8 +5,8 @@ namespace Illuminate\Foundation;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class ProviderRepository {
-
+class ProviderRepository
+{
     /**
      * The application implementation.
      *
@@ -36,7 +36,8 @@ class ProviderRepository {
      * @param  string  $manifestPath
      * @return void
      */
-    public function __construct(ApplicationContract $app, Filesystem $files, $manifestPath) {
+    public function __construct(ApplicationContract $app, Filesystem $files, $manifestPath)
+    {
         $this->app = $app;
         $this->files = $files;
         $this->manifestPath = $manifestPath;
@@ -48,7 +49,8 @@ class ProviderRepository {
      * @param  array  $providers
      * @return void
      */
-    public function load(array $providers) {
+    public function load(array $providers)
+    {
         $manifest = $this->loadManifest();
 
         // First we will load the service manifest, which contains information on all
@@ -80,7 +82,8 @@ class ProviderRepository {
      *
      * @return array|null
      */
-    public function loadManifest() {
+    public function loadManifest()
+    {
         // The service manifest is a file containing a JSON representation of every
         // service provided by the application and whether its provider is using
         // deferred loading or should be eagerly loaded on each request to us.
@@ -100,7 +103,8 @@ class ProviderRepository {
      * @param  array  $providers
      * @return bool
      */
-    public function shouldRecompile($manifest, $providers) {
+    public function shouldRecompile($manifest, $providers)
+    {
         return is_null($manifest) || $manifest['providers'] != $providers;
     }
 
@@ -111,7 +115,8 @@ class ProviderRepository {
      * @param  array  $events
      * @return void
      */
-    protected function registerLoadEvents($provider, array $events) {
+    protected function registerLoadEvents($provider, array $events)
+    {
         if (count($events) < 1) {
             return;
         }
@@ -127,7 +132,8 @@ class ProviderRepository {
      * @param  array  $providers
      * @return array
      */
-    protected function compileManifest($providers) {
+    protected function compileManifest($providers)
+    {
         // The service manifest should contain a list of all of the providers for
         // the application so we can compare it on each request to the service
         // and determine if the manifest should be recompiled or is current.
@@ -164,7 +170,8 @@ class ProviderRepository {
      * @param  array  $providers
      * @return array
      */
-    protected function freshManifest(array $providers) {
+    protected function freshManifest(array $providers)
+    {
         return ['providers' => $providers, 'eager' => [], 'deferred' => []];
     }
 
@@ -174,9 +181,10 @@ class ProviderRepository {
      * @param  array  $manifest
      * @return array
      */
-    public function writeManifest($manifest) {
+    public function writeManifest($manifest)
+    {
         $this->files->put(
-                $this->manifestPath, '<?php return ' . var_export($manifest, true) . ';'
+            $this->manifestPath, '<?php return '.var_export($manifest, true).';'
         );
 
         return array_merge(['when' => []], $manifest);
@@ -188,8 +196,8 @@ class ProviderRepository {
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function createProvider($provider) {
+    public function createProvider($provider)
+    {
         return new $provider($this->app);
     }
-
 }

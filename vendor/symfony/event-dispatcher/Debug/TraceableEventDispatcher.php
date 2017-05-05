@@ -24,10 +24,11 @@ use Psr\Log\LoggerInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
-
+class TraceableEventDispatcher implements TraceableEventDispatcherInterface
+{
     protected $logger;
     protected $stopwatch;
+
     private $called;
     private $dispatcher;
     private $wrappedListeners;
@@ -39,7 +40,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
      * @param Stopwatch                $stopwatch  A Stopwatch instance
      * @param LoggerInterface          $logger     A LoggerInterface instance
      */
-    public function __construct(EventDispatcherInterface $dispatcher, Stopwatch $stopwatch, LoggerInterface $logger = null) {
+    public function __construct(EventDispatcherInterface $dispatcher, Stopwatch $stopwatch, LoggerInterface $logger = null)
+    {
         $this->dispatcher = $dispatcher;
         $this->stopwatch = $stopwatch;
         $this->logger = $logger;
@@ -50,21 +52,24 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
     /**
      * {@inheritdoc}
      */
-    public function addListener($eventName, $listener, $priority = 0) {
+    public function addListener($eventName, $listener, $priority = 0)
+    {
         $this->dispatcher->addListener($eventName, $listener, $priority);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addSubscriber(EventSubscriberInterface $subscriber) {
+    public function addSubscriber(EventSubscriberInterface $subscriber)
+    {
         $this->dispatcher->addSubscriber($subscriber);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeListener($eventName, $listener) {
+    public function removeListener($eventName, $listener)
+    {
         if (isset($this->wrappedListeners[$eventName])) {
             foreach ($this->wrappedListeners[$eventName] as $index => $wrappedListener) {
                 if ($wrappedListener->getWrappedListener() === $listener) {
@@ -81,35 +86,40 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
     /**
      * {@inheritdoc}
      */
-    public function removeSubscriber(EventSubscriberInterface $subscriber) {
+    public function removeSubscriber(EventSubscriberInterface $subscriber)
+    {
         return $this->dispatcher->removeSubscriber($subscriber);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getListeners($eventName = null) {
+    public function getListeners($eventName = null)
+    {
         return $this->dispatcher->getListeners($eventName);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getListenerPriority($eventName, $listener) {
+    public function getListenerPriority($eventName, $listener)
+    {
         return $this->dispatcher->getListenerPriority($eventName, $listener);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasListeners($eventName = null) {
+    public function hasListeners($eventName = null)
+    {
         return $this->dispatcher->hasListeners($eventName);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName, Event $event = null) {
+    public function dispatch($eventName, Event $event = null)
+    {
         if (null === $event) {
             $event = new Event();
         }
@@ -138,11 +148,12 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
     /**
      * {@inheritdoc}
      */
-    public function getCalledListeners() {
+    public function getCalledListeners()
+    {
         $called = array();
         foreach ($this->called as $eventName => $listeners) {
             foreach ($listeners as $listener) {
-                $called[$eventName . '.' . $listener->getPretty()] = $listener->getInfo($eventName);
+                $called[$eventName.'.'.$listener->getPretty()] = $listener->getInfo($eventName);
             }
         }
 
@@ -152,7 +163,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
     /**
      * {@inheritdoc}
      */
-    public function getNotCalledListeners() {
+    public function getNotCalledListeners()
+    {
         try {
             $allListeners = $this->getListeners();
         } catch (\Exception $e) {
@@ -182,7 +194,7 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
                     if (!$listener instanceof WrappedListener) {
                         $listener = new WrappedListener($listener, null, $this->stopwatch, $this);
                     }
-                    $notCalled[$eventName . '.' . $listener->getPretty()] = $listener->getInfo($eventName);
+                    $notCalled[$eventName.'.'.$listener->getPretty()] = $listener->getInfo($eventName);
                 }
             }
         }
@@ -200,7 +212,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
      *
      * @return mixed
      */
-    public function __call($method, $arguments) {
+    public function __call($method, $arguments)
+    {
         return call_user_func_array(array($this->dispatcher, $method), $arguments);
     }
 
@@ -210,8 +223,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
      * @param string $eventName The event name
      * @param Event  $event     The event
      */
-    protected function preDispatch($eventName, Event $event) {
-        
+    protected function preDispatch($eventName, Event $event)
+    {
     }
 
     /**
@@ -220,11 +233,12 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
      * @param string $eventName The event name
      * @param Event  $event     The event
      */
-    protected function postDispatch($eventName, Event $event) {
-        
+    protected function postDispatch($eventName, Event $event)
+    {
     }
 
-    private function preProcess($eventName) {
+    private function preProcess($eventName)
+    {
         foreach ($this->dispatcher->getListeners($eventName) as $listener) {
             $priority = $this->getListenerPriority($eventName, $listener);
             $wrappedListener = new WrappedListener($listener, null, $this->stopwatch, $this);
@@ -234,7 +248,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
         }
     }
 
-    private function postProcess($eventName) {
+    private function postProcess($eventName)
+    {
         unset($this->wrappedListeners[$eventName]);
         $skipped = false;
         foreach ($this->dispatcher->getListeners($eventName) as $listener) {
@@ -276,7 +291,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
         }
     }
 
-    private function sortListenersByPriority($a, $b) {
+    private function sortListenersByPriority($a, $b)
+    {
         if (is_int($a['priority']) && !is_int($b['priority'])) {
             return 1;
         }
@@ -295,5 +311,4 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface {
 
         return 1;
     }
-
 }

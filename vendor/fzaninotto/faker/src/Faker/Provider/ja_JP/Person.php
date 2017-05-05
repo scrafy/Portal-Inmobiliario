@@ -2,13 +2,14 @@
 
 namespace Faker\Provider\ja_JP;
 
-class Person extends \Faker\Provider\Person {
-
+class Person extends \Faker\Provider\Person
+{
     protected static $maleNameFormats = array(
         '{{lastName}} {{firstNameMale}}',
     );
+
     protected static $femaleNameFormats = array(
-        '{{lastName}} {{firstNameFemale}}',
+         '{{lastName}} {{firstNameFemale}}',
     );
 
     /**
@@ -43,9 +44,11 @@ class Person extends \Faker\Provider\Person {
         '山岸', '山口', '山田', '山本', '吉田', '吉本',
         '若松', '渡辺',
     );
+
     protected static $kanaFormats = array(
         '{{lastKanaName}} {{firstKanaName}}'
     );
+
     protected static $firstKanaName = array(
         'アキラ', 'アケミ', 'アスカ', 'アツシ', 'オサム',
         'カオリ', 'カナ', 'キョウスケ', 'ケンイチ', 'クミコ', 'ケンイチ',
@@ -56,6 +59,7 @@ class Person extends \Faker\Provider\Person {
         'マアヤ', 'マイ', 'マナブ', 'ミキ', 'ミツル', 'ミノル', 'モモコ', 'ヒロキ',
         'ユイ', 'ユウタ', 'ヤスヒロ', 'ヨウイチ', 'ヨウコ', 'ヨウスケ', 'ユミコ', 'リョウスケ', 'リョウヘイ', 'レイ', 'リカ',
     );
+
     protected static $lastKanaName = array(
         'アオタ', 'アオヤマ', 'イシダ', 'イダカ', 'イトウ', 'ウノ', 'エコダ', 'オオガキ',
         'カノウ', 'カノウ', 'キジマ', 'キムラ', 'キリヤマ', 'クドウ', 'コイズミ', 'コバヤシ', 'コンドウ',
@@ -71,7 +75,8 @@ class Person extends \Faker\Provider\Person {
     /**
      * @example 'アオタ アキラ'
      */
-    public function kanaName() {
+    public function kanaName()
+    {
         $format = static::randomElement(static::$kanaFormats);
 
         return $this->generator->parse($format);
@@ -80,15 +85,16 @@ class Person extends \Faker\Provider\Person {
     /**
      * @example 'アオタ'
      */
-    public static function firstKanaName() {
+    public static function firstKanaName()
+    {
         return static::randomElement(static::$firstKanaName);
     }
 
     /**
      * @example 'アキラ'
      */
-    public static function lastKanaName() {
+    public static function lastKanaName()
+    {
         return static::randomElement(static::$lastKanaName);
     }
-
 }

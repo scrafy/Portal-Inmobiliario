@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -13,7 +12,7 @@
 
 namespace phpDocumentor\Reflection\DocBlock\Tags\Factory;
 
-interface StaticMethod {
-
+interface StaticMethod
+{
     public static function create($body);
 }

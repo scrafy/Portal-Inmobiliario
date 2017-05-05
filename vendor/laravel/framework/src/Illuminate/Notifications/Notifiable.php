@@ -2,8 +2,7 @@
 
 namespace Illuminate\Notifications;
 
-trait Notifiable {
-
-    use HasDatabaseNotifications,
-        RoutesNotifications;
+trait Notifiable
+{
+    use HasDatabaseNotifications, RoutesNotifications;
 }

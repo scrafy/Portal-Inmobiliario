@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection as ModelCollection;
 
-class NotificationSender {
-
+class NotificationSender
+{
     /**
      * The notification manager instance.
      *
@@ -39,7 +39,8 @@ class NotificationSender {
      * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function __construct($manager, $bus, $events) {
+    public function __construct($manager, $bus, $events)
+    {
         $this->bus = $bus;
         $this->events = $events;
         $this->manager = $manager;
@@ -52,7 +53,8 @@ class NotificationSender {
      * @param  mixed  $notification
      * @return void
      */
-    public function send($notifiables, $notification) {
+    public function send($notifiables, $notification)
+    {
         $notifiables = $this->formatNotifiables($notifiables);
 
         if ($notification instanceof ShouldQueue) {
@@ -70,7 +72,8 @@ class NotificationSender {
      * @param  array  $channels
      * @return void
      */
-    public function sendNow($notifiables, $notification, array $channels = null) {
+    public function sendNow($notifiables, $notification, array $channels = null)
+    {
         $notifiables = $this->formatNotifiables($notifiables);
 
         $original = clone $notification;
@@ -97,19 +100,20 @@ class NotificationSender {
      * @param  string  $channel
      * @return void
      */
-    protected function sendToNotifiable($notifiable, $id, $notification, $channel) {
-        if (!$notification->id) {
+    protected function sendToNotifiable($notifiable, $id, $notification, $channel)
+    {
+        if (! $notification->id) {
             $notification->id = $id;
         }
 
-        if (!$this->shouldSendNotification($notifiable, $notification, $channel)) {
+        if (! $this->shouldSendNotification($notifiable, $notification, $channel)) {
             return;
         }
 
         $response = $this->manager->driver($channel)->send($notifiable, $notification);
 
         $this->events->dispatch(
-                new Events\NotificationSent($notifiable, $notification, $channel, $response)
+            new Events\NotificationSent($notifiable, $notification, $channel, $response)
         );
     }
 
@@ -121,10 +125,11 @@ class NotificationSender {
      * @param  string  $channel
      * @return bool
      */
-    protected function shouldSendNotification($notifiable, $notification, $channel) {
+    protected function shouldSendNotification($notifiable, $notification, $channel)
+    {
         return $this->events->until(
-                        new Events\NotificationSending($notifiable, $notification, $channel)
-                ) !== false;
+            new Events\NotificationSending($notifiable, $notification, $channel)
+        ) !== false;
     }
 
     /**
@@ -134,7 +139,8 @@ class NotificationSender {
      * @param  array[\Illuminate\Notifications\Channels\Notification]  $notification
      * @return void
      */
-    protected function queueNotification($notifiables, $notification) {
+    protected function queueNotification($notifiables, $notification)
+    {
         $notifiables = $this->formatNotifiables($notifiables);
 
         $original = clone $notification;
@@ -148,10 +154,10 @@ class NotificationSender {
                 $notification->id = $notificationId;
 
                 $this->bus->dispatch(
-                        (new SendQueuedNotifications($this->formatNotifiables($notifiable), $notification, [$channel]))
-                                ->onConnection($notification->connection)
-                                ->onQueue($notification->queue)
-                                ->delay($notification->delay)
+                    (new SendQueuedNotifications($this->formatNotifiables($notifiable), $notification, [$channel]))
+                            ->onConnection($notification->connection)
+                            ->onQueue($notification->queue)
+                            ->delay($notification->delay)
                 );
             }
         }
@@ -163,12 +169,13 @@ class NotificationSender {
      * @param  mixed  $notifiables
      * @return ModelCollection|array
      */
-    protected function formatNotifiables($notifiables) {
-        if (!$notifiables instanceof Collection && !is_array($notifiables)) {
-            return $notifiables instanceof Model ? new ModelCollection([$notifiables]) : [$notifiables];
+    protected function formatNotifiables($notifiables)
+    {
+        if (! $notifiables instanceof Collection && ! is_array($notifiables)) {
+            return $notifiables instanceof Model
+                            ? new ModelCollection([$notifiables]) : [$notifiables];
         }
 
         return $notifiables;
     }
-
 }

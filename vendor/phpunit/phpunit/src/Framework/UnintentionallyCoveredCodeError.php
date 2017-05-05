@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a test that unintentionally covers code.
  */
-class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_RiskyTestError {
-    
+class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_RiskyTestError
+{
 }

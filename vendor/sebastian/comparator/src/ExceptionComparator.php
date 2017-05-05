@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Comparator package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Comparator;
 /**
  * Compares Exception instances for equality.
  */
-class ExceptionComparator extends ObjectComparator {
-
+class ExceptionComparator extends ObjectComparator
+{
     /**
      * Returns whether the comparator can compare two values.
      *
@@ -23,7 +22,8 @@ class ExceptionComparator extends ObjectComparator {
      * @param  mixed $actual   The second value to compare
      * @return bool
      */
-    public function accepts($expected, $actual) {
+    public function accepts($expected, $actual)
+    {
         return $expected instanceof \Exception && $actual instanceof \Exception;
     }
 
@@ -34,14 +34,18 @@ class ExceptionComparator extends ObjectComparator {
      * @param  object $object
      * @return array
      */
-    protected function toArray($object) {
+    protected function toArray($object)
+    {
         $array = parent::toArray($object);
 
         unset(
-                $array['file'], $array['line'], $array['trace'], $array['string'], $array['xdebug_message']
+            $array['file'],
+            $array['line'],
+            $array['trace'],
+            $array['string'],
+            $array['xdebug_message']
         );
 
         return $array;
     }
-
 }

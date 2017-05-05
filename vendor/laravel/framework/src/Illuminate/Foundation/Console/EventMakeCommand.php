@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class EventMakeCommand extends GeneratorCommand {
-
+class EventMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -33,7 +33,8 @@ class EventMakeCommand extends GeneratorCommand {
      * @param  string  $rawName
      * @return bool
      */
-    protected function alreadyExists($rawName) {
+    protected function alreadyExists($rawName)
+    {
         return class_exists($rawName);
     }
 
@@ -42,8 +43,9 @@ class EventMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/event.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/event.stub';
     }
 
     /**
@@ -52,8 +54,8 @@ class EventMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Events';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Events';
     }
-
 }

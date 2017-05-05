@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Failed;
 
-class NullFailedJobProvider implements FailedJobProviderInterface {
-
+class NullFailedJobProvider implements FailedJobProviderInterface
+{
     /**
      * Log a failed job into storage.
      *
@@ -13,7 +13,8 @@ class NullFailedJobProvider implements FailedJobProviderInterface {
      * @param  \Exception  $exception
      * @return int|null
      */
-    public function log($connection, $queue, $payload, $exception) {
+    public function log($connection, $queue, $payload, $exception)
+    {
         //
     }
 
@@ -22,7 +23,8 @@ class NullFailedJobProvider implements FailedJobProviderInterface {
      *
      * @return array
      */
-    public function all() {
+    public function all()
+    {
         return [];
     }
 
@@ -32,7 +34,8 @@ class NullFailedJobProvider implements FailedJobProviderInterface {
      * @param  mixed  $id
      * @return array
      */
-    public function find($id) {
+    public function find($id)
+    {
         //
     }
 
@@ -42,7 +45,8 @@ class NullFailedJobProvider implements FailedJobProviderInterface {
      * @param  mixed  $id
      * @return bool
      */
-    public function forget($id) {
+    public function forget($id)
+    {
         return true;
     }
 
@@ -51,8 +55,8 @@ class NullFailedJobProvider implements FailedJobProviderInterface {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         //
     }
-
 }

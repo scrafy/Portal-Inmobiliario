@@ -25,8 +25,8 @@ use Symfony\Component\CssSelector\Parser\Tokenizer\Tokenizer;
  *
  * @internal
  */
-class Parser implements ParserInterface {
-
+class Parser implements ParserInterface
+{
     /**
      * @var Tokenizer
      */
@@ -37,14 +37,16 @@ class Parser implements ParserInterface {
      *
      * @param null|Tokenizer $tokenizer
      */
-    public function __construct(Tokenizer $tokenizer = null) {
+    public function __construct(Tokenizer $tokenizer = null)
+    {
         $this->tokenizer = $tokenizer ?: new Tokenizer();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function parse($source) {
+    public function parse($source)
+    {
         $reader = new Reader($source);
         $stream = $this->tokenizer->tokenize($reader);
 
@@ -60,7 +62,8 @@ class Parser implements ParserInterface {
      *
      * @throws SyntaxErrorException
      */
-    public static function parseSeries(array $tokens) {
+    public static function parseSeries(array $tokens)
+    {
         foreach ($tokens as $token) {
             if ($token->isString()) {
                 throw SyntaxErrorException::stringAsFunctionArgument();
@@ -68,8 +71,8 @@ class Parser implements ParserInterface {
         }
 
         $joined = trim(implode('', array_map(function (Token $token) {
-                            return $token->getValue();
-                        }, $tokens)));
+            return $token->getValue();
+        }, $tokens)));
 
         $int = function ($string) {
             if (!is_numeric($string)) {
@@ -94,7 +97,7 @@ class Parser implements ParserInterface {
         $first = isset($split[0]) ? $split[0] : null;
 
         return array(
-            $first ? ('-' === $first || '+' === $first ? $int($first . '1') : $int($first)) : 1,
+            $first ? ('-' === $first || '+' === $first ? $int($first.'1') : $int($first)) : 1,
             isset($split[1]) && $split[1] ? $int($split[1]) : 0,
         );
     }
@@ -106,7 +109,8 @@ class Parser implements ParserInterface {
      *
      * @return array
      */
-    private function parseSelectorList(TokenStream $stream) {
+    private function parseSelectorList(TokenStream $stream)
+    {
         $stream->skipWhitespace();
         $selectors = array();
 
@@ -133,7 +137,8 @@ class Parser implements ParserInterface {
      *
      * @throws SyntaxErrorException
      */
-    private function parserSelectorNode(TokenStream $stream) {
+    private function parserSelectorNode(TokenStream $stream)
+    {
         list($result, $pseudoElement) = $this->parseSimpleSelector($stream);
 
         while (true) {
@@ -172,7 +177,8 @@ class Parser implements ParserInterface {
      *
      * @throws SyntaxErrorException
      */
-    private function parseSimpleSelector(TokenStream $stream, $insideNegation = false) {
+    private function parseSimpleSelector(TokenStream $stream, $insideNegation = false)
+    {
         $stream->skipWhitespace();
 
         $selectorStart = count($stream->getUsed());
@@ -181,7 +187,10 @@ class Parser implements ParserInterface {
 
         while (true) {
             $peek = $stream->getPeek();
-            if ($peek->isWhitespace() || $peek->isFileEnd() || $peek->isDelimiter(array(',', '+', '>', '~')) || ($insideNegation && $peek->isDelimiter(array(')')))
+            if ($peek->isWhitespace()
+                || $peek->isFileEnd()
+                || $peek->isDelimiter(array(',', '+', '>', '~'))
+                || ($insideNegation && $peek->isDelimiter(array(')')))
             ) {
                 break;
             }
@@ -251,7 +260,10 @@ class Parser implements ParserInterface {
                         $stream->skipWhitespace();
                         $next = $stream->getNext();
 
-                        if ($next->isIdentifier() || $next->isString() || $next->isNumber() || $next->isDelimiter(array('+', '-'))
+                        if ($next->isIdentifier()
+                            || $next->isString()
+                            || $next->isNumber()
+                            || $next->isDelimiter(array('+', '-'))
                         ) {
                             $arguments[] = $next;
                         } elseif ($next->isDelimiter(array(')'))) {
@@ -286,7 +298,8 @@ class Parser implements ParserInterface {
      *
      * @return Node\ElementNode
      */
-    private function parseElementNode(TokenStream $stream) {
+    private function parseElementNode(TokenStream $stream)
+    {
         $peek = $stream->getPeek();
 
         if ($peek->isIdentifier() || $peek->isDelimiter(array('*'))) {
@@ -321,7 +334,8 @@ class Parser implements ParserInterface {
      *
      * @throws SyntaxErrorException
      */
-    private function parseAttributeNode(Node\NodeInterface $selector, TokenStream $stream) {
+    private function parseAttributeNode(Node\NodeInterface $selector, TokenStream $stream)
+    {
         $stream->skipWhitespace();
         $attribute = $stream->getNextIdentifierOrStar();
 
@@ -353,9 +367,10 @@ class Parser implements ParserInterface {
                 return new Node\AttributeNode($selector, $namespace, $attribute, 'exists', null);
             } elseif ($next->isDelimiter(array('='))) {
                 $operator = '=';
-            } elseif ($next->isDelimiter(array('^', '$', '*', '~', '|', '!')) && $stream->getPeek()->isDelimiter(array('='))
+            } elseif ($next->isDelimiter(array('^', '$', '*', '~', '|', '!'))
+                && $stream->getPeek()->isDelimiter(array('='))
             ) {
-                $operator = $next->getValue() . '=';
+                $operator = $next->getValue().'=';
                 $stream->getNext();
             } else {
                 throw SyntaxErrorException::unexpectedToken('operator', $next);
@@ -383,5 +398,4 @@ class Parser implements ParserInterface {
 
         return new Node\AttributeNode($selector, $namespace, $attribute, $operator, $value->getValue());
     }
-
 }

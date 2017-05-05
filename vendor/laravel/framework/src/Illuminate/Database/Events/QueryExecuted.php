@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Events;
 
-class QueryExecuted {
-
+class QueryExecuted
+{
     /**
      * The SQL query that was executed.
      *
@@ -47,12 +47,12 @@ class QueryExecuted {
      * @param  float  $time
      * @param
      */
-    public function __construct($sql, $bindings, $time, $connection) {
+    public function __construct($sql, $bindings, $time, $connection)
+    {
         $this->sql = $sql;
         $this->time = $time;
         $this->bindings = $bindings;
         $this->connection = $connection;
         $this->connectionName = $connection->getName();
     }
-
 }

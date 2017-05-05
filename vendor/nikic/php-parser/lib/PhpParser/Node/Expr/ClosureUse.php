@@ -4,11 +4,10 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
 
-class ClosureUse extends Expr {
-
+class ClosureUse extends Expr
+{
     /** @var string Name of variable */
     public $var;
-
     /** @var bool Whether to use by reference */
     public $byRef;
 
@@ -28,5 +27,4 @@ class ClosureUse extends Expr {
     public function getSubNodeNames() {
         return array('var', 'byRef');
     }
-
 }

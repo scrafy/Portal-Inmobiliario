@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Providers;
 
 use Illuminate\Support\AggregateServiceProvider;
 
-class FoundationServiceProvider extends AggregateServiceProvider {
-
+class FoundationServiceProvider extends AggregateServiceProvider
+{
     /**
      * The provider class names.
      *
@@ -14,5 +14,4 @@ class FoundationServiceProvider extends AggregateServiceProvider {
     protected $providers = [
         FormRequestServiceProvider::class,
     ];
-
 }

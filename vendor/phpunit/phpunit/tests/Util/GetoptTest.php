@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,9 +8,10 @@
  * file that was distributed with this source code.
  */
 
-class Util_GetoptTest extends PHPUnit_Framework_TestCase {
-
-    public function testItIncludeTheLongOptionsAfterTheArgument() {
+class Util_GetoptTest extends PHPUnit_Framework_TestCase
+{
+    public function testItIncludeTheLongOptionsAfterTheArgument()
+    {
         $args = [
             'command',
             'myArgument',
@@ -34,7 +34,8 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
-    public function testItIncludeTheShortOptionsAfterTheArgument() {
+    public function testItIncludeTheShortOptionsAfterTheArgument()
+    {
         $args = [
             'command',
             'myArgument',
@@ -56,5 +57,4 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expected, $actual);
     }
-
 }

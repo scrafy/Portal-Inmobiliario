@@ -5,8 +5,8 @@ namespace Illuminate\Database\Console\Migrations;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Database\Migrations\Migrator;
 
-class MigrateCommand extends BaseCommand {
-
+class MigrateCommand extends BaseCommand
+{
     use ConfirmableTrait;
 
     /**
@@ -41,7 +41,8 @@ class MigrateCommand extends BaseCommand {
      * @param  \Illuminate\Database\Migrations\Migrator  $migrator
      * @return void
      */
-    public function __construct(Migrator $migrator) {
+    public function __construct(Migrator $migrator)
+    {
         parent::__construct();
 
         $this->migrator = $migrator;
@@ -52,8 +53,9 @@ class MigrateCommand extends BaseCommand {
      *
      * @return void
      */
-    public function fire() {
-        if (!$this->confirmToProceed()) {
+    public function fire()
+    {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
@@ -87,14 +89,14 @@ class MigrateCommand extends BaseCommand {
      *
      * @return void
      */
-    protected function prepareDatabase() {
+    protected function prepareDatabase()
+    {
         $this->migrator->setConnection($this->option('database'));
 
-        if (!$this->migrator->repositoryExists()) {
+        if (! $this->migrator->repositoryExists()) {
             $this->call(
-                    'migrate:install', ['--database' => $this->option('database')]
+                'migrate:install', ['--database' => $this->option('database')]
             );
         }
     }
-
 }

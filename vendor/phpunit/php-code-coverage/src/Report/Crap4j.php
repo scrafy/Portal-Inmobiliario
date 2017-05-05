@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -15,8 +14,8 @@ use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Node\File;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 
-class Crap4j {
-
+class Crap4j
+{
     /**
      * @var int
      */
@@ -25,10 +24,12 @@ class Crap4j {
     /**
      * @param int $threshold
      */
-    public function __construct($threshold = 30) {
+    public function __construct($threshold = 30)
+    {
         if (!is_int($threshold)) {
             throw InvalidArgumentException::create(
-                    1, 'integer'
+                1,
+                'integer'
             );
         }
 
@@ -42,8 +43,9 @@ class Crap4j {
      *
      * @return string
      */
-    public function process(CodeCoverage $coverage, $target = null, $name = null) {
-        $document = new \DOMDocument('1.0', 'UTF-8');
+    public function process(CodeCoverage $coverage, $target = null, $name = null)
+    {
+        $document               = new \DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = true;
 
         $root = $document->createElement('crap_result');
@@ -53,16 +55,16 @@ class Crap4j {
         $root->appendChild($project);
         $root->appendChild($document->createElement('timestamp', date('Y-m-d H:i:s', (int) $_SERVER['REQUEST_TIME'])));
 
-        $stats = $document->createElement('stats');
+        $stats       = $document->createElement('stats');
         $methodsNode = $document->createElement('methods');
 
         $report = $coverage->getReport();
         unset($coverage);
 
-        $fullMethodCount = 0;
+        $fullMethodCount     = 0;
         $fullCrapMethodCount = 0;
-        $fullCrapLoad = 0;
-        $fullCrap = 0;
+        $fullCrapLoad        = 0;
+        $fullCrap            = 0;
 
         foreach ($report as $item) {
             $namespace = 'global';
@@ -80,7 +82,7 @@ class Crap4j {
                 foreach ($class['methods'] as $methodName => $method) {
                     $crapLoad = $this->getCrapLoad($method['crap'], $method['ccn'], $method['coverage']);
 
-                    $fullCrap += $method['crap'];
+                    $fullCrap     += $method['crap'];
                     $fullCrapLoad += $crapLoad;
                     $fullMethodCount++;
 
@@ -146,7 +148,8 @@ class Crap4j {
      *
      * @return float
      */
-    private function getCrapLoad($crapValue, $cyclomaticComplexity, $coveragePercent) {
+    private function getCrapLoad($crapValue, $cyclomaticComplexity, $coveragePercent)
+    {
         $crapLoad = 0;
 
         if ($crapValue >= $this->threshold) {
@@ -162,8 +165,8 @@ class Crap4j {
      *
      * @return float
      */
-    private function roundValue($value) {
+    private function roundValue($value)
+    {
         return round($value, 2);
     }
-
 }

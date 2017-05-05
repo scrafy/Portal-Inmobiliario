@@ -8,15 +8,16 @@ use Symfony\Component\Finder\Finder;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
-class LoadConfiguration {
-
+class LoadConfiguration
+{
     /**
      * Bootstrap the given application.
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return void
      */
-    public function bootstrap(Application $app) {
+    public function bootstrap(Application $app)
+    {
         $items = [];
 
         // First we will see if we have a cache configuration file. If we do, we'll load
@@ -33,7 +34,7 @@ class LoadConfiguration {
         // options available to the developer for use in various parts of this app.
         $app->instance('config', $config = new Repository($items));
 
-        if (!isset($loadedFromCache)) {
+        if (! isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
         }
 
@@ -56,7 +57,8 @@ class LoadConfiguration {
      * @param  \Illuminate\Contracts\Config\Repository  $repository
      * @return void
      */
-    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository) {
+    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
+    {
         foreach ($this->getConfigurationFiles($app) as $key => $path) {
             $repository->set($key, require $path);
         }
@@ -68,7 +70,8 @@ class LoadConfiguration {
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @return array
      */
-    protected function getConfigurationFiles(Application $app) {
+    protected function getConfigurationFiles(Application $app)
+    {
         $files = [];
 
         $configPath = realpath($app->configPath());
@@ -76,7 +79,7 @@ class LoadConfiguration {
         foreach (Finder::create()->files()->name('*.php')->in($configPath) as $file) {
             $directory = $this->getNestedDirectory($file, $configPath);
 
-            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         return $files;
@@ -89,14 +92,14 @@ class LoadConfiguration {
      * @param  string  $configPath
      * @return string
      */
-    protected function getNestedDirectory(SplFileInfo $file, $configPath) {
+    protected function getNestedDirectory(SplFileInfo $file, $configPath)
+    {
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($configPath, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
         }
 
         return $nested;
     }
-
 }

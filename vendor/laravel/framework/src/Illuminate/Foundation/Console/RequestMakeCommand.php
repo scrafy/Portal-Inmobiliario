@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class RequestMakeCommand extends GeneratorCommand {
-
+class RequestMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -32,8 +32,9 @@ class RequestMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
-        return __DIR__ . '/stubs/request.stub';
+    protected function getStub()
+    {
+        return __DIR__.'/stubs/request.stub';
     }
 
     /**
@@ -42,8 +43,8 @@ class RequestMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
-        return $rootNamespace . '\Http\Requests';
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Http\Requests';
     }
-
 }

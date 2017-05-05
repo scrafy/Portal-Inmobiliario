@@ -24,8 +24,8 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  *
  * @internal
  */
-abstract class Descriptor implements DescriptorInterface {
-
+abstract class Descriptor implements DescriptorInterface
+{
     /**
      * @var OutputInterface
      */
@@ -34,7 +34,8 @@ abstract class Descriptor implements DescriptorInterface {
     /**
      * {@inheritdoc}
      */
-    public function describe(OutputInterface $output, $object, array $options = array()) {
+    public function describe(OutputInterface $output, $object, array $options = array())
+    {
         $this->output = $output;
 
         switch (true) {
@@ -64,7 +65,8 @@ abstract class Descriptor implements DescriptorInterface {
      * @param string $content
      * @param bool   $decorated
      */
-    protected function write($content, $decorated = false) {
+    protected function write($content, $decorated = false)
+    {
         $this->output->write($content, false, $decorated ? OutputInterface::OUTPUT_NORMAL : OutputInterface::OUTPUT_RAW);
     }
 

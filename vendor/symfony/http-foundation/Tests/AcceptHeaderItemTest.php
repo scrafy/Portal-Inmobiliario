@@ -14,18 +14,20 @@ namespace Symfony\Component\HttpFoundation\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\AcceptHeaderItem;
 
-class AcceptHeaderItemTest extends TestCase {
-
+class AcceptHeaderItemTest extends TestCase
+{
     /**
      * @dataProvider provideFromStringData
      */
-    public function testFromString($string, $value, array $attributes) {
+    public function testFromString($string, $value, array $attributes)
+    {
         $item = AcceptHeaderItem::fromString($string);
         $this->assertEquals($value, $item->getValue());
         $this->assertEquals($attributes, $item->getAttributes());
     }
 
-    public function provideFromStringData() {
+    public function provideFromStringData()
+    {
         return array(
             array(
                 'text/html',
@@ -49,12 +51,14 @@ class AcceptHeaderItemTest extends TestCase {
     /**
      * @dataProvider provideToStringData
      */
-    public function testToString($value, array $attributes, $string) {
+    public function testToString($value, array $attributes, $string)
+    {
         $item = new AcceptHeaderItem($value, $attributes);
         $this->assertEquals($string, (string) $item);
     }
 
-    public function provideToStringData() {
+    public function provideToStringData()
+    {
         return array(
             array(
                 'text/html', array(),
@@ -67,7 +71,8 @@ class AcceptHeaderItemTest extends TestCase {
         );
     }
 
-    public function testValue() {
+    public function testValue()
+    {
         $item = new AcceptHeaderItem('value', array());
         $this->assertEquals('value', $item->getValue());
 
@@ -78,7 +83,8 @@ class AcceptHeaderItemTest extends TestCase {
         $this->assertEquals('1', $item->getValue());
     }
 
-    public function testQuality() {
+    public function testQuality()
+    {
         $item = new AcceptHeaderItem('value', array());
         $this->assertEquals(1.0, $item->getQuality());
 
@@ -90,7 +96,8 @@ class AcceptHeaderItemTest extends TestCase {
         $this->assertFalse($item->hasAttribute('q'));
     }
 
-    public function testAttribute() {
+    public function testAttribute()
+    {
         $item = new AcceptHeaderItem('value', array());
         $this->assertEquals(array(), $item->getAttributes());
         $this->assertFalse($item->hasAttribute('test'));
@@ -103,5 +110,4 @@ class AcceptHeaderItemTest extends TestCase {
         $this->assertEquals('value', $item->getAttribute('test'));
         $this->assertEquals('value', $item->getAttribute('test', 'default'));
     }
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -16,8 +15,8 @@ namespace phpDocumentor\Reflection;
 /**
  * Interface for files processed by the ProjectFactory
  */
-interface File {
-
+interface File
+{
     /**
      * Returns the content of the file as a string.
      *

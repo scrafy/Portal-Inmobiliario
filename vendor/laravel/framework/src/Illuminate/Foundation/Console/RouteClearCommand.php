@@ -5,8 +5,8 @@ namespace Illuminate\Foundation\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class RouteClearCommand extends Command {
-
+class RouteClearCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -34,7 +34,8 @@ class RouteClearCommand extends Command {
      * @param  \Illuminate\Filesystem\Filesystem  $files
      * @return void
      */
-    public function __construct(Filesystem $files) {
+    public function __construct(Filesystem $files)
+    {
         parent::__construct();
 
         $this->files = $files;
@@ -45,10 +46,10 @@ class RouteClearCommand extends Command {
      *
      * @return void
      */
-    public function fire() {
+    public function fire()
+    {
         $this->files->delete($this->laravel->getCachedRoutesPath());
 
         $this->info('Route cache cleared!');
     }
-
 }

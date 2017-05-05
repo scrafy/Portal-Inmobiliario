@@ -5,8 +5,8 @@ namespace League\Flysystem;
 use RuntimeException;
 use SplFileInfo;
 
-class NotSupportedException extends RuntimeException {
-
+class NotSupportedException extends RuntimeException
+{
     /**
      * Create a new exception for a link.
      *
@@ -14,7 +14,8 @@ class NotSupportedException extends RuntimeException {
      *
      * @return static
      */
-    public static function forLink(SplFileInfo $file) {
+    public static function forLink(SplFileInfo $file)
+    {
         $message = 'Links are not supported, encountered link at ';
 
         return new static($message . $file->getPathname());
@@ -27,10 +28,10 @@ class NotSupportedException extends RuntimeException {
      *
      * @return static
      */
-    public static function forFtpSystemType($systemType) {
+    public static function forFtpSystemType($systemType)
+    {
         $message = "The FTP system type '$systemType' is currently not supported.";
 
         return new static($message);
     }
-
 }

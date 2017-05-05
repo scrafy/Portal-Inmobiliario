@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -24,14 +23,15 @@ use phpDocumentor\Reflection\Types\String_;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Param
  * @covers ::<private>
  */
-class ParamTest extends \PHPUnit_Framework_TestCase {
-
+class ParamTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Param::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Param('myParameter', null, false, new Description('Description'));
 
         $this->assertSame('param', $fixture->getName());
@@ -46,7 +46,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new Param('myParameter', new String_(), true, new Description('Description'));
         $this->assertSame('@param string ...$myParameter Description', $fixture->render());
 
@@ -64,7 +65,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Param::__construct
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Param('myParameter');
 
         $formatter = m::mock(Formatter::class);
@@ -77,7 +79,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getVariableName
      */
-    public function testHasVariableName() {
+    public function testHasVariableName()
+    {
         $expected = 'myParameter';
 
         $fixture = new Param($expected);
@@ -89,7 +92,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getType
      */
-    public function testHasType() {
+    public function testHasType()
+    {
         $expected = new String_();
 
         $fixture = new Param('myParameter', $expected);
@@ -101,7 +105,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::isVariadic
      */
-    public function testIfParameterIsVariadic() {
+    public function testIfParameterIsVariadic()
+    {
         $fixture = new Param('myParameter', new String_(), false);
         $this->assertFalse($fixture->isVariadic());
 
@@ -114,7 +119,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Param('1.0', null, false, $expected);
@@ -129,10 +135,11 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\Types\String_
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new Param('myParameter', new String_(), true, new Description('Description'));
 
-        $this->assertSame('string ...$myParameter Description', (string) $fixture);
+        $this->assertSame('string ...$myParameter Description', (string)$fixture);
     }
 
     /**
@@ -142,7 +149,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $typeResolver = new TypeResolver();
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
@@ -152,7 +160,7 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
 
         $fixture = Param::create('string ...$myParameter My Description', $typeResolver, $descriptionFactory, $context);
 
-        $this->assertSame('string ...$myParameter My Description', (string) $fixture);
+        $this->assertSame('string ...$myParameter My Description', (string)$fixture);
         $this->assertSame('myParameter', $fixture->getVariableName());
         $this->assertInstanceOf(String_::class, $fixture->getType());
         $this->assertTrue($fixture->isVariadic());
@@ -166,7 +174,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\DescriptionFactory
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfEmptyBodyIsGiven() {
+    public function testFactoryMethodFailsIfEmptyBodyIsGiven()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         Param::create('', new TypeResolver(), $descriptionFactory);
     }
@@ -175,7 +184,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfBodyIsNotString() {
+    public function testFactoryMethodFailsIfBodyIsNotString()
+    {
         Param::create([]);
     }
 
@@ -183,7 +193,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfResolverIsNull() {
+    public function testFactoryMethodFailsIfResolverIsNull()
+    {
         Param::create('body');
     }
 
@@ -192,7 +203,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\TypeResolver
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfDescriptionFactoryIsNull() {
+    public function testFactoryMethodFailsIfDescriptionFactoryIsNull()
+    {
         Param::create('body', new TypeResolver());
     }
 
@@ -200,7 +212,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfVariableNameIsNotString() {
+    public function testExceptionIsThrownIfVariableNameIsNotString()
+    {
         new Param([]);
     }
 
@@ -208,8 +221,8 @@ class ParamTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testExceptionIsThrownIfVariadicIsNotBoolean() {
+    public function testExceptionIsThrownIfVariadicIsNotBoolean()
+    {
         new Param('', null, []);
     }
-
 }

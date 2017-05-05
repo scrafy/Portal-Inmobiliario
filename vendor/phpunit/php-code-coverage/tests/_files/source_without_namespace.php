@@ -1,20 +1,18 @@
 <?php
-
 /**
  * Represents foo.
  */
-class Foo {
-    
+class Foo
+{
 }
 
 /**
  * @param mixed $bar
  */
-function &foo($bar) {
-    $baz = function () {
-        
-    };
-    $a = true ? true : false;
-    $b = "{$a}";
-    $c = "${b}";
+function &foo($bar)
+{
+    $baz = function () {};
+    $a   = true ? true : false;
+    $b   = "{$a}";
+    $c   = "${b}";
 }

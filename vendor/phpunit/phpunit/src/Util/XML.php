@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * XML helpers.
  */
-class PHPUnit_Util_XML {
-
+class PHPUnit_Util_XML
+{
     /**
      * Load an $actual document into a DOMDocument.  This is called
      * from the selector assertions.
@@ -36,7 +35,8 @@ class PHPUnit_Util_XML {
      *
      * @return DOMDocument
      */
-    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false) {
+    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
+    {
         if ($actual instanceof DOMDocument) {
             return $actual;
         }
@@ -55,11 +55,11 @@ class PHPUnit_Util_XML {
             @chdir(dirname($filename));
         }
 
-        $document = new DOMDocument;
+        $document                     = new DOMDocument;
         $document->preserveWhiteSpace = false;
 
-        $internal = libxml_use_internal_errors(true);
-        $message = '';
+        $internal  = libxml_use_internal_errors(true);
+        $message   = '';
         $reporting = error_reporting(0);
 
         if ('' !== $filename) {
@@ -91,9 +91,11 @@ class PHPUnit_Util_XML {
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
                 throw new PHPUnit_Framework_Exception(
-                sprintf(
-                        'Could not load "%s".%s', $filename, $message != '' ? "\n" . $message : ''
-                )
+                    sprintf(
+                        'Could not load "%s".%s',
+                        $filename,
+                        $message != '' ? "\n" . $message : ''
+                    )
                 );
             } else {
                 if ($message === '') {
@@ -116,16 +118,18 @@ class PHPUnit_Util_XML {
      *
      * @return DOMDocument
      */
-    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false) {
+    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
+    {
         $reporting = error_reporting(0);
-        $contents = file_get_contents($filename);
+        $contents  = file_get_contents($filename);
         error_reporting($reporting);
 
         if ($contents === false) {
             throw new PHPUnit_Framework_Exception(
-            sprintf(
-                    'Could not read "%s".', $filename
-            )
+                sprintf(
+                    'Could not read "%s".',
+                    $filename
+                )
             );
         }
 
@@ -135,7 +139,8 @@ class PHPUnit_Util_XML {
     /**
      * @param DOMNode $node
      */
-    public static function removeCharacterDataNodes(DOMNode $node) {
+    public static function removeCharacterDataNodes(DOMNode $node)
+    {
         if ($node->hasChildNodes()) {
             for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
                 if (($child = $node->childNodes->item($i)) instanceof DOMCharacterData) {
@@ -155,11 +160,16 @@ class PHPUnit_Util_XML {
      *
      * @return string
      */
-    public static function prepareString($string) {
+    public static function prepareString($string)
+    {
         return preg_replace(
-                '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/', '', htmlspecialchars(
-                        PHPUnit_Util_String::convertToUtf8($string), ENT_QUOTES, 'UTF-8'
-                )
+            '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
+            '',
+            htmlspecialchars(
+                PHPUnit_Util_String::convertToUtf8($string),
+                ENT_QUOTES,
+                'UTF-8'
+            )
         );
     }
 
@@ -170,7 +180,8 @@ class PHPUnit_Util_XML {
      *
      * @return mixed
      */
-    public static function xmlToVariable(DOMElement $element) {
+    public static function xmlToVariable(DOMElement $element)
+    {
         $variable = null;
 
         switch ($element->tagName) {
@@ -201,7 +212,7 @@ class PHPUnit_Util_XML {
                 $className = $element->getAttribute('class');
 
                 if ($element->hasChildNodes()) {
-                    $arguments = $element->childNodes->item(1)->childNodes;
+                    $arguments       = $element->childNodes->item(1)->childNodes;
                     $constructorArgs = [];
 
                     foreach ($arguments as $argument) {
@@ -210,7 +221,7 @@ class PHPUnit_Util_XML {
                         }
                     }
 
-                    $class = new ReflectionClass($className);
+                    $class    = new ReflectionClass($className);
                     $variable = $class->newInstanceArgs($constructorArgs);
                 } else {
                     $variable = new $className;
@@ -232,5 +243,4 @@ class PHPUnit_Util_XML {
 
         return $variable;
     }
-
 }

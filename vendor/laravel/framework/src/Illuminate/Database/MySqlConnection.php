@@ -9,14 +9,15 @@ use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrineDriver;
 use Illuminate\Database\Query\Grammars\MySqlGrammar as QueryGrammar;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
 
-class MySqlConnection extends Connection {
-
+class MySqlConnection extends Connection
+{
     /**
      * Get the default query grammar instance.
      *
      * @return \Illuminate\Database\Query\Grammars\MySqlGrammar
      */
-    protected function getDefaultQueryGrammar() {
+    protected function getDefaultQueryGrammar()
+    {
         return $this->withTablePrefix(new QueryGrammar);
     }
 
@@ -25,7 +26,8 @@ class MySqlConnection extends Connection {
      *
      * @return \Illuminate\Database\Schema\MySqlBuilder
      */
-    public function getSchemaBuilder() {
+    public function getSchemaBuilder()
+    {
         if (is_null($this->schemaGrammar)) {
             $this->useDefaultSchemaGrammar();
         }
@@ -38,7 +40,8 @@ class MySqlConnection extends Connection {
      *
      * @return \Illuminate\Database\Schema\Grammars\MySqlGrammar
      */
-    protected function getDefaultSchemaGrammar() {
+    protected function getDefaultSchemaGrammar()
+    {
         return $this->withTablePrefix(new SchemaGrammar);
     }
 
@@ -47,7 +50,8 @@ class MySqlConnection extends Connection {
      *
      * @return \Illuminate\Database\Query\Processors\MySqlProcessor
      */
-    protected function getDefaultPostProcessor() {
+    protected function getDefaultPostProcessor()
+    {
         return new MySqlProcessor;
     }
 
@@ -56,7 +60,8 @@ class MySqlConnection extends Connection {
      *
      * @return \Doctrine\DBAL\Driver\PDOMySql\Driver
      */
-    protected function getDoctrineDriver() {
+    protected function getDoctrineDriver()
+    {
         return new DoctrineDriver;
     }
 
@@ -67,12 +72,13 @@ class MySqlConnection extends Connection {
      * @param  array  $bindings
      * @return void
      */
-    public function bindValues($statement, $bindings) {
+    public function bindValues($statement, $bindings)
+    {
         foreach ($bindings as $key => $value) {
             $statement->bindValue(
-                    is_string($key) ? $key : $key + 1, $value, is_int($value) || is_float($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+                is_string($key) ? $key : $key + 1, $value,
+                is_int($value) || is_float($value) ? PDO::PARAM_INT : PDO::PARAM_STR
             );
         }
     }
-
 }

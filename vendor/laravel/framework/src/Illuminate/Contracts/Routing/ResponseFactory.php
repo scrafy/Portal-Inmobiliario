@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Routing;
 
-interface ResponseFactory {
-
+interface ResponseFactory
+{
     /**
      * Return a new response from the application.
      *

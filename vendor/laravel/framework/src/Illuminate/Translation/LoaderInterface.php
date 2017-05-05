@@ -2,8 +2,8 @@
 
 namespace Illuminate\Translation;
 
-interface LoaderInterface {
-
+interface LoaderInterface
+{
     /**
      * Load the messages for the given locale.
      *

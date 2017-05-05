@@ -2,8 +2,8 @@
 
 namespace Illuminate\Database\Migrations;
 
-interface MigrationRepositoryInterface {
-
+interface MigrationRepositoryInterface
+{
     /**
      * Get the ran migrations for a given package.
      *

@@ -4,8 +4,8 @@ namespace Illuminate\Notifications;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DatabaseNotification extends Model {
-
+class DatabaseNotification extends Model
+{
     /**
      * Indicates if the IDs are auto-incrementing.
      *
@@ -40,7 +40,8 @@ class DatabaseNotification extends Model {
     /**
      * Get the notifiable entity that the notification belongs to.
      */
-    public function notifiable() {
+    public function notifiable()
+    {
         return $this->morphTo();
     }
 
@@ -49,7 +50,8 @@ class DatabaseNotification extends Model {
      *
      * @return void
      */
-    public function markAsRead() {
+    public function markAsRead()
+    {
         if (is_null($this->read_at)) {
             $this->forceFill(['read_at' => $this->freshTimestamp()])->save();
         }
@@ -60,7 +62,8 @@ class DatabaseNotification extends Model {
      *
      * @return bool
      */
-    public function read() {
+    public function read()
+    {
         return $this->read_at !== null;
     }
 
@@ -69,7 +72,8 @@ class DatabaseNotification extends Model {
      *
      * @return bool
      */
-    public function unread() {
+    public function unread()
+    {
         return $this->read_at === null;
     }
 
@@ -79,8 +83,8 @@ class DatabaseNotification extends Model {
      * @param  array  $models
      * @return \Illuminate\Notifications\DatabaseNotificationCollection
      */
-    public function newCollection(array $models = []) {
+    public function newCollection(array $models = [])
+    {
         return new DatabaseNotificationCollection($models);
     }
-
 }

@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface UrlMatcherInterface extends RequestContextAwareInterface {
-
+interface UrlMatcherInterface extends RequestContextAwareInterface
+{
     /**
      * Tries to match a URL path with a set of routes.
      *

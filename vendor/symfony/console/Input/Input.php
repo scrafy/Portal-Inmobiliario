@@ -25,8 +25,8 @@ use Symfony\Component\Console\Exception\RuntimeException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Input implements InputInterface, StreamableInputInterface {
-
+abstract class Input implements InputInterface, StreamableInputInterface
+{
     /**
      * @var InputDefinition
      */
@@ -41,7 +41,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
      *
      * @param InputDefinition|null $definition A InputDefinition instance
      */
-    public function __construct(InputDefinition $definition = null) {
+    public function __construct(InputDefinition $definition = null)
+    {
         if (null === $definition) {
             $this->definition = new InputDefinition();
         } else {
@@ -53,7 +54,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function bind(InputDefinition $definition) {
+    public function bind(InputDefinition $definition)
+    {
         $this->arguments = array();
         $this->options = array();
         $this->definition = $definition;
@@ -69,7 +71,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function validate() {
+    public function validate()
+    {
         $definition = $this->definition;
         $givenArguments = $this->arguments;
 
@@ -85,28 +88,32 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function isInteractive() {
+    public function isInteractive()
+    {
         return $this->interactive;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setInteractive($interactive) {
+    public function setInteractive($interactive)
+    {
         $this->interactive = (bool) $interactive;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getArguments() {
+    public function getArguments()
+    {
         return array_merge($this->definition->getArgumentDefaults(), $this->arguments);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getArgument($name) {
+    public function getArgument($name)
+    {
         if (!$this->definition->hasArgument($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
@@ -117,7 +124,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function setArgument($name, $value) {
+    public function setArgument($name, $value)
+    {
         if (!$this->definition->hasArgument($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
@@ -128,21 +136,24 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function hasArgument($name) {
+    public function hasArgument($name)
+    {
         return $this->definition->hasArgument($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOptions() {
+    public function getOptions()
+    {
         return array_merge($this->definition->getOptionDefaults(), $this->options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOption($name) {
+    public function getOption($name)
+    {
         if (!$this->definition->hasOption($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" option does not exist.', $name));
         }
@@ -153,7 +164,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function setOption($name, $value) {
+    public function setOption($name, $value)
+    {
         if (!$this->definition->hasOption($name)) {
             throw new InvalidArgumentException(sprintf('The "%s" option does not exist.', $name));
         }
@@ -164,7 +176,8 @@ abstract class Input implements InputInterface, StreamableInputInterface {
     /**
      * {@inheritdoc}
      */
-    public function hasOption($name) {
+    public function hasOption($name)
+    {
         return $this->definition->hasOption($name);
     }
 
@@ -175,22 +188,24 @@ abstract class Input implements InputInterface, StreamableInputInterface {
      *
      * @return string
      */
-    public function escapeToken($token) {
+    public function escapeToken($token)
+    {
         return preg_match('{^[\w-]+$}', $token) ? $token : escapeshellarg($token);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStream($stream) {
+    public function setStream($stream)
+    {
         $this->stream = $stream;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getStream() {
+    public function getStream()
+    {
         return $this->stream;
     }
-
 }

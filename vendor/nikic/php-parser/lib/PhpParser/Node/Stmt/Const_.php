@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 
-class Const_ extends Node\Stmt {
-
+class Const_ extends Node\Stmt
+{
     /** @var Node\Const_[] Constant declarations */
     public $consts;
 
@@ -23,5 +23,4 @@ class Const_ extends Node\Stmt {
     public function getSubNodeNames() {
         return array('consts');
     }
-
 }

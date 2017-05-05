@@ -7,8 +7,8 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Scope;
 
-trait HasGlobalScopes {
-
+trait HasGlobalScopes
+{
     /**
      * Register a new global scope on the model.
      *
@@ -18,8 +18,9 @@ trait HasGlobalScopes {
      *
      * @throws \InvalidArgumentException
      */
-    public static function addGlobalScope($scope, Closure $implementation = null) {
-        if (is_string($scope) && !is_null($implementation)) {
+    public static function addGlobalScope($scope, Closure $implementation = null)
+    {
+        if (is_string($scope) && ! is_null($implementation)) {
             return static::$globalScopes[static::class][$scope] = $implementation;
         } elseif ($scope instanceof Closure) {
             return static::$globalScopes[static::class][spl_object_hash($scope)] = $scope;
@@ -36,8 +37,9 @@ trait HasGlobalScopes {
      * @param  \Illuminate\Database\Eloquent\Scope|string  $scope
      * @return bool
      */
-    public static function hasGlobalScope($scope) {
-        return !is_null(static::getGlobalScope($scope));
+    public static function hasGlobalScope($scope)
+    {
+        return ! is_null(static::getGlobalScope($scope));
     }
 
     /**
@@ -46,13 +48,14 @@ trait HasGlobalScopes {
      * @param  \Illuminate\Database\Eloquent\Scope|string  $scope
      * @return \Illuminate\Database\Eloquent\Scope|\Closure|null
      */
-    public static function getGlobalScope($scope) {
+    public static function getGlobalScope($scope)
+    {
         if (is_string($scope)) {
-            return Arr::get(static::$globalScopes, static::class . '.' . $scope);
+            return Arr::get(static::$globalScopes, static::class.'.'.$scope);
         }
 
         return Arr::get(
-                        static::$globalScopes, static::class . '.' . get_class($scope)
+            static::$globalScopes, static::class.'.'.get_class($scope)
         );
     }
 
@@ -61,8 +64,8 @@ trait HasGlobalScopes {
      *
      * @return array
      */
-    public function getGlobalScopes() {
+    public function getGlobalScopes()
+    {
         return Arr::get(static::$globalScopes, static::class, []);
     }
-
 }

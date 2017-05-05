@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -21,14 +20,15 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  * SystemNodeProvider provides functionality to get the system node ID (MAC
  * address) using external system calls
  */
-class SystemNodeProvider implements NodeProviderInterface {
-
+class SystemNodeProvider implements NodeProviderInterface
+{
     /**
      * Returns the system node ID
      *
      * @return string|false System node ID as a hexadecimal string, or false if it is not found
      */
-    public function getNode() {
+    public function getNode()
+    {
         static $node = null;
 
         if ($node !== null) {
@@ -55,7 +55,8 @@ class SystemNodeProvider implements NodeProviderInterface {
      * @codeCoverageIgnore
      * @return string
      */
-    protected function getIfconfig() {
+    protected function getIfconfig()
+    {
         ob_start();
         switch (strtoupper(substr(php_uname('a'), 0, 3))) {
             case 'WIN':
@@ -72,5 +73,4 @@ class SystemNodeProvider implements NodeProviderInterface {
 
         return ob_get_clean();
     }
-
 }

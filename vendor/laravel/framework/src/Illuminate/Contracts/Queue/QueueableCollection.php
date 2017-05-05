@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Queue;
 
-interface QueueableCollection {
-
+interface QueueableCollection
+{
     /**
      * Get the type of the entities being queued.
      *

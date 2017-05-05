@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -22,14 +21,15 @@ use phpDocumentor\Reflection\Types\Context;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Generic
  * @covers ::<private>
  */
-class GenericTest extends \PHPUnit_Framework_TestCase {
-
+class GenericTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Generic::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Generic('generic', new Description('Description'));
 
         $this->assertSame('generic', $fixture->getName());
@@ -43,7 +43,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new Generic('generic', new Description('Description'));
 
         $this->assertSame('@generic Description', $fixture->render());
@@ -54,7 +55,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Generic('generic', new Description('Description'));
 
         $formatter = m::mock(Formatter::class);
@@ -68,7 +70,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Generic('generic', $expected);
@@ -82,10 +85,11 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new Generic('generic', new Description('Description'));
 
-        $this->assertSame('Description', (string) $fixture);
+        $this->assertSame('Description', (string)$fixture);
     }
 
     /**
@@ -95,7 +99,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $context = new Context('');
 
@@ -106,7 +111,7 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
 
         $fixture = Generic::create('My Description', 'generic', $descriptionFactory, $context);
 
-        $this->assertSame('My Description', (string) $fixture);
+        $this->assertSame('My Description', (string)$fixture);
         $this->assertSame($generics, $fixture->getName());
         $this->assertSame($description, $fixture->getDescription());
     }
@@ -115,7 +120,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameIsNotString() {
+    public function testFactoryMethodFailsIfNameIsNotString()
+    {
         Generic::create('', []);
     }
 
@@ -123,7 +129,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameIsNotEmpty() {
+    public function testFactoryMethodFailsIfNameIsNotEmpty()
+    {
         Generic::create('', '');
     }
 
@@ -132,8 +139,8 @@ class GenericTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfNameContainsIllegalCharacters() {
+    public function testFactoryMethodFailsIfNameContainsIllegalCharacters()
+    {
         Generic::create('', 'name/myname');
     }
-
 }

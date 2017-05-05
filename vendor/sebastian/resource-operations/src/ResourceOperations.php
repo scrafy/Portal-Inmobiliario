@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of resource-operations.
  *
@@ -11,12 +10,13 @@
 
 namespace SebastianBergmann\ResourceOperations;
 
-class ResourceOperations {
-
+class ResourceOperations
+{
     /**
      * @return string[]
      */
-    public static function getFunctions() {
+    public static function getFunctions()
+    {
         return [
             'Directory::close',
             'Directory::read',
@@ -667,5 +667,4 @@ class ResourceOperations {
             'zip_read',
         ];
     }
-
 }

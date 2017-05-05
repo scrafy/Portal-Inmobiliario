@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -12,7 +11,6 @@
  * @link https://packagist.org/packages/ramsey/uuid Packagist
  * @link https://github.com/ramsey/uuid GitHub
  */
-
 namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
@@ -22,7 +20,8 @@ use Ramsey\Uuid\UuidInterface;
  * OrderedTimeCodec optimizes the bytes to increment UUIDs when time goes by, to improve database INSERTs.
  * The string value will be unchanged from StringCodec. Only works for UUID type 1.
  */
-class OrderedTimeCodec extends StringCodec {
+class OrderedTimeCodec extends StringCodec
+{
 
     /**
      * Encodes a UuidInterface as an optimized binary representation of a UUID
@@ -30,7 +29,8 @@ class OrderedTimeCodec extends StringCodec {
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID
      */
-    public function encodeBinary(UuidInterface $uuid) {
+    public function encodeBinary(UuidInterface $uuid)
+    {
         $fields = $uuid->getFieldsHex();
 
         $optimized = [
@@ -51,7 +51,8 @@ class OrderedTimeCodec extends StringCodec {
      * @param string $bytes
      * @return UuidInterface
      */
-    public function decodeBytes($bytes) {
+    public function decodeBytes($bytes)
+    {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
         }
@@ -63,5 +64,4 @@ class OrderedTimeCodec extends StringCodec {
 
         return $this->decode($hex);
     }
-
 }

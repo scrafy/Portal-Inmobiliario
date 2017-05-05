@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
-
+class Swift_Transport_LoadBalancedTransport implements Swift_Transport
+{
     /**
      * Transports which are deemed useless.
      *
@@ -37,8 +37,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
     protected $_lastUsedTransport = null;
 
     // needed as __construct is called from elsewhere explicitly
-    public function __construct() {
-        
+    public function __construct()
+    {
     }
 
     /**
@@ -46,7 +46,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @param Swift_Transport[] $transports
      */
-    public function setTransports(array $transports) {
+    public function setTransports(array $transports)
+    {
         $this->_transports = $transports;
         $this->_deadTransports = array();
     }
@@ -56,7 +57,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @return Swift_Transport[]
      */
-    public function getTransports() {
+    public function getTransports()
+    {
         return array_merge($this->_transports, $this->_deadTransports);
     }
 
@@ -65,7 +67,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @return Swift_Transport
      */
-    public function getLastUsedTransport() {
+    public function getLastUsedTransport()
+    {
         return $this->_lastUsedTransport;
     }
 
@@ -74,21 +77,24 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @return bool
      */
-    public function isStarted() {
+    public function isStarted()
+    {
         return count($this->_transports) > 0;
     }
 
     /**
      * Start this Transport mechanism.
      */
-    public function start() {
+    public function start()
+    {
         $this->_transports = array_merge($this->_transports, $this->_deadTransports);
     }
 
     /**
      * Stop this Transport mechanism.
      */
-    public function stop() {
+    public function stop()
+    {
         foreach ($this->_transports as $transport) {
             $transport->stop();
         }
@@ -105,12 +111,14 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @return int
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         $maxTransports = count($this->_transports);
         $sent = 0;
         $this->_lastUsedTransport = null;
 
-        for ($i = 0; $i < $maxTransports && $transport = $this->_getNextTransport(); ++$i) {
+        for ($i = 0; $i < $maxTransports
+            && $transport = $this->_getNextTransport(); ++$i) {
             try {
                 if (!$transport->isStarted()) {
                     $transport->start();
@@ -126,8 +134,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
 
         if (count($this->_transports) == 0) {
             throw new Swift_TransportException(
-            'All Transports in LoadBalancedTransport failed, or no Transports available'
-            );
+                'All Transports in LoadBalancedTransport failed, or no Transports available'
+                );
         }
 
         return $sent;
@@ -138,7 +146,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @param Swift_Events_EventListener $plugin
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) {
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
         foreach ($this->_transports as $transport) {
             $transport->registerPlugin($plugin);
         }
@@ -149,7 +158,8 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
      *
      * @return Swift_Transport
      */
-    protected function _getNextTransport() {
+    protected function _getNextTransport()
+    {
         if ($next = array_shift($this->_transports)) {
             $this->_transports[] = $next;
         }
@@ -160,15 +170,14 @@ class Swift_Transport_LoadBalancedTransport implements Swift_Transport {
     /**
      * Tag the currently used (top of stack) transport as dead/useless.
      */
-    protected function _killCurrentTransport() {
+    protected function _killCurrentTransport()
+    {
         if ($transport = array_pop($this->_transports)) {
             try {
                 $transport->stop();
             } catch (Exception $e) {
-                
             }
             $this->_deadTransports[] = $transport;
         }
     }
-
 }

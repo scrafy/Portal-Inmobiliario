@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint_Count {
-
+class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint_Count
+{
     /**
      * @var int
      */
@@ -19,8 +18,8 @@ class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint
     /**
      * @param int $expected
      */
-    public function __construct($expected) {
+    public function __construct($expected)
+    {
         parent::__construct($this->getCountOf($expected));
     }
-
 }

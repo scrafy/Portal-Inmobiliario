@@ -4,8 +4,8 @@ namespace Illuminate\Cache;
 
 use Illuminate\Support\ServiceProvider;
 
-class CacheServiceProvider extends ServiceProvider {
-
+class CacheServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,7 +18,8 @@ class CacheServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->app->singleton('cache', function ($app) {
             return new CacheManager($app);
         });
@@ -37,10 +38,10 @@ class CacheServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
+    public function provides()
+    {
         return [
             'cache', 'cache.store', 'memcached.connector',
         ];
     }
-
 }

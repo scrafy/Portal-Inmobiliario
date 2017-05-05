@@ -18,14 +18,15 @@ use SebastianBergmann\Comparator\Factory as BaseFactory;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-final class Factory extends BaseFactory {
-
+final class Factory extends BaseFactory
+{
     /**
      * @var Factory
      */
     private static $instance;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->register(new ClosureComparator());
@@ -35,12 +36,12 @@ final class Factory extends BaseFactory {
     /**
      * @return Factory
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new Factory;
         }
 
         return self::$instance;
     }
-
 }

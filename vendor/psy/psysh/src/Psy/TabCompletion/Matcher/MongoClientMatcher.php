@@ -18,12 +18,13 @@ namespace Psy\TabCompletion\Matcher;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class MongoClientMatcher extends AbstractContextAwareMatcher {
-
+class MongoClientMatcher extends AbstractContextAwareMatcher
+{
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array()) {
+    public function getMatches(array $tokens, array $info = array())
+    {
         $input = $this->getInput($tokens);
 
         $firstToken = array_pop($tokens);
@@ -42,18 +43,20 @@ class MongoClientMatcher extends AbstractContextAwareMatcher {
         $list = $object->listDBs();
 
         return array_filter(
-                array_map(function ($info) {
-                    return $info['name'];
-                }, $list['databases']), function ($var) use ($input) {
-            return AbstractMatcher::startsWith($input, $var);
-        }
+            array_map(function ($info) {
+                return $info['name'];
+            }, $list['databases']),
+            function ($var) use ($input) {
+                return AbstractMatcher::startsWith($input, $var);
+            }
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasMatched(array $tokens) {
+    public function hasMatched(array $tokens)
+    {
         $token = array_pop($tokens);
         $prevToken = array_pop($tokens);
 
@@ -65,5 +68,4 @@ class MongoClientMatcher extends AbstractContextAwareMatcher {
 
         return false;
     }
-
 }

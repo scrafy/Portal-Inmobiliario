@@ -5,8 +5,8 @@ namespace Illuminate\Queue;
 use ReflectionClass;
 use ReflectionProperty;
 
-trait SerializesModels {
-
+trait SerializesModels
+{
     use SerializesAndRestoresModelIdentifiers;
 
     /**
@@ -14,12 +14,13 @@ trait SerializesModels {
      *
      * @return array
      */
-    public function __sleep() {
+    public function __sleep()
+    {
         $properties = (new ReflectionClass($this))->getProperties();
 
         foreach ($properties as $property) {
             $property->setValue($this, $this->getSerializedPropertyValue(
-                            $this->getPropertyValue($property)
+                $this->getPropertyValue($property)
             ));
         }
 
@@ -33,10 +34,11 @@ trait SerializesModels {
      *
      * @return void
      */
-    public function __wakeup() {
+    public function __wakeup()
+    {
         foreach ((new ReflectionClass($this))->getProperties() as $property) {
             $property->setValue($this, $this->getRestoredPropertyValue(
-                            $this->getPropertyValue($property)
+                $this->getPropertyValue($property)
             ));
         }
     }
@@ -47,10 +49,10 @@ trait SerializesModels {
      * @param  \ReflectionProperty  $property
      * @return mixed
      */
-    protected function getPropertyValue(ReflectionProperty $property) {
+    protected function getPropertyValue(ReflectionProperty $property)
+    {
         $property->setAccessible(true);
 
         return $property->getValue($this);
     }
-
 }

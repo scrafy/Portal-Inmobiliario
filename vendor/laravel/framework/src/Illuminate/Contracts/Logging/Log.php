@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Logging;
 
-interface Log {
-
+interface Log
+{
     /**
      * Log an alert message to the logs.
      *

@@ -5,18 +5,21 @@ namespace test\Mockery;
 use Mockery as m;
 use Mockery\Spy;
 
-class SpyTest extends \PHPUnit_Framework_TestCase {
-
-    public function setup() {
+class SpyTest extends \PHPUnit_Framework_TestCase
+{
+    public function setup()
+    {
         $this->container = new \Mockery\Container;
     }
 
-    public function teardown() {
+    public function teardown()
+    {
         $this->container->mockery_close();
     }
 
     /** @test */
-    public function itVerifiesAMethodWasCalled() {
+    public function itVerifiesAMethodWasCalled()
+    {
         $spy = m::spy();
         $spy->myMethod();
         $spy->shouldHaveReceived("myMethod");
@@ -26,7 +29,8 @@ class SpyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /** @test */
-    public function itVerifiesAMethodWasNotCalled() {
+    public function itVerifiesAMethodWasNotCalled()
+    {
         $spy = m::spy();
         $spy->shouldNotHaveReceived("myMethod");
 
@@ -36,7 +40,8 @@ class SpyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /** @test */
-    public function itVerifiesAMethodWasNotCalledWithParticularArguments() {
+    public function itVerifiesAMethodWasNotCalledWithParticularArguments()
+    {
         $spy = m::spy();
         $spy->myMethod(123, 456);
 
@@ -47,7 +52,8 @@ class SpyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /** @test */
-    public function itVerifiesAMethodWasCalledASpecificNumberOfTimes() {
+    public function itVerifiesAMethodWasCalledASpecificNumberOfTimes()
+    {
         $spy = m::spy();
         $spy->myMethod();
         $spy->myMethod();
@@ -59,7 +65,8 @@ class SpyTest extends \PHPUnit_Framework_TestCase {
     }
 
     /** @test */
-    public function itVerifiesAMethodWasCalledWithSpecificArguments() {
+    public function itVerifiesAMethodWasCalledWithSpecificArguments()
+    {
         $spy = m::spy();
         $spy->myMethod(123, "a string");
         $spy->shouldHaveReceived("myMethod")->with(123, "a string");
@@ -68,5 +75,4 @@ class SpyTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException("Mockery\Exception\InvalidCountException");
         $spy->shouldHaveReceived("myMethod")->with(123);
     }
-
 }

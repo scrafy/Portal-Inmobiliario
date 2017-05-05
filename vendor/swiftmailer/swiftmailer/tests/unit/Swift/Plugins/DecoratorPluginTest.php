@@ -1,11 +1,16 @@
 <?php
 
-class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
-
-    public function testMessageBodyReceivesReplacements() {
+class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase
+{
+    public function testMessageBodyReceivesReplacements()
+    {
         $message = $this->_createMessage(
-                $this->_createHeaders(), array('zip@button.tld' => 'Zipathon'), array('chris.corbyn@swiftmailer.org' => 'Chris'), 'Subject', 'Hello {name}, you are customer #{id}'
-        );
+            $this->_createHeaders(),
+            array('zip@button.tld' => 'Zipathon'),
+            array('chris.corbyn@swiftmailer.org' => 'Chris'),
+            'Subject',
+            'Hello {name}, you are customer #{id}'
+            );
         $message->shouldReceive('setBody')
                 ->once()
                 ->with('Hello Zip, you are customer #456');
@@ -13,8 +18,8 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
                 ->zeroOrMoreTimes();
 
         $plugin = $this->_createPlugin(
-                array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
-        );
+            array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
+            );
 
         $evt = $this->_createSendEvent($message);
 
@@ -22,10 +27,15 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReplacementsCanBeAppliedToSameMessageMultipleTimes() {
+    public function testReplacementsCanBeAppliedToSameMessageMultipleTimes()
+    {
         $message = $this->_createMessage(
-                $this->_createHeaders(), array('zip@button.tld' => 'Zipathon', 'foo@bar.tld' => 'Foo'), array('chris.corbyn@swiftmailer.org' => 'Chris'), 'Subject', 'Hello {name}, you are customer #{id}'
-        );
+            $this->_createHeaders(),
+            array('zip@button.tld' => 'Zipathon', 'foo@bar.tld' => 'Foo'),
+            array('chris.corbyn@swiftmailer.org' => 'Chris'),
+            'Subject',
+            'Hello {name}, you are customer #{id}'
+            );
         $message->shouldReceive('setBody')
                 ->once()
                 ->with('Hello Zip, you are customer #456');
@@ -39,11 +49,11 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
                 ->zeroOrMoreTimes();
 
         $plugin = $this->_createPlugin(
-                array(
-                    'foo@bar.tld' => array('{name}' => 'Foo', '{id}' => '123'),
-                    'zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'),
+            array(
+                'foo@bar.tld' => array('{name}' => 'Foo', '{id}' => '123'),
+                'zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'),
                 )
-        );
+            );
 
         $evt = $this->_createSendEvent($message);
 
@@ -53,64 +63,74 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReplacementsCanBeMadeInHeaders() {
+    public function testReplacementsCanBeMadeInHeaders()
+    {
         $headers = $this->_createHeaders(array(
             $returnPathHeader = $this->_createHeader('Return-Path', 'foo-{id}@swiftmailer.org'),
             $toHeader = $this->_createHeader('Subject', 'A message for {name}!'),
         ));
 
         $message = $this->_createMessage(
-                $headers, array('zip@button.tld' => 'Zipathon'), array('chris.corbyn@swiftmailer.org' => 'Chris'), 'A message for {name}!', 'Hello {name}, you are customer #{id}'
-        );
+            $headers,
+            array('zip@button.tld' => 'Zipathon'),
+            array('chris.corbyn@swiftmailer.org' => 'Chris'),
+            'A message for {name}!',
+            'Hello {name}, you are customer #{id}'
+            );
 
         $message->shouldReceive('setBody')
                 ->once()
                 ->with('Hello Zip, you are customer #456');
         $toHeader->shouldReceive('setFieldBodyModel')
-                ->once()
-                ->with('A message for Zip!');
+                 ->once()
+                 ->with('A message for Zip!');
         $returnPathHeader->shouldReceive('setFieldBodyModel')
-                ->once()
-                ->with('foo-456@swiftmailer.org');
+                         ->once()
+                         ->with('foo-456@swiftmailer.org');
         $message->shouldReceive('setBody')
                 ->zeroOrMoreTimes();
         $toHeader->shouldReceive('setFieldBodyModel')
-                ->zeroOrMoreTimes();
+                 ->zeroOrMoreTimes();
         $returnPathHeader->shouldReceive('setFieldBodyModel')
-                ->zeroOrMoreTimes();
+                         ->zeroOrMoreTimes();
 
         $plugin = $this->_createPlugin(
-                array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
-        );
+            array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
+            );
         $evt = $this->_createSendEvent($message);
 
         $plugin->beforeSendPerformed($evt);
         $plugin->sendPerformed($evt);
     }
 
-    public function testReplacementsAreMadeOnSubparts() {
+    public function testReplacementsAreMadeOnSubparts()
+    {
         $part1 = $this->_createPart('text/plain', 'Your name is {name}?', '1@x');
         $part2 = $this->_createPart('text/html', 'Your <em>name</em> is {name}?', '2@x');
         $message = $this->_createMessage(
-                $this->_createHeaders(), array('zip@button.tld' => 'Zipathon'), array('chris.corbyn@swiftmailer.org' => 'Chris'), 'A message for {name}!', 'Subject'
-        );
+            $this->_createHeaders(),
+            array('zip@button.tld' => 'Zipathon'),
+            array('chris.corbyn@swiftmailer.org' => 'Chris'),
+            'A message for {name}!',
+            'Subject'
+            );
         $message->shouldReceive('getChildren')
                 ->zeroOrMoreTimes()
                 ->andReturn(array($part1, $part2));
         $part1->shouldReceive('setBody')
-                ->once()
-                ->with('Your name is Zip?');
+              ->once()
+              ->with('Your name is Zip?');
         $part2->shouldReceive('setBody')
-                ->once()
-                ->with('Your <em>name</em> is Zip?');
+              ->once()
+              ->with('Your <em>name</em> is Zip?');
         $part1->shouldReceive('setBody')
-                ->zeroOrMoreTimes();
+              ->zeroOrMoreTimes();
         $part2->shouldReceive('setBody')
-                ->zeroOrMoreTimes();
+              ->zeroOrMoreTimes();
 
         $plugin = $this->_createPlugin(
-                array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
-        );
+            array('zip@button.tld' => array('{name}' => 'Zip', '{id}' => '456'))
+            );
 
         $evt = $this->_createSendEvent($message);
 
@@ -118,10 +138,15 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    public function testReplacementsCanBeTakenFromCustomReplacementsObject() {
+    public function testReplacementsCanBeTakenFromCustomReplacementsObject()
+    {
         $message = $this->_createMessage(
-                $this->_createHeaders(), array('foo@bar' => 'Foobar', 'zip@zap' => 'Zip zap'), array('chris.corbyn@swiftmailer.org' => 'Chris'), 'Subject', 'Something {a}'
-        );
+            $this->_createHeaders(),
+            array('foo@bar' => 'Foobar', 'zip@zap' => 'Zip zap'),
+            array('chris.corbyn@swiftmailer.org' => 'Chris'),
+            'Subject',
+            'Something {a}'
+            );
 
         $replacements = $this->_createReplacements();
 
@@ -134,13 +159,13 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         $message->shouldReceive('setBody')
                 ->zeroOrMoreTimes();
         $replacements->shouldReceive('getReplacementsFor')
-                ->once()
-                ->with('foo@bar')
-                ->andReturn(array('{a}' => 'b'));
+                     ->once()
+                     ->with('foo@bar')
+                     ->andReturn(array('{a}' => 'b'));
         $replacements->shouldReceive('getReplacementsFor')
-                ->once()
-                ->with('zip@zap')
-                ->andReturn(array('{a}' => 'c'));
+                     ->once()
+                     ->with('zip@zap')
+                     ->andReturn(array('{a}' => 'c'));
 
         $plugin = $this->_createPlugin($replacements);
 
@@ -152,7 +177,9 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         $plugin->sendPerformed($evt);
     }
 
-    private function _createMessage($headers, $to = array(), $from = null, $subject = null, $body = null) {
+    private function _createMessage($headers, $to = array(), $from = null, $subject = null,
+        $body = null)
+    {
         $message = $this->getMockery('Swift_Mime_Message')->shouldIgnoreMissing();
         foreach ($to as $addr => $name) {
             $message->shouldReceive('getTo')
@@ -175,43 +202,48 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         return $message;
     }
 
-    private function _createPlugin($replacements) {
+    private function _createPlugin($replacements)
+    {
         return new Swift_Plugins_DecoratorPlugin($replacements);
     }
 
-    private function _createReplacements() {
+    private function _createReplacements()
+    {
         return $this->getMockery('Swift_Plugins_Decorator_Replacements')->shouldIgnoreMissing();
     }
 
-    private function _createSendEvent(Swift_Mime_Message $message) {
+    private function _createSendEvent(Swift_Mime_Message $message)
+    {
         $evt = $this->getMockery('Swift_Events_SendEvent')->shouldIgnoreMissing();
         $evt->shouldReceive('getMessage')
-                ->zeroOrMoreTimes()
-                ->andReturn($message);
+            ->zeroOrMoreTimes()
+            ->andReturn($message);
 
         return $evt;
     }
 
-    private function _createPart($type, $body, $id) {
+    private function _createPart($type, $body, $id)
+    {
         $part = $this->getMockery('Swift_Mime_MimeEntity')->shouldIgnoreMissing();
         $part->shouldReceive('getContentType')
-                ->zeroOrMoreTimes()
-                ->andReturn($type);
+             ->zeroOrMoreTimes()
+             ->andReturn($type);
         $part->shouldReceive('getBody')
-                ->zeroOrMoreTimes()
-                ->andReturn($body);
+             ->zeroOrMoreTimes()
+             ->andReturn($body);
         $part->shouldReceive('getId')
-                ->zeroOrMoreTimes()
-                ->andReturn($id);
+             ->zeroOrMoreTimes()
+             ->andReturn($id);
 
         return $part;
     }
 
-    private function _createHeaders($headers = array()) {
+    private function _createHeaders($headers = array())
+    {
         $set = $this->getMockery('Swift_Mime_HeaderSet')->shouldIgnoreMissing();
         $set->shouldReceive('getAll')
-                ->zeroOrMoreTimes()
-                ->andReturn($headers);
+            ->zeroOrMoreTimes()
+            ->andReturn($headers);
 
         foreach ($headers as $header) {
             $set->set($header);
@@ -220,16 +252,16 @@ class Swift_Plugins_DecoratorPluginTest extends \SwiftMailerTestCase {
         return $set;
     }
 
-    private function _createHeader($name, $body = '') {
+    private function _createHeader($name, $body = '')
+    {
         $header = $this->getMockery('Swift_Mime_Header')->shouldIgnoreMissing();
         $header->shouldReceive('getFieldName')
-                ->zeroOrMoreTimes()
-                ->andReturn($name);
+               ->zeroOrMoreTimes()
+               ->andReturn($name);
         $header->shouldReceive('getFieldBodyModel')
-                ->zeroOrMoreTimes()
-                ->andReturn($body);
+               ->zeroOrMoreTimes()
+               ->andReturn($body);
 
         return $header;
     }
-
 }

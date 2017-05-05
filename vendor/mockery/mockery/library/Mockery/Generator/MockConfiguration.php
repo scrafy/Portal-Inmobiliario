@@ -6,8 +6,8 @@ namespace Mockery\Generator;
  * This class describes the configuration of mocks and hides away some of the
  * reflection implementation
  */
-class MockConfiguration {
-
+class MockConfiguration
+{
     protected static $mockCounter = 0;
 
     /**
@@ -62,7 +62,8 @@ class MockConfiguration {
      */
     protected $allMethods;
 
-    public function __construct(array $targets = array(), array $blackListedMethods = array(), array $whiteListedMethods = array(), $name = null, $instanceMock = false, array $parameterOverrides = array()) {
+    public function __construct(array $targets = array(), array $blackListedMethods = array(), array $whiteListedMethods = array(), $name = null, $instanceMock = false, array $parameterOverrides = array())
+    {
         $this->addTargets($targets);
         $this->blackListedMethods = $blackListedMethods;
         $this->whiteListedMethods = $whiteListedMethods;
@@ -78,7 +79,8 @@ class MockConfiguration {
      *
      * @return string
      */
-    public function getHash() {
+    public function getHash()
+    {
         $vars = array(
             'targetClassName' => $this->targetClassName,
             'targetInterfaceNames' => $this->targetInterfaceNames,
@@ -97,7 +99,8 @@ class MockConfiguration {
      * filters them appropriately. Lot's of filtering going on, perhaps we could
      * have filter classes to iterate through
      */
-    public function getMethodsToMock() {
+    public function getMethodsToMock()
+    {
         $methods = $this->getAllMethods();
 
         foreach ($methods as $key => $method) {
@@ -134,7 +137,9 @@ class MockConfiguration {
          * such, we can't mock it and will need a pass to add a dummy
          * implementation
          */
-        if ($this->getTargetClass() && $this->getTargetClass()->implementsInterface("Serializable") && $this->getTargetClass()->hasInternalAncestor()) {
+        if ($this->getTargetClass()
+            && $this->getTargetClass()->implementsInterface("Serializable")
+            && $this->getTargetClass()->hasInternalAncestor()) {
             $methods = array_filter($methods, function ($method) {
                 return $method->getName() !== "unserialize";
             });
@@ -147,7 +152,8 @@ class MockConfiguration {
      * We declare the __call method to handle undefined stuff, if the class
      * we're mocking has also defined it, we need to comply with their interface
      */
-    public function requiresCallTypeHintRemoval() {
+    public function requiresCallTypeHintRemoval()
+    {
         foreach ($this->getAllMethods() as $method) {
             if ("__call" === $method->getName()) {
                 $params = $method->getParameters();
@@ -162,7 +168,8 @@ class MockConfiguration {
      * We declare the __callStatic method to handle undefined stuff, if the class
      * we're mocking has also defined it, we need to comply with their interface
      */
-    public function requiresCallStaticTypeHintRemoval() {
+    public function requiresCallStaticTypeHintRemoval()
+    {
         foreach ($this->getAllMethods() as $method) {
             if ("__callStatic" === $method->getName()) {
                 $params = $method->getParameters();
@@ -173,7 +180,8 @@ class MockConfiguration {
         return false;
     }
 
-    public function rename($className) {
+    public function rename($className)
+    {
         $targets = array();
 
         if ($this->targetClassName) {
@@ -189,11 +197,17 @@ class MockConfiguration {
         }
 
         return new self(
-                $targets, $this->blackListedMethods, $this->whiteListedMethods, $className, $this->instanceMock, $this->parameterOverrides
+            $targets,
+            $this->blackListedMethods,
+            $this->whiteListedMethods,
+            $className,
+            $this->instanceMock,
+            $this->parameterOverrides
         );
     }
 
-    protected function addTarget($target) {
+    protected function addTarget($target)
+    {
         if (is_object($target)) {
             $this->setTargetObject($target);
             $this->setTargetClassName(get_class($target));
@@ -228,17 +242,20 @@ class MockConfiguration {
         $this->setTargetClassName($target);
     }
 
-    protected function addTargets($interfaces) {
+    protected function addTargets($interfaces)
+    {
         foreach ($interfaces as $interface) {
             $this->addTarget($interface);
         }
     }
 
-    public function getTargetClassName() {
+    public function getTargetClassName()
+    {
         return $this->targetClassName;
     }
 
-    public function getTargetClass() {
+    public function getTargetClass()
+    {
         if ($this->targetClass) {
             return $this->targetClass;
         }
@@ -252,11 +269,11 @@ class MockConfiguration {
 
             if ($this->getTargetObject() == false && $dtc->isFinal()) {
                 throw new \Mockery\Exception(
-                'The class ' . $this->targetClassName . ' is marked final and its methods'
-                . ' cannot be replaced. Classes marked final can be passed in'
-                . ' to \Mockery::mock() as instantiated objects to create a'
-                . ' partial mock, but only if the mock is not subject to type'
-                . ' hinting checks.'
+                    'The class ' . $this->targetClassName . ' is marked final and its methods'
+                    . ' cannot be replaced. Classes marked final can be passed in'
+                    . ' to \Mockery::mock() as instantiated objects to create a'
+                    . ' partial mock, but only if the mock is not subject to type'
+                    . ' hinting checks.'
                 );
             }
 
@@ -268,7 +285,8 @@ class MockConfiguration {
         return $this->targetClass;
     }
 
-    public function getTargetInterfaces() {
+    public function getTargetInterfaces()
+    {
         if (!empty($this->targetInterfaces)) {
             return $this->targetInterfaces;
         }
@@ -316,18 +334,21 @@ class MockConfiguration {
         return $this->targetInterfaces;
     }
 
-    public function getTargetObject() {
+    public function getTargetObject()
+    {
         return $this->targetObject;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * Generate a suitable name based on the config
      */
-    public function generateName() {
+    public function generateName()
+    {
         $name = 'Mockery_' . static::$mockCounter++;
 
         if ($this->getTargetObject()) {
@@ -348,12 +369,14 @@ class MockConfiguration {
         return $name;
     }
 
-    public function getShortName() {
+    public function getShortName()
+    {
         $parts = explode("\\", $this->getName());
         return array_pop($parts);
     }
 
-    public function getNamespaceName() {
+    public function getNamespaceName()
+    {
         $parts = explode("\\", $this->getName());
         array_pop($parts);
 
@@ -364,27 +387,33 @@ class MockConfiguration {
         return "";
     }
 
-    public function getBlackListedMethods() {
+    public function getBlackListedMethods()
+    {
         return $this->blackListedMethods;
     }
 
-    public function getWhiteListedMethods() {
+    public function getWhiteListedMethods()
+    {
         return $this->whiteListedMethods;
     }
 
-    public function isInstanceMock() {
+    public function isInstanceMock()
+    {
         return $this->instanceMock;
     }
 
-    public function getParameterOverrides() {
+    public function getParameterOverrides()
+    {
         return $this->parameterOverrides;
     }
 
-    protected function setTargetClassName($targetClassName) {
+    protected function setTargetClassName($targetClassName)
+    {
         $this->targetClassName = $targetClassName;
     }
 
-    protected function getAllMethods() {
+    protected function getAllMethods()
+    {
         if ($this->allMethods) {
             return $this->allMethods;
         }
@@ -418,12 +447,14 @@ class MockConfiguration {
      * implementing either Iterator or IteratorAggregate, and that whichever one
      * it is comes before Traversable in the list of implements.
      */
-    protected function addTargetInterfaceName($targetInterface) {
+    protected function addTargetInterfaceName($targetInterface)
+    {
         $this->targetInterfaceNames[] = $targetInterface;
     }
 
-    protected function setTargetObject($object) {
+
+    protected function setTargetObject($object)
+    {
         $this->targetObject = $object;
     }
-
 }

@@ -18,8 +18,8 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  *
  * @author Saša Stamenković <umpirsky@gmail.com>
  */
-class CsvFileLoader extends FileLoader {
-
+class CsvFileLoader extends FileLoader
+{
     private $delimiter = ';';
     private $enclosure = '"';
     private $escape = '\\';
@@ -27,7 +27,8 @@ class CsvFileLoader extends FileLoader {
     /**
      * {@inheritdoc}
      */
-    protected function loadResource($resource) {
+    protected function loadResource($resource)
+    {
         $messages = array();
 
         try {
@@ -55,10 +56,10 @@ class CsvFileLoader extends FileLoader {
      * @param string $enclosure enclosure character
      * @param string $escape    escape character
      */
-    public function setCsvControl($delimiter = ';', $enclosure = '"', $escape = '\\') {
+    public function setCsvControl($delimiter = ';', $enclosure = '"', $escape = '\\')
+    {
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;
         $this->escape = $escape;
     }
-
 }

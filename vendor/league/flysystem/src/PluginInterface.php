@@ -2,8 +2,8 @@
 
 namespace League\Flysystem;
 
-interface PluginInterface {
-
+interface PluginInterface
+{
     /**
      * Get the method name.
      *

@@ -3,7 +3,6 @@
 namespace PhpParser;
 
 class ParserFactory {
-
     const PREFER_PHP7 = 1;
     const PREFER_PHP5 = 2;
     const ONLY_PHP7 = 3;
@@ -37,9 +36,8 @@ class ParserFactory {
                 return new Parser\Php5($lexer, $parserOptions);
             default:
                 throw new \LogicException(
-                'Kind must be one of ::PREFER_PHP7, ::PREFER_PHP5, ::ONLY_PHP7 or ::ONLY_PHP5'
+                    'Kind must be one of ::PREFER_PHP7, ::PREFER_PHP5, ::ONLY_PHP7 or ::ONLY_PHP5'
                 );
         }
     }
-
 }

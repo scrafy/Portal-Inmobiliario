@@ -2,8 +2,8 @@
 
 namespace Illuminate\View\Concerns;
 
-trait ManagesTranslations {
-
+trait ManagesTranslations
+{
     /**
      * The translation replacements for the translation being rendered.
      *
@@ -17,7 +17,8 @@ trait ManagesTranslations {
      * @param  array  $replacements
      * @return void
      */
-    public function startTranslation($replacements = []) {
+    public function startTranslation($replacements = [])
+    {
         ob_start();
 
         $this->translationReplacements = $replacements;
@@ -28,10 +29,10 @@ trait ManagesTranslations {
      *
      * @return string
      */
-    public function renderTranslation() {
+    public function renderTranslation()
+    {
         return $this->container->make('translator')->getFromJson(
-                        trim(ob_get_clean()), $this->translationReplacements
+            trim(ob_get_clean()), $this->translationReplacements
         );
     }
-
 }

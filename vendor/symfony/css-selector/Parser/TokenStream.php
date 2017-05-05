@@ -24,8 +24,8 @@ use Symfony\Component\CssSelector\Exception\SyntaxErrorException;
  *
  * @internal
  */
-class TokenStream {
-
+class TokenStream
+{
     /**
      * @var Token[]
      */
@@ -63,7 +63,8 @@ class TokenStream {
      *
      * @return $this
      */
-    public function push(Token $token) {
+    public function push(Token $token)
+    {
         $this->tokens[] = $token;
 
         return $this;
@@ -74,7 +75,8 @@ class TokenStream {
      *
      * @return $this
      */
-    public function freeze() {
+    public function freeze()
+    {
         $this->frozen = true;
 
         return $this;
@@ -87,7 +89,8 @@ class TokenStream {
      *
      * @throws InternalErrorException If there is no more token
      */
-    public function getNext() {
+    public function getNext()
+    {
         if ($this->peeking) {
             $this->peeking = false;
             $this->used[] = $this->peeked;
@@ -107,7 +110,8 @@ class TokenStream {
      *
      * @return Token
      */
-    public function getPeek() {
+    public function getPeek()
+    {
         if (!$this->peeking) {
             $this->peeked = $this->getNext();
             $this->peeking = true;
@@ -121,7 +125,8 @@ class TokenStream {
      *
      * @return Token[]
      */
-    public function getUsed() {
+    public function getUsed()
+    {
         return $this->used;
     }
 
@@ -132,7 +137,8 @@ class TokenStream {
      *
      * @throws SyntaxErrorException If next token is not an identifier
      */
-    public function getNextIdentifier() {
+    public function getNextIdentifier()
+    {
         $next = $this->getNext();
 
         if (!$next->isIdentifier()) {
@@ -149,7 +155,8 @@ class TokenStream {
      *
      * @throws SyntaxErrorException If next token is not an identifier or a star delimiter
      */
-    public function getNextIdentifierOrStar() {
+    public function getNextIdentifierOrStar()
+    {
         $next = $this->getNext();
 
         if ($next->isIdentifier()) {
@@ -166,12 +173,12 @@ class TokenStream {
     /**
      * Skips next whitespace if any.
      */
-    public function skipWhitespace() {
+    public function skipWhitespace()
+    {
         $peek = $this->getPeek();
 
         if ($peek->isWhitespace()) {
             $this->getNext();
         }
     }
-
 }

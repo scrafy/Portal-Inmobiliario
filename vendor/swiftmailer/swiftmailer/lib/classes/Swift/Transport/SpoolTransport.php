@@ -13,8 +13,8 @@
  *
  * @author Fabien Potencier
  */
-class Swift_Transport_SpoolTransport implements Swift_Transport {
-
+class Swift_Transport_SpoolTransport implements Swift_Transport
+{
     /** The spool instance */
     private $_spool;
 
@@ -24,7 +24,8 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
     /**
      * Constructor.
      */
-    public function __construct(Swift_Events_EventDispatcher $eventDispatcher, Swift_Spool $spool = null) {
+    public function __construct(Swift_Events_EventDispatcher $eventDispatcher, Swift_Spool $spool = null)
+    {
         $this->_eventDispatcher = $eventDispatcher;
         $this->_spool = $spool;
     }
@@ -36,7 +37,8 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
      *
      * @return Swift_Transport_SpoolTransport
      */
-    public function setSpool(Swift_Spool $spool) {
+    public function setSpool(Swift_Spool $spool)
+    {
         $this->_spool = $spool;
 
         return $this;
@@ -47,7 +49,8 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
      *
      * @return Swift_Spool
      */
-    public function getSpool() {
+    public function getSpool()
+    {
         return $this->_spool;
     }
 
@@ -56,22 +59,23 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
      *
      * @return bool
      */
-    public function isStarted() {
+    public function isStarted()
+    {
         return true;
     }
 
     /**
      * Starts this Transport mechanism.
      */
-    public function start() {
-        
+    public function start()
+    {
     }
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop() {
-        
+    public function stop()
+    {
     }
 
     /**
@@ -82,7 +86,8 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
      *
      * @return int The number of sent e-mail's
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
         if ($evt = $this->_eventDispatcher->createSendEvent($this, $message)) {
             $this->_eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
             if ($evt->bubbleCancelled()) {
@@ -105,8 +110,8 @@ class Swift_Transport_SpoolTransport implements Swift_Transport {
      *
      * @param Swift_Events_EventListener $plugin
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) {
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
         $this->_eventDispatcher->bindEventListener($plugin);
     }
-
 }

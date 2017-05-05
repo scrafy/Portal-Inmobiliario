@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PHPUnit_MockObject package.
  *
@@ -14,8 +13,8 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Builder_MethodNameMatch extends PHPUnit_Framework_MockObject_Builder_ParametersMatch {
-
+interface PHPUnit_Framework_MockObject_Builder_MethodNameMatch extends PHPUnit_Framework_MockObject_Builder_ParametersMatch
+{
     /**
      * Adds a new method name match and returns the parameter match object for
      * further matching possibilities.

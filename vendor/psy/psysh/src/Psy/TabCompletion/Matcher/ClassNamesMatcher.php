@@ -18,12 +18,13 @@ namespace Psy\TabCompletion\Matcher;
  *
  * @author Marc Garcia <markcial@gmail.com>
  */
-class ClassNamesMatcher extends AbstractMatcher {
-
+class ClassNamesMatcher extends AbstractMatcher
+{
     /**
      * {@inheritdoc}
      */
-    public function getMatches(array $tokens, array $info = array()) {
+    public function getMatches(array $tokens, array $info = array())
+    {
         $class = $this->getNamespaceAndClass($tokens);
         if (strlen($class) > 0 && $class[0] === '\\') {
             $class = substr($class, 1, strlen($class));
@@ -31,24 +32,27 @@ class ClassNamesMatcher extends AbstractMatcher {
         $quotedClass = preg_quote($class);
 
         return array_map(
-                function ($className) use ($class) {
-            // get the number of namespace separators
-            $nsPos = substr_count($class, '\\');
-            $pieces = explode('\\', $className);
-            //$methods = Mirror::get($class);
-            return implode('\\', array_slice($pieces, $nsPos, count($pieces)));
-        }, array_filter(
-                        get_declared_classes(), function ($className) use ($quotedClass) {
+            function ($className) use ($class) {
+                // get the number of namespace separators
+                $nsPos = substr_count($class, '\\');
+                $pieces = explode('\\', $className);
+                //$methods = Mirror::get($class);
+                return implode('\\', array_slice($pieces, $nsPos, count($pieces)));
+            },
+            array_filter(
+                get_declared_classes(),
+                function ($className) use ($quotedClass) {
                     return AbstractMatcher::startsWith($quotedClass, $className);
                 }
-                )
+            )
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasMatched(array $tokens) {
+    public function hasMatched(array $tokens)
+    {
         $token = array_pop($tokens);
         $prevToken = array_pop($tokens);
 
@@ -70,5 +74,4 @@ class ClassNamesMatcher extends AbstractMatcher {
 
         return false;
     }
-
 }

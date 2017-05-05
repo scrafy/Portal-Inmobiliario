@@ -18,14 +18,15 @@ use Psy\Exception\FatalErrorException;
 /**
  * The final class pass handles final classes.
  */
-class FinalClassPass extends CodeCleanerPass {
-
+class FinalClassPass extends CodeCleanerPass
+{
     private $finalClasses;
 
     /**
      * @param array $nodes
      */
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         $this->finalClasses = array();
     }
 
@@ -34,7 +35,8 @@ class FinalClassPass extends CodeCleanerPass {
      *
      * @param Node $node
      */
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         if ($node instanceof ClassStmt) {
             if ($node->extends) {
                 $extends = (string) $node->extends;
@@ -55,7 +57,8 @@ class FinalClassPass extends CodeCleanerPass {
      *
      * @return bool
      */
-    private function isFinalClass($name) {
+    private function isFinalClass($name)
+    {
         if (!class_exists($name)) {
             return isset($this->finalClasses[strtolower($name)]);
         }
@@ -64,5 +67,4 @@ class FinalClassPass extends CodeCleanerPass {
 
         return $refl->isFinal();
     }
-
 }

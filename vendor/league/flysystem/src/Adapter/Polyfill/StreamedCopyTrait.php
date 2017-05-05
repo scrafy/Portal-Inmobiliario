@@ -4,8 +4,8 @@ namespace League\Flysystem\Adapter\Polyfill;
 
 use League\Flysystem\Config;
 
-trait StreamedCopyTrait {
-
+trait StreamedCopyTrait
+{
     /**
      * Copy a file.
      *
@@ -14,10 +14,11 @@ trait StreamedCopyTrait {
      *
      * @return bool
      */
-    public function copy($path, $newpath) {
+    public function copy($path, $newpath)
+    {
         $response = $this->readStream($path);
 
-        if ($response === false || !is_resource($response['stream'])) {
+        if ($response === false || ! is_resource($response['stream'])) {
             return false;
         }
 

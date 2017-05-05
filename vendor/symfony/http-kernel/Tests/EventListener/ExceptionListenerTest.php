@@ -27,9 +27,10 @@ use Symfony\Component\HttpKernel\Tests\Logger;
  *
  * @group time-sensitive
  */
-class ExceptionListenerTest extends TestCase {
-
-    public function testConstruct() {
+class ExceptionListenerTest extends TestCase
+{
+    public function testConstruct()
+    {
         $logger = new TestLogger();
         $l = new ExceptionListener('foo', $logger);
 
@@ -45,7 +46,8 @@ class ExceptionListenerTest extends TestCase {
     /**
      * @dataProvider provider
      */
-    public function testHandleWithoutLogger($event, $event2) {
+    public function testHandleWithoutLogger($event, $event2)
+    {
         $this->iniSet('error_log', file_exists('/dev/null') ? '/dev/null' : 'nul');
 
         $l = new ExceptionListener('foo');
@@ -65,7 +67,8 @@ class ExceptionListenerTest extends TestCase {
     /**
      * @dataProvider provider
      */
-    public function testHandleWithLogger($event, $event2) {
+    public function testHandleWithLogger($event, $event2)
+    {
         $logger = new TestLogger();
 
         $l = new ExceptionListener('foo', $logger);
@@ -85,7 +88,8 @@ class ExceptionListenerTest extends TestCase {
         $this->assertCount(3, $logger->getLogs('critical'));
     }
 
-    public function provider() {
+    public function provider()
+    {
         if (!class_exists('Symfony\Component\HttpFoundation\Request')) {
             return array(array(null, null));
         }
@@ -100,13 +104,14 @@ class ExceptionListenerTest extends TestCase {
         );
     }
 
-    public function testSubRequestFormat() {
+    public function testSubRequestFormat()
+    {
         $listener = new ExceptionListener('foo', $this->getMockBuilder('Psr\Log\LoggerInterface')->getMock());
 
         $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')->getMock();
         $kernel->expects($this->once())->method('handle')->will($this->returnCallback(function (Request $request) {
-                    return new Response($request->getRequestFormat());
-                }));
+            return new Response($request->getRequestFormat());
+        }));
 
         $request = Request::create('/');
         $request->setRequestFormat('xml');
@@ -117,29 +122,28 @@ class ExceptionListenerTest extends TestCase {
         $response = $event->getResponse();
         $this->assertEquals('xml', $response->getContent());
     }
-
 }
 
-class TestLogger extends Logger implements DebugLoggerInterface {
-
-    public function countErrors() {
+class TestLogger extends Logger implements DebugLoggerInterface
+{
+    public function countErrors()
+    {
         return count($this->logs['critical']);
     }
-
 }
 
-class TestKernel implements HttpKernelInterface {
-
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true) {
+class TestKernel implements HttpKernelInterface
+{
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    {
         return new Response('foo');
     }
-
 }
 
-class TestKernelThatThrowsException implements HttpKernelInterface {
-
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true) {
+class TestKernelThatThrowsException implements HttpKernelInterface
+{
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    {
         throw new \RuntimeException('bar');
     }
-
 }

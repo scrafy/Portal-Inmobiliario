@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Broadcasting;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Get a broadcaster implementation by name.
      *

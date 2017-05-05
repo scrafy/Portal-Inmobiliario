@@ -2,8 +2,8 @@
 
 namespace DeepCopy\Reflection;
 
-class ReflectionHelper {
-
+class ReflectionHelper
+{
     /**
      * Retrieves all properties (including private ones), from object and all its ancestors.
      *
@@ -15,7 +15,8 @@ class ReflectionHelper {
      * @param \ReflectionClass $ref
      * @return \ReflectionProperty[]
      */
-    public static function getProperties(\ReflectionClass $ref) {
+    public static function getProperties(\ReflectionClass $ref)
+    {
         $props = $ref->getProperties();
         $propsArr = array();
 
@@ -35,5 +36,4 @@ class ReflectionHelper {
 
         return $propsArr;
     }
-
 }

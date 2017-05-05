@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Diff package.
  *
@@ -14,8 +13,8 @@ namespace SebastianBergmann\Diff\LCS;
 /**
  * Interface for implementations of longest common subsequence calculation.
  */
-interface LongestCommonSubsequence {
-
+interface LongestCommonSubsequence
+{
     /**
      * Calculates the longest common subsequence of two arrays.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -21,8 +20,8 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * UuidBuilderInterface builds instances UuidInterface
  */
-interface UuidBuilderInterface {
-
+interface UuidBuilderInterface
+{
     /**
      * Builds an instance of a UuidInterface
      *

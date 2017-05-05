@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -20,8 +19,8 @@ use phpDocumentor\Reflection\DocBlock;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Serializer
  * @covers ::<private>
  */
-class SerializerTest extends \PHPUnit_Framework_TestCase {
-
+class SerializerTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers ::__construct
      * @covers ::getDocComment
@@ -31,7 +30,8 @@ class SerializerTest extends \PHPUnit_Framework_TestCase {
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testReconstructsADocCommentFromADocBlock() {
+    public function testReconstructsADocCommentFromADocBlock()
+    {
         $expected = <<<'DOCCOMMENT'
 /**
  * This is a summary
@@ -45,9 +45,11 @@ DOCCOMMENT;
         $fixture = new Serializer();
 
         $docBlock = new DocBlock(
-                'This is a summary', new Description('This is a description'), [
-            new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
-                ]
+            'This is a summary',
+            new Description('This is a description'),
+            [
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+            ]
         );
 
         $this->assertSame($expected, $fixture->getDocComment($docBlock));
@@ -62,7 +64,8 @@ DOCCOMMENT;
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testAddPrefixToDocBlock() {
+    public function testAddPrefixToDocBlock()
+    {
         $expected = <<<'DOCCOMMENT'
 aa/**
 aa * This is a summary
@@ -76,9 +79,11 @@ DOCCOMMENT;
         $fixture = new Serializer(2, 'a');
 
         $docBlock = new DocBlock(
-                'This is a summary', new Description('This is a description'), [
-            new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
-                ]
+            'This is a summary',
+            new Description('This is a description'),
+            [
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+            ]
         );
 
         $this->assertSame($expected, $fixture->getDocComment($docBlock));
@@ -93,7 +98,8 @@ DOCCOMMENT;
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testAddPrefixToDocBlockExceptFirstLine() {
+    public function testAddPrefixToDocBlockExceptFirstLine()
+    {
         $expected = <<<'DOCCOMMENT'
 /**
 aa * This is a summary
@@ -107,9 +113,11 @@ DOCCOMMENT;
         $fixture = new Serializer(2, 'a', false);
 
         $docBlock = new DocBlock(
-                'This is a summary', new Description('This is a description'), [
-            new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
-                ]
+            'This is a summary',
+            new Description('This is a description'),
+            [
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+            ]
         );
 
         $this->assertSame($expected, $fixture->getDocComment($docBlock));
@@ -124,7 +132,8 @@ DOCCOMMENT;
      * @uses phpDocumentor\Reflection\DocBlock\Tags\BaseTag
      * @uses phpDocumentor\Reflection\DocBlock\Tags\Generic
      */
-    public function testWordwrapsAroundTheGivenAmountOfCharacters() {
+    public function testWordwrapsAroundTheGivenAmountOfCharacters()
+    {
         $expected = <<<'DOCCOMMENT'
 /**
  * This is a
@@ -144,9 +153,11 @@ DOCCOMMENT;
         $fixture = new Serializer(0, '', true, 15);
 
         $docBlock = new DocBlock(
-                'This is a summary', new Description('This is a description'), [
-            new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
-                ]
+            'This is a summary',
+            new Description('This is a description'),
+            [
+                new DocBlock\Tags\Generic('unknown-tag', new Description('Test description for the unknown tag'))
+            ]
         );
 
         $this->assertSame($expected, $fixture->getDocComment($docBlock));
@@ -156,7 +167,8 @@ DOCCOMMENT;
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentIsNotAnInteger() {
+    public function testInitializationFailsIfIndentIsNotAnInteger()
+    {
         new Serializer([]);
     }
 
@@ -164,7 +176,8 @@ DOCCOMMENT;
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentStringIsNotAString() {
+    public function testInitializationFailsIfIndentStringIsNotAString()
+    {
         new Serializer(0, []);
     }
 
@@ -172,7 +185,8 @@ DOCCOMMENT;
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfIndentFirstLineIsNotABoolean() {
+    public function testInitializationFailsIfIndentFirstLineIsNotABoolean()
+    {
         new Serializer(0, '', []);
     }
 
@@ -180,8 +194,8 @@ DOCCOMMENT;
      * @covers ::__construct
      * @expectedException \InvalidArgumentException
      */
-    public function testInitializationFailsIfLineLengthIsNotNullNorAnInteger() {
+    public function testInitializationFailsIfLineLengthIsNotNullNorAnInteger()
+    {
         new Serializer(0, '', false, []);
     }
-
 }

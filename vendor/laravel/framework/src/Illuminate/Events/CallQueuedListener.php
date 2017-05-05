@@ -7,8 +7,8 @@ use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CallQueuedListener implements ShouldQueue {
-
+class CallQueuedListener implements ShouldQueue
+{
     use InteractsWithQueue;
 
     /**
@@ -40,7 +40,8 @@ class CallQueuedListener implements ShouldQueue {
      * @param  array  $data
      * @return void
      */
-    public function __construct($class, $method, $data) {
+    public function __construct($class, $method, $data)
+    {
         $this->data = $data;
         $this->class = $class;
         $this->method = $method;
@@ -52,15 +53,16 @@ class CallQueuedListener implements ShouldQueue {
      * @param  \Illuminate\Container\Container  $container
      * @return void
      */
-    public function handle(Container $container) {
+    public function handle(Container $container)
+    {
         $this->prepareData();
 
         $handler = $this->setJobInstanceIfNecessary(
-                $this->job, $container->make($this->class)
+            $this->job, $container->make($this->class)
         );
 
         call_user_func_array(
-                [$handler, $this->method], $this->data
+            [$handler, $this->method], $this->data
         );
     }
 
@@ -71,7 +73,8 @@ class CallQueuedListener implements ShouldQueue {
      * @param  mixed  $instance
      * @return mixed
      */
-    protected function setJobInstanceIfNecessary(Job $job, $instance) {
+    protected function setJobInstanceIfNecessary(Job $job, $instance)
+    {
         if (in_array(InteractsWithQueue::class, class_uses_recursive(get_class($instance)))) {
             $instance->setJob($job);
         }
@@ -87,7 +90,8 @@ class CallQueuedListener implements ShouldQueue {
      * @param  \Exception  $e
      * @return void
      */
-    public function failed($e) {
+    public function failed($e)
+    {
         $this->prepareData();
 
         $handler = Container::getInstance()->make($this->class);
@@ -104,7 +108,8 @@ class CallQueuedListener implements ShouldQueue {
      *
      * @return void
      */
-    protected function prepareData() {
+    protected function prepareData()
+    {
         if (is_string($this->data)) {
             $this->data = unserialize($this->data);
         }
@@ -115,8 +120,8 @@ class CallQueuedListener implements ShouldQueue {
      *
      * @return string
      */
-    public function displayName() {
+    public function displayName()
+    {
         return $this->class;
     }
-
 }

@@ -5,8 +5,8 @@ namespace Illuminate\Queue\Failed;
 use Carbon\Carbon;
 use Illuminate\Database\ConnectionResolverInterface;
 
-class DatabaseFailedJobProvider implements FailedJobProviderInterface {
-
+class DatabaseFailedJobProvider implements FailedJobProviderInterface
+{
     /**
      * The connection resolver implementation.
      *
@@ -36,7 +36,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      * @param  string  $table
      * @return void
      */
-    public function __construct(ConnectionResolverInterface $resolver, $database, $table) {
+    public function __construct(ConnectionResolverInterface $resolver, $database, $table)
+    {
         $this->table = $table;
         $this->resolver = $resolver;
         $this->database = $database;
@@ -51,13 +52,14 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      * @param  \Exception  $exception
      * @return int|null
      */
-    public function log($connection, $queue, $payload, $exception) {
+    public function log($connection, $queue, $payload, $exception)
+    {
         $failed_at = Carbon::now();
 
         $exception = (string) $exception;
 
         return $this->getTable()->insertGetId(compact(
-                                'connection', 'queue', 'payload', 'exception', 'failed_at'
+            'connection', 'queue', 'payload', 'exception', 'failed_at'
         ));
     }
 
@@ -66,7 +68,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      *
      * @return array
      */
-    public function all() {
+    public function all()
+    {
         return $this->getTable()->orderBy('id', 'desc')->get()->all();
     }
 
@@ -76,7 +79,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      * @param  mixed  $id
      * @return array
      */
-    public function find($id) {
+    public function find($id)
+    {
         return $this->getTable()->find($id);
     }
 
@@ -86,7 +90,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      * @param  mixed  $id
      * @return bool
      */
-    public function forget($id) {
+    public function forget($id)
+    {
         return $this->getTable()->where('id', $id)->delete() > 0;
     }
 
@@ -95,7 +100,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      *
      * @return void
      */
-    public function flush() {
+    public function flush()
+    {
         $this->getTable()->delete();
     }
 
@@ -104,8 +110,8 @@ class DatabaseFailedJobProvider implements FailedJobProviderInterface {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function getTable() {
+    protected function getTable()
+    {
         return $this->resolver->connection($this->database)->table($this->table);
     }
-
 }

@@ -14,12 +14,13 @@ namespace Symfony\Component\Finder\Tests\Comparator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Comparator\NumberComparator;
 
-class NumberComparatorTest extends TestCase {
-
+class NumberComparatorTest extends TestCase
+{
     /**
      * @dataProvider getConstructorTestData
      */
-    public function testConstructor($successes, $failures) {
+    public function testConstructor($successes, $failures)
+    {
         foreach ($successes as $s) {
             new NumberComparator($s);
         }
@@ -37,7 +38,8 @@ class NumberComparatorTest extends TestCase {
     /**
      * @dataProvider getTestData
      */
-    public function testTest($test, $match, $noMatch) {
+    public function testTest($test, $match, $noMatch)
+    {
         $c = new NumberComparator($test);
 
         foreach ($match as $m) {
@@ -49,30 +51,38 @@ class NumberComparatorTest extends TestCase {
         }
     }
 
-    public function getTestData() {
+    public function getTestData()
+    {
         return array(
             array('< 1000', array('500', '999'), array('1000', '1500')),
+
             array('< 1K', array('500', '999'), array('1000', '1500')),
             array('<1k', array('500', '999'), array('1000', '1500')),
             array('  < 1 K ', array('500', '999'), array('1000', '1500')),
             array('<= 1K', array('1000'), array('1001')),
             array('> 1K', array('1001'), array('1000')),
             array('>= 1K', array('1000'), array('999')),
+
             array('< 1KI', array('500', '1023'), array('1024', '1500')),
             array('<= 1KI', array('1024'), array('1025')),
             array('> 1KI', array('1025'), array('1024')),
             array('>= 1KI', array('1024'), array('1023')),
+
             array('1KI', array('1024'), array('1023', '1025')),
             array('==1KI', array('1024'), array('1023', '1025')),
+
             array('==1m', array('1000000'), array('999999', '1000001')),
             array('==1mi', array(1024 * 1024), array(1024 * 1024 - 1, 1024 * 1024 + 1)),
+
             array('==1g', array('1000000000'), array('999999999', '1000000001')),
             array('==1gi', array(1024 * 1024 * 1024), array(1024 * 1024 * 1024 - 1, 1024 * 1024 * 1024 + 1)),
+
             array('!= 1000', array('500', '999'), array('1000')),
         );
     }
 
-    public function getConstructorTestData() {
+    public function getConstructorTestData()
+    {
         return array(
             array(
                 array(
@@ -95,5 +105,4 @@ class NumberComparatorTest extends TestCase {
             ),
         );
     }
-
 }

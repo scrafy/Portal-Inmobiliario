@@ -16,8 +16,8 @@ use Symfony\Component\Translation\Exception\InvalidArgumentException;
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
-class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInterface {
-
+class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInterface
+{
     const MESSAGE_DEFINED = 0;
     const MESSAGE_MISSING = 1;
     const MESSAGE_EQUALS_FALLBACK = 2;
@@ -35,7 +35,8 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * @param TranslatorInterface $translator The translator must implement TranslatorBagInterface
      */
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator)
+    {
         if (!$translator instanceof TranslatorBagInterface) {
             throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
         }
@@ -46,7 +47,8 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null) {
+    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    {
         $trans = $this->translator->trans($id, $parameters, $domain, $locale);
         $this->collectMessage($locale, $domain, $id, $trans, $parameters);
 
@@ -56,7 +58,8 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
+    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    {
         $trans = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
         $this->collectMessage($locale, $domain, $id, $trans, $parameters, $number);
 
@@ -66,21 +69,24 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale) {
+    public function setLocale($locale)
+    {
         $this->translator->setLocale($locale);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLocale() {
+    public function getLocale()
+    {
         return $this->translator->getLocale();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCatalogue($locale = null) {
+    public function getCatalogue($locale = null)
+    {
         return $this->translator->getCatalogue($locale);
     }
 
@@ -89,7 +95,8 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      *
      * @return array $locales The fallback locales
      */
-    public function getFallbackLocales() {
+    public function getFallbackLocales()
+    {
         if ($this->translator instanceof Translator) {
             return $this->translator->getFallbackLocales();
         }
@@ -100,14 +107,16 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     /**
      * Passes through all unknown calls onto the translator object.
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         return call_user_func_array(array($this->translator, $method), $args);
     }
 
     /**
      * @return array
      */
-    public function getCollectedMessages() {
+    public function getCollectedMessages()
+    {
         return $this->messages;
     }
 
@@ -119,7 +128,8 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      * @param array|null  $parameters
      * @param int|null    $number
      */
-    private function collectMessage($locale, $domain, $id, $translation, $parameters = array(), $number = null) {
+    private function collectMessage($locale, $domain, $id, $translation, $parameters = array(), $number = null)
+    {
         if (null === $domain) {
             $domain = 'messages';
         }
@@ -155,5 +165,4 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
             'state' => $state,
         );
     }
-
 }

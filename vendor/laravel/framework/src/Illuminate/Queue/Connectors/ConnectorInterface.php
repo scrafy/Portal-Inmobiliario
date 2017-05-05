@@ -2,8 +2,8 @@
 
 namespace Illuminate\Queue\Connectors;
 
-interface ConnectorInterface {
-
+interface ConnectorInterface
+{
     /**
      * Establish a queue connection.
      *

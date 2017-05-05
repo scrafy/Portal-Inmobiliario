@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-class PHPUnit_Runner_Filter_Group_Include extends PHPUnit_Runner_Filter_GroupFilterIterator {
-
+class PHPUnit_Runner_Filter_Group_Include extends PHPUnit_Runner_Filter_GroupFilterIterator
+{
     /**
      * @param string $hash
      *
      * @return bool
      */
-    protected function doAccept($hash) {
+    protected function doAccept($hash)
+    {
         return in_array($hash, $this->groupTests);
     }
-
 }

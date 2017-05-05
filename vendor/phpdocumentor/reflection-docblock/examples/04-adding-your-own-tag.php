@@ -1,8 +1,8 @@
 <?php
-
 /**
  * In this example we demonstrate how you can add your own Tag using a Static Factory method in your Tag class.
  */
+
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 use phpDocumentor\Reflection\DocBlock\Serializer;
@@ -32,8 +32,8 @@ use Webmozart\Assert\Assert;
  *
  * > Important: Tag classes that act as Factories using the `create` method should implement the TagFactory interface.
  */
-final class MyTag extends BaseTag implements StaticMethod {
-
+final class MyTag extends BaseTag implements StaticMethod
+{
     /**
      * A required property that is used by Formatters to reconstitute the complete tag line.
      *
@@ -52,7 +52,8 @@ final class MyTag extends BaseTag implements StaticMethod {
      *
      * @see BaseTag for the declaration of the description property and getDescription method.
      */
-    public function __construct(Description $description = null) {
+    public function __construct(Description $description = null)
+    {
         $this->description = $description;
     }
 
@@ -85,7 +86,8 @@ final class MyTag extends BaseTag implements StaticMethod {
      *
      * @return MyTag
      */
-    public static function create($body, DescriptionFactory $descriptionFactory = null, Context $context = null) {
+    public static function create($body, DescriptionFactory $descriptionFactory = null, Context $context = null)
+    {
         Assert::string($body);
         Assert::notNull($descriptionFactory);
 
@@ -100,10 +102,10 @@ final class MyTag extends BaseTag implements StaticMethod {
      *
      * @return string
      */
-    public function __toString() {
-        return (string) $this->description;
+    public function __toString()
+    {
+        return (string)$this->description;
     }
-
 }
 
 $docComment = <<<DOCCOMMENT
@@ -120,6 +122,7 @@ $customTags = ['my-tag' => MyTag::class];
 // Do pass the list of custom tags to the Factory for the DocBlockFactory.
 $factory = DocBlockFactory::createInstance($customTags);
 // You can also add Tags later using `$factory->registerTagHandler()` with a tag name and Tag class name.
+
 // Create the DocBlock
 $docblock = $factory->create($docComment);
 
@@ -128,5 +131,5 @@ $customTagObjects = $docblock->getTagsByName('my-tag');
 
 // As an experiment: let's reconstitute the DocBlock and observe that because we added a __toString() method
 // to the tag class that we can now also see it.
-$serializer = new Serializer();
+$serializer              = new Serializer();
 $reconstitutedDocComment = $serializer->getDocComment($docblock);

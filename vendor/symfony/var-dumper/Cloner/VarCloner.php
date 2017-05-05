@@ -14,15 +14,16 @@ namespace Symfony\Component\VarDumper\Cloner;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class VarCloner extends AbstractCloner {
-
+class VarCloner extends AbstractCloner
+{
     private static $hashMask = 0;
     private static $hashOffset = 0;
 
     /**
      * {@inheritdoc}
      */
-    protected function doClone($var) {
+    protected function doClone($var)
+    {
         $useExt = $this->useExt;
         $len = 1;                       // Length of $queue
         $pos = 0;                       // Number of cloned items past the first level
@@ -39,8 +40,8 @@ class VarCloner extends AbstractCloner {
         $gid = uniqid(mt_rand(), true); // Unique string used to detect the special $GLOBALS variable
         $a = null;                      // Array cast for nested structures
         $stub = null;                   // Stub capturing the main properties of an original item value
-        // or null if the original value is used directly
-        $zval = array(// Main properties of the current value
+                                        // or null if the original value is used directly
+        $zval = array(                  // Main properties of the current value
             'type' => null,
             'zval_isref' => null,
             'zval_hash' => null,
@@ -268,7 +269,6 @@ class VarCloner extends AbstractCloner {
                 $j = -1;
                 foreach ($queue[$i] as $k => $v) {
                     foreach (array($k => $v) as $a => $v) {
-                        
                     }
                     if ($a !== $k) {
                         $vals = (object) $vals;
@@ -297,7 +297,8 @@ class VarCloner extends AbstractCloner {
         return $queue;
     }
 
-    private static function initHashMask() {
+    private static function initHashMask()
+    {
         $obj = (object) array();
         self::$hashOffset = 16 - PHP_INT_SIZE;
         self::$hashMask = -1;
@@ -322,5 +323,4 @@ class VarCloner extends AbstractCloner {
 
         self::$hashMask ^= hexdec(substr(spl_object_hash($obj), self::$hashOffset, PHP_INT_SIZE));
     }
-
 }

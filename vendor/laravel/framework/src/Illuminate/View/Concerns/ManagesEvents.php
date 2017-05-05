@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View as ViewContract;
 
-trait ManagesEvents {
-
+trait ManagesEvents
+{
     /**
      * Register a view creator event.
      *
@@ -15,7 +15,8 @@ trait ManagesEvents {
      * @param  \Closure|string  $callback
      * @return array
      */
-    public function creator($views, $callback) {
+    public function creator($views, $callback)
+    {
         $creators = [];
 
         foreach ((array) $views as $view) {
@@ -31,7 +32,8 @@ trait ManagesEvents {
      * @param  array  $composers
      * @return array
      */
-    public function composers(array $composers) {
+    public function composers(array $composers)
+    {
         $registered = [];
 
         foreach ($composers as $callback => $views) {
@@ -48,7 +50,8 @@ trait ManagesEvents {
      * @param  \Closure|string  $callback
      * @return array
      */
-    public function composer($views, $callback) {
+    public function composer($views, $callback)
+    {
         $composers = [];
 
         foreach ((array) $views as $view) {
@@ -66,11 +69,12 @@ trait ManagesEvents {
      * @param  string  $prefix
      * @return \Closure|null
      */
-    protected function addViewEvent($view, $callback, $prefix = 'composing: ') {
+    protected function addViewEvent($view, $callback, $prefix = 'composing: ')
+    {
         $view = $this->normalizeName($view);
 
         if ($callback instanceof Closure) {
-            $this->addEventListener($prefix . $view, $callback);
+            $this->addEventListener($prefix.$view, $callback);
 
             return $callback;
         } elseif (is_string($callback)) {
@@ -86,14 +90,15 @@ trait ManagesEvents {
      * @param  string    $prefix
      * @return \Closure
      */
-    protected function addClassEvent($view, $class, $prefix) {
-        $name = $prefix . $view;
+    protected function addClassEvent($view, $class, $prefix)
+    {
+        $name = $prefix.$view;
 
         // When registering a class based view "composer", we will simply resolve the
         // classes from the application IoC container then call the compose method
         // on the instance. This allows for convenient, testable view composers.
         $callback = $this->buildClassEventCallback(
-                $class, $prefix
+            $class, $prefix
         );
 
         $this->addEventListener($name, $callback);
@@ -108,7 +113,8 @@ trait ManagesEvents {
      * @param  string  $prefix
      * @return \Closure
      */
-    protected function buildClassEventCallback($class, $prefix) {
+    protected function buildClassEventCallback($class, $prefix)
+    {
         list($class, $method) = $this->parseClassEvent($class, $prefix);
 
         // Once we have the class and method name, we can build the Closure to resolve
@@ -116,7 +122,7 @@ trait ManagesEvents {
         // given arguments that are passed to the Closure as the composer's data.
         return function () use ($class, $method) {
             return call_user_func_array(
-                    [$this->container->make($class), $method], func_get_args()
+                [$this->container->make($class), $method], func_get_args()
             );
         };
     }
@@ -128,7 +134,8 @@ trait ManagesEvents {
      * @param  string  $prefix
      * @return array
      */
-    protected function parseClassEvent($class, $prefix) {
+    protected function parseClassEvent($class, $prefix)
+    {
         return Str::parseCallback($class, $this->classEventMethodForPrefix($prefix));
     }
 
@@ -138,7 +145,8 @@ trait ManagesEvents {
      * @param  string  $prefix
      * @return string
      */
-    protected function classEventMethodForPrefix($prefix) {
+    protected function classEventMethodForPrefix($prefix)
+    {
         return Str::contains($prefix, 'composing') ? 'compose' : 'create';
     }
 
@@ -149,7 +157,8 @@ trait ManagesEvents {
      * @param  \Closure  $callback
      * @return void
      */
-    protected function addEventListener($name, $callback) {
+    protected function addEventListener($name, $callback)
+    {
         if (Str::contains($name, '*')) {
             $callback = function ($name, array $data) use ($callback) {
                 return $callback($data[0]);
@@ -165,8 +174,9 @@ trait ManagesEvents {
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void
      */
-    public function callComposer(ViewContract $view) {
-        $this->events->fire('composing: ' . $view->name(), [$view]);
+    public function callComposer(ViewContract $view)
+    {
+        $this->events->fire('composing: '.$view->name(), [$view]);
     }
 
     /**
@@ -175,8 +185,8 @@ trait ManagesEvents {
      * @param  \Illuminate\Contracts\View\View  $view
      * @return void
      */
-    public function callCreator(ViewContract $view) {
-        $this->events->fire('creating: ' . $view->name(), [$view]);
+    public function callCreator(ViewContract $view)
+    {
+        $this->events->fire('creating: '.$view->name(), [$view]);
     }
-
 }

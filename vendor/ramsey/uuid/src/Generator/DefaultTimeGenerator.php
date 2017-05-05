@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -25,8 +24,8 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
  * data for version 1 UUIDs based on a host ID, sequence number, and the current
  * time
  */
-class DefaultTimeGenerator implements TimeGeneratorInterface {
-
+class DefaultTimeGenerator implements TimeGeneratorInterface
+{
     /**
      * @var NodeProviderInterface
      */
@@ -51,7 +50,9 @@ class DefaultTimeGenerator implements TimeGeneratorInterface {
      * @param TimeProviderInterface $timeProvider
      */
     public function __construct(
-    NodeProviderInterface $nodeProvider, TimeConverterInterface $timeConverter, TimeProviderInterface $timeProvider
+        NodeProviderInterface $nodeProvider,
+        TimeConverterInterface $timeConverter,
+        TimeProviderInterface $timeProvider
     ) {
         $this->nodeProvider = $nodeProvider;
         $this->timeConverter = $timeConverter;
@@ -72,7 +73,8 @@ class DefaultTimeGenerator implements TimeGeneratorInterface {
      *     changes.
      * @return string A binary string
      */
-    public function generate($node = null, $clockSeq = null) {
+    public function generate($node = null, $clockSeq = null)
+    {
         $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
@@ -89,14 +91,15 @@ class DefaultTimeGenerator implements TimeGeneratorInterface {
         $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
 
         $hex = vsprintf(
-                '%08s%04s%04s%02s%02s%012s', array(
-            $uuidTime['low'],
-            $uuidTime['mid'],
-            sprintf('%04x', $timeHi),
-            sprintf('%02x', $clockSeqHi),
-            sprintf('%02x', $clockSeq & 0xff),
-            $node,
-                )
+            '%08s%04s%04s%02s%02s%012s',
+            array(
+                $uuidTime['low'],
+                $uuidTime['mid'],
+                sprintf('%04x', $timeHi),
+                sprintf('%02x', $clockSeqHi),
+                sprintf('%02x', $clockSeq & 0xff),
+                $node,
+            )
         );
 
         return hex2bin($hex);
@@ -109,7 +112,8 @@ class DefaultTimeGenerator implements TimeGeneratorInterface {
      * @param string|int $node A node value that may be used to override the node provider
      * @return string Hexadecimal representation of the node ID
      */
-    protected function getValidNode($node) {
+    protected function getValidNode($node)
+    {
         if ($node === null) {
             $node = $this->nodeProvider->getNode();
         }
@@ -125,5 +129,4 @@ class DefaultTimeGenerator implements TimeGeneratorInterface {
 
         return strtolower(sprintf('%012s', $node));
     }
-
 }

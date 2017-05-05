@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -18,8 +17,8 @@ use Symfony\Component\VarDumper\Cloner\Stub;
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  */
-class XmlReaderCaster {
-
+class XmlReaderCaster
+{
     private static $nodeTypes = array(
         \XmlReader::NONE => 'NONE',
         \XmlReader::ELEMENT => 'ELEMENT',
@@ -41,8 +40,9 @@ class XmlReaderCaster {
         \XmlReader::XML_DECLARATION => 'XML_DECLARATION',
     );
 
-    public static function castXmlReader(\XmlReader $reader, array $a, Stub $stub, $isNested) {
-        $props = Caster::PREFIX_VIRTUAL . 'parserProperties';
+    public static function castXmlReader(\XmlReader $reader, array $a, Stub $stub, $isNested)
+    {
+        $props = Caster::PREFIX_VIRTUAL.'parserProperties';
         $info = array(
             'localName' => $reader->localName,
             'prefix' => $reader->prefix,
@@ -74,5 +74,4 @@ class XmlReaderCaster {
 
         return $a + $info;
     }
-
 }

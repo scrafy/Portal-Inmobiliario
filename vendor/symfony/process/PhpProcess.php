@@ -22,8 +22,8 @@ use Symfony\Component\Process\Exception\RuntimeException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PhpProcess extends Process {
-
+class PhpProcess extends Process
+{
     /**
      * Constructor.
      *
@@ -33,7 +33,8 @@ class PhpProcess extends Process {
      * @param int         $timeout The timeout in seconds
      * @param array       $options An array of options for proc_open
      */
-    public function __construct($script, $cwd = null, array $env = null, $timeout = 60, array $options = array()) {
+    public function __construct($script, $cwd = null, array $env = null, $timeout = 60, array $options = array())
+    {
         $executableFinder = new PhpExecutableFinder();
         if (false === $php = $executableFinder->find()) {
             $php = null;
@@ -42,14 +43,14 @@ class PhpProcess extends Process {
             $file = tempnam(sys_get_temp_dir(), 'dbg');
             file_put_contents($file, $script);
             register_shutdown_function('unlink', $file);
-            $php .= ' ' . ProcessUtils::escapeArgument($file);
+            $php .= ' '.ProcessUtils::escapeArgument($file);
             $script = null;
         }
         if ('\\' !== DIRECTORY_SEPARATOR && null !== $php) {
             // exec is mandatory to deal with sending a signal to the process
             // see https://github.com/symfony/symfony/issues/5030 about prepending
             // command with exec
-            $php = 'exec ' . $php;
+            $php = 'exec '.$php;
         }
 
         parent::__construct($php, $cwd, $env, $script, $timeout, $options);
@@ -58,19 +59,20 @@ class PhpProcess extends Process {
     /**
      * Sets the path to the PHP binary to use.
      */
-    public function setPhpBinary($php) {
+    public function setPhpBinary($php)
+    {
         $this->setCommandLine($php);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function start(callable $callback = null) {
+    public function start(callable $callback = null)
+    {
         if (null === $this->getCommandLine()) {
             throw new RuntimeException('Unable to find the PHP executable.');
         }
 
         parent::start($callback);
     }
-
 }

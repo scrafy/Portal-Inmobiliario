@@ -16,8 +16,8 @@ namespace Symfony\Component\HttpFoundation;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class RedirectResponse extends Response {
-
+class RedirectResponse extends Response
+{
     protected $targetUrl;
 
     /**
@@ -32,7 +32,8 @@ class RedirectResponse extends Response {
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3
      */
-    public function __construct($url, $status = 302, $headers = array()) {
+    public function __construct($url, $status = 302, $headers = array())
+    {
         parent::__construct('', $status, $headers);
 
         $this->setTargetUrl($url);
@@ -49,7 +50,8 @@ class RedirectResponse extends Response {
     /**
      * {@inheritdoc}
      */
-    public static function create($url = '', $status = 302, $headers = array()) {
+    public static function create($url = '', $status = 302, $headers = array())
+    {
         return new static($url, $status, $headers);
     }
 
@@ -58,7 +60,8 @@ class RedirectResponse extends Response {
      *
      * @return string target URL
      */
-    public function getTargetUrl() {
+    public function getTargetUrl()
+    {
         return $this->targetUrl;
     }
 
@@ -71,7 +74,8 @@ class RedirectResponse extends Response {
      *
      * @throws \InvalidArgumentException
      */
-    public function setTargetUrl($url) {
+    public function setTargetUrl($url)
+    {
         if (empty($url)) {
             throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
@@ -79,7 +83,7 @@ class RedirectResponse extends Response {
         $this->targetUrl = $url;
 
         $this->setContent(
-                sprintf('<!DOCTYPE html>
+            sprintf('<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" />
@@ -96,5 +100,4 @@ class RedirectResponse extends Response {
 
         return $this;
     }
-
 }

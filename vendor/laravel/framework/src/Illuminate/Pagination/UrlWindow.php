@@ -4,8 +4,8 @@ namespace Illuminate\Pagination;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator as PaginatorContract;
 
-class UrlWindow {
-
+class UrlWindow
+{
     /**
      * The paginator implementation.
      *
@@ -19,7 +19,8 @@ class UrlWindow {
      * @param  \Illuminate\Contracts\Pagination\LengthAwarePaginator  $paginator
      * @return void
      */
-    public function __construct(PaginatorContract $paginator) {
+    public function __construct(PaginatorContract $paginator)
+    {
         $this->paginator = $paginator;
     }
 
@@ -30,7 +31,8 @@ class UrlWindow {
      * @param  int  $onEachSide
      * @return array
      */
-    public static function make(PaginatorContract $paginator, $onEachSide = 3) {
+    public static function make(PaginatorContract $paginator, $onEachSide = 3)
+    {
         return (new static($paginator))->get($onEachSide);
     }
 
@@ -40,7 +42,8 @@ class UrlWindow {
      * @param  int  $onEachSide
      * @return array
      */
-    public function get($onEachSide = 3) {
+    public function get($onEachSide = 3)
+    {
         if ($this->paginator->lastPage() < ($onEachSide * 2) + 6) {
             return $this->getSmallSlider();
         }
@@ -53,11 +56,12 @@ class UrlWindow {
      *
      * @return array
      */
-    protected function getSmallSlider() {
+    protected function getSmallSlider()
+    {
         return [
-            'first' => $this->paginator->getUrlRange(1, $this->lastPage()),
+            'first'  => $this->paginator->getUrlRange(1, $this->lastPage()),
             'slider' => null,
-            'last' => null,
+            'last'   => null,
         ];
     }
 
@@ -67,10 +71,11 @@ class UrlWindow {
      * @param  int  $onEachSide
      * @return array
      */
-    protected function getUrlSlider($onEachSide) {
+    protected function getUrlSlider($onEachSide)
+    {
         $window = $onEachSide * 2;
 
-        if (!$this->hasPages()) {
+        if (! $this->hasPages()) {
             return ['first' => null, 'slider' => null, 'last' => null];
         }
 
@@ -100,7 +105,8 @@ class UrlWindow {
      * @param  int  $window
      * @return array
      */
-    protected function getSliderTooCloseToBeginning($window) {
+    protected function getSliderTooCloseToBeginning($window)
+    {
         return [
             'first' => $this->paginator->getUrlRange(1, $window + 2),
             'slider' => null,
@@ -114,9 +120,11 @@ class UrlWindow {
      * @param  int  $window
      * @return array
      */
-    protected function getSliderTooCloseToEnding($window) {
+    protected function getSliderTooCloseToEnding($window)
+    {
         $last = $this->paginator->getUrlRange(
-                $this->lastPage() - ($window + 2), $this->lastPage()
+            $this->lastPage() - ($window + 2),
+            $this->lastPage()
         );
 
         return [
@@ -132,11 +140,12 @@ class UrlWindow {
      * @param  int  $onEachSide
      * @return array
      */
-    protected function getFullSlider($onEachSide) {
+    protected function getFullSlider($onEachSide)
+    {
         return [
-            'first' => $this->getStart(),
+            'first'  => $this->getStart(),
             'slider' => $this->getAdjacentUrlRange($onEachSide),
-            'last' => $this->getFinish(),
+            'last'   => $this->getFinish(),
         ];
     }
 
@@ -146,9 +155,11 @@ class UrlWindow {
      * @param  int  $onEachSide
      * @return array
      */
-    public function getAdjacentUrlRange($onEachSide) {
+    public function getAdjacentUrlRange($onEachSide)
+    {
         return $this->paginator->getUrlRange(
-                        $this->currentPage() - $onEachSide, $this->currentPage() + $onEachSide
+            $this->currentPage() - $onEachSide,
+            $this->currentPage() + $onEachSide
         );
     }
 
@@ -157,7 +168,8 @@ class UrlWindow {
      *
      * @return array
      */
-    public function getStart() {
+    public function getStart()
+    {
         return $this->paginator->getUrlRange(1, 2);
     }
 
@@ -166,9 +178,11 @@ class UrlWindow {
      *
      * @return array
      */
-    public function getFinish() {
+    public function getFinish()
+    {
         return $this->paginator->getUrlRange(
-                        $this->lastPage() - 1, $this->lastPage()
+            $this->lastPage() - 1,
+            $this->lastPage()
         );
     }
 
@@ -177,7 +191,8 @@ class UrlWindow {
      *
      * @return bool
      */
-    public function hasPages() {
+    public function hasPages()
+    {
         return $this->paginator->lastPage() > 1;
     }
 
@@ -186,7 +201,8 @@ class UrlWindow {
      *
      * @return int
      */
-    protected function currentPage() {
+    protected function currentPage()
+    {
         return $this->paginator->currentPage();
     }
 
@@ -195,8 +211,8 @@ class UrlWindow {
      *
      * @return int
      */
-    protected function lastPage() {
+    protected function lastPage()
+    {
         return $this->paginator->lastPage();
     }
-
 }

@@ -14,10 +14,9 @@ namespace Symfony\Component\HttpKernel\Tests\Fixtures\ExtensionLoadedBundle\Depe
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class ExtensionLoadedExtension extends Extension {
-
-    public function load(array $configs, ContainerBuilder $container) {
-        
+class ExtensionLoadedExtension extends Extension
+{
+    public function load(array $configs, ContainerBuilder $container)
+    {
     }
-
 }

@@ -19,9 +19,10 @@ use Symfony\Component\VarDumper\Cloner\Data;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-class HtmlDumper extends CliDumper {
-
+class HtmlDumper extends CliDumper
+{
     public static $defaultOutput = 'php://output';
+
     protected $dumpHeader;
     protected $dumpPrefix = '<pre class=sf-dump id=%s data-indent-pad="%s">';
     protected $dumpSuffix = '</pre><script>Sfdump(%s)</script>';
@@ -44,6 +45,7 @@ class HtmlDumper extends CliDumper {
         'index' => 'color:#1299DA',
         'ellipsis' => 'color:#FF8400',
     );
+
     private $displayOptions = array(
         'maxDepth' => 1,
         'maxStringLength' => 160,
@@ -54,16 +56,18 @@ class HtmlDumper extends CliDumper {
     /**
      * {@inheritdoc}
      */
-    public function __construct($output = null, $charset = null, $flags = 0) {
+    public function __construct($output = null, $charset = null, $flags = 0)
+    {
         AbstractDumper::__construct($output, $charset, $flags);
-        $this->dumpId = 'sf-dump-' . mt_rand();
+        $this->dumpId = 'sf-dump-'.mt_rand();
         $this->displayOptions['fileLinkFormat'] = ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStyles(array $styles) {
+    public function setStyles(array $styles)
+    {
         $this->headerIsDumped = false;
         $this->styles = $styles + $this->styles;
     }
@@ -73,7 +77,8 @@ class HtmlDumper extends CliDumper {
      *
      * @param array $displayOptions A map of display options to customize the behavior
      */
-    public function setDisplayOptions(array $displayOptions) {
+    public function setDisplayOptions(array $displayOptions)
+    {
         $this->headerIsDumped = false;
         $this->displayOptions = $displayOptions + $this->displayOptions;
     }
@@ -83,7 +88,8 @@ class HtmlDumper extends CliDumper {
      *
      * @param string $header An HTML string
      */
-    public function setDumpHeader($header) {
+    public function setDumpHeader($header)
+    {
         $this->dumpHeader = $header;
     }
 
@@ -93,7 +99,8 @@ class HtmlDumper extends CliDumper {
      * @param string $prefix The prepended HTML string
      * @param string $suffix The appended HTML string
      */
-    public function setDumpBoundaries($prefix, $suffix) {
+    public function setDumpBoundaries($prefix, $suffix)
+    {
         $this->dumpPrefix = $prefix;
         $this->dumpSuffix = $suffix;
     }
@@ -101,10 +108,11 @@ class HtmlDumper extends CliDumper {
     /**
      * {@inheritdoc}
      */
-    public function dump(Data $data, $output = null, array $extraDisplayOptions = array()) {
+    public function dump(Data $data, $output = null, array $extraDisplayOptions = array())
+    {
         $this->extraDisplayOptions = $extraDisplayOptions;
         $result = parent::dump($data, $output);
-        $this->dumpId = 'sf-dump-' . mt_rand();
+        $this->dumpId = 'sf-dump-'.mt_rand();
 
         return $result;
     }
@@ -112,7 +120,8 @@ class HtmlDumper extends CliDumper {
     /**
      * Dumps the HTML header.
      */
-    protected function getDumpHeader() {
+    protected function getDumpHeader()
+    {
         $this->headerIsDumped = null !== $this->outputStream ? $this->outputStream : $this->lineDumper;
 
         if (null !== $this->dumpHeader) {
@@ -392,16 +401,17 @@ EOHTML
         );
 
         foreach ($this->styles as $class => $style) {
-            $line .= 'pre.sf-dump' . ('default' === $class ? ', pre.sf-dump' : '') . ' .sf-dump-' . $class . '{' . $style . '}';
+            $line .= 'pre.sf-dump'.('default' === $class ? ', pre.sf-dump' : '').' .sf-dump-'.$class.'{'.$style.'}';
         }
 
-        return $this->dumpHeader = preg_replace('/\s+/', ' ', $line) . '</style>' . $this->dumpHeader;
+        return $this->dumpHeader = preg_replace('/\s+/', ' ', $line).'</style>'.$this->dumpHeader;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function enterHash(Cursor $cursor, $type, $class, $hasChild) {
+    public function enterHash(Cursor $cursor, $type, $class, $hasChild)
+    {
         parent::enterHash($cursor, $type, $class, false);
 
         if ($hasChild) {
@@ -420,7 +430,8 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    public function leaveHash(Cursor $cursor, $type, $class, $hasChild, $cut) {
+    public function leaveHash(Cursor $cursor, $type, $class, $hasChild, $cut)
+    {
         $this->dumpEllipsis($cursor, $hasChild, $cut);
         if ($hasChild) {
             $this->line .= '</samp>';
@@ -431,7 +442,8 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    protected function style($style, $value, $attr = array()) {
+    protected function style($style, $value, $attr = array())
+    {
         if ('' === $value) {
             return '';
         }
@@ -442,7 +454,7 @@ EOHTML
             if (empty($attr['count'])) {
                 return sprintf('<a class=sf-dump-ref>%s</a>', $v);
             }
-            $r = ('#' !== $v[0] ? 1 - ('@' !== $v[0]) : 2) . substr($value, 1);
+            $r = ('#' !== $v[0] ? 1 - ('@' !== $v[0]) : 2).substr($value, 1);
 
             return sprintf('<a class=sf-dump-ref href=#%s-ref%s title="%d occurrences">%s</a>', $this->dumpId, $r, 1 + $attr['count'], $v);
         }
@@ -470,15 +482,15 @@ EOHTML
             $v = sprintf('<span class=sf-dump-ellipsis>%s</span>%s', substr($v, 0, -strlen($label)), $label);
         }
 
-        $v = "<span class=sf-dump-{$style}>" . preg_replace_callback(static::$controlCharsRx, function ($c) use ($map) {
-                    $s = '<span class=sf-dump-default>';
-                    $c = $c[$i = 0];
-                    do {
-                        $s .= isset($map[$c[$i]]) ? $map[$c[$i]] : sprintf('\x%02X', ord($c[$i]));
-                    } while (isset($c[++$i]));
+        $v = "<span class=sf-dump-{$style}>".preg_replace_callback(static::$controlCharsRx, function ($c) use ($map) {
+            $s = '<span class=sf-dump-default>';
+            $c = $c[$i = 0];
+            do {
+                $s .= isset($map[$c[$i]]) ? $map[$c[$i]] : sprintf('\x%02X', ord($c[$i]));
+            } while (isset($c[++$i]));
 
-                    return $s . '</span>';
-                }, $v) . '</span>';
+            return $s.'</span>';
+        }, $v).'</span>';
 
         if (isset($attr['file']) && $href = $this->getSourceLink($attr['file'], isset($attr['line']) ? $attr['line'] : 0)) {
             $attr['href'] = $href;
@@ -496,16 +508,17 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    protected function dumpLine($depth, $endOfValue = false) {
+    protected function dumpLine($depth, $endOfValue = false)
+    {
         if (-1 === $this->lastDepth) {
-            $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad) . $this->line;
+            $this->line = sprintf($this->dumpPrefix, $this->dumpId, $this->indentPad).$this->line;
         }
         if ($this->headerIsDumped !== (null !== $this->outputStream ? $this->outputStream : $this->lineDumper)) {
-            $this->line = $this->getDumpHeader() . $this->line;
+            $this->line = $this->getDumpHeader().$this->line;
         }
 
         if (-1 === $depth) {
-            $args = array('"' . $this->dumpId . '"');
+            $args = array('"'.$this->dumpId.'"');
             if ($this->extraDisplayOptions) {
                 $args[] = json_encode($this->extraDisplayOptions, JSON_FORCE_OBJECT);
             }
@@ -522,7 +535,8 @@ EOHTML
         AbstractDumper::dumpLine($depth);
     }
 
-    private function getSourceLink($file, $line) {
+    private function getSourceLink($file, $line)
+    {
         $options = $this->extraDisplayOptions + $this->displayOptions;
 
         if ($fmt = $options['fileLinkFormat']) {
@@ -531,9 +545,9 @@ EOHTML
 
         return false;
     }
-
 }
 
-function esc($str) {
+function esc($str)
+{
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }

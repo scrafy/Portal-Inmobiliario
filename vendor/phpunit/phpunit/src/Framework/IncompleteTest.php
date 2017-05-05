@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +12,6 @@
  * A marker interface for marking any exception/error as result of an unit
  * test as incomplete implementation or currently not implemented.
  */
-interface PHPUnit_Framework_IncompleteTest {
-    
+interface PHPUnit_Framework_IncompleteTest
+{
 }

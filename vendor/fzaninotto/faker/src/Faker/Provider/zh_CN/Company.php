@@ -2,11 +2,12 @@
 
 namespace Faker\Provider\zh_CN;
 
-class Company extends \Faker\Provider\Company {
-
+class Company extends \Faker\Provider\Company
+{
     protected static $formats = array(
         '{{companyPrefix}}{{companySuffix}}'
     );
+
     protected static $companyPrefix = array(
         '超艺', '和泰', '九方', '鑫博腾飞', '戴硕电子',
         '济南亿次元', '海创', '创联世纪', '凌云', '泰麒麟',
@@ -26,6 +27,7 @@ class Company extends \Faker\Provider\Company {
         '商软冠联', '诺依曼软件', '东方峻景', '华成育卓', '趋势',
         '维涛', '通际名联'
     );
+
     protected static $companySuffix = array('科技', '网络', '信息', '传媒');
 
     /**
@@ -215,16 +217,18 @@ class Company extends \Faker\Provider\Company {
         '没有最',
     );
 
-    public static function companyPrefix() {
+    public static function companyPrefix()
+    {
         return static::randomElement(static::$companyPrefix);
     }
 
-    public static function companySuffix() {
+    public static function companySuffix()
+    {
         return parent::companySuffix() . '有限公司';
     }
 
-    public function catchPhrase() {
+    public function catchPhrase()
+    {
         return static::randomElement(static::$catchPhrase);
     }
-
 }

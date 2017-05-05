@@ -2,8 +2,8 @@
 
 namespace PhpParser\Node;
 
-class NameTest extends \PHPUnit_Framework_TestCase {
-
+class NameTest extends \PHPUnit_Framework_TestCase
+{
     public function testConstruct() {
         $name = new Name(array('foo', 'bar'));
         $this->assertSame(array('foo', 'bar'), $name->parts);
@@ -83,12 +83,14 @@ class NameTest extends \PHPUnit_Framework_TestCase {
     public function testConcat() {
         $this->assertEquals(new Name('foo\bar\baz'), Name::concat('foo', 'bar\baz'));
         $this->assertEquals(
-                new Name\FullyQualified('foo\bar'), Name\FullyQualified::concat(['foo'], new Name('bar'))
+            new Name\FullyQualified('foo\bar'),
+            Name\FullyQualified::concat(['foo'], new Name('bar'))
         );
 
         $attributes = ['foo' => 'bar'];
         $this->assertEquals(
-                new Name\Relative('foo\bar\baz', $attributes), Name\Relative::concat(new Name\FullyQualified('foo\bar'), 'baz', $attributes)
+            new Name\Relative('foo\bar\baz', $attributes),
+            Name\Relative::concat(new Name\FullyQualified('foo\bar'), 'baz', $attributes)
         );
 
         $this->assertEquals(new Name('foo'), Name::concat(null, 'foo'));
@@ -98,28 +100,28 @@ class NameTest extends \PHPUnit_Framework_TestCase {
 
     public function testIs() {
         $name = new Name('foo');
-        $this->assertTrue($name->isUnqualified());
+        $this->assertTrue ($name->isUnqualified());
         $this->assertFalse($name->isQualified());
         $this->assertFalse($name->isFullyQualified());
         $this->assertFalse($name->isRelative());
 
         $name = new Name('foo\bar');
         $this->assertFalse($name->isUnqualified());
-        $this->assertTrue($name->isQualified());
+        $this->assertTrue ($name->isQualified());
         $this->assertFalse($name->isFullyQualified());
         $this->assertFalse($name->isRelative());
 
         $name = new Name\FullyQualified('foo');
         $this->assertFalse($name->isUnqualified());
         $this->assertFalse($name->isQualified());
-        $this->assertTrue($name->isFullyQualified());
+        $this->assertTrue ($name->isFullyQualified());
         $this->assertFalse($name->isRelative());
 
         $name = new Name\Relative('foo');
         $this->assertFalse($name->isUnqualified());
         $this->assertFalse($name->isQualified());
         $this->assertFalse($name->isFullyQualified());
-        $this->assertTrue($name->isRelative());
+        $this->assertTrue ($name->isRelative());
     }
 
     /**
@@ -129,5 +131,4 @@ class NameTest extends \PHPUnit_Framework_TestCase {
     public function testInvalidArg() {
         Name::concat('foo', new \stdClass);
     }
-
 }

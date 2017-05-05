@@ -14,10 +14,11 @@ namespace Psy\Test\CodeCleaner;
 use PhpParser\NodeTraverser;
 use Psy\CodeCleaner\AbstractClassPass;
 
-class AbstractClassPassTest extends CodeCleanerTestCase {
-
-    public function setUp() {
-        $this->pass = new AbstractClassPass();
+class AbstractClassPassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
+        $this->pass      = new AbstractClassPass();
         $this->traverser = new NodeTraverser();
         $this->traverser->addVisitor($this->pass);
     }
@@ -26,12 +27,14 @@ class AbstractClassPassTest extends CodeCleanerTestCase {
      * @dataProvider invalidStatements
      * @expectedException \Psy\Exception\FatalErrorException
      */
-    public function testProcessStatementFails($code) {
+    public function testProcessStatementFails($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function invalidStatements() {
+    public function invalidStatements()
+    {
         return array(
             array('class A { abstract function a(); }'),
             array('abstract class B { abstract function b() {} }'),
@@ -42,16 +45,17 @@ class AbstractClassPassTest extends CodeCleanerTestCase {
     /**
      * @dataProvider validStatements
      */
-    public function testProcessStatementPasses($code) {
+    public function testProcessStatementPasses($code)
+    {
         $stmts = $this->parse($code);
         $this->traverser->traverse($stmts);
     }
 
-    public function validStatements() {
+    public function validStatements()
+    {
         return array(
             array('abstract class C { function c() {} }'),
             array('abstract class D { abstract function d(); }'),
         );
     }
-
 }

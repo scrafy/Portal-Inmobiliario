@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -22,11 +21,12 @@
  * $suite = new PHPUnit_Extensions_GroupTestSuite($A, array('C', 'D'));
  * </code>
  */
-class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite {
-
-    public function __construct(PHPUnit_Framework_TestSuite $suite, array $groups) {
+class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
+{
+    public function __construct(PHPUnit_Framework_TestSuite $suite, array $groups)
+    {
         $groupSuites = [];
-        $name = $suite->getName();
+        $name        = $suite->getName();
 
         foreach ($groups as $group) {
             $groupSuites[$group] = new PHPUnit_Framework_TestSuite($name . ' - ' . $group);
@@ -34,13 +34,15 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite {
         }
 
         $tests = new RecursiveIteratorIterator(
-                new PHPUnit_Util_TestSuiteIterator($suite), RecursiveIteratorIterator::LEAVES_ONLY
+            new PHPUnit_Util_TestSuiteIterator($suite),
+            RecursiveIteratorIterator::LEAVES_ONLY
         );
 
         foreach ($tests as $test) {
             if ($test instanceof PHPUnit_Framework_TestCase) {
                 $testGroups = PHPUnit_Util_Test::getGroups(
-                                get_class($test), $test->getName(false)
+                    get_class($test),
+                    $test->getName(false)
                 );
 
                 foreach ($groups as $group) {
@@ -53,5 +55,4 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite {
             }
         }
     }
-
 }

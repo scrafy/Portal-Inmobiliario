@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class BelongsToMany extends Relation {
-
+class BelongsToMany extends Relation
+{
     use Concerns\InteractsWithPivotTable;
 
     /**
@@ -101,7 +101,8 @@ class BelongsToMany extends Relation {
      * @param  string  $relationName
      * @return void
      */
-    public function __construct(Builder $query, Model $parent, $table, $foreignKey, $relatedKey, $relationName = null) {
+    public function __construct(Builder $query, Model $parent, $table, $foreignKey, $relatedKey, $relationName = null)
+    {
         $this->table = $table;
         $this->relatedKey = $relatedKey;
         $this->foreignKey = $foreignKey;
@@ -115,7 +116,8 @@ class BelongsToMany extends Relation {
      *
      * @return void
      */
-    public function addConstraints() {
+    public function addConstraints()
+    {
         $this->performJoin();
 
         if (static::$constraints) {
@@ -129,7 +131,8 @@ class BelongsToMany extends Relation {
      * @param  \Illuminate\Database\Eloquent\Builder|null  $query
      * @return $this
      */
-    protected function performJoin($query = null) {
+    protected function performJoin($query = null)
+    {
         $query = $query ?: $this->query;
 
         // We need to join to the intermediate table on the related model's primary
@@ -137,7 +140,7 @@ class BelongsToMany extends Relation {
         // model instance. Then we can set the "where" for the parent models.
         $baseTable = $this->related->getTable();
 
-        $key = $baseTable . '.' . $this->related->getKeyName();
+        $key = $baseTable.'.'.$this->related->getKeyName();
 
         $query->join($this->table, $key, '=', $this->getQualifiedRelatedKeyName());
 
@@ -149,9 +152,10 @@ class BelongsToMany extends Relation {
      *
      * @return $this
      */
-    protected function addWhereConstraints() {
+    protected function addWhereConstraints()
+    {
         $this->query->where(
-                $this->getQualifiedForeignKeyName(), '=', $this->parent->getKey()
+            $this->getQualifiedForeignKeyName(), '=', $this->parent->getKey()
         );
 
         return $this;
@@ -163,7 +167,8 @@ class BelongsToMany extends Relation {
      * @param  array  $models
      * @return void
      */
-    public function addEagerConstraints(array $models) {
+    public function addEagerConstraints(array $models)
+    {
         $this->query->whereIn($this->getQualifiedForeignKeyName(), $this->getKeys($models));
     }
 
@@ -174,7 +179,8 @@ class BelongsToMany extends Relation {
      * @param  string  $relation
      * @return array
      */
-    public function initRelation(array $models, $relation) {
+    public function initRelation(array $models, $relation)
+    {
         foreach ($models as $model) {
             $model->setRelation($relation, $this->related->newCollection());
         }
@@ -190,7 +196,8 @@ class BelongsToMany extends Relation {
      * @param  string  $relation
      * @return array
      */
-    public function match(array $models, Collection $results, $relation) {
+    public function match(array $models, Collection $results, $relation)
+    {
         $dictionary = $this->buildDictionary($results);
 
         // Once we have an array dictionary of child objects we can easily match the
@@ -199,7 +206,7 @@ class BelongsToMany extends Relation {
         foreach ($models as $model) {
             if (isset($dictionary[$key = $model->getKey()])) {
                 $model->setRelation(
-                        $relation, $this->related->newCollection($dictionary[$key])
+                    $relation, $this->related->newCollection($dictionary[$key])
                 );
             }
         }
@@ -213,7 +220,8 @@ class BelongsToMany extends Relation {
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @return array
      */
-    protected function buildDictionary(Collection $results) {
+    protected function buildDictionary(Collection $results)
+    {
         // First we will build a dictionary of child models keyed by the foreign key
         // of the relation so that we will easily and quickly match them to their
         // parents without having a possibly slow inner loops for every models.
@@ -232,7 +240,8 @@ class BelongsToMany extends Relation {
      * @param  string  $class
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function using($class) {
+    public function using($class)
+    {
         $this->using = $class;
 
         return $this;
@@ -247,10 +256,11 @@ class BelongsToMany extends Relation {
      * @param  string  $boolean
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function wherePivot($column, $operator = null, $value = null, $boolean = 'and') {
+    public function wherePivot($column, $operator = null, $value = null, $boolean = 'and')
+    {
         $this->pivotWheres[] = func_get_args();
 
-        return $this->where($this->table . '.' . $column, $operator, $value, $boolean);
+        return $this->where($this->table.'.'.$column, $operator, $value, $boolean);
     }
 
     /**
@@ -262,10 +272,11 @@ class BelongsToMany extends Relation {
      * @param  bool    $not
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function wherePivotIn($column, $values, $boolean = 'and', $not = false) {
+    public function wherePivotIn($column, $values, $boolean = 'and', $not = false)
+    {
         $this->pivotWhereIns[] = func_get_args();
 
-        return $this->whereIn($this->table . '.' . $column, $values, $boolean, $not);
+        return $this->whereIn($this->table.'.'.$column, $values, $boolean, $not);
     }
 
     /**
@@ -276,7 +287,8 @@ class BelongsToMany extends Relation {
      * @param  mixed   $value
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function orWherePivot($column, $operator = null, $value = null) {
+    public function orWherePivot($column, $operator = null, $value = null)
+    {
         return $this->wherePivot($column, $operator, $value, 'or');
     }
 
@@ -287,7 +299,8 @@ class BelongsToMany extends Relation {
      * @param  mixed   $values
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function orWherePivotIn($column, $values) {
+    public function orWherePivotIn($column, $values)
+    {
         return $this->wherePivotIn($column, $values, 'or');
     }
 
@@ -298,7 +311,8 @@ class BelongsToMany extends Relation {
      * @param  array  $columns
      * @return \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function findOrNew($id, $columns = ['*']) {
+    public function findOrNew($id, $columns = ['*'])
+    {
         if (is_null($instance = $this->find($id, $columns))) {
             $instance = $this->related->newInstance();
         }
@@ -312,7 +326,8 @@ class BelongsToMany extends Relation {
      * @param  array  $attributes
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function firstOrNew(array $attributes) {
+    public function firstOrNew(array $attributes)
+    {
         if (is_null($instance = $this->where($attributes)->first())) {
             $instance = $this->related->newInstance($attributes);
         }
@@ -328,7 +343,8 @@ class BelongsToMany extends Relation {
      * @param  bool   $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function firstOrCreate(array $attributes, array $joining = [], $touch = true) {
+    public function firstOrCreate(array $attributes, array $joining = [], $touch = true)
+    {
         if (is_null($instance = $this->where($attributes)->first())) {
             $instance = $this->create($attributes, $joining, $touch);
         }
@@ -345,7 +361,8 @@ class BelongsToMany extends Relation {
      * @param  bool   $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function updateOrCreate(array $attributes, array $values = [], array $joining = [], $touch = true) {
+    public function updateOrCreate(array $attributes, array $values = [], array $joining = [], $touch = true)
+    {
         if (is_null($instance = $this->where($attributes)->first())) {
             return $this->create($values, $joining, $touch);
         }
@@ -364,10 +381,11 @@ class BelongsToMany extends Relation {
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|null
      */
-    public function find($id, $columns = ['*']) {
+    public function find($id, $columns = ['*'])
+    {
         return is_array($id) ? $this->findMany($id, $columns) : $this->where(
-                        $this->getRelated()->getQualifiedKeyName(), '=', $id
-                )->first($columns);
+            $this->getRelated()->getQualifiedKeyName(), '=', $id
+        )->first($columns);
     }
 
     /**
@@ -377,10 +395,11 @@ class BelongsToMany extends Relation {
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function findMany($ids, $columns = ['*']) {
+    public function findMany($ids, $columns = ['*'])
+    {
         return empty($ids) ? $this->getRelated()->newCollection() : $this->whereIn(
-                        $this->getRelated()->getQualifiedKeyName(), $ids
-                )->get($columns);
+            $this->getRelated()->getQualifiedKeyName(), $ids
+        )->get($columns);
     }
 
     /**
@@ -392,14 +411,15 @@ class BelongsToMany extends Relation {
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function findOrFail($id, $columns = ['*']) {
+    public function findOrFail($id, $columns = ['*'])
+    {
         $result = $this->find($id, $columns);
 
         if (is_array($id)) {
             if (count($result) == count(array_unique($id))) {
                 return $result;
             }
-        } elseif (!is_null($result)) {
+        } elseif (! is_null($result)) {
             return $result;
         }
 
@@ -412,7 +432,8 @@ class BelongsToMany extends Relation {
      * @param  array   $columns
      * @return mixed
      */
-    public function first($columns = ['*']) {
+    public function first($columns = ['*'])
+    {
         $results = $this->take(1)->get($columns);
 
         return count($results) > 0 ? $results->first() : null;
@@ -426,8 +447,9 @@ class BelongsToMany extends Relation {
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function firstOrFail($columns = ['*']) {
-        if (!is_null($model = $this->first($columns))) {
+    public function firstOrFail($columns = ['*'])
+    {
+        if (! is_null($model = $this->first($columns))) {
             return $model;
         }
 
@@ -439,7 +461,8 @@ class BelongsToMany extends Relation {
      *
      * @return mixed
      */
-    public function getResults() {
+    public function getResults()
+    {
         return $this->get();
     }
 
@@ -449,7 +472,8 @@ class BelongsToMany extends Relation {
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function get($columns = ['*']) {
+    public function get($columns = ['*'])
+    {
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot
         // models with the result of those columns as a separate model relation.
@@ -458,8 +482,8 @@ class BelongsToMany extends Relation {
         $builder = $this->query->applyScopes();
 
         $models = $builder->addSelect(
-                        $this->shouldSelect($columns)
-                )->getModels();
+            $this->shouldSelect($columns)
+        )->getModels();
 
         $this->hydratePivotRelation($models);
 
@@ -479,9 +503,10 @@ class BelongsToMany extends Relation {
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected function shouldSelect(array $columns = ['*']) {
+    protected function shouldSelect(array $columns = ['*'])
+    {
         if ($columns == ['*']) {
-            $columns = [$this->related->getTable() . '.*'];
+            $columns = [$this->related->getTable().'.*'];
         }
 
         return array_merge($columns, $this->aliasedPivotColumns());
@@ -494,12 +519,13 @@ class BelongsToMany extends Relation {
      *
      * @return array
      */
-    protected function aliasedPivotColumns() {
+    protected function aliasedPivotColumns()
+    {
         $defaults = [$this->foreignKey, $this->relatedKey];
 
         return collect(array_merge($defaults, $this->pivotColumns))->map(function ($column) {
-                    return $this->table . '.' . $column . ' as pivot_' . $column;
-                })->unique()->all();
+            return $this->table.'.'.$column.' as pivot_'.$column;
+        })->unique()->all();
     }
 
     /**
@@ -511,7 +537,8 @@ class BelongsToMany extends Relation {
      * @param  int|null  $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null) {
+    public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    {
         $this->query->addSelect($this->shouldSelect($columns));
 
         return tap($this->query->paginate($perPage, $columns, $pageName, $page), function ($paginator) {
@@ -528,7 +555,8 @@ class BelongsToMany extends Relation {
      * @param  int|null  $page
      * @return \Illuminate\Contracts\Pagination\Paginator
      */
-    public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null) {
+    public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    {
         $this->query->addSelect($this->shouldSelect($columns));
 
         return tap($this->query->simplePaginate($perPage, $columns, $pageName, $page), function ($paginator) {
@@ -543,14 +571,15 @@ class BelongsToMany extends Relation {
      * @param  callable  $callback
      * @return bool
      */
-    public function chunk($count, callable $callback) {
+    public function chunk($count, callable $callback)
+    {
         $this->query->addSelect($this->shouldSelect());
 
         return $this->query->chunk($count, function ($results) use ($callback) {
-                    $this->hydratePivotRelation($results->all());
+            $this->hydratePivotRelation($results->all());
 
-                    return $callback($results);
-                });
+            return $callback($results);
+        });
     }
 
     /**
@@ -559,13 +588,14 @@ class BelongsToMany extends Relation {
      * @param  array  $models
      * @return void
      */
-    protected function hydratePivotRelation(array $models) {
+    protected function hydratePivotRelation(array $models)
+    {
         // To hydrate the pivot relationship, we will just gather the pivot attributes
         // and create a new Pivot model, which is basically a dynamic model that we
         // will set the attributes, table, and connections on it so it will work.
         foreach ($models as $model) {
             $model->setRelation('pivot', $this->newExistingPivot(
-                            $this->migratePivotAttributes($model)
+                $this->migratePivotAttributes($model)
             ));
         }
     }
@@ -576,7 +606,8 @@ class BelongsToMany extends Relation {
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return array
      */
-    protected function migratePivotAttributes(Model $model) {
+    protected function migratePivotAttributes(Model $model)
+    {
         $values = [];
 
         foreach ($model->getAttributes() as $key => $value) {
@@ -598,7 +629,8 @@ class BelongsToMany extends Relation {
      *
      * @return void
      */
-    public function touchIfTouching() {
+    public function touchIfTouching()
+    {
         if ($this->touchingParent()) {
             $this->getParent()->touch();
         }
@@ -613,7 +645,8 @@ class BelongsToMany extends Relation {
      *
      * @return bool
      */
-    protected function touchingParent() {
+    protected function touchingParent()
+    {
         return $this->getRelated()->touches($this->guessInverseRelation());
     }
 
@@ -622,7 +655,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    protected function guessInverseRelation() {
+    protected function guessInverseRelation()
+    {
         return Str::camel(Str::plural(class_basename($this->getParent())));
     }
 
@@ -633,7 +667,8 @@ class BelongsToMany extends Relation {
      *
      * @return void
      */
-    public function touch() {
+    public function touch()
+    {
         $key = $this->getRelated()->getKeyName();
 
         $columns = [
@@ -653,12 +688,13 @@ class BelongsToMany extends Relation {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function allRelatedIds() {
+    public function allRelatedIds()
+    {
         $related = $this->getRelated();
 
         return $this->getQuery()->select(
-                        $related->getQualifiedKeyName()
-                )->pluck($related->getKeyName());
+            $related->getQualifiedKeyName()
+        )->pluck($related->getKeyName());
     }
 
     /**
@@ -669,7 +705,8 @@ class BelongsToMany extends Relation {
      * @param  bool   $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function save(Model $model, array $pivotAttributes = [], $touch = true) {
+    public function save(Model $model, array $pivotAttributes = [], $touch = true)
+    {
         $model->save(['touch' => false]);
 
         $this->attach($model->getKey(), $pivotAttributes, $touch);
@@ -684,7 +721,8 @@ class BelongsToMany extends Relation {
      * @param  array  $pivotAttributes
      * @return array
      */
-    public function saveMany($models, array $pivotAttributes = []) {
+    public function saveMany($models, array $pivotAttributes = [])
+    {
         foreach ($models as $key => $model) {
             $this->save($model, (array) Arr::get($pivotAttributes, $key), false);
         }
@@ -702,7 +740,8 @@ class BelongsToMany extends Relation {
      * @param  bool   $touch
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create(array $attributes, array $joining = [], $touch = true) {
+    public function create(array $attributes, array $joining = [], $touch = true)
+    {
         $instance = $this->related->newInstance($attributes);
 
         // Once we save the related model, we need to attach it to the base model via
@@ -722,7 +761,8 @@ class BelongsToMany extends Relation {
      * @param  array  $joinings
      * @return array
      */
-    public function createMany(array $records, array $joinings = []) {
+    public function createMany(array $records, array $joinings = [])
+    {
         $instances = [];
 
         foreach ($records as $key => $record) {
@@ -742,7 +782,8 @@ class BelongsToMany extends Relation {
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*']) {
+    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
         if ($parentQuery->getQuery()->from == $query->getQuery()->from) {
             return $this->getRelationExistenceQueryForSelfJoin($query, $parentQuery, $columns);
         }
@@ -760,10 +801,11 @@ class BelongsToMany extends Relation {
      * @param  array|mixed  $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQueryForSelfJoin(Builder $query, Builder $parentQuery, $columns = ['*']) {
+    public function getRelationExistenceQueryForSelfJoin(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
         $query->select($columns);
 
-        $query->from($this->related->getTable() . ' as ' . $hash = $this->getRelationCountHash());
+        $query->from($this->related->getTable().' as '.$hash = $this->getRelationCountHash());
 
         $this->related->setTable($hash);
 
@@ -777,7 +819,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getExistenceCompareKey() {
+    public function getExistenceCompareKey()
+    {
         return $this->getQualifiedForeignKeyName();
     }
 
@@ -786,8 +829,9 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getRelationCountHash() {
-        return 'laravel_reserved_' . static::$selfJoinCount++;
+    public function getRelationCountHash()
+    {
+        return 'laravel_reserved_'.static::$selfJoinCount++;
     }
 
     /**
@@ -797,7 +841,8 @@ class BelongsToMany extends Relation {
      * @param  mixed  $updatedAt
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function withTimestamps($createdAt = null, $updatedAt = null) {
+    public function withTimestamps($createdAt = null, $updatedAt = null)
+    {
         $this->pivotCreatedAt = $createdAt;
         $this->pivotUpdatedAt = $updatedAt;
 
@@ -809,7 +854,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function createdAt() {
+    public function createdAt()
+    {
         return $this->pivotCreatedAt ?: $this->parent->getCreatedAtColumn();
     }
 
@@ -818,7 +864,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function updatedAt() {
+    public function updatedAt()
+    {
         return $this->pivotUpdatedAt ?: $this->parent->getUpdatedAtColumn();
     }
 
@@ -827,8 +874,9 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getQualifiedForeignKeyName() {
-        return $this->table . '.' . $this->foreignKey;
+    public function getQualifiedForeignKeyName()
+    {
+        return $this->table.'.'.$this->foreignKey;
     }
 
     /**
@@ -836,8 +884,9 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getQualifiedRelatedKeyName() {
-        return $this->table . '.' . $this->relatedKey;
+    public function getQualifiedRelatedKeyName()
+    {
+        return $this->table.'.'.$this->relatedKey;
     }
 
     /**
@@ -845,7 +894,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getTable() {
+    public function getTable()
+    {
         return $this->table;
     }
 
@@ -854,8 +904,8 @@ class BelongsToMany extends Relation {
      *
      * @return string
      */
-    public function getRelationName() {
+    public function getRelationName()
+    {
         return $this->relationName;
     }
-
 }

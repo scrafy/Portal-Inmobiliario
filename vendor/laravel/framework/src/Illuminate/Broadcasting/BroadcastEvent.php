@@ -10,8 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Broadcasting\Broadcaster;
 
-class BroadcastEvent implements ShouldQueue {
-
+class BroadcastEvent implements ShouldQueue
+{
     use Queueable;
 
     /**
@@ -27,7 +27,8 @@ class BroadcastEvent implements ShouldQueue {
      * @param  mixed  $event
      * @return void
      */
-    public function __construct($event) {
+    public function __construct($event)
+    {
         $this->event = $event;
     }
 
@@ -37,11 +38,14 @@ class BroadcastEvent implements ShouldQueue {
      * @param  \Illuminate\Contracts\Broadcasting\Broadcaster  $broadcaster
      * @return void
      */
-    public function handle(Broadcaster $broadcaster) {
-        $name = method_exists($this->event, 'broadcastAs') ? $this->event->broadcastAs() : get_class($this->event);
+    public function handle(Broadcaster $broadcaster)
+    {
+        $name = method_exists($this->event, 'broadcastAs')
+                ? $this->event->broadcastAs() : get_class($this->event);
 
         $broadcaster->broadcast(
-                array_wrap($this->event->broadcastOn()), $name, $this->getPayloadFromEvent($this->event)
+            array_wrap($this->event->broadcastOn()), $name,
+            $this->getPayloadFromEvent($this->event)
         );
     }
 
@@ -51,10 +55,11 @@ class BroadcastEvent implements ShouldQueue {
      * @param  mixed  $event
      * @return array
      */
-    protected function getPayloadFromEvent($event) {
+    protected function getPayloadFromEvent($event)
+    {
         if (method_exists($event, 'broadcastWith')) {
             return array_merge(
-                    $event->broadcastWith(), ['socket' => data_get($event, 'socket')]
+                $event->broadcastWith(), ['socket' => data_get($event, 'socket')]
             );
         }
 
@@ -73,7 +78,8 @@ class BroadcastEvent implements ShouldQueue {
      * @param  mixed  $value
      * @return mixed
      */
-    protected function formatProperty($value) {
+    protected function formatProperty($value)
+    {
         if ($value instanceof Arrayable) {
             return $value->toArray();
         }
@@ -86,8 +92,8 @@ class BroadcastEvent implements ShouldQueue {
      *
      * @return string
      */
-    public function displayName() {
+    public function displayName()
+    {
         return get_class($this->event);
     }
-
 }

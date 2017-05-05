@@ -2,15 +2,16 @@
 
 namespace Illuminate\View\Compilers\Concerns;
 
-trait CompilesStacks {
-
+trait CompilesStacks
+{
     /**
      * Compile the stack statements into the content.
      *
      * @param  string  $expression
      * @return string
      */
-    protected function compileStack($expression) {
+    protected function compileStack($expression)
+    {
         return "<?php echo \$__env->yieldPushContent{$expression}; ?>";
     }
 
@@ -20,7 +21,8 @@ trait CompilesStacks {
      * @param  string  $expression
      * @return string
      */
-    protected function compilePush($expression) {
+    protected function compilePush($expression)
+    {
         return "<?php \$__env->startPush{$expression}; ?>";
     }
 
@@ -29,7 +31,8 @@ trait CompilesStacks {
      *
      * @return string
      */
-    protected function compileEndpush() {
+    protected function compileEndpush()
+    {
         return '<?php $__env->stopPush(); ?>';
     }
 
@@ -39,7 +42,8 @@ trait CompilesStacks {
      * @param  string  $expression
      * @return string
      */
-    protected function compilePrepend($expression) {
+    protected function compilePrepend($expression)
+    {
         return "<?php \$__env->startPrepend{$expression}; ?>";
     }
 
@@ -48,8 +52,8 @@ trait CompilesStacks {
      *
      * @return string
      */
-    protected function compileEndprepend() {
+    protected function compileEndprepend()
+    {
         return '<?php $__env->stopPrepend(); ?>';
     }
-
 }

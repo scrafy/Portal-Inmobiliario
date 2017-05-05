@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -12,8 +11,8 @@
 /**
  * A Listener for test progress.
  */
-interface PHPUnit_Framework_TestListener {
-
+interface PHPUnit_Framework_TestListener
+{
     /**
      * An error occurred.
      *

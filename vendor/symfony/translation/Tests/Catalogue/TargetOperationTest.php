@@ -15,37 +15,46 @@ use Symfony\Component\Translation\Catalogue\TargetOperation;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 
-class TargetOperationTest extends AbstractOperationTest {
-
-    public function testGetMessagesFromSingleDomain() {
+class TargetOperationTest extends AbstractOperationTest
+{
+    public function testGetMessagesFromSingleDomain()
+    {
         $operation = $this->createOperation(
-                new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))), new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
+            new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))),
+            new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
         );
 
         $this->assertEquals(
-                array('a' => 'old_a', 'c' => 'new_c'), $operation->getMessages('messages')
+            array('a' => 'old_a', 'c' => 'new_c'),
+            $operation->getMessages('messages')
         );
 
         $this->assertEquals(
-                array('c' => 'new_c'), $operation->getNewMessages('messages')
+            array('c' => 'new_c'),
+            $operation->getNewMessages('messages')
         );
 
         $this->assertEquals(
-                array('b' => 'old_b'), $operation->getObsoleteMessages('messages')
+            array('b' => 'old_b'),
+            $operation->getObsoleteMessages('messages')
         );
     }
 
-    public function testGetResultFromSingleDomain() {
+    public function testGetResultFromSingleDomain()
+    {
         $this->assertEquals(
-                new MessageCatalogue('en', array(
-            'messages' => array('a' => 'old_a', 'c' => 'new_c'),
-                )), $this->createOperation(
-                        new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))), new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
-                )->getResult()
+            new MessageCatalogue('en', array(
+                'messages' => array('a' => 'old_a', 'c' => 'new_c'),
+            )),
+            $this->createOperation(
+                new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b'))),
+                new MessageCatalogue('en', array('messages' => array('a' => 'new_a', 'c' => 'new_c')))
+            )->getResult()
         );
     }
 
-    public function testGetResultWithMetadata() {
+    public function testGetResultWithMetadata()
+    {
         $leftCatalogue = new MessageCatalogue('en', array('messages' => array('a' => 'old_a', 'b' => 'old_b')));
         $leftCatalogue->setMetadata('a', 'foo', 'messages');
         $leftCatalogue->setMetadata('b', 'bar', 'messages');
@@ -58,14 +67,16 @@ class TargetOperationTest extends AbstractOperationTest {
         $diffCatalogue->setMetadata('c', 'qux', 'messages');
 
         $this->assertEquals(
-                $diffCatalogue, $this->createOperation(
-                        $leftCatalogue, $rightCatalogue
-                )->getResult()
+            $diffCatalogue,
+            $this->createOperation(
+                $leftCatalogue,
+                $rightCatalogue
+            )->getResult()
         );
     }
 
-    protected function createOperation(MessageCatalogueInterface $source, MessageCatalogueInterface $target) {
+    protected function createOperation(MessageCatalogueInterface $source, MessageCatalogueInterface $target)
+    {
         return new TargetOperation($source, $target);
     }
-
 }

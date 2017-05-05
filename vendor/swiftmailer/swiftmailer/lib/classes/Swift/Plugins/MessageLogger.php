@@ -13,14 +13,15 @@
  *
  * @author Fabien Potencier
  */
-class Swift_Plugins_MessageLogger implements Swift_Events_SendListener {
-
+class Swift_Plugins_MessageLogger implements Swift_Events_SendListener
+{
     /**
      * @var Swift_Mime_Message[]
      */
     private $messages;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->messages = array();
     }
 
@@ -29,7 +30,8 @@ class Swift_Plugins_MessageLogger implements Swift_Events_SendListener {
      *
      * @return Swift_Mime_Message[]
      */
-    public function getMessages() {
+    public function getMessages()
+    {
         return $this->messages;
     }
 
@@ -38,14 +40,16 @@ class Swift_Plugins_MessageLogger implements Swift_Events_SendListener {
      *
      * @return int count
      */
-    public function countMessages() {
+    public function countMessages()
+    {
         return count($this->messages);
     }
 
     /**
      * Empty the message list.
      */
-    public function clear() {
+    public function clear()
+    {
         $this->messages = array();
     }
 
@@ -54,7 +58,8 @@ class Swift_Plugins_MessageLogger implements Swift_Events_SendListener {
      *
      * @param Swift_Events_SendEvent $evt
      */
-    public function beforeSendPerformed(Swift_Events_SendEvent $evt) {
+    public function beforeSendPerformed(Swift_Events_SendEvent $evt)
+    {
         $this->messages[] = clone $evt->getMessage();
     }
 
@@ -63,8 +68,7 @@ class Swift_Plugins_MessageLogger implements Swift_Events_SendListener {
      *
      * @param Swift_Events_SendEvent $evt
      */
-    public function sendPerformed(Swift_Events_SendEvent $evt) {
-        
+    public function sendPerformed(Swift_Events_SendEvent $evt)
+    {
     }
-
 }

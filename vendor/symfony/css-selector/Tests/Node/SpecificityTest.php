@@ -14,19 +14,22 @@ namespace Symfony\Component\CssSelector\Tests\Node;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\CssSelector\Node\Specificity;
 
-class SpecificityTest extends TestCase {
-
+class SpecificityTest extends TestCase
+{
     /** @dataProvider getValueTestData */
-    public function testValue(Specificity $specificity, $value) {
+    public function testValue(Specificity $specificity, $value)
+    {
         $this->assertEquals($value, $specificity->getValue());
     }
 
     /** @dataProvider getValueTestData */
-    public function testPlusValue(Specificity $specificity, $value) {
+    public function testPlusValue(Specificity $specificity, $value)
+    {
         $this->assertEquals($value + 123, $specificity->plus(new Specificity(1, 2, 3))->getValue());
     }
 
-    public function getValueTestData() {
+    public function getValueTestData()
+    {
         return array(
             array(new Specificity(0, 0, 0), 0),
             array(new Specificity(0, 0, 2), 2),
@@ -37,11 +40,13 @@ class SpecificityTest extends TestCase {
     }
 
     /** @dataProvider getCompareTestData */
-    public function testCompareTo(Specificity $a, Specificity $b, $result) {
+    public function testCompareTo(Specificity $a, Specificity $b, $result)
+    {
         $this->assertEquals($result, $a->compareTo($b));
     }
 
-    public function getCompareTestData() {
+    public function getCompareTestData()
+    {
         return array(
             array(new Specificity(0, 0, 0), new Specificity(0, 0, 0), 0),
             array(new Specificity(0, 0, 1), new Specificity(0, 0, 1), 0),
@@ -55,5 +60,4 @@ class SpecificityTest extends TestCase {
             array(new Specificity(12, 11, 0), new Specificity(13, 0, 0), -1),
         );
     }
-
 }

@@ -4,8 +4,8 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node\Stmt;
 
-class Goto_ extends Stmt {
-
+class Goto_ extends Stmt
+{
     /** @var string Name of label to jump to */
     public $name;
 
@@ -23,5 +23,4 @@ class Goto_ extends Stmt {
     public function getSubNodeNames() {
         return array('name');
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\View;
 
-interface Factory {
-
+interface Factory
+{
     /**
      * Determine if a given view exists.
      *

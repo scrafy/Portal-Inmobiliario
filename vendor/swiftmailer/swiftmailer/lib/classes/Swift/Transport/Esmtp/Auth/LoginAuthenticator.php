@@ -13,14 +13,15 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Transport_Esmtp_Auth_LoginAuthenticator implements Swift_Transport_Esmtp_Authenticator {
-
+class Swift_Transport_Esmtp_Auth_LoginAuthenticator implements Swift_Transport_Esmtp_Authenticator
+{
     /**
      * Get the name of the AUTH mechanism this Authenticator handles.
      *
      * @return string
      */
-    public function getAuthKeyword() {
+    public function getAuthKeyword()
+    {
         return 'LOGIN';
     }
 
@@ -33,7 +34,8 @@ class Swift_Transport_Esmtp_Auth_LoginAuthenticator implements Swift_Transport_E
      *
      * @return bool
      */
-    public function authenticate(Swift_Transport_SmtpAgent $agent, $username, $password) {
+    public function authenticate(Swift_Transport_SmtpAgent $agent, $username, $password)
+    {
         try {
             $agent->executeCommand("AUTH LOGIN\r\n", array(334));
             $agent->executeCommand(sprintf("%s\r\n", base64_encode($username)), array(334));
@@ -46,5 +48,4 @@ class Swift_Transport_Esmtp_Auth_LoginAuthenticator implements Swift_Transport_E
             return false;
         }
     }
-
 }

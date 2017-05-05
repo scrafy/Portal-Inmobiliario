@@ -2,8 +2,8 @@
 
 namespace Illuminate\Contracts\Console;
 
-interface Application {
-
+interface Application
+{
     /**
      * Call a console application command.
      *

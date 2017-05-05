@@ -11,17 +11,20 @@
 
 namespace Symfony\Component\Debug;
 
-function headers_sent() {
+function headers_sent()
+{
     return false;
 }
 
-function header($str, $replace = true, $status = null) {
+function header($str, $replace = true, $status = null)
+{
     Tests\testHeader($str, $replace, $status);
 }
 
 namespace Symfony\Component\Debug\Tests;
 
-function testHeader() {
+function testHeader()
+{
     static $headers = array();
 
     if (!$h = func_get_args()) {

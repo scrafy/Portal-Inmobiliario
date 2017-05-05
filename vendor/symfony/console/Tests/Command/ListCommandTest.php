@@ -15,9 +15,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Application;
 
-class ListCommandTest extends TestCase {
-
-    public function testExecuteListsCommands() {
+class ListCommandTest extends TestCase
+{
+    public function testExecuteListsCommands()
+    {
         $application = new Application();
         $commandTester = new CommandTester($command = $application->get('list'));
         $commandTester->execute(array('command' => $command->getName()), array('decorated' => false));
@@ -25,14 +26,16 @@ class ListCommandTest extends TestCase {
         $this->assertRegExp('/help\s{2,}Displays help for a command/', $commandTester->getDisplay(), '->execute() returns a list of available commands');
     }
 
-    public function testExecuteListsCommandsWithXmlOption() {
+    public function testExecuteListsCommandsWithXmlOption()
+    {
         $application = new Application();
         $commandTester = new CommandTester($command = $application->get('list'));
         $commandTester->execute(array('command' => $command->getName(), '--format' => 'xml'));
         $this->assertRegExp('/<command id="list" name="list">/', $commandTester->getDisplay(), '->execute() returns a list of available commands in XML if --xml is passed');
     }
 
-    public function testExecuteListsCommandsWithRawOption() {
+    public function testExecuteListsCommandsWithRawOption()
+    {
         $application = new Application();
         $commandTester = new CommandTester($command = $application->get('list'));
         $commandTester->execute(array('command' => $command->getName(), '--raw' => true));
@@ -45,8 +48,9 @@ EOF;
         $this->assertEquals($output, $commandTester->getDisplay(true));
     }
 
-    public function testExecuteListsCommandsWithNamespaceArgument() {
-        require_once realpath(__DIR__ . '/../Fixtures/FooCommand.php');
+    public function testExecuteListsCommandsWithNamespaceArgument()
+    {
+        require_once realpath(__DIR__.'/../Fixtures/FooCommand.php');
         $application = new Application();
         $application->add(new \FooCommand());
         $commandTester = new CommandTester($command = $application->get('list'));
@@ -59,8 +63,9 @@ EOF;
         $this->assertEquals($output, $commandTester->getDisplay(true));
     }
 
-    public function testExecuteListsCommandsOrder() {
-        require_once realpath(__DIR__ . '/../Fixtures/Foo6Command.php');
+    public function testExecuteListsCommandsOrder()
+    {
+        require_once realpath(__DIR__.'/../Fixtures/Foo6Command.php');
         $application = new Application();
         $application->add(new \Foo6Command());
         $commandTester = new CommandTester($command = $application->get('list'));
@@ -90,8 +95,9 @@ EOF;
         $this->assertEquals($output, trim($commandTester->getDisplay(true)));
     }
 
-    public function testExecuteListsCommandsOrderRaw() {
-        require_once realpath(__DIR__ . '/../Fixtures/Foo6Command.php');
+    public function testExecuteListsCommandsOrderRaw()
+    {
+        require_once realpath(__DIR__.'/../Fixtures/Foo6Command.php');
         $application = new Application();
         $application->add(new \Foo6Command());
         $commandTester = new CommandTester($command = $application->get('list'));
@@ -104,5 +110,4 @@ EOF;
 
         $this->assertEquals($output, trim($commandTester->getDisplay(true)));
     }
-
 }

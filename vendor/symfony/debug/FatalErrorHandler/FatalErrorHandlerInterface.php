@@ -18,8 +18,8 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-interface FatalErrorHandlerInterface {
-
+interface FatalErrorHandlerInterface
+{
     /**
      * Attempts to convert an error into an exception.
      *

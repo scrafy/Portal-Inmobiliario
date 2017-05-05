@@ -7,7 +7,6 @@ use PhpParser\ErrorHandler;
 use PhpParser\Parser;
 
 class Multiple implements Parser {
-
     /** @var Parser[] List of parsers to try, in order of preference */
     private $parsers;
 
@@ -49,10 +48,7 @@ class Multiple implements Parser {
         $error = null;
         try {
             $stmts = $parser->parse($code, $errorHandler);
-        } catch (Error $error) {
-            
-        }
+        } catch (Error $error) {}
         return [$stmts, $error];
     }
-
 }

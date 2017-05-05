@@ -34,8 +34,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * List available local variables, object properties, etc.
  */
-class ListCommand extends ReflectingCommand implements PresenterAware {
-
+class ListCommand extends ReflectingCommand implements PresenterAware
+{
     protected $presenter;
     protected $enumerators;
 
@@ -44,40 +44,47 @@ class ListCommand extends ReflectingCommand implements PresenterAware {
      *
      * @param Presenter $manager
      */
-    public function setPresenter(Presenter $presenter) {
+    public function setPresenter(Presenter $presenter)
+    {
         $this->presenter = $presenter;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this
-                ->setName('ls')
-                ->setAliases(array('list', 'dir'))
-                ->setDefinition(array(
-                    new InputArgument('target', InputArgument::OPTIONAL, 'A target class or object to list.', null),
-                    new InputOption('vars', '', InputOption::VALUE_NONE, 'Display variables.'),
-                    new InputOption('constants', 'c', InputOption::VALUE_NONE, 'Display defined constants.'),
-                    new InputOption('functions', 'f', InputOption::VALUE_NONE, 'Display defined functions.'),
-                    new InputOption('classes', 'k', InputOption::VALUE_NONE, 'Display declared classes.'),
-                    new InputOption('interfaces', 'I', InputOption::VALUE_NONE, 'Display declared interfaces.'),
-                    new InputOption('traits', 't', InputOption::VALUE_NONE, 'Display declared traits.'),
-                    new InputOption('properties', 'p', InputOption::VALUE_NONE, 'Display class or object properties (public properties by default).'),
-                    new InputOption('methods', 'm', InputOption::VALUE_NONE, 'Display class or object methods (public methods by default).'),
-                    new InputOption('grep', 'G', InputOption::VALUE_REQUIRED, 'Limit to items matching the given pattern (string or regex).'),
-                    new InputOption('insensitive', 'i', InputOption::VALUE_NONE, 'Case-insensitive search (requires --grep).'),
-                    new InputOption('invert', 'v', InputOption::VALUE_NONE, 'Inverted search (requires --grep).'),
-                    new InputOption('globals', 'g', InputOption::VALUE_NONE, 'Include global variables.'),
-                    new InputOption('internal', 'n', InputOption::VALUE_NONE, 'Limit to internal functions and classes.'),
-                    new InputOption('user', 'u', InputOption::VALUE_NONE, 'Limit to user-defined constants, functions and classes.'),
-                    new InputOption('category', 'C', InputOption::VALUE_REQUIRED, 'Limit to constants in a specific category (e.g. "date").'),
-                    new InputOption('all', 'a', InputOption::VALUE_NONE, 'Include private and protected methods and properties.'),
-                    new InputOption('long', 'l', InputOption::VALUE_NONE, 'List in long format: includes class names and method signatures.'),
-                ))
-                ->setDescription('List local, instance or class variables, methods and constants.')
-                ->setHelp(
-                        <<<'HELP'
+            ->setName('ls')
+            ->setAliases(array('list', 'dir'))
+            ->setDefinition(array(
+                new InputArgument('target', InputArgument::OPTIONAL, 'A target class or object to list.', null),
+
+                new InputOption('vars',        '',  InputOption::VALUE_NONE,     'Display variables.'),
+                new InputOption('constants',   'c', InputOption::VALUE_NONE,     'Display defined constants.'),
+                new InputOption('functions',   'f', InputOption::VALUE_NONE,     'Display defined functions.'),
+                new InputOption('classes',     'k', InputOption::VALUE_NONE,     'Display declared classes.'),
+                new InputOption('interfaces',  'I', InputOption::VALUE_NONE,     'Display declared interfaces.'),
+                new InputOption('traits',      't', InputOption::VALUE_NONE,     'Display declared traits.'),
+
+                new InputOption('properties',  'p', InputOption::VALUE_NONE,     'Display class or object properties (public properties by default).'),
+                new InputOption('methods',     'm', InputOption::VALUE_NONE,     'Display class or object methods (public methods by default).'),
+
+                new InputOption('grep',        'G', InputOption::VALUE_REQUIRED, 'Limit to items matching the given pattern (string or regex).'),
+                new InputOption('insensitive', 'i', InputOption::VALUE_NONE,     'Case-insensitive search (requires --grep).'),
+                new InputOption('invert',      'v', InputOption::VALUE_NONE,     'Inverted search (requires --grep).'),
+
+                new InputOption('globals',     'g', InputOption::VALUE_NONE,     'Include global variables.'),
+                new InputOption('internal',    'n', InputOption::VALUE_NONE,     'Limit to internal functions and classes.'),
+                new InputOption('user',        'u', InputOption::VALUE_NONE,     'Limit to user-defined constants, functions and classes.'),
+                new InputOption('category',    'C', InputOption::VALUE_REQUIRED, 'Limit to constants in a specific category (e.g. "date").'),
+
+                new InputOption('all',         'a', InputOption::VALUE_NONE,     'Include private and protected methods and properties.'),
+                new InputOption('long',        'l', InputOption::VALUE_NONE,     'List in long format: includes class names and method signatures.'),
+            ))
+            ->setDescription('List local, instance or class variables, methods and constants.')
+            ->setHelp(
+                <<<'HELP'
 List variables, constants, classes, interfaces, traits, functions, methods,
 and properties.
 
@@ -95,13 +102,14 @@ e.g.
 <return>>>> ls --constants --category date</return>
 <return>>>> ls -l --functions --grep /^array_.*/</return>
 HELP
-        );
+            );
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $this->validateInput($input);
         $this->initEnumerators();
 
@@ -135,7 +143,8 @@ HELP
     /**
      * Initialize Enumerators.
      */
-    protected function initEnumerators() {
+    protected function initEnumerators()
+    {
         if (!isset($this->enumerators)) {
             $mgr = $this->presenter;
 
@@ -160,7 +169,8 @@ HELP
      * @param OutputInterface $output
      * @param null|array      $result List of enumerated items
      */
-    protected function write(OutputInterface $output, array $result = null) {
+    protected function write(OutputInterface $output, array $result = null)
+    {
         if ($result === null) {
             return;
         }
@@ -179,7 +189,8 @@ HELP
      * @param OutputInterface $output
      * @param null|array      $result List of enumerated items
      */
-    protected function writeLong(OutputInterface $output, array $result = null) {
+    protected function writeLong(OutputInterface $output, array $result = null)
+    {
         if ($result === null) {
             return;
         }
@@ -210,7 +221,8 @@ HELP
      *
      * @return string
      */
-    private function formatItemName($item) {
+    private function formatItemName($item)
+    {
         return sprintf('<%s>%s</%s>', $item['style'], OutputFormatter::escape($item['name']), $item['style']);
     }
 
@@ -221,7 +233,8 @@ HELP
      *
      * @param InputInterface $input
      */
-    private function validateInput(InputInterface $input) {
+    private function validateInput(InputInterface $input)
+    {
         // grep, invert and insensitive
         if (!$input->getOption('grep')) {
             foreach (array('invert', 'insensitive') as $option) {
@@ -262,10 +275,9 @@ HELP
             }
 
             // default to --constants --properties --methods if no other options are passed
-            $input->setOption('constants', true);
+            $input->setOption('constants',  true);
             $input->setOption('properties', true);
-            $input->setOption('methods', true);
+            $input->setOption('methods',    true);
         }
     }
-
 }

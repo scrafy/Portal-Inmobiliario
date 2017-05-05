@@ -6,8 +6,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OutputStyle extends SymfonyStyle {
-
+class OutputStyle extends SymfonyStyle
+{
     /**
      * The output instance.
      *
@@ -22,7 +22,8 @@ class OutputStyle extends SymfonyStyle {
      * @param  \Symfony\Component\Console\Output\OutputInterface  $output
      * @return void
      */
-    public function __construct(InputInterface $input, OutputInterface $output) {
+    public function __construct(InputInterface $input, OutputInterface $output)
+    {
         $this->output = $output;
 
         parent::__construct($input, $output);
@@ -33,7 +34,8 @@ class OutputStyle extends SymfonyStyle {
      *
      * @return bool
      */
-    public function isQuiet() {
+    public function isQuiet()
+    {
         return $this->output->isQuiet();
     }
 
@@ -42,7 +44,8 @@ class OutputStyle extends SymfonyStyle {
      *
      * @return bool
      */
-    public function isVerbose() {
+    public function isVerbose()
+    {
         return $this->output->isVerbose();
     }
 
@@ -51,7 +54,8 @@ class OutputStyle extends SymfonyStyle {
      *
      * @return bool
      */
-    public function isVeryVerbose() {
+    public function isVeryVerbose()
+    {
         return $this->output->isVeryVerbose();
     }
 
@@ -60,8 +64,8 @@ class OutputStyle extends SymfonyStyle {
      *
      * @return bool
      */
-    public function isDebug() {
+    public function isDebug()
+    {
         return $this->output->isDebug();
     }
-
 }

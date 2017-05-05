@@ -1,11 +1,12 @@
 <?php
 
-class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase {
-
-    public function testPluginConnectsToPop3HostBeforeTransportStarts() {
+class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase
+{
+    public function testPluginConnectsToPop3HostBeforeTransportStarts()
+    {
         $connection = $this->_createConnection();
         $connection->expects($this->once())
-                ->method('connect');
+                   ->method('connect');
 
         $plugin = $this->_createPlugin('pop.host.tld', 110);
         $plugin->setConnection($connection);
@@ -16,10 +17,11 @@ class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase 
         $plugin->beforeTransportStarted($evt);
     }
 
-    public function testPluginDisconnectsFromPop3HostBeforeTransportStarts() {
+    public function testPluginDisconnectsFromPop3HostBeforeTransportStarts()
+    {
         $connection = $this->_createConnection();
         $connection->expects($this->once())
-                ->method('disconnect');
+                   ->method('disconnect');
 
         $plugin = $this->_createPlugin('pop.host.tld', 110);
         $plugin->setConnection($connection);
@@ -30,12 +32,13 @@ class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase 
         $plugin->beforeTransportStarted($evt);
     }
 
-    public function testPluginDoesNotConnectToSmtpIfBoundToDifferentTransport() {
+    public function testPluginDoesNotConnectToSmtpIfBoundToDifferentTransport()
+    {
         $connection = $this->_createConnection();
         $connection->expects($this->never())
-                ->method('disconnect');
+                   ->method('disconnect');
         $connection->expects($this->never())
-                ->method('connect');
+                   ->method('connect');
 
         $smtp = $this->_createTransport();
 
@@ -49,10 +52,11 @@ class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase 
         $plugin->beforeTransportStarted($evt);
     }
 
-    public function testPluginCanBindToSpecificTransport() {
+    public function testPluginCanBindToSpecificTransport()
+    {
         $connection = $this->_createConnection();
         $connection->expects($this->once())
-                ->method('connect');
+                   ->method('connect');
 
         $smtp = $this->_createTransport();
 
@@ -65,30 +69,33 @@ class Swift_Plugins_PopBeforeSmtpPluginTest extends \PHPUnit_Framework_TestCase 
         $plugin->beforeTransportStarted($evt);
     }
 
-    private function _createTransport() {
+    private function _createTransport()
+    {
         return $this->getMockBuilder('Swift_Transport')->getMock();
     }
 
-    private function _createTransportChangeEvent($transport) {
+    private function _createTransportChangeEvent($transport)
+    {
         $evt = $this->getMockBuilder('Swift_Events_TransportChangeEvent')
-                ->disableOriginalConstructor()
-                ->getMock();
+                    ->disableOriginalConstructor()
+                    ->getMock();
         $evt->expects($this->any())
-                ->method('getSource')
-                ->will($this->returnValue($transport));
+            ->method('getSource')
+            ->will($this->returnValue($transport));
         $evt->expects($this->any())
-                ->method('getTransport')
-                ->will($this->returnValue($transport));
+            ->method('getTransport')
+            ->will($this->returnValue($transport));
 
         return $evt;
     }
 
-    public function _createConnection() {
+    public function _createConnection()
+    {
         return $this->getMockBuilder('Swift_Plugins_Pop_Pop3Connection')->getMock();
     }
 
-    public function _createPlugin($host, $port, $crypto = null) {
+    public function _createPlugin($host, $port, $crypto = null)
+    {
         return new Swift_Plugins_PopBeforeSmtpPlugin($host, $port, $crypto);
     }
-
 }

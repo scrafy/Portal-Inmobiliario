@@ -5,8 +5,8 @@ namespace League\Flysystem;
 /**
  * @internal
  */
-trait ConfigAwareTrait {
-
+trait ConfigAwareTrait
+{
     /**
      * @var Config
      */
@@ -17,7 +17,8 @@ trait ConfigAwareTrait {
      *
      * @param Config|array|null $config
      */
-    protected function setConfig($config) {
+    protected function setConfig($config)
+    {
         $this->config = $config ? Util::ensureConfig($config) : new Config;
     }
 
@@ -26,7 +27,8 @@ trait ConfigAwareTrait {
      *
      * @return Config config object
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 
@@ -37,11 +39,11 @@ trait ConfigAwareTrait {
      *
      * @return Config
      */
-    protected function prepareConfig(array $config) {
+    protected function prepareConfig(array $config)
+    {
         $config = new Config($config);
         $config->setFallback($this->getConfig());
 
         return $config;
     }
-
 }

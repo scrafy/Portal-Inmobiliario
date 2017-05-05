@@ -8,8 +8,8 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Symfony\Component\HttpFoundation\JsonResponse as BaseJsonResponse;
 
-class JsonResponse extends BaseJsonResponse {
-
+class JsonResponse extends BaseJsonResponse
+{
     use ResponseTrait;
 
     /**
@@ -20,7 +20,8 @@ class JsonResponse extends BaseJsonResponse {
      * @param  array  $headers
      * @param  int    $options
      */
-    public function __construct($data = null, $status = 200, $headers = [], $options = 0) {
+    public function __construct($data = null, $status = 200, $headers = [], $options = 0)
+    {
         $this->encodingOptions = $options;
 
         parent::__construct($data, $status, $headers);
@@ -32,7 +33,8 @@ class JsonResponse extends BaseJsonResponse {
      * @param  string|null  $callback
      * @return $this
      */
-    public function withCallback($callback = null) {
+    public function withCallback($callback = null)
+    {
         return $this->setCallback($callback);
     }
 
@@ -43,14 +45,16 @@ class JsonResponse extends BaseJsonResponse {
      * @param  int  $depth
      * @return mixed
      */
-    public function getData($assoc = false, $depth = 512) {
+    public function getData($assoc = false, $depth = 512)
+    {
         return json_decode($this->data, $assoc, $depth);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setData($data = []) {
+    public function setData($data = [])
+    {
         $this->original = $data;
 
         if ($data instanceof Arrayable) {
@@ -73,10 +77,10 @@ class JsonResponse extends BaseJsonResponse {
     /**
      * {@inheritdoc}
      */
-    public function setEncodingOptions($options) {
+    public function setEncodingOptions($options)
+    {
         $this->encodingOptions = (int) $options;
 
         return $this->setData($this->getData());
     }
-
 }

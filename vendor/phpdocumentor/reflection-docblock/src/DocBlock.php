@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -16,8 +15,8 @@ namespace phpDocumentor\Reflection;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Webmozart\Assert\Assert;
 
-final class DocBlock {
-
+final class DocBlock
+{
     /** @var string The opening line for this docblock. */
     private $summary = '';
 
@@ -49,8 +48,15 @@ final class DocBlock {
      * @param bool $isTemplateEnd
      */
     public function __construct(
-    $summary = '', DocBlock\Description $description = null, array $tags = [], Types\Context $context = null, Location $location = null, $isTemplateStart = false, $isTemplateEnd = false
-    ) {
+        $summary = '',
+        DocBlock\Description $description = null,
+        array $tags = [],
+        Types\Context $context = null,
+        Location $location = null,
+        $isTemplateStart = false,
+        $isTemplateEnd = false
+    )
+    {
         Assert::string($summary);
         Assert::boolean($isTemplateStart);
         Assert::boolean($isTemplateEnd);
@@ -72,14 +78,16 @@ final class DocBlock {
     /**
      * @return string
      */
-    public function getSummary() {
+    public function getSummary()
+    {
         return $this->summary;
     }
 
     /**
      * @return DocBlock\Description
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
@@ -88,7 +96,8 @@ final class DocBlock {
      *
      * @return Types\Context
      */
-    public function getContext() {
+    public function getContext()
+    {
         return $this->context;
     }
 
@@ -97,7 +106,8 @@ final class DocBlock {
      *
      * @return Location
      */
-    public function getLocation() {
+    public function getLocation()
+    {
         return $this->location;
     }
 
@@ -122,7 +132,8 @@ final class DocBlock {
      *
      * @return boolean
      */
-    public function isTemplateStart() {
+    public function isTemplateStart()
+    {
         return $this->isTemplateStart;
     }
 
@@ -133,7 +144,8 @@ final class DocBlock {
      *
      * @return boolean
      */
-    public function isTemplateEnd() {
+    public function isTemplateEnd()
+    {
         return $this->isTemplateEnd;
     }
 
@@ -142,7 +154,8 @@ final class DocBlock {
      *
      * @return Tag[]
      */
-    public function getTags() {
+    public function getTags()
+    {
         return $this->tags;
     }
 
@@ -154,7 +167,8 @@ final class DocBlock {
      *
      * @return Tag[]
      */
-    public function getTagsByName($name) {
+    public function getTagsByName($name)
+    {
         Assert::string($name);
 
         $result = array();
@@ -178,7 +192,8 @@ final class DocBlock {
      *
      * @return bool
      */
-    public function hasTag($name) {
+    public function hasTag($name)
+    {
         Assert::string($name);
 
         /** @var Tag $tag */
@@ -198,8 +213,8 @@ final class DocBlock {
      *
      * @return void
      */
-    private function addTag(Tag $tag) {
+    private function addTag(Tag $tag)
+    {
         $this->tags[] = $tag;
     }
-
 }

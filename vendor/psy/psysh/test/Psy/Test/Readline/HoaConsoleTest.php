@@ -13,9 +13,10 @@ namespace Psy\Test\Readline;
 
 use Psy\Readline\HoaConsole;
 
-class HoaConsoleTest extends \PHPUnit_Framework_TestCase {
-
-    public function testHistory() {
+class HoaConsoleTest extends \PHPUnit_Framework_TestCase
+{
+    public function testHistory()
+    {
         $readline = new HoaConsole();
         $this->assertEmpty($readline->listHistory());
         $readline->addHistory('foo');
@@ -27,5 +28,4 @@ class HoaConsoleTest extends \PHPUnit_Framework_TestCase {
         $readline->clearHistory();
         $this->assertEmpty($readline->listHistory());
     }
-
 }

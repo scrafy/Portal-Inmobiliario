@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,18 +8,20 @@
  * file that was distributed with this source code.
  */
 
-class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase {
-
+class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
+{
     protected $suite;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->suite = new PHPUnit_Framework_TestSuite;
 
         $this->suite->addTest(new Success);
         $this->suite->addTest(new Success);
     }
 
-    public function testRepeatedOnce() {
+    public function testRepeatedOnce()
+    {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 1);
         $this->assertCount(2, $test);
 
@@ -28,7 +29,8 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase {
         $this->assertCount(2, $result);
     }
 
-    public function testRepeatedMoreThanOnce() {
+    public function testRepeatedMoreThanOnce()
+    {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 3);
         $this->assertCount(6, $test);
 
@@ -36,7 +38,8 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase {
         $this->assertCount(6, $result);
     }
 
-    public function testRepeatedZero() {
+    public function testRepeatedZero()
+    {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 0);
         $this->assertCount(0, $test);
 
@@ -44,7 +47,8 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase {
         $this->assertCount(0, $result);
     }
 
-    public function testRepeatedNegative() {
+    public function testRepeatedNegative()
+    {
         try {
             $test = new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
         } catch (Exception $e) {
@@ -53,5 +57,4 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase {
 
         $this->fail('Should throw an Exception');
     }
-
 }

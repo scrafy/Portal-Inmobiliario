@@ -4,8 +4,8 @@ namespace Illuminate\Foundation\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class TestMakeCommand extends GeneratorCommand {
-
+class TestMakeCommand extends GeneratorCommand
+{
     /**
      * The console command name.
      *
@@ -32,11 +32,12 @@ class TestMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function getStub() {
+    protected function getStub()
+    {
         if ($this->option('unit')) {
-            return __DIR__ . '/stubs/unit-test.stub';
+            return __DIR__.'/stubs/unit-test.stub';
         } else {
-            return __DIR__ . '/stubs/test.stub';
+            return __DIR__.'/stubs/test.stub';
         }
     }
 
@@ -46,10 +47,11 @@ class TestMakeCommand extends GeneratorCommand {
      * @param  string  $name
      * @return string
      */
-    protected function getPath($name) {
+    protected function getPath($name)
+    {
         $name = str_replace_first($this->rootNamespace(), '', $name);
 
-        return $this->laravel->basePath() . '/tests' . str_replace('\\', '/', $name) . '.php';
+        return $this->laravel->basePath().'/tests'.str_replace('\\', '/', $name).'.php';
     }
 
     /**
@@ -58,11 +60,12 @@ class TestMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace) {
+    protected function getDefaultNamespace($rootNamespace)
+    {
         if ($this->option('unit')) {
-            return $rootNamespace . '\Unit';
+            return $rootNamespace.'\Unit';
         } else {
-            return $rootNamespace . '\Feature';
+            return $rootNamespace.'\Feature';
         }
     }
 
@@ -71,8 +74,8 @@ class TestMakeCommand extends GeneratorCommand {
      *
      * @return string
      */
-    protected function rootNamespace() {
+    protected function rootNamespace()
+    {
         return 'Tests';
     }
-
 }

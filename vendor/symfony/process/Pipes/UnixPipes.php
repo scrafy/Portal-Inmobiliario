@@ -20,18 +20,17 @@ use Symfony\Component\Process\Process;
  *
  * @internal
  */
-class UnixPipes extends AbstractPipes {
-
+class UnixPipes extends AbstractPipes
+{
     /** @var bool */
     private $ttyMode;
-
     /** @var bool */
     private $ptyMode;
-
     /** @var bool */
     private $haveReadSupport;
 
-    public function __construct($ttyMode, $ptyMode, $input, $haveReadSupport) {
+    public function __construct($ttyMode, $ptyMode, $input, $haveReadSupport)
+    {
         $this->ttyMode = (bool) $ttyMode;
         $this->ptyMode = (bool) $ptyMode;
         $this->haveReadSupport = (bool) $haveReadSupport;
@@ -39,14 +38,16 @@ class UnixPipes extends AbstractPipes {
         parent::__construct($input);
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->close();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDescriptors() {
+    public function getDescriptors()
+    {
         if (!$this->haveReadSupport) {
             $nullstream = fopen('/dev/null', 'c');
 
@@ -83,14 +84,16 @@ class UnixPipes extends AbstractPipes {
     /**
      * {@inheritdoc}
      */
-    public function getFiles() {
+    public function getFiles()
+    {
         return array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function readAndWrite($blocking, $close = false) {
+    public function readAndWrite($blocking, $close = false)
+    {
         $this->unblock();
         $w = $this->write();
 
@@ -135,15 +138,16 @@ class UnixPipes extends AbstractPipes {
     /**
      * {@inheritdoc}
      */
-    public function haveReadSupport() {
+    public function haveReadSupport()
+    {
         return $this->haveReadSupport;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function areOpen() {
+    public function areOpen()
+    {
         return (bool) $this->pipes;
     }
-
 }

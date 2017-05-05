@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -22,14 +21,15 @@ use phpDocumentor\Reflection\Types\Context;
  * @coversDefaultClass \phpDocumentor\Reflection\DocBlock\Tags\Version
  * @covers ::<private>
  */
-class VersionTest extends \PHPUnit_Framework_TestCase {
-
+class VersionTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @uses   \phpDocumentor\Reflection\DocBlock\Tags\Version::__construct
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfCorrectTagNameIsReturned() {
+    public function testIfCorrectTagNameIsReturned()
+    {
         $fixture = new Version('1.0', new Description('Description'));
 
         $this->assertSame('version', $fixture->getName());
@@ -43,7 +43,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getName
      */
-    public function testIfTagCanBeRenderedUsingDefaultFormatter() {
+    public function testIfTagCanBeRenderedUsingDefaultFormatter()
+    {
         $fixture = new Version('1.0', new Description('Description'));
 
         $this->assertSame('@version 1.0 Description', $fixture->render());
@@ -54,7 +55,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::render
      */
-    public function testIfTagCanBeRenderedUsingSpecificFormatter() {
+    public function testIfTagCanBeRenderedUsingSpecificFormatter()
+    {
         $fixture = new Version('1.0', new Description('Description'));
 
         $formatter = m::mock(Formatter::class);
@@ -67,7 +69,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getVersion
      */
-    public function testHasVersionNumber() {
+    public function testHasVersionNumber()
+    {
         $expected = '1.0';
 
         $fixture = new Version($expected);
@@ -80,7 +83,8 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @covers \phpDocumentor\Reflection\DocBlock\Tags\BaseTag::getDescription
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testHasDescription() {
+    public function testHasDescription()
+    {
         $expected = new Description('Description');
 
         $fixture = new Version('1.0', $expected);
@@ -93,10 +97,11 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__toString
      * @uses   \phpDocumentor\Reflection\DocBlock\Description
      */
-    public function testStringRepresentationIsReturned() {
+    public function testStringRepresentationIsReturned()
+    {
         $fixture = new Version('1.0', new Description('Description'));
 
-        $this->assertSame('1.0 Description', (string) $fixture);
+        $this->assertSame('1.0 Description', (string)$fixture);
     }
 
     /**
@@ -106,18 +111,19 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethod() {
+    public function testFactoryMethod()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
-        $context = new Context('');
+        $context            = new Context('');
 
-        $version = '1.0';
+        $version     = '1.0';
         $description = new Description('My Description');
 
         $descriptionFactory->shouldReceive('create')->with('My Description', $context)->andReturn($description);
 
         $fixture = Version::create('1.0 My Description', $descriptionFactory, $context);
 
-        $this->assertSame('1.0 My Description', (string) $fixture);
+        $this->assertSame('1.0 My Description', (string)$fixture);
         $this->assertSame($version, $fixture->getVersion());
         $this->assertSame($description, $fixture->getDescription());
     }
@@ -129,13 +135,14 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @uses \phpDocumentor\Reflection\DocBlock\Description
      * @uses \phpDocumentor\Reflection\Types\Context
      */
-    public function testFactoryMethodCreatesEmptyVersionTag() {
+    public function testFactoryMethodCreatesEmptyVersionTag()
+    {
         $descriptionFactory = m::mock(DescriptionFactory::class);
         $descriptionFactory->shouldReceive('create')->never();
 
         $fixture = Version::create('', $descriptionFactory, new Context(''));
 
-        $this->assertSame('', (string) $fixture);
+        $this->assertSame('', (string)$fixture);
         $this->assertSame(null, $fixture->getVersion());
         $this->assertSame(null, $fixture->getDescription());
     }
@@ -144,15 +151,16 @@ class VersionTest extends \PHPUnit_Framework_TestCase {
      * @covers ::create
      * @expectedException \InvalidArgumentException
      */
-    public function testFactoryMethodFailsIfVersionIsNotString() {
+    public function testFactoryMethodFailsIfVersionIsNotString()
+    {
         $this->assertNull(Version::create([]));
     }
 
     /**
      * @covers ::create
      */
-    public function testFactoryMethodReturnsNullIfBodyDoesNotMatchRegex() {
+    public function testFactoryMethodReturnsNullIfBodyDoesNotMatchRegex()
+    {
         $this->assertNull(Version::create('dkhf<'));
     }
-
 }

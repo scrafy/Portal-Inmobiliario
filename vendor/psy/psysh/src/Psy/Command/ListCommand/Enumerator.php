@@ -19,19 +19,20 @@ use Symfony\Component\Console\Input\InputInterface;
 /**
  * Abstract Enumerator class.
  */
-abstract class Enumerator {
-
+abstract class Enumerator
+{
     // Output styles
-    const IS_PUBLIC = 'public';
+    const IS_PUBLIC    = 'public';
     const IS_PROTECTED = 'protected';
-    const IS_PRIVATE = 'private';
-    const IS_GLOBAL = 'global';
-    const IS_CONSTANT = 'const';
-    const IS_CLASS = 'class';
-    const IS_FUNCTION = 'function';
+    const IS_PRIVATE   = 'private';
+    const IS_GLOBAL    = 'global';
+    const IS_CONSTANT  = 'const';
+    const IS_CLASS     = 'class';
+    const IS_FUNCTION  = 'function';
 
     private $presenter;
-    private $filter = false;
+
+    private $filter       = false;
     private $invertFilter = false;
     private $pattern;
 
@@ -40,7 +41,8 @@ abstract class Enumerator {
      *
      * @param Presenter $presenter
      */
-    public function __construct(Presenter $presenter) {
+    public function __construct(Presenter $presenter)
+    {
         $this->presenter = $presenter;
     }
 
@@ -53,7 +55,8 @@ abstract class Enumerator {
      *
      * @return array
      */
-    public function enumerate(InputInterface $input, \Reflector $reflector = null, $target = null) {
+    public function enumerate(InputInterface $input, \Reflector $reflector = null, $target = null)
+    {
         $this->setFilter($input);
 
         return $this->listItems($input, $reflector, $target);
@@ -82,15 +85,18 @@ abstract class Enumerator {
      */
     abstract protected function listItems(InputInterface $input, \Reflector $reflector = null, $target = null);
 
-    protected function presentRef($value) {
+    protected function presentRef($value)
+    {
         return $this->presenter->presentRef($value);
     }
 
-    protected function showItem($name) {
+    protected function showItem($name)
+    {
         return $this->filter === false || (preg_match($this->pattern, $name) xor $this->invertFilter);
     }
 
-    private function setFilter(InputInterface $input) {
+    private function setFilter(InputInterface $input)
+    {
         if ($pattern = $input->getOption('grep')) {
             if (substr($pattern, 0, 1) !== '/' || substr($pattern, -1) !== '/' || strlen($pattern) < 3) {
                 $pattern = '/' . preg_quote($pattern, '/') . '/';
@@ -102,8 +108,8 @@ abstract class Enumerator {
 
             $this->validateRegex($pattern);
 
-            $this->filter = true;
-            $this->pattern = $pattern;
+            $this->filter       = true;
+            $this->pattern      = $pattern;
             $this->invertFilter = $input->getOption('invert');
         } else {
             $this->filter = false;
@@ -117,7 +123,8 @@ abstract class Enumerator {
      *
      * @return bool
      */
-    private function validateRegex($pattern) {
+    private function validateRegex($pattern)
+    {
         set_error_handler(array('Psy\Exception\ErrorException', 'throwException'));
         try {
             preg_match($pattern, '');
@@ -127,7 +134,8 @@ abstract class Enumerator {
         restore_error_handler();
     }
 
-    protected function presentSignature($target) {
+    protected function presentSignature($target)
+    {
         // This might get weird if the signature is actually for a reflector. Hrm.
         if (!$target instanceof \Reflector) {
             $target = Mirror::get($target);
@@ -135,5 +143,4 @@ abstract class Enumerator {
 
         return SignatureFormatter::format($target);
     }
-
 }

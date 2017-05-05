@@ -16,9 +16,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\LazyLoadingFragmentHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class LazyLoadingFragmentHandlerTest extends TestCase {
-
-    public function test() {
+class LazyLoadingFragmentHandlerTest extends TestCase
+{
+    public function test()
+    {
         $renderer = $this->getMockBuilder('Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface')->getMock();
         $renderer->expects($this->once())->method('getName')->will($this->returnValue('foo'));
         $renderer->expects($this->any())->method('render')->will($this->returnValue(new Response()));
@@ -37,5 +38,4 @@ class LazyLoadingFragmentHandlerTest extends TestCase {
         // second call should not lazy-load anymore (see once() above on the get() method)
         $handler->render('/foo', 'foo');
     }
-
 }

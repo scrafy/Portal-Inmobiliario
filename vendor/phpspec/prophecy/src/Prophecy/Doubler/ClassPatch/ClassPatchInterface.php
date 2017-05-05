@@ -20,8 +20,8 @@ use Prophecy\Doubler\Generator\Node\ClassNode;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface ClassPatchInterface {
-
+interface ClassPatchInterface
+{
     /**
      * Checks if patch supports specific class node.
      *

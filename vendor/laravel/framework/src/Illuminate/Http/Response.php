@@ -8,8 +8,8 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
-class Response extends BaseResponse {
-
+class Response extends BaseResponse
+{
     use ResponseTrait;
 
     /**
@@ -18,7 +18,8 @@ class Response extends BaseResponse {
      * @param  mixed  $content
      * @return $this
      */
-    public function setContent($content) {
+    public function setContent($content)
+    {
         $this->original = $content;
 
         // If the content is "JSONable" we will set the appropriate header and convert
@@ -46,11 +47,12 @@ class Response extends BaseResponse {
      * @param  mixed  $content
      * @return bool
      */
-    protected function shouldBeJson($content) {
+    protected function shouldBeJson($content)
+    {
         return $content instanceof Jsonable ||
-                $content instanceof ArrayObject ||
-                $content instanceof JsonSerializable ||
-                is_array($content);
+               $content instanceof ArrayObject ||
+               $content instanceof JsonSerializable ||
+               is_array($content);
     }
 
     /**
@@ -59,12 +61,12 @@ class Response extends BaseResponse {
      * @param  mixed   $content
      * @return string
      */
-    protected function morphToJson($content) {
+    protected function morphToJson($content)
+    {
         if ($content instanceof Jsonable) {
             return $content->toJson();
         }
 
         return json_encode($content);
     }
-
 }

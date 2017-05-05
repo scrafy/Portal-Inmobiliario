@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Collection;
 
-abstract class Relation {
-
+abstract class Relation
+{
     use Macroable {
         __call as macroCall;
     }
@@ -58,7 +58,8 @@ abstract class Relation {
      * @param  \Illuminate\Database\Eloquent\Model  $parent
      * @return void
      */
-    public function __construct(Builder $query, Model $parent) {
+    public function __construct(Builder $query, Model $parent)
+    {
         $this->query = $query;
         $this->parent = $parent;
         $this->related = $query->getModel();
@@ -72,7 +73,8 @@ abstract class Relation {
      * @param  \Closure  $callback
      * @return mixed
      */
-    public static function noConstraints(Closure $callback) {
+    public static function noConstraints(Closure $callback)
+    {
         $previous = static::$constraints;
 
         static::$constraints = false;
@@ -133,7 +135,8 @@ abstract class Relation {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getEager() {
+    public function getEager()
+    {
         return $this->get();
     }
 
@@ -142,7 +145,8 @@ abstract class Relation {
      *
      * @return void
      */
-    public function touch() {
+    public function touch()
+    {
         $column = $this->getRelated()->getUpdatedAtColumn();
 
         $this->rawUpdate([$column => $this->getRelated()->freshTimestampString()]);
@@ -154,7 +158,8 @@ abstract class Relation {
      * @param  array  $attributes
      * @return int
      */
-    public function rawUpdate(array $attributes = []) {
+    public function rawUpdate(array $attributes = [])
+    {
         return $this->query->update($attributes);
     }
 
@@ -165,9 +170,10 @@ abstract class Relation {
      * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceCountQuery(Builder $query, Builder $parentQuery) {
+    public function getRelationExistenceCountQuery(Builder $query, Builder $parentQuery)
+    {
         return $this->getRelationExistenceQuery(
-                        $query, $parentQuery, new Expression('count(*)')
+            $query, $parentQuery, new Expression('count(*)')
         );
     }
 
@@ -181,9 +187,10 @@ abstract class Relation {
      * @param  array|mixed $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*']) {
+    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    {
         return $query->select($columns)->whereColumn(
-                        $this->getQualifiedParentKeyName(), '=', $this->getExistenceCompareKey()
+            $this->getQualifiedParentKeyName(), '=', $this->getExistenceCompareKey()
         );
     }
 
@@ -194,10 +201,11 @@ abstract class Relation {
      * @param  string  $key
      * @return array
      */
-    protected function getKeys(array $models, $key = null) {
+    protected function getKeys(array $models, $key = null)
+    {
         return collect($models)->map(function ($value) use ($key) {
-                    return $key ? $value->getAttribute($key) : $value->getKey();
-                })->values()->unique()->sort()->all();
+            return $key ? $value->getAttribute($key) : $value->getKey();
+        })->values()->unique()->sort()->all();
     }
 
     /**
@@ -205,7 +213,8 @@ abstract class Relation {
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getQuery() {
+    public function getQuery()
+    {
         return $this->query;
     }
 
@@ -214,7 +223,8 @@ abstract class Relation {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    public function getBaseQuery() {
+    public function getBaseQuery()
+    {
         return $this->query->getQuery();
     }
 
@@ -223,7 +233,8 @@ abstract class Relation {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getParent() {
+    public function getParent()
+    {
         return $this->parent;
     }
 
@@ -232,7 +243,8 @@ abstract class Relation {
      *
      * @return string
      */
-    public function getQualifiedParentKeyName() {
+    public function getQualifiedParentKeyName()
+    {
         return $this->parent->getQualifiedKeyName();
     }
 
@@ -241,7 +253,8 @@ abstract class Relation {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getRelated() {
+    public function getRelated()
+    {
         return $this->related;
     }
 
@@ -250,7 +263,8 @@ abstract class Relation {
      *
      * @return string
      */
-    public function createdAt() {
+    public function createdAt()
+    {
         return $this->parent->getCreatedAtColumn();
     }
 
@@ -259,7 +273,8 @@ abstract class Relation {
      *
      * @return string
      */
-    public function updatedAt() {
+    public function updatedAt()
+    {
         return $this->parent->getUpdatedAtColumn();
     }
 
@@ -268,7 +283,8 @@ abstract class Relation {
      *
      * @return string
      */
-    public function relatedUpdatedAt() {
+    public function relatedUpdatedAt()
+    {
         return $this->related->getUpdatedAtColumn();
     }
 
@@ -279,11 +295,13 @@ abstract class Relation {
      * @param  bool  $merge
      * @return array
      */
-    public static function morphMap(array $map = null, $merge = true) {
+    public static function morphMap(array $map = null, $merge = true)
+    {
         $map = static::buildMorphMapFromModels($map);
 
         if (is_array($map)) {
-            static::$morphMap = $merge && static::$morphMap ? array_merge(static::$morphMap, $map) : $map;
+            static::$morphMap = $merge && static::$morphMap
+                            ? array_merge(static::$morphMap, $map) : $map;
         }
 
         return static::$morphMap;
@@ -295,14 +313,15 @@ abstract class Relation {
      * @param  string[]|null  $models
      * @return array|null
      */
-    protected static function buildMorphMapFromModels(array $models = null) {
+    protected static function buildMorphMapFromModels(array $models = null)
+    {
         if (is_null($models) || Arr::isAssoc($models)) {
             return $models;
         }
 
         return array_combine(array_map(function ($model) {
-                    return (new $model)->getTable();
-                }, $models), $models);
+            return (new $model)->getTable();
+        }, $models), $models);
     }
 
     /**
@@ -312,7 +331,8 @@ abstract class Relation {
      * @param  array   $parameters
      * @return mixed
      */
-    public function __call($method, $parameters) {
+    public function __call($method, $parameters)
+    {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
         }
@@ -331,8 +351,8 @@ abstract class Relation {
      *
      * @return void
      */
-    public function __clone() {
+    public function __clone()
+    {
         $this->query = clone $this->query;
     }
-
 }

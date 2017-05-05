@@ -16,8 +16,8 @@ namespace Prophecy\Argument\Token;
  *
  * @author Konstantin Kudryashov <ever.zet@gmail.com>
  */
-interface TokenInterface {
-
+interface TokenInterface
+{
     /**
      * Calculates token match score for provided argument.
      *

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -16,14 +15,15 @@
  * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  */
-class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError {
-
+class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError
+{
     /**
      * @var SebastianBergmann\Comparator\ComparisonFailure
      */
     protected $comparisonFailure;
 
-    public function __construct($message, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null, Exception $previous = null) {
+    public function __construct($message, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null, Exception $previous = null)
+    {
         $this->comparisonFailure = $comparisonFailure;
 
         parent::__construct($message, 0, $previous);
@@ -32,8 +32,8 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     /**
      * @return SebastianBergmann\Comparator\ComparisonFailure
      */
-    public function getComparisonFailure() {
+    public function getComparisonFailure()
+    {
         return $this->comparisonFailure;
     }
-
 }

@@ -4,9 +4,9 @@ namespace PhpParser;
 
 use PhpParser\Parser\Tokens;
 
-class LexerTest extends \PHPUnit_Framework_TestCase {
+class LexerTest extends \PHPUnit_Framework_TestCase
+{
     /* To allow overwriting in parent class */
-
     protected function getLexer(array $options = array()) {
         return new Lexer($options);
     }
@@ -21,7 +21,7 @@ class LexerTest extends \PHPUnit_Framework_TestCase {
 
         $errorHandler = new ErrorHandler\Collecting();
         $lexer = $this->getLexer(['usedAttributes' => [
-                'comments', 'startLine', 'endLine', 'startFilePos', 'endFilePos'
+            'comments', 'startLine', 'endLine', 'startFilePos', 'endFilePos'
         ]]);
         $lexer->startLexing($code, $errorHandler);
         $errors = $errorHandler->getErrors();
@@ -40,10 +40,10 @@ class LexerTest extends \PHPUnit_Framework_TestCase {
             // Error with potentially emulated token
             array("<?php ?? \0", array("Unexpected null byte from 1:10 to 1:10")),
             array("<?php\n\0\1 foo /* bar", array(
-                    "Unexpected null byte from 2:1 to 2:1",
-                    "Unexpected character \"\1\" (ASCII 1) from 2:2 to 2:2",
-                    "Unterminated comment from 2:8 to 2:14"
-                )),
+                "Unexpected null byte from 2:1 to 2:1",
+                "Unexpected character \"\1\" (ASCII 1) from 2:2 to 2:2",
+                "Unterminated comment from 2:8 to 2:14"
+            )),
         );
     }
 
@@ -223,8 +223,8 @@ class LexerTest extends \PHPUnit_Framework_TestCase {
             array('<?php ... __halt_compiler();Remaining Text', 'Remaining Text'),
             array('<?php ... __halt_compiler ( ) ;Remaining Text', 'Remaining Text'),
             array('<?php ... __halt_compiler() ?>Remaining Text', 'Remaining Text'),
-                //array('<?php ... __halt_compiler();' . "\0", "\0"),
-                //array('<?php ... __halt_compiler /* */ ( ) ;Remaining Text', 'Remaining Text'),
+            //array('<?php ... __halt_compiler();' . "\0", "\0"),
+            //array('<?php ... __halt_compiler /* */ ( ) ;Remaining Text', 'Remaining Text'),
         );
     }
 
@@ -256,5 +256,4 @@ class LexerTest extends \PHPUnit_Framework_TestCase {
         $lexer->startLexing($code);
         $this->assertSame($expectedTokens, $lexer->getTokens());
     }
-
 }

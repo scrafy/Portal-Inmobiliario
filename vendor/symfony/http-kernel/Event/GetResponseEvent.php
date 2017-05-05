@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class GetResponseEvent extends KernelEvent {
-
+class GetResponseEvent extends KernelEvent
+{
     /**
      * The response object.
      *
@@ -36,7 +36,8 @@ class GetResponseEvent extends KernelEvent {
      *
      * @return Response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->response;
     }
 
@@ -45,7 +46,8 @@ class GetResponseEvent extends KernelEvent {
      *
      * @param Response $response
      */
-    public function setResponse(Response $response) {
+    public function setResponse(Response $response)
+    {
         $this->response = $response;
 
         $this->stopPropagation();
@@ -56,8 +58,8 @@ class GetResponseEvent extends KernelEvent {
      *
      * @return bool Whether a response was set
      */
-    public function hasResponse() {
+    public function hasResponse()
+    {
         return null !== $this->response;
     }
-
 }

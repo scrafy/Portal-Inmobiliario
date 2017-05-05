@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpDocumentor.
  *
@@ -25,8 +24,8 @@ use phpDocumentor\Reflection\Type;
  * 2. Types (`string[]`), where the value type is provided by preceding an opening and closing square bracket with a
  *    type name.
  */
-final class Array_ implements Type {
-
+final class Array_ implements Type
+{
     /** @var Type */
     private $valueType;
 
@@ -39,9 +38,10 @@ final class Array_ implements Type {
      * @param Type $valueType
      * @param Type $keyType
      */
-    public function __construct(Type $valueType = null, Type $keyType = null) {
+    public function __construct(Type $valueType = null, Type $keyType = null)
+    {
         if ($keyType === null) {
-            $keyType = new Compound([new String_(), new Integer()]);
+            $keyType = new Compound([ new String_(), new Integer() ]);
         }
         if ($valueType === null) {
             $valueType = new Mixed();
@@ -56,7 +56,8 @@ final class Array_ implements Type {
      *
      * @return Type
      */
-    public function getKeyType() {
+    public function getKeyType()
+    {
         return $this->keyType;
     }
 
@@ -65,7 +66,8 @@ final class Array_ implements Type {
      *
      * @return Type
      */
-    public function getValueType() {
+    public function getValueType()
+    {
         return $this->valueType;
     }
 
@@ -74,12 +76,12 @@ final class Array_ implements Type {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         if ($this->valueType instanceof Mixed) {
             return 'array';
         }
 
         return $this->valueType . '[]';
     }
-
 }

@@ -8,8 +8,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Redis\Connections\PhpRedisConnection;
 use Illuminate\Redis\Connections\PhpRedisClusterConnection;
 
-class PhpRedisConnector {
-
+class PhpRedisConnector
+{
     /**
      * Create a new clustered Predis connection.
      *
@@ -17,9 +17,10 @@ class PhpRedisConnector {
      * @param  array  $options
      * @return \Illuminate\Redis\PhpRedisConnection
      */
-    public function connect(array $config, array $options) {
+    public function connect(array $config, array $options)
+    {
         return new PhpRedisConnection($this->createClient(array_merge(
-                                $config, $options, Arr::pull($config, 'options', [])
+            $config, $options, Arr::pull($config, 'options', [])
         )));
     }
 
@@ -31,11 +32,12 @@ class PhpRedisConnector {
      * @param  array  $options
      * @return \Illuminate\Redis\Connections\PhpRedisClusterConnection
      */
-    public function connectToCluster(array $config, array $clusterOptions, array $options) {
+    public function connectToCluster(array $config, array $clusterOptions, array $options)
+    {
         $options = array_merge($options, $clusterOptions, Arr::pull($config, 'options', []));
 
         return new PhpRedisClusterConnection($this->createRedisClusterInstance(
-                        array_map([$this, 'buildClusterConnectionString'], $config), $options
+            array_map([$this, 'buildClusterConnectionString'], $config), $options
         ));
     }
 
@@ -45,9 +47,10 @@ class PhpRedisConnector {
      * @param  array  $server
      * @return string
      */
-    protected function buildClusterConnectionString(array $server) {
-        return $server['host'] . ':' . $server['port'] . '?' . http_build_query(Arr::only($server, [
-                            'database', 'password', 'prefix', 'read_timeout',
+    protected function buildClusterConnectionString(array $server)
+    {
+        return $server['host'].':'.$server['port'].'?'.http_build_query(Arr::only($server, [
+            'database', 'password', 'prefix', 'read_timeout',
         ]));
     }
 
@@ -57,23 +60,24 @@ class PhpRedisConnector {
      * @param  array  $config
      * @return \Redis
      */
-    protected function createClient(array $config) {
+    protected function createClient(array $config)
+    {
         return tap(new Redis, function ($client) use ($config) {
             $this->establishConnection($client, $config);
 
-            if (!empty($config['password'])) {
+            if (! empty($config['password'])) {
                 $client->auth($config['password']);
             }
 
-            if (!empty($config['database'])) {
+            if (! empty($config['database'])) {
                 $client->select($config['database']);
             }
 
-            if (!empty($config['prefix'])) {
+            if (! empty($config['prefix'])) {
                 $client->setOption(Redis::OPT_PREFIX, $config['prefix']);
             }
 
-            if (!empty($config['read_timeout'])) {
+            if (! empty($config['read_timeout'])) {
                 $client->setOption(Redis::OPT_READ_TIMEOUT, $config['read_timeout']);
             }
         });
@@ -86,9 +90,10 @@ class PhpRedisConnector {
      * @param  array  $config
      * @return void
      */
-    protected function establishConnection($client, array $config) {
+    protected function establishConnection($client, array $config)
+    {
         $client->{Arr::get($config, 'persistent', false) === true ? 'pconnect' : 'connect'}(
-                $config['host'], $config['port'], Arr::get($config, 'timeout', 0)
+            $config['host'], $config['port'], Arr::get($config, 'timeout', 0)
         );
     }
 
@@ -99,10 +104,14 @@ class PhpRedisConnector {
      * @param  array  $options
      * @return \RedisCluster
      */
-    protected function createRedisClusterInstance(array $servers, array $options) {
+    protected function createRedisClusterInstance(array $servers, array $options)
+    {
         return new RedisCluster(
-                null, array_values($servers), Arr::get($options, 'timeout', 0), Arr::get($options, 'read_timeout', 0), isset($options['persistent']) && $options['persistent']
+            null,
+            array_values($servers),
+            Arr::get($options, 'timeout', 0),
+            Arr::get($options, 'read_timeout', 0),
+            isset($options['persistent']) && $options['persistent']
         );
     }
-
 }

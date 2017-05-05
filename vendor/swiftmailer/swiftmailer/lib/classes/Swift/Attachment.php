@@ -13,8 +13,8 @@
  *
  * @author Chris Corbyn
  */
-class Swift_Attachment extends Swift_Mime_Attachment {
-
+class Swift_Attachment extends Swift_Mime_Attachment
+{
     /**
      * Create a new Attachment.
      *
@@ -24,11 +24,13 @@ class Swift_Attachment extends Swift_Mime_Attachment {
      * @param string                        $filename
      * @param string                        $contentType
      */
-    public function __construct($data = null, $filename = null, $contentType = null) {
+    public function __construct($data = null, $filename = null, $contentType = null)
+    {
         call_user_func_array(
-                array($this, 'Swift_Mime_Attachment::__construct'), Swift_DependencyContainer::getInstance()
-                        ->createDependenciesFor('mime.attachment')
-        );
+            array($this, 'Swift_Mime_Attachment::__construct'),
+            Swift_DependencyContainer::getInstance()
+                ->createDependenciesFor('mime.attachment')
+            );
 
         $this->setBody($data);
         $this->setFilename($filename);
@@ -46,7 +48,8 @@ class Swift_Attachment extends Swift_Mime_Attachment {
      *
      * @return Swift_Mime_Attachment
      */
-    public static function newInstance($data = null, $filename = null, $contentType = null) {
+    public static function newInstance($data = null, $filename = null, $contentType = null)
+    {
         return new self($data, $filename, $contentType);
     }
 
@@ -58,10 +61,11 @@ class Swift_Attachment extends Swift_Mime_Attachment {
      *
      * @return Swift_Mime_Attachment
      */
-    public static function fromPath($path, $contentType = null) {
+    public static function fromPath($path, $contentType = null)
+    {
         return self::newInstance()->setFile(
-                        new Swift_ByteStream_FileByteStream($path), $contentType
-        );
+            new Swift_ByteStream_FileByteStream($path),
+            $contentType
+            );
     }
-
 }

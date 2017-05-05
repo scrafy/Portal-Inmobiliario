@@ -1,20 +1,22 @@
 <?php
 
 namespace Cron;
-
 use DateTime;
 use DateTimeZone;
+
 
 /**
  * Hours field.  Allows: * , / -
  */
-class HoursField extends AbstractField {
-
-    public function isSatisfiedBy(DateTime $date, $value) {
+class HoursField extends AbstractField
+{
+    public function isSatisfiedBy(DateTime $date, $value)
+    {
         return $this->isSatisfied($date->format('H'), $value);
     }
 
-    public function increment(DateTime $date, $invert = false, $parts = null) {
+    public function increment(DateTime $date, $invert = false, $parts = null)
+    {
         // Change timezone to UTC temporarily. This will
         // allow us to go back or forwards and hour even
         // if DST will be changed between the hours.
@@ -43,7 +45,7 @@ class HoursField extends AbstractField {
         if (count($hours) > 1) {
             for ($i = 0; $i < count($hours) - 1; $i++) {
                 if ((!$invert && $current_hour >= $hours[$i] && $current_hour < $hours[$i + 1]) ||
-                        ($invert && $current_hour > $hours[$i] && $current_hour <= $hours[$i + 1])) {
+                    ($invert && $current_hour > $hours[$i] && $current_hour <= $hours[$i + 1])) {
                     $position = $invert ? $i : $i + 1;
                     break;
                 }
@@ -54,15 +56,16 @@ class HoursField extends AbstractField {
         if ((!$invert && $date->format('H') >= $hour) || ($invert && $date->format('H') <= $hour)) {
             $date->modify(($invert ? '-' : '+') . '1 day');
             $date->setTime($invert ? 23 : 0, $invert ? 59 : 0);
-        } else {
+        }
+        else {
             $date->setTime($hour, $invert ? 59 : 0);
         }
 
         return $this;
     }
 
-    public function validate($value) {
+    public function validate($value)
+    {
         return (bool) preg_match('/^[\*,\/\-0-9]+$/', $value);
     }
-
 }
