@@ -1,0 +1,262 @@
+.ui-front
+{
+    z-index: 8000 !important;
+}
+
+.ui-state-active
+{
+    background-color: $red-color !important;
+    border-color: white !important;
+}
+
+.ui-widget-header
+{
+    background-color: $red-color;
+}
+
+.ui-state-default
+{
+    background-color: $red-color !important;
+}
+
+.form-control //overwrite bootstrap style
+{	
+    box-shadow: inset 0 1px 1px rgba(228, 37, 13, 0.075);
+    &:focus
+        {
+        border-color: rgba(228,37,13,0.6);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(228, 37, 13, 0.6);
+        outline: 0 none;
+    }
+}
+
+.pagination > li > a //overwrite bootstrap style
+{
+    color:$red-color;
+    &:focus,
+        &:hover
+        {
+        background-color:$red-color;
+        color: white;
+    }
+}
+
+.filter-prop-selected
+{
+    background-color: $red-color;
+    color: white !important;
+    font-weight: bold;
+}
+
+.my-select
+{
+    border: 1px solid grey;
+    border-radius:100px;
+    position: relative;
+}
+
+.selected-red
+{
+    color:$red-color !important;
+}
+
+.actual-page
+{
+    background-color: $red-color !important;
+    color: white !important;
+    &:hover
+        {
+        background-color:white !important;
+        color: $red-color !important;
+    }
+}
+
+body
+{
+    font-family: $font-family;
+    color:$main-font-color;
+    background-color: rgba(0,0,0,0.1);
+
+}
+
+a:hover,
+a:focus
+{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.wrapper-back-black
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    display: block;
+    opacity:0.3;
+    background-color: black;
+    top:0;
+    left: 0;
+}
+
+.wrapper-back-black-init
+{
+    display: none;
+}
+
+.no-padding
+{
+    padding: 0 !important;
+}
+
+.no-border
+{
+    border:0 !important;
+}
+
+.no-margin
+{
+    margin: 0 !important;
+}
+
+.block
+{
+    display: block;
+}
+
+.margin-auto
+{
+    margin:0 auto !important;
+}
+
+.rotate
+{
+    transform: rotateZ(90deg);
+    display: block;
+}
+
+.show
+{
+    display: block;
+}
+
+.show-flex
+{
+    display: flex !important;
+}
+
+.button-rounded-red
+{
+    background-color: $red-color;
+    text-align: center;
+    border-radius: 17px;
+    color: white;
+    border: 1px solid grey;
+    padding: -2em;
+    padding: 0.4em 1em 0.4em 1em;
+    font-weight: bold;
+    line-height: 26px;
+    width: 11em;
+    &:hover
+        {
+        cursor:pointer;
+    }
+}
+
+.button-rounded-red-view
+{
+    background-color: #e4250d;
+    text-align: center;
+    border-radius: 17px;
+    color: white;
+    border: 1px solid grey;
+    padding: -2em;
+    font-weight: bold;
+    padding: 0.4em;
+    width: 151.34px;
+    font-size: 1em;
+    &:hover
+        {
+        cursor:pointer;
+    }
+}
+
+.button-rounded-white
+{
+    text-align: center;
+    border-radius: 17px;
+    display: inline-block;
+    color: grey;
+    border: 1px solid grey;
+    padding: -2em;
+    padding: 0.4em 1em 0.4em 1em;
+    &:hover
+        {
+        cursor:pointer;
+    }
+}
+
+.button-square-white
+{
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    color: grey;
+    border: 1px solid grey;
+    padding: -2em;
+    padding: 0.4em 1em 0.4em 1em;
+
+}
+
+.button-circle-white
+{
+    &:hover
+        {
+        cursor:pointer;
+    }
+    text-align: center;
+    border-radius: 50%;
+    display: inline-block;
+    color: grey;
+    border: 1px solid grey;
+    padding: -2em;
+    weight: 30px;
+    width: 30px;
+    line-height: 26px;
+}
+
+.wrapper
+{
+    margin: 0 auto;
+    position:relative;
+    background-color: white;
+    max-width: 1428px;
+    //box-shadow: 10px 10px 5px rgba(0,0,0,0.3);
+}
+
+.max-width
+{
+    width:100% !important;
+}
+
+.contactform
+{
+    & form
+    {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        width: 200px;
+        @media screen and (min-width: 700px)
+            {
+            width: 642px;
+        } 
+    }
+    margin-top: 2em;
+    & .button-rounded-red
+    {
+        padding: 0;
+        margin-top: 1em;
+    }
+}

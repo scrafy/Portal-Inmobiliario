@@ -1,0 +1,39 @@
+.l-about
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5em;
+    & .l-about-body
+    {
+        width: 700px;
+        margin-top: 1em;
+        border: 1px solid #D5DBDB;
+        & .l-about-img
+        {
+            height: 200px;
+            & img
+            {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        & .l-about-data
+        {
+            padding: 1em;
+            text-align: justify;
+            & .title
+            {
+                color:$red-color;
+                font-weight: bold;
+                margin-bottom: 1em;
+                font-size:1.5em;
+                & + p
+                {
+                    margin: 0;
+                    margin-bottom: 1.3em;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

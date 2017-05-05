@@ -1,0 +1,142 @@
+footer
+{
+    margin:0 -15px;
+    margin-top: 3em;
+    box-shadow: 0px -12px 28px rgba(0, 0, 0, 0.5); 
+    & .l-section-bottom-data
+    {
+        overflow: hidden;
+        & .contactform
+        {
+            display: none;
+        }
+        & .l-section-bottom-data-links
+        {
+            display: flex;
+            justify-content: space-around;
+            margin: 0 auto;
+            margin-top: 1em;
+            max-width: 600px;
+            & a
+            {
+                text-decoration: none;
+                color: grey;
+                font-weight: bold;
+                &:hover
+                    {
+                    color:$red-color;
+                }
+            }
+        }
+        & .l-section-bottom-data-image
+        {
+            & img
+            {
+                margin: 0 auto;
+            }
+        }
+        & .l-section-bottom-data-contactus
+        {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 0 auto;
+            max-width: 920px;
+            margin: 0 auto;
+            justify-content: space-between;
+            display: none;
+            padding: 1em;
+            & span:first-child
+                {
+                font-size: 1.5em;
+                color: $red-color;
+                padding-right: 0.5em;
+                display: inline-block;
+                position: relative;
+                &:before
+                    {
+                    position:relative;
+                    top:6px;
+                }
+            }
+            & span:nth-child(2)
+                {
+                display: inline-block;
+                font-size: 1.1em;
+            }
+        }
+        & .l-section-bottom-data-openinghours
+        {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            align-items: center;
+            display: none;
+            & span
+            {
+                display: block;
+                &:first-child
+                    {
+                    color:$red-color;
+                }
+            }
+            & div
+            {
+                margin: 1em 0; 
+                width: 100%;
+                &:first-child
+                    {
+                    margin-top: 2em;
+                }
+                &:last-child
+                    {
+                    margin-bottom: 0;
+                }
+                & span:first-child
+                    {
+                    text-align:center;
+                }
+                & span:nth-child(2)
+                    {
+                    text-align:center;
+                }
+            }	
+        }
+    }
+    & .l-breadcrumbs
+    {
+        height: 40px;
+        background-color: grey;
+        display: flex;
+        justify-content: space-between;
+        color: white;
+        font-weight: bold;
+        padding-top: 0.5em;
+        & ul
+        {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            & li
+            {
+                display: inline-block;
+                font-size: 2em;
+                margin-right: 0.2em;
+                & a
+                {
+                    color:white;
+                    text-decoration: none;
+                    &:hover
+                        {
+                        cursor:pointer;
+                    }
+                }
+            }
+        }
+        & div
+        {
+            line-height: 28px;
+            padding-left: 1em;
+        }
+    }
+
+}

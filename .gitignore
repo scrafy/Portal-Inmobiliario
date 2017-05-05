@@ -1,0 +1,6 @@
+app/public/img/Properties/Brochures/*.*
+app/public/img/Properties/EpcReports/*.*
+app/public/img/Properties/*.jpg
+app/public/img/Properties/*.png
+prepros-6.config
+nbproject

@@ -1,0 +1,105 @@
+.mobile-menu
+{
+    position: fixed;
+    z-index: 7000;
+    background-color: white;
+    top:0;
+    width: 100%;
+    right:-100%;
+    margin:0;
+    transition: right 0.5s;
+    padding-bottom: 1.5em;
+    display: none;
+    & .mobile-menu-header
+    {
+        background-color: $red-color;
+        color: white;
+        & .mobile-menu-header-row
+        {
+            padding:0.5em 0.5em 0 0.5em;
+            display: flex;
+            justify-content: space-between;
+            & .mobile-menu-header-right-arrow
+            {
+                font-size: 2em;
+            }
+            & .mobile-menu-header-right-arrow:before
+                {
+                position: relative;
+                top: 0px;
+            }
+
+        }
+    }
+    & .mobile-menu-header-list
+    {
+        list-style: none;
+        margin: 0;
+        & .mobile-menu-header-list-item
+        {
+            display: inline-block;
+            cursor: pointer;
+            &:first-child
+                {
+                font-size:1.5em;
+                font-weight: bold;
+            }
+            &:last-child
+                {
+                margin-left:1em;
+                vertical-align: middle;
+                & .icon-bars:before
+                    {
+                    position:relative;
+                    top:2px;
+                }
+            }
+            & .icon-bars
+            {
+                font-size: 2em;	
+            }
+        }
+    }
+}
+
+.show-mobile-menu
+{
+
+    right:0;
+
+}
+
+.menu-nav-mobile
+{
+    list-style: none;
+    margin: 0;
+    padding-left:1.5em;
+    padding-right:1.5em;
+    padding-top:0.5em;
+    margin-bottom:1.5em; 
+    & .menu-nav-item-mobile
+    {
+        display: block;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        border-bottom: 1px solid $menu-item-border-color;
+
+    }
+    & a
+    {
+        display: block;
+        color:$red-color;
+        text-decoration: none;
+        font-size: 1em;
+        height: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        &:hover
+            {
+            cursor:pointer;
+        }
+    }
+
+
+}
+

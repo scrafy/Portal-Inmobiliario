@@ -1,0 +1,462 @@
+.l-adverts
+{
+
+    margin: 0 auto;
+    display:flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.l-adverts-landscape
+{
+    width: 100%;
+}
+
+
+.l-advert-landscape
+{
+    border-radius: 3px;
+    border:1px solid grey;
+    margin-top: 1em;
+    padding-bottom: 1em;
+    position: relative;
+    & .wrapper-img-advert
+    {
+        height: 0%;
+        display: block;
+        position: absolute;
+    }
+    &:hover
+        {
+        & .wrapper-img-advert
+        {
+            min-width:100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            position: absolute;
+            z-index: 500;
+            transition: height 0.3s;
+            & span
+            {
+                position: absolute;
+                left: calc(50% - 35px);
+                top: calc(50% - 35px);
+                font-size: 5em;
+                color: white;
+
+            }
+        }
+    }
+    & .l-advert-img
+    {
+        position: relative;
+        & img
+        {
+            width: 100%;
+        }
+        & .l-advert-price
+        {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            background-color: white;
+            height: 30px;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            padding-left: 0.3em;
+            padding-right: 0.4em;
+            & span
+            {
+                color: $red-color;
+                font-weight: bold;
+                font-size: 1.5em;
+            }
+        }
+        & .l-advert-star
+        {
+            position: absolute;
+            bottom: -19px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50px;
+            padding-left: 0.5em;
+            border:1px solid grey;
+            padding-right: 2em;
+            & span
+            {
+                color:$red-color;
+                font-weight: bold;
+                font-size: 2em;
+                display: inline-block;
+                position: absolute;
+                right: 5px;
+                top:4px;
+            }
+        }
+    }
+    & .l-advert-name
+    {
+        color:$red-color;
+        font-weight: bold;
+        font-size: 1.3em;
+        margin-top: 0.5em;
+        padding: 0 0.5em;
+    }
+    & .l-house-summary
+    {
+        padding: 0 0.5em;
+        & .l-house-summary-line
+        {
+            color: $grey-borders;
+            margin: 0;
+        }
+    }
+    & .l-house-summary-group-items
+    {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        & div
+        {
+            flex-shrink: 0;
+            padding: 0.4em 0.4em;
+            flex-grow: 0;
+            margin-top: 1em;
+            margin-left: 1em;
+
+        }
+
+    }
+    & .l-advert-data
+    {
+        display: flex;
+        padding-left: 0.5em;
+        margin-top: 1em;
+        & .l-type-house
+        {
+            width:40%;
+            border-right: 1px solid #D5DBDB;
+            & .l-type-house-img 
+            {
+                & .type-property
+                {
+                    margin-top: 0.5em;
+                }
+                & > div >img
+                {
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+            & span
+            {
+                display: block;
+            }
+            & .type-house-icon
+            {
+                background-image: url("/img/icons/apartment.png");
+                width: 32px;
+                height: 32px;
+                background-repeat: no-repeat;
+                background-size: contain; 
+                line-height: 31px;
+                & span
+                {
+                    padding-left: 2.5em;
+                }
+            }
+            & .furnished
+            {
+                margin-top: 0.5em;
+            }
+        }
+        & .l-house-data
+        {
+            display: flex;
+            justify-content: space-around;
+            width: 60%;
+            & .l-house-data-item
+            {
+                padding-left: 0.2em;
+                @media screen and (min-width: 403px) 
+                    {
+                    &
+                    {
+                        padding-left: 0.5em;
+                    }
+
+                }
+                & > div
+                {
+                    text-align: center;
+                }
+                & div:first-child
+                    {
+                    width: 32px;
+                    height: 32px;
+                    background-repeat: no-repeat;
+                    background-size: contain; 
+                }
+                & .l-house-data-item-icon-bed
+                {
+                    background-image: url("/img/icons/bed.png");
+                }
+                & .l-house-data-item-icon-shower
+                {
+                    background-image: url("/img/icons/bath.png");
+                }
+                & .l-house-data-item-icon-sofa
+                {
+                    background-image: url("/img/icons/sofa.png");
+                }
+                & .l-house-data-item-icon-car
+                {
+                    background-image: url("/img/icons/car.png");
+                }
+            }
+        }
+
+    }
+
+}
+
+.l-advert
+{
+    border-radius: 3px;
+    border:1px solid grey;
+    margin-top: 1em;
+    padding-bottom: 1em;
+    width: 100%;
+    position: relative;
+    @media screen and (min-width: 736px) and (max-width: 1223px)
+        {
+        width: 48%;
+        margin-left: 1.5em;
+        &:nth-child(2n+1)
+            {
+            margin-left: 0em;	
+        }
+    }
+    @media screen and (min-width: 1224px) and (max-width: 1427px)
+        {
+        width: 48%;
+        margin-left: 1.5em;
+        &:nth-child(2n+1)
+            {
+            margin-left: 0em;	
+        }
+    }
+    @media screen and (min-width: 1428px)
+        {
+        width: 31.9%;
+        margin-left: 1.5em;
+        &:nth-child(3n+1)
+            {
+            margin-left: 0em;	
+        }
+    }
+    & .wrapper-img-advert
+    {
+        height: 0%;
+        display: block;
+    }
+    &:hover
+        {
+        & .wrapper-img-advert
+        {
+            min-width:100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            position: absolute;
+            z-index: 500;
+            transition: height 0.3s;
+            & span
+            {
+                position: absolute;
+                left: calc(50% - 35px);
+                top: calc(50% - 35px);
+                font-size: 5em;
+                color: white;
+
+            }
+        }
+    }
+    & .l-advert-img
+    {
+        position: relative;
+        height: 220px;
+        & img
+        {
+            height: 220px;
+            width: 100%;
+        }
+        & .l-advert-price
+        {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            padding-right: 0.4em;
+            background-color: white;
+            height: 30px;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            padding-left: 0.3em;
+            & span
+            {
+                color: $red-color;
+                font-weight: bold;
+                font-size: 1.5em;
+            }
+        }
+        & .l-advert-star
+        {
+            position: absolute;
+            bottom: -19px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50px;
+            padding-left: 0.5em;
+            border:1px solid grey;
+            padding-right: 2em;
+            & span
+            {
+                color:$red-color;
+                font-weight: bold;
+                font-size: 2em;
+                display: inline-block;
+                position: absolute;
+                right: 5px;
+                top:6px;
+            }
+        }
+    }
+    & .l-advert-name
+    {
+        color:$red-color;
+        font-weight: bold;
+        font-size: 1.3em;
+        margin-top: 0.5em;
+        padding: 0 0.5em;
+    }
+    & .l-house-summary
+    {
+        padding: 0 0.5em;
+        & .l-house-summary-line
+        {
+            color: $grey-borders;
+            margin: 0;
+        }
+    }
+    & .l-house-summary-group-items
+    {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        & div
+        {
+            flex-shrink: 0;
+            padding: 0.4em 0.4em;
+            flex-grow: 0;
+            margin-top: 1em;
+            margin-left: 1em;
+
+        }
+
+    }
+    & .l-advert-data
+    {
+        display: flex;
+        padding-left: 0.5em;
+        margin-top: 1em;
+        & .l-type-house
+        {
+            border-right: 1px solid #D5DBDB;
+            width:40%;
+            & .l-type-house-img
+            {
+                width: 100%;
+                & .type-property
+                {
+                    width: 100%;
+                    margin-top: 0.5em;
+                }
+                & > div > img
+                {
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+            & .type-house-icon
+            {
+                background-image: url("/img/icons/apartment.png");
+                width: 32px;
+                height: 32px;
+                background-repeat: no-repeat;
+                background-size: contain; 
+                line-height: 31px;
+                & span
+                {
+                    padding-left: 2.5em;
+                }
+            }
+            & .furnished
+            {
+                margin-top: 0.5em;
+                width: 100%;
+            }
+        }
+        & .l-house-data
+        {
+            display: flex;
+            justify-content: space-around;
+            width: 60%;
+            padding-right: 0.3em;
+            & .l-house-data-item
+            {
+                padding-left: 0.2em;
+                @media screen and (min-width: 403px) 
+                    {
+                    &
+                    {
+                        padding-left: 0.5em;
+                    }
+
+                }
+                & > div
+                {
+                    text-align: center;
+                }
+                & div:first-child
+                    {
+                    width: 32px;
+                    height: 32px;
+                    background-repeat: no-repeat;
+                    background-size: contain; 
+                }
+                & .l-house-data-item-icon-bed
+                {
+                    background-image: url("/img/icons/bed.png");
+                }
+                & .l-house-data-item-icon-shower
+                {
+                    background-image: url("/img/icons/bath.png");
+                }
+                & .l-house-data-item-icon-sofa
+                {
+                    background-image: url("/img/icons/sofa.png");
+                }
+                & .l-house-data-item-icon-car
+                {
+                    background-image: url("/img/icons/car.png");
+                }
+            }
+        }
+
+    }
+
+}

@@ -1,0 +1,143 @@
+.main
+{
+    position: relative;
+    & aside
+    {
+        margin-top: 1.5em;
+    }
+    & section
+    {
+        & .l-results-line
+        {
+            margin: 0 -15px;
+            @media screen and (min-width: 991px)
+                {
+                display: none;
+            }
+        }
+        & .l-pagination
+        {
+            width: 100%;
+        }
+        & .l-results
+        {
+            display: flex;
+            justify-content: space-between;
+            padding: 1em 0;
+            @media screen and (min-width: 991px) 
+                {
+                &
+                {
+                    border: 1px solid #D5DBDB;
+                    margin-top: 1.5em;
+                    padding: 0.7em 1em;
+                }
+            } 
+            & .my-select
+            {
+                width: 14em;
+            }
+            & .l-results-sortby
+            {
+                flex-grow: 1;
+                text-align: end;
+                font-size: 1.5em;
+                padding-right: 1em;
+                display: none;
+                @media screen and (min-width: 480px) 
+                    {
+                    &
+                    {
+                        display: block;
+                    }
+                } 
+            }
+            & .results-list
+            {
+                list-style: none;
+                padding: 0;
+                margin:0;
+                line-height: 28px;
+                & .results-list-item
+                {
+                    display: inline-block;
+                    &:first-child
+                        {
+                        padding-right: 0.2em;
+                        @media screen and (min-width: 332px) 
+                            {
+                            &
+                            {
+                                padding-right: 1em;
+                            }
+                        }
+                        @media screen and (min-width: 1024px) 
+                            {
+                            &
+                            {
+                                border-right: 1px solid grey;
+                            }
+                        }  
+                        vertical-align: middle;
+                    }
+                    &:first-child span
+                        {
+                        color: $red-color;
+                        font-weight: bold;
+                    }
+                    &:nth-child(2)
+                        {
+                        padding-left: 0.2em;
+                        @media screen and (min-width: 332px) 
+                            {
+                            &
+                            {
+                                padding-left: 1em;
+                            }
+                        } 
+                    }
+                    &:nth-child(3)
+                        {
+                        padding-left: 0.2em;
+                        @media screen and (min-width: 332px) 
+                            {
+                            &
+                            {
+                                padding-left: 0.5em;
+                            }
+                        } 
+                        vertical-align: middle;
+                        span
+                        {
+                            display: block;
+                            font-size: 1.8em;
+                            color: $red-color;
+                            padding-top: 3px;
+                        }
+                    }
+                    &:nth-child(4)
+                        {
+                        vertical-align: middle;
+                        span
+                        {
+                            display: block;
+                            font-size: 1.5em;
+                            padding-top: 3px;
+                        }
+                    }
+                    &:last-child
+                        {
+                        vertical-align: middle;
+                        span
+                        {
+                            display: block;
+                            font-size: 1.5em;
+                            padding-top: 3px;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

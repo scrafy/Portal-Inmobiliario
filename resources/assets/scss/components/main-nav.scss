@@ -1,0 +1,47 @@
+.main-nav
+{
+    display: none;
+    border: 1px solid $red-color;
+    width: 100%;
+    @media screen and (min-width: 992px)
+        {
+        display: block;
+    }
+    & .menu-nav
+    {
+        list-style: none;
+        margin:0;
+        padding-left: 0;
+        background-color: $red-color;
+        height: 100%;
+        width: 100%;
+        text-align: right;
+        & .menu-nav-item
+        {
+            display: inline-block;
+            height: 100%;
+            & a
+            {
+                text-decoration: none;
+                text-transform: uppercase;
+                font-size: 1.2em;
+                height: 100%;
+                line-height: 35px;
+                color:white;
+                display: block;
+                padding: 0.5em;
+                &:hover,
+                    &:focus
+                    {
+                    cursor:pointer;
+                    color:$red-color;
+                    background-color: white;
+                }
+                @media screen and (min-width: 1224px)
+                    {
+                    font-size: 1.5em;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,260 @@
+.l-property-view
+{
+    margin-top :1em;
+    & .l-house-summary-line
+    {
+        margin-bottom: 0;
+    }
+    @media screen and (min-width: 1024px)
+        {
+        display: flex;
+        margin-bottom: 11em;
+    }
+    & .l-sec-property-view 
+    {
+        @media screen and (min-width: 1024px)
+            {
+            margin-top: 1.5em;
+            margin-left: 1em;
+        }
+        & .l-sec-property-view-img
+        {
+            position: relative;
+            & .l-advert-star
+            {
+                position: absolute;
+                bottom: -19px;
+                right: 12px;
+                width: 40px;
+                height: 40px;
+                background-color: white;
+                border-radius: 50px;
+                padding-left: 0.5em;
+                border:1px solid grey;
+                padding-right: 2em;
+                & span
+                {
+                    color:$red-color;
+                    font-weight: bold;
+                    font-size: 2em;
+                    display: inline-block;
+                    position: absolute;
+                    right: 5px;
+                    top:4px;
+                }
+            }
+
+            & .l-advert-price
+            {
+                position: absolute;
+                top: 10px;
+                left: 0;
+                width: 80px;
+                background-color: white;
+                height: 30px;
+                border-top-right-radius: 50px;
+                border-bottom-right-radius: 50px;
+                padding-left: 0.3em;
+                & span
+                {
+                    color: $red-color;
+                    font-weight: bold;
+                    font-size: 1.5em;
+                }
+            }
+        }
+        & > article 
+        {
+            padding:1em;
+            border: 1px solid #D5DBDB;
+            border: 1px solid #D5DBDB;
+            margin-top: 9px;
+            overflow-y: scroll;
+            @media screen and (min-width: 1024px)
+                {
+                height: 118px;
+                margin-top: 25px;
+            } 
+            & > p
+            {
+                text-align: justify;
+            }
+        }
+
+    }
+
+    & .l-aside-property-view
+    {
+        margin-top: 1em;
+        & .l-advert
+        {	
+            width: 100%;
+            & > ul 
+            {
+                list-style: none;
+                padding: 0;
+                margin:0;
+                font-size: 1em;
+                font-weight: bold;
+                padding-left: 0.5em;
+                & li
+                {
+                    display: inline-block;
+                    &:first-child
+                        {
+                        padding-right: 1em;
+                        border-right: 1px solid #D5DBDB;
+                    }
+                    &:last-child
+                        {
+                        padding-left: 1em;	
+                    }
+                }
+                @media screen and (min-width: 1024px)
+                    {
+                    padding-bottom: 1em;
+                    border-bottom: 1px solid #D5DBDB;
+                    padding-top: 0.5em;
+                    padding-left: 0;
+                }
+            }
+            & .l-house-summary
+            {
+                @media screen and (min-width: 1024px)
+                    {
+                    margin-left: -15px;
+                    marging-right: -15px;
+                }
+            }
+            & .l-advert-name
+            {
+                margin-top: 0;
+                line-height: 31px;
+                @media screen and (min-width: 1024px)
+                    {
+                    padding: 0;
+                }
+            }
+            border:0;
+            & .l-advert-data
+            {
+                flex-wrap: nowrap;
+                padding-left: 0;
+                padding-left: 1em;
+                margin-top:1.5em;
+                border-bottom: 1px solid #D5DBDB;
+                @media screen and (min-width: 1024px)
+                    {
+                    padding: 0;
+                    margin-top:1em;
+                }
+                & .l-type-house
+                {
+                    & .type-property
+                    {
+                        margin-top: 0.5em;
+
+                    }
+                    @media screen and (min-width: 1024px)
+                        {
+                        padding: 0;
+                    }
+                }
+            }
+            & .l-house-data 
+            {
+                justify-content: space-around;
+                flex-grow: 1;
+                padding: 0;
+            }
+            @media screen and (min-width: 1024px)
+                {
+                max-width: 100%;
+                border: 1px solid #D5DBDB;
+            }
+            @media screen and (min-width: 1024px)
+                {
+                border-radius: 0;
+                padding: 1em;
+            }
+        }
+        & > article 
+        {
+            padding:1em;
+            border-top: 1px solid #D5DBDB;
+            border-bottom: 1px solid #D5DBDB;
+            overflow-y: scroll; 
+            & > p
+            {
+                text-align: justify;
+            }
+
+        }
+        & .l-aside-property-view-map
+        {
+            height: 136px;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            width: 100%;
+            @media screen and (min-width: 1024px)
+                {
+                margin-top: 1em;
+                margin-bottom: 1em;
+            }
+            & > img
+            {
+                height: 100%;
+                width: 100%;
+            }
+        }
+        & .l-aside-property-view-buttons
+        {
+            margin-bottom: 3em;
+            & > div:first-child,
+                & > div:last-child
+                {
+                margin-bottom: 0.5em;
+                display: flex;
+                justify-content: space-around;
+            }
+            & > div:last-child
+                {
+                margin: 0;
+            }
+            @media screen and (min-width: 1024px)
+                {
+                padding: 1.5em 0;
+                margin-bottom: 0;
+                margin-top: 19px
+            }
+            & .button-rounded-red-view
+            {
+                font-size: 0.8em;
+                & span:before
+                    {
+                    display:inline-block;
+                    margin-right: 0.4em;
+                }
+                @media screen and (min-width: 360px)
+                    {
+                    font-size: 0.9em;
+                    width:167.34px;
+                }
+                @media screen and (min-width: 414px)
+                    {
+                    font-size: 1em;
+                    width:176.34px;
+                }
+            }
+        }
+        @media screen and (min-width: 1024px)
+            {
+            margin-top: 1.5em;
+            margin-left: 1em;
+            margin-right: 1em;
+            border-radius: 0;
+        }
+    }
+}
+
+

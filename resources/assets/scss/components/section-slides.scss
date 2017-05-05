@@ -1,0 +1,192 @@
+.l-slides
+{
+    position: relative;
+    overflow:hidden;
+    & .carousel
+    {
+        height: 107px;
+        @media screen and (min-width: 360px)
+            {
+            &
+            {
+                //height: 121px;
+            }
+        }
+        @media screen and (min-width: 375px)
+            {
+            &
+            {
+                height: 126px;
+            }
+        }
+        @media screen and (min-width: 414px)
+            {
+            &
+            {
+                height: 139px;
+            }
+        }
+        @media screen and (min-width: 480px)
+            {
+            &
+            {
+                height: 162px;
+            }
+        }
+        @media screen and (min-width: 568px)
+            {
+            &
+            {
+                height: 191px;
+            }
+        }
+        @media screen and (min-width: 640px)
+            {
+            &
+            {
+                height: 215px;
+            }
+        }
+        @media screen and (min-width: 667px)
+            {
+            &
+            {
+                height: 224px;
+            }
+        }
+        @media screen and (min-width: 736px)
+            {
+            &
+            {
+                height: 228px;
+            }
+        }
+        @media screen and (min-width: 768px)
+            {
+            &
+            {
+                height: 250px;
+            }
+        }
+        @media screen and (min-width: 1024px)
+            {
+            &
+            {
+
+            }
+        }
+        @media screen and (min-width: 1224px)
+            {
+            &
+            {
+
+            }
+        }
+        @media screen and (min-width: 1428px)
+            {
+            &
+            {
+
+            }
+        }
+        & .carousel-inner
+        {
+            & .item
+            {
+                & img
+                {
+                    height: 107px;
+                    @media screen and (min-width: 360px)
+                        {
+                        &
+                        {
+                            //height: 121px;
+                        }
+                    }
+                    @media screen and (min-width: 375px)
+                        {
+                        &
+                        {
+                            height: 126px;
+                        }
+                    }
+                    @media screen and (min-width: 414px)
+                        {
+                        &
+                        {
+                            height: 139px;
+                        }
+                    }
+                    @media screen and (min-width: 480px)
+                        {
+                        &
+                        {
+                            height: 162px;
+                        }
+                    }
+                    @media screen and (min-width: 568px)
+                        {
+                        &
+                        {
+                            height: 191px;
+                        }
+                    }
+                    @media screen and (min-width: 640px)
+                        {
+                        &
+                        {
+                            height: 215px;
+                        }
+                    }
+                    @media screen and (min-width: 667px)
+                        {
+                        &
+                        {
+                            height: 224px;
+                        }
+                    }
+                    @media screen and (min-width: 736px)
+                        {
+                        &
+                        {
+                            height: 228px;
+                        }
+                    }
+                    @media screen and (min-width: 768px)
+                        {
+                        &
+                        {
+                            height: 250px;
+                        }
+                    }
+                    @media screen and (min-width: 1024px)
+                        {
+                        &
+                        {
+
+                        }
+                    }
+                    @media screen and (min-width: 1224px)
+                        {
+                        &
+                        {
+
+                        }
+                    }
+                    @media screen and (min-width: 1428px)
+                        {
+                        &
+                        {
+
+                        }
+                    }
+                }
+            }	
+        }
+    }
+}
+
+.carousel-inner img
+{
+    width: 100%;
+}

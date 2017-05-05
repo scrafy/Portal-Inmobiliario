@@ -1,0 +1,33 @@
+.l-epc-report
+{
+    & .modal-dialog
+    {
+        & .modal-content
+        {
+            & .modal-body
+            {
+                & .l-body-epc
+                {
+                    & .title
+                    {
+                        font-weight: bold;
+                        font-size: 1.5em;
+                        margin-top: 0;
+                    }
+                    padding: 1em;
+                    & p,
+                    & .l-report-img
+                    {
+                        margin: 0;
+                        margin-top: 1em;
+                        & img
+                        {
+                            width: 100%;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}

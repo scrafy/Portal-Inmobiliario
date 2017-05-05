@@ -1,0 +1,56 @@
+.l-tenant
+{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5em;
+    & .l-tenant-body
+    {
+        width: 700px;
+        margin-top: 1em;
+        & .l-tenant-img
+        {
+            height: 200px;
+            & img
+            {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        & .l-tenant-data
+        {
+            text-align: justify;
+            & .title
+            {
+                color:$red-color;
+                font-weight: bold;
+                font-size:1.5em;
+                & + p
+                {
+                    margin: 0;
+                    font-weight: bold;
+                }
+            }
+            & > div
+            {
+                border: 1px solid #D5DBDB;
+                margin-bottom: 0.4em;
+                padding: 1em;
+                &:nth-child(n+2)
+                    {
+                    & p:first-child
+                        {
+                        & span:first-child
+                            {
+                            color:$red-color;
+                            margin-right: 1em;
+                        }
+                        & span:nth-child(2)
+                            {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
