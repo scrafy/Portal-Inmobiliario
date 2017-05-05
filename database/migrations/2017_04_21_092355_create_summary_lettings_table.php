@@ -13,7 +13,7 @@ class CreateSummaryLettingsTable extends Migration {
      */
     public function up() {
         Schema::create('summarylettings', function (Blueprint $table) {
-            $table->string('PropertyId', 255);
+            $table->string('PropertyId', 50);
             $table->string('LettingId', 255);
             $table->string('ShortAddress', 255);
             $table->string('FullAddress', 255);
