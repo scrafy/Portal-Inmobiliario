@@ -34,7 +34,7 @@ class CreateLettingsbypostcodeView extends Migration {
                             `pfp`.`summarylettings`
                         GROUP BY `pfp`.`summarylettings`.`PostCode`)) `a`
                         JOIN `pfp`.`postcodes` `b` ON ((`a`.`PostCode` = `b`.`PostCode`)))";
-        
+
         DB::connection()->getPdo()->exec($sql);
     }
 

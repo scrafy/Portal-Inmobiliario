@@ -13,7 +13,7 @@ class CreateBranchesTable extends Migration {
      */
     public function up() {
         Schema::create('branches', function (Blueprint $table) {
-            $table->string('id', 255)->primary();
+            $table->string('id', 50)->primary();
             $table->string('Etag', 255);
             $table->string('Name', 255);
             $table->string('CompanyName', 255);

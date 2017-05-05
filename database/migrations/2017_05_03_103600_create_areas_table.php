@@ -8,7 +8,7 @@ class CreateAreasTable extends Migration {
 
     public function up() {
         Schema::create('areas', function (Blueprint $table) {
-            $table->string('id', 255)->primary();
+            $table->string('id', 50)->primary();
             $table->string('Name', 255);
             $table->boolean('ShowInWeb');
             $table->string('BranchId', 255);

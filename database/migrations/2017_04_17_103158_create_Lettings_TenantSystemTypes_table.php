@@ -14,7 +14,7 @@ class CreateLettingsTenantSystemTypesTable extends Migration {
     public function up() {
         Schema::create('letting_tenantsystemtype', function (Blueprint $table) {
             $table->integer('tenantsystemtype_id')->unsigned();
-            $table->string('letting_id', 255);
+            $table->string('letting_id', 50);
 
             /* primary key */
             $table->primary(['tenantsystemtype_id', 'letting_id']);

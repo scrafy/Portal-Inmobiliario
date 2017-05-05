@@ -13,7 +13,7 @@ class CreatePropertiesTable extends Migration {
      */
     public function up() {
         Schema::create('properties', function (Blueprint $table) {
-            $table->string('id', 255)->primary();
+            $table->string('id', 50)->primary();
             $table->string('Etag', 255);
             $table->string('GlobalReference', 255);
             $table->string('RoomName', 50);
