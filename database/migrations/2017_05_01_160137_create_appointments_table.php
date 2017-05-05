@@ -18,7 +18,7 @@ class CreateAppointmentsTable extends Migration {
             $table->dateTime('FirstDate');
             $table->dateTime('SecondDate')->nullable();
             $table->dateTime('ThirdDate')->nullable();
-            $table->string('LettingId');
+            $table->string('LettingId',50);
             $table->timestamps();
             $table->foreign('LettingId')->references('id')->on('lettings');
         });

@@ -14,7 +14,7 @@ class CreatePostcodesTable extends Migration {
     public function up() {
         Schema::create('postcodes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('PostCode', 255)->unique();
+            $table->string('PostCode', 50)->unique();
             $table->string('Latitude', 255);
             $table->string('Longitude', 255);
         });

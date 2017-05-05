@@ -24,7 +24,7 @@ class CreatePhotosTable extends Migration {
             $table->string('Room', 255);
             $table->tinyInteger('PhotoNumber')->unsigned();
             $table->string('PhotoType', 255);
-            $table->string('PropertyId', 255);
+            $table->string('PropertyId', 50);
             $table->timestamps();
 
             /* foreign keys */

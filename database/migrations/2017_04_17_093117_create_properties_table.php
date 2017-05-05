@@ -18,14 +18,14 @@ class CreatePropertiesTable extends Migration {
             $table->string('GlobalReference', 255);
             $table->string('RoomName', 50);
             $table->string('FullAddress', 255);
-            $table->string('PostCode', 255);
+            $table->string('PostCode', 50);
             $table->char('PostCodeArea', 2);
-            $table->string('AreaId', 255);
+            $table->string('AreaId', 50);
             $table->Text('Description');
             $table->string('PropertySource', 255);
             $table->string('MainPhoto', 255);
             $table->string('PropertyType', 255);
-            $table->string('BranchId', 255);
+            $table->string('BranchId', 50);
             $table->timestamps();
 
             /* foreign keys */

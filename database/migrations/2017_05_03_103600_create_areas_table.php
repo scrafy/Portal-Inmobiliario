@@ -11,7 +11,7 @@ class CreateAreasTable extends Migration {
             $table->string('id', 50)->primary();
             $table->string('Name', 255);
             $table->boolean('ShowInWeb');
-            $table->string('BranchId', 255);
+            $table->string('BranchId', 50);
             $table->timestamps();
             $table->foreign('BranchId')->references('id')->on('branches');
         });

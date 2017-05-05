@@ -32,8 +32,8 @@ class CreateLettingsTable extends Migration {
             $table->tinyInteger('MaximumTenants')->unsigned();
             $table->tinyInteger('TermMinimum')->unsigned();
             $table->tinyInteger('TermMaximum')->unsigned();
-            $table->string('PropertyId', 255)->unique();
-            $table->string('BranchId', 255);
+            $table->string('PropertyId', 50)->unique();
+            $table->string('BranchId', 50);
             $table->timestamps();
 
             /* foreign keys */

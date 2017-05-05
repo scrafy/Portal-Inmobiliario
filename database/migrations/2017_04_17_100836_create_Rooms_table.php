@@ -26,7 +26,7 @@ class CreateRoomsTable extends Migration {
             $table->tinyInteger('LengthMeters')->unsigned()->nullable();
             $table->tinyInteger('WidthCentiMeters')->unsigned()->nullable();
             $table->tinyInteger('WidthMeters')->unsigned()->nullable();
-            $table->string('PropertyId', 255);
+            $table->string('PropertyId', 50);
             $table->timestamps();
 
             /* foreign keys */
