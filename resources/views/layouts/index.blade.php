@@ -26,7 +26,7 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoKHLJAgM84rIyWXwvtxixdeJVyUAMpHI" async defer></script>
     </head>
-    <body>
+    <body ontouchstart="">
         <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
         <input type="hidden" value="{{$data['limitmaxprice']}}" id="input_maxprice"/>
         @if($data['queryfilter'] !== "")
@@ -162,7 +162,7 @@
                         <span class="icon-slider rotate" id="show-menu-filter"></span>
                     </div>
                     <div class="l-main-logo">
-                        <a href="/index.html">{{ Html::image('img/logo.png',null,['class'=>'img-responsive main-logo']) }}</a>
+                        <a href="{{action('Web\HomeController@Home')}}">{{ Html::image('img/logo.png',null,['class'=>'img-responsive main-logo']) }}</a>
                     </div>
                     <div class="visible-xs visible-sm ">
                         <span class="icon-bars" id="show-menu-mobile"></span>

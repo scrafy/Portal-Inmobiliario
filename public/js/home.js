@@ -44,19 +44,21 @@ var home_api = (function () {
             return querystring;
         };
 
-        this.SetInfoWindow = function (content, marker, map) {
-            var infowindow = new google.maps.InfoWindow({
-                content: content,
-                maxWidth: 350
-                
-            });
-            marker.addListener('click', function () {
-                infowindow.open(map, this);
-            });
+    };
 
-        };
+    HomeApi.prototype.SetInfoWindow = function (content, marker, map)
+    {
+        var infowindow = new google.maps.InfoWindow({
+            content: content,
+            maxWidth: 350
+
+        });
+        marker.addListener('click', function () {
+            infowindow.open(map, this);
+        });
     }
-    ;
+
+
     HomeApi.prototype.SetUpMobileEvents = function ()
     {
         $('#show-menu-filter').click(function () {
@@ -96,12 +98,14 @@ var home_api = (function () {
             });
         });
     };
+
     HomeApi.prototype.SetUp = function () {
 
         var limitminprice = parseInt($("#input_minprice").val());
         var limitmaxprice = parseInt($("#input_maxprice").val());
         var minprice = limitminprice;
         var maxprice = limitmaxprice;
+
         $("#filterclean").bind("click", null, function (event) {
             home_api.DeleteParamFilters();
         });
@@ -110,14 +114,10 @@ var home_api = (function () {
         });
         $("#type-property-mob").selectmenu({
             change: function (event, data) {
-                if (data.item.label.toLowerCase().replace(/ /g, '').trim() === home_api.FinalParameters().type_property) {
+                if (data.item.label !== "--Select a type--")
+                    home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
+                else
                     home_api.ParametersFilter().type_property = null;
-                } else {
-                    if (data.item.label !== "--Select a type--")
-                        home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                    else
-                        home_api.ParametersFilter().type_property = null;
-                }
             }
         });
         $("#type-property").selectmenu({
@@ -134,14 +134,10 @@ var home_api = (function () {
         });
         $("#location").selectmenu({
             change: function (event, data) {
-                if (data.item.index === home_api.FinalParameters().location) {
+                if (data.item.label !== "--Any Area--") {
+                    home_api.ParametersFilter().area = data.item.value;
+                } else
                     home_api.ParametersFilter().area = null;
-                } else {
-                    if (data.item.label !== "--Any Area--") {
-                        home_api.ParametersFilter().area = data.item.value;
-                    } else
-                        home_api.ParametersFilter().area = null;
-                }
             }
         });
         $("#location-mob").selectmenu({
@@ -156,17 +152,14 @@ var home_api = (function () {
                 }
             }
         });
+
         $("#select-order-by").selectmenu({
             change: function (event, data) {
-                if (data.item.label.toLowerCase().replace(/ /g, '').trim() === home_api.FinalParameters().type_property) {
-                    home_api.ParametersFilter().sortby = null;
-                    $("#apply_filter_link")[0].click();
-                } else {
-                    home_api.ParametersFilter().sortby = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                    $("#apply_filter_link")[0].click();
-                }
+                home_api.ParametersFilter().sortby = data.item.label.toLowerCase().replace(/ /g, '').trim();
+                $("#apply_filter_link")[0].click();
             }
         });
+
         $("#numbeds").children().each(function (index, el) {
 
             $(this).bind("click", null, function (event) {
@@ -225,9 +218,11 @@ var home_api = (function () {
                 {
                     case "type_property":
                         params.type_property = t[1];
-                        $("#type-property > option[value='" + t[1] + "']").attr("selected", "");
+                        var type = $("#type-property");
+                        var type_mob = $("#type-property-mob");
+                        type[0].selectedIndex = $("#type-property > option[value='" + t[1] + "']")[0].index;
+                        type_mob[0].selectedIndex = $("#type-property-mob > option[value='" + t[1] + "']")[0].index;
                         $("#type-property").selectmenu("refresh");
-                        $("#type-property-mob > option[value='" + t[1] + "']").attr("selected", "");
                         $("#type-property-mob").selectmenu("refresh");
                         break;
                     case "minprice":
@@ -240,7 +235,8 @@ var home_api = (function () {
                         break;
                     case "sortby":
                         params.sortby = t[1];
-                        $("#select-order-by > option[value='" + t[1] + "']").attr("selected", "");
+                        var order = $("#select-order-by");
+                        order[0].selectedIndex = $("#select-order-by > option[value='" + t[1] + "']")[0].index;
                         $("#select-order-by").selectmenu("refresh");
                         break;
                     case "numbeds":
@@ -276,9 +272,9 @@ var home_api = (function () {
                 home_api.ParametersFilter().maxprice = ui.values[1];
             }
         };
-        
+
         $("#slider-range").slider(conf_slider);
-        
+
         var conf_slider_mobile = {
             range: true,
             min: limitminprice,
@@ -292,19 +288,19 @@ var home_api = (function () {
             }
         };
         $("#filter-mobile-slider-range").slider(conf_slider_mobile);
-        
-        $("#close-modal-map").bind("click",function(e){
+
+        $("#close-modal-map").bind("click", function (e) {
             $('#modal-map').modal('hide');
         });
-        
+       
         $('#modal-map').on('shown.bs.modal', function (e) {
             $(this).css("padding-right", "0");
-            
+
             var map = new google.maps.Map($("#home-map")[0], {
                 center: {lat: 53.45342, lng: -0.3991473},
                 zoom: 5
             });
-            
+
             $.ajax({
                 url: conf.endpoint + "getmapinformation",
                 success: function (data, status, xhr) {

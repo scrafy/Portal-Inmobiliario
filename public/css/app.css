@@ -9356,6 +9356,8 @@ footer {
     height: 0%;
     display: block;
     position: absolute; }
+    .l-advert-landscape .wrapper-img-advert > span {
+      position: absolute; }
   .l-advert-landscape:hover .wrapper-img-advert {
     min-width: 100%;
     height: 100%;
@@ -9521,6 +9523,8 @@ footer {
   .l-advert .wrapper-img-advert {
     height: 0%;
     display: block; }
+    .l-advert .wrapper-img-advert > span {
+      position: absolute; }
   .l-advert:hover .wrapper-img-advert {
     min-width: 100%;
     height: 100%;
@@ -9528,7 +9532,7 @@ footer {
     position: absolute;
     z-index: 500;
     transition: height 0.3s; }
-    .l-advert:hover .wrapper-img-advert span {
+    .l-advert:hover .wrapper-img-advert > span {
       position: absolute;
       left: calc(50% - 35px);
       top: calc(50% - 35px);

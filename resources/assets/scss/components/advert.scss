@@ -26,9 +26,14 @@
         height: 0%;
         display: block;
         position: absolute;
+        & > span
+        {
+            position: absolute; 
+        }
+        
     }
     &:hover
-        {
+    {
         & .wrapper-img-advert
         {
             min-width:100%;
@@ -262,9 +267,13 @@
     {
         height: 0%;
         display: block;
+        & > span
+        {
+            position: absolute; 
+        }
     }
     &:hover
-        {
+    {
         & .wrapper-img-advert
         {
             min-width:100%;
@@ -273,9 +282,9 @@
             position: absolute;
             z-index: 500;
             transition: height 0.3s;
-            & span
+            & > span
             {
-                position: absolute;
+                position: absolute; 
                 left: calc(50% - 35px);
                 top: calc(50% - 35px);
                 font-size: 5em;
