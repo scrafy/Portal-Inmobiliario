@@ -5,4 +5,4 @@ public/img/Properties/*.jpg
 public/img/Properties/*.png
 prepros-6.config
 nbproject
-./idea
+.idea/
