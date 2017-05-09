@@ -1,5 +1,6 @@
-public/img/Properties/Brochures/*.*
-public/img/Properties/EpcReports/*.*
+public/img/Properties/Brochures/*.pdf
+public/img/Properties/EpcReports/*.jpg
+public/img/Properties/EpcReports/*.png
 public/img/Properties/*.jpg
 public/img/Properties/*.png
 prepros-6.config
