@@ -1,5 +1,6 @@
 var letting = (function () {
 
+
     function LettingApi() {
 
     }
@@ -7,6 +8,23 @@ var letting = (function () {
     LettingApi.prototype.SetUp = function () {
 
         var that = this;
+
+        $.get(conf.endpoint + "getlatlngfrompostcode/BH6 3PA", null, function (data, status, xhr) {
+
+            if (data.content !== null) {
+                var map = new google.maps.Map($(".l-aside-property-view-map")[0], {
+                    center: {lat: data.content.lat, lng: data.content.lng},
+                    zoom: 16
+                });
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: {lat: data.content.lat, lng: data.content.lng},
+                    icon: '/img/icons/mapico.png'
+
+                });
+            }
+        });
+
         $("#epc-report").bind("click", function (event) {
 
             if ($(this).attr("data-value") !== "") {

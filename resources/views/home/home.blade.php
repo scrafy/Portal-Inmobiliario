@@ -25,13 +25,14 @@
 @section('content')
 
 <div class="modal fade" id="modal-map">
-    <div class="modal-dialog margin-auto" role="document" style="width: 80%;top:17em;">
-        <div class="modal-content l-modal-content">
-            <div class="modal-body no-padding">
-                <div style="padding:2em;">
-                    <div class="home-map" id="home-map" style="height: 500px;margin:0 auto;box-shadow: 10px 10px 5px #888888;">
+    <div class="modal-dialog" role="document" style="height: 90%;width: 100%;margin:0 auto;top:0em;">
+        <div class="modal-content l-modal-content" style="height: 100%">
+            <div class="modal-body" style="height: 100%">
+                <div class="modal-map-close">
+                    <span id="close-modal-map">X</span>
+                </div>
+                <div class="home-map" id="home-map" style="width: 100%;height: 100%;">
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -115,7 +116,7 @@
                 <li class="results-list-item hidden-xs hidden-sm">View</li>
                 <li class="results-list-item hidden-xs hidden-sm" id="show-sprite"><span class="icon-thumbnails"></span></li>
                 <li class="results-list-item hidden-xs hidden-sm" id="show-landscape"><span class="icon-bars"></span></li>
-                <li class="results-list-item hidden-xs hidden-sm"><span data-toggle="modal" data-target="#modal-map" class="icon-map" id="open-map"></span></li>
+                <li class="results-list-item"><span data-toggle="modal" data-target="#modal-map" class="icon-map" id="open-map"></span></li>
             </ul>
             <div class="l-results-sortby">
                 <span>Sort by</span>
@@ -135,7 +136,7 @@
                 </a>
                 <div class="l-advert-img">
                     <div class="l-advert-price"><span>&pound; {{intval($letting->Price)}}</span></div>
-                    <div class="l-advert-star"><a href="/propertyview.html"><span class="glyphicon glyphicon-eye-open"></span></a></div>
+                    <div class="l-advert-star"><a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
                     @if($letting->MainPhoto != null)
                     {{Html::image('img/Properties/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
                     @else

@@ -1,6 +1,6 @@
 .main
 {
-    position: relative;
+    position: relgit ative;
     & aside
     {
         margin-top: 1.5em;
@@ -25,7 +25,7 @@
             justify-content: space-between;
             padding: 1em 0;
             @media screen and (min-width: 991px) 
-                {
+            {
                 &
                 {
                     border: 1px solid #D5DBDB;
@@ -45,7 +45,7 @@
                 padding-right: 1em;
                 display: none;
                 @media screen and (min-width: 480px) 
-                    {
+                {
                     &
                     {
                         display: block;

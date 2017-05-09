@@ -184,13 +184,20 @@ class LettingController extends Controller {
         return response()->json($resp);
     }
 
-    public function GetMapInformation() {
+    public function GetMapInformation($postcode = null) {
         $data = [];
         $resp = new JsonResponseModel();
         try {
-            $result = \DB::select('select * from lettingsbypostcode');
+            if($postcode !== null){
+                $result = \DB::select(sprintf("select * from lettingsbypostcode where PostCode = '%s'", $postcode));
+            }else{
+                $result = \DB::select("select * from lettingsbypostcode");
+            }
+           
             foreach ($result as &$postcode) {
                 $data[$postcode->PostCode] = [];
+                $data[$postcode->PostCode]['latitude'] = $postcode->Latitude;
+                $data[$postcode->PostCode]['longitude'] = $postcode->Longitude;
                 $string_lettings = explode("*", $postcode->data);
                 $cont = 0;
                 foreach ($string_lettings as &$string_letting) {
@@ -204,13 +211,30 @@ class LettingController extends Controller {
                     $cont++;
                 }
             }
-
-            foreach ($data as &$postcode) {
-                foreach ($postcode as &$letting)
-                    $letting = (object) $letting;
-                $letting->html = view("partials.letting.adverts")->with("letting", $letting)->__toString();
-                //return view("partials.letting.adverts")->with("letting", $letting);
+            $aux = [];
+            $data = (object) $data;
+            
+            foreach ($data as $name => $value) {
+                $aux = $data->$name;
+                $data->$name = new \stdClass();
+                $data->$name->html = null;
+                $data->$name->mob_html = null;
+                
+                $data->$name->latitude = floatval($aux['latitude']);
+                $data->$name->longitude = floatval($aux['longitude']);
+                unset($aux['latitude']);
+                unset($aux['longitude']);
+                $data->$name->lettings = $aux;
+                
             }
+            foreach ($data as $name => $value) {
+                $aux = [];
+                foreach ($data->$name->lettings as $_name => $_value) {
+                    $aux[] = (object) $_value;
+                }
+                $data->$name->html = view("partials.letting.adverts")->with("lettings", $aux)->__toString();
+            }
+            $resp->content = $data;
         } catch (\Exception $ex) {
             $resp->error = $ex->getMessage();
             $resp->stack_trace = $ex->getTrace();

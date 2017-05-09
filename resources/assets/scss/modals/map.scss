@@ -1,0 +1,61 @@
+.l-advert-modal-map
+{
+    width: 96%;
+    margin-bottom:2em;
+    margin-left:0;
+    margin-top:0;
+    & .wrapper-img-advert-modal-map
+    {
+        position: absolute;
+    }
+    & .l-advert-img 
+    {
+        & .l-advert-price-modal-map
+        {
+            min-width: 70px;
+            &
+            {
+                position: absolute;
+            }
+            & span
+            {
+                display: block;
+                padding-top: 0.2em;
+            }
+        }
+        & .l-advert-star-modal-map
+        {
+           right: 2px;
+           width: 30px;
+           height: 35px;
+           & span
+           {
+             font-size: 1.5em;
+             right: 6px;
+             top:8px;
+           }
+
+        }
+    }
+    & .l-advert-data-modal-map
+    {
+        flex-wrap: wrap;
+        & .l-type-house-modal-map
+        {
+            width: 100%;
+        }
+        & .l-house-data-modal-map
+        {
+            width: 100%;
+            margin-top: 1em;
+            justify-content: space-between;
+             padding:0 0.5em 0 0;
+            & .l-house-data-item
+            {
+                padding:0;
+            }
+        }
+    }
+   
+}
+

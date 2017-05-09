@@ -5,8 +5,26 @@
         <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=no">
         {{ Html::style('css/app.css') }}
         <link media="all" href={{URL::to('https://file.myfontastic.com/TKhv4HW6qV8tGeVkfgpQ8R/icons.css')}} rel="stylesheet"/>
+        <link rel="icon" type="img/ico" href="/img/icons/favicon.ico">
         <title>Passion For Properties</title>
         @yield('canonical')
+        <script type="text/javascript">
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-766834-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function () {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoKHLJAgM84rIyWXwvtxixdeJVyUAMpHI" async defer></script>
     </head>
     <body>
         <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
@@ -284,6 +302,5 @@
         {{ Html::script('js/home.js')}}
         {{ Html::script('js/letting.js')}}
         {{ Html::script('js/footer.js')}}
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoKHLJAgM84rIyWXwvtxixdeJVyUAMpHI" async defer></script>
     </body>
 </html>

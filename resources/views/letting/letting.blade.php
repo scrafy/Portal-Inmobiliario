@@ -227,7 +227,7 @@
             </div>
             <ul>
                 <li>
-                    <span>Available </span><span>{{$data['letting']->Start}}</span>
+                    <span>Available </span><span>{{date('Y-m-d',strtotime($data['letting']->Start))}}</span>
                 </li>
                 <li>
                     <span>Deposit&nbsp;&nbsp;</span><span>&pound; {{intval($data['letting']->BondRequired)}}</span>
@@ -272,9 +272,7 @@
                 {{$data['letting']->Description}}
             </p>
         </article>
-        <div class="l-aside-property-view-map">
-            <img src="/img/map.jpg" class="img-responsive">
-        </div>
+        <div class="l-aside-property-view-map"></div>
         <div class="l-aside-property-view-buttons">
             <div>
                 <a href="" data-toggle="modal" data-target="#arrangeview-modal">
