@@ -149,6 +149,8 @@ $("#show-sprite").bind("click", function (event) {
         ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
         ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
     }
+    $('#show-landscape a').removeClass('active');
+    $(this).find('a').addClass('active');
 });
 
 $("#show-landscape").bind("click", function (event) {
@@ -159,4 +161,6 @@ $("#show-landscape").bind("click", function (event) {
         $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
         $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
     }
+    $('#show-sprite a').removeClass('active');
+    $(this).find('a').addClass('active');
 });
