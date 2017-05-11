@@ -34,13 +34,16 @@
         @else
             {{ Html::script('js/vendors/jquery.js')}}
             {{ Html::script('js/vendors/jquery-ui.js')}}
+            {{ Html::script('js/vendors/jquery-cookie.js')}}
             {{ Html::script('js/vendors/bootstrap.js')}}
             {{ Html::script('js/init.js')}}
             {{ Html::script('js/home.js')}}
             {{ Html::script('js/footer.js')}}
             {{ Html::script('js/letting.js')}}
         @endif
-        
+        <script>
+               $.ajaxSetup({ headers: { 'X-XSRF-TOKEN' : '{{ csrf_token() }}' } });
+        </script>
     </head>
     <body ontouchstart="">
         <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
@@ -309,7 +312,6 @@
             </footer>
 
             <!--END FOOTER-->
-
         </div>
     </body>
 </html>
