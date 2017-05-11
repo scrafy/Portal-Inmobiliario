@@ -1,10 +1,10 @@
 .main-nav
 {
     display: none;
-    border: 1px solid $red-color;
-    width: 100%;
+    float: right;
     @media screen and (min-width: 992px)
         {
+        margin-top: 30px;
         display: block;
     }
     & .menu-nav
@@ -12,34 +12,34 @@
         list-style: none;
         margin:0;
         padding-left: 0;
-        background-color: $red-color;
         height: 100%;
         width: 100%;
+        float: right;
         text-align: right;
         & .menu-nav-item
         {
             display: inline-block;
             height: 100%;
+            &:not(:last-child) {
+                border-right: 1px solid $red-color;
+            }
             & a
             {
+                color: $red-color;
                 text-decoration: none;
                 text-transform: uppercase;
-                font-size: 1.2em;
                 height: 100%;
-                line-height: 35px;
-                color:white;
+                line-height: 30px;
                 display: block;
-                padding: 0.5em;
+                padding: 0 4px;
+                margin: 0 8px 0 4px;
                 &:hover,
                     &:focus
                     {
                     cursor:pointer;
-                    color:$red-color;
-                    background-color: white;
-                }
-                @media screen and (min-width: 1224px)
-                    {
-                    font-size: 1.5em;
+                    color: white;
+                    background-color: $red-color;
+                    border-radius: 999999px;
                 }
             }
         }
