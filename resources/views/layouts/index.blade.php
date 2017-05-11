@@ -230,6 +230,10 @@
                         <div class="item">
                             {{ Html::image('img/slides/corporate.jpg') }}
                         </div>
+
+                        <div class="item">
+                            {{ Html::image('img/slides/M_3.jpg') }}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -238,80 +242,87 @@
 
             @yield('content')
 
-            <!--FOOTER-->
+        </div>
 
-            <footer>
-                <section class="l-section-bottom-data">
-                    <div class="l-section-bottom-data-links">
-                        <a id="contactus" class="selected-red">Contact us</a>
-                        <a id="openinghours">Opening hours</a>
-                        <a id="emailform">Email form</a>
+    </body>
+
+    <!--FOOTER-->
+
+    <footer>
+        <section class="l-section-bottom-data">
+            <div class="l-section-bottom-data-links">
+                <a id="contactus" class="selected-red">Contact us</a>
+                <a id="openinghours">Opening hours</a>
+                <a id="emailform">Email form</a>
+            </div>
+            <div class="l-section-bottom-data-contactus show-flex" data-target="contactus">
+                <div>
+                    <span class="icon-phone"></span><span>+44 (0)1244 35000000</span>
+                </div>
+                <div>
+                    <span class="icon-email"></span><span>info@passionforproperty.com</span>
+                </div>
+                <div>
+                    <span class="icon-ptint"></span><span>+44 (0)1244 350311</span>
+                </div>
+                <div>
+                    <span class="icon-map-pin"></span><span>info@passionforproperty.com</span>
+                </div>
+            </div>
+            <div class="l-section-bottom-data-openinghours" data-target="openinghours">
+                <div>
+                    <span>Monday - Friday</span><span>09:00 - 17:00</span>
+                </div>
+                <div>
+                    <span>Saturday</span><span>09:00 - 15:00</span>
+                </div>
+                <div>
+                    <span>Sunday</span><span>Closed</span>
+                </div>
+            </div>
+            <div class="contactform" data-target="emailform">
+                <form id="form_message">
+                    <div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your name" name="Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Email address" name="Email">
+                        </div>
                     </div>
-                    <div class="l-section-bottom-data-contactus show-flex" data-target="contactus">
-                        <div>
-                            <span class="icon-phone"></span><span>+44 (0)1244 35000000</span>
+                    <div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Telephone number" name="Phone">
                         </div>
-                        <div>
-                            <span class="icon-email"></span><span>info@passionforproperty.com</span>
-                        </div>
-                        <div>
-                            <span class="icon-ptint"></span><span>+44 (0)1244 350311</span>
-                        </div>
-                        <div>
-                            <span class="icon-map-pin"></span><span>info@passionforproperty.com</span>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Subject" name="Subject">
                         </div>
                     </div>
-                    <div class="l-section-bottom-data-openinghours" data-target="openinghours">
-                        <div>
-                            <span>Monday - Friday</span><span>09:00 - 17:00</span>
-                        </div>
-                        <div>
-                            <span>Saturday</span><span>09:00 - 15:00</span>
-                        </div>
-                        <div>
-                            <span>Sunday</span><span>Closed</span>
+                    <div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Message" rows=4 cols=20 name="Message"></textarea>
+                            <div class="button-rounded-red max-width" id="sendcontactmessage">&#62;&nbsp;&nbsp;SEND</div>
                         </div>
                     </div>
-                    <div class="contactform" data-target="emailform">
-                        <form id="form_message">
-                            <div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Your name" name="Name">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Email address" name="Email">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Telephone number" name="Phone">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Subject" name="Subject">
-                                </div>
-                            </div>
-                            <div>
-                                <div class="form-group">
-                                    <textarea class="form-control" placeholder="Message" rows=4 cols=20 name="Message"></textarea>
-                                    <div class="button-rounded-red max-width" id="sendcontactmessage">&#62;&nbsp;&nbsp;SEND</div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="l-section-bottom-data-image">
-                        {{ Html::image('img/buildings.png',null,['class'=>'img-responsive']) }}
-                    </div>
-                </section>
-                <section class="l-breadcrumbs">
-                    <div>Passion For Property &#9400; 2017</div>
-                    <ul>
-                        <li><a href="#"><span class="icon-twitter"></span></a></li>
-                        <li><a href="#"><span class="icon-facebook"></span></a></li>
-                    </ul>
-                </section>
-            </footer>
+                </form>
+            </div>
+            <div class="l-section-bottom-data-image">
+                {{ Html::image('img/buildings.png',null,['class'=>'img-responsive']) }}
+            </div>
+        </section>
+        <section class="l-breadcrumbs">
+            <div>Passion For Property &#9400; 2017</div>
+            <ul>
+                <li><a href="#"><span class="icon-twitter"></span></a></li>
+                <li><a href="#"><span class="icon-facebook"></span></a></li>
+            </ul>
+        </section>
+    </footer>
 
             <!--END FOOTER-->
         </div>
     </body>
+
+    <!--END FOOTER-->
+
 </html>
