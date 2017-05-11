@@ -9,3 +9,5 @@ nbproject
 .sass-cache/
 .env
 .env.example
+/node_modules/
+public/css/app.css
