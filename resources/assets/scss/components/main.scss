@@ -71,6 +71,10 @@
                         }
 
                     }
+                    span {
+                        font-weight: bold;
+                        color: $red-color;
+                    }
                     & a:not(.icon-thumbnails) {
                         font-size: 20px;
                         margin-right: 6px;

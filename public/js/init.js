@@ -143,8 +143,7 @@ $("#emailform").bind("click", null, function (event) {
     }
 });
 
-$("#show-sprite").bind("click", function (event) {
-
+$(document).on("click", "#show-sprite", function (event) {
     var ladverts = $("#l-adverts");
     if (!ladverts.hasClass("l-adverts"))
     {
@@ -152,11 +151,10 @@ $("#show-sprite").bind("click", function (event) {
         ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
     }
     $('#show-landscape a').removeClass('active');
-    $(this).find('a').addClass('active');
+    $('#show-sprite a').addClass('active');
 });
 
-$("#show-landscape").bind("click", function (event) {
-
+$(document).on("click", "#show-landscape", function (event) {
     var ladverts = $("#l-adverts");
     if (!ladverts.hasClass("l-adverts-landscape"))
     {
@@ -164,6 +162,6 @@ $("#show-landscape").bind("click", function (event) {
         $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
     }
     $('#show-sprite a').removeClass('active');
-    $(this).find('a').addClass('active');
+    $('#show-landscape a').addClass('active');
 });
 
