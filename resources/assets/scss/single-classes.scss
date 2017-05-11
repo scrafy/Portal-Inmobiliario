@@ -81,6 +81,7 @@
     & span
     {
         font-weight: bold;
+        padding-top: 4px;
         font-size: 1.5em;
         display: inline-block;
         position: absolute;
@@ -137,6 +138,7 @@
 html
 {
     position: relative;
+    height: auto;
 }
 
 body
@@ -144,15 +146,19 @@ body
     position: relative;
     font-family: $font-family;
     color:$main-font-color;
+    min-height: 100vh;
+    height: auto;
     background-color: rgba(0,0,0,0.1);
+
     @media screen and (max-width: 768px) {
         background-color:white;
+        padding-bottom: 250px;
     }
 }
 
 body.no-scroll {
     overflow-y: hidden;
-}
+ }
 
 a:hover,
 a:focus
@@ -373,3 +379,7 @@ a:focus
     }
 }
 
+.no-properties
+{
+    margin-top: 1em !important;
+}

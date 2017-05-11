@@ -248,6 +248,7 @@
             @yield('content')
 
         </div>
+        
 
     </body>
 
@@ -320,6 +321,7 @@
             <ul>
                 <li><a target="" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fwww.passionforproperty.com%2F&ref_src=twsrc%5Etfw&region=follow_link&screen_name=PassProperty15&tw_p=followbutton"><span class="icon-twitter"></span></a></li>
                 <li><a target="_blank" href="https://www.facebook.com/Passion-For-Property-1485493165086550/"><span class="icon-facebook"></span></a></li>
+
             </ul>
         </section>
     </footer>

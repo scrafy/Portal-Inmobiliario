@@ -61,6 +61,8 @@
                     color: $red-color;
                     font-weight: bold;
                     font-size: 1.5em;
+                    display: block;
+                    padding-top: 5px;
                 }
             }
         }
@@ -89,7 +91,14 @@
         margin-top: 1em;
         & .l-advert
         {	
-            width: 100%;
+            width: 90%;
+            border: 0;
+            margin-bottom:1em;
+            @media screen and (min-width: 1024px)
+            {
+                margin-top:0;
+                width:100%;
+            }
             & > ul 
             {
                 list-style: none;
@@ -112,7 +121,7 @@
                     }
                 }
                 @media screen and (min-width: 1024px)
-                    {
+                {
                     padding-bottom: 1em;
                     border-bottom: 1px solid #D5DBDB;
                     padding-top: 0.5em;

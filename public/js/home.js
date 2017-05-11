@@ -480,10 +480,6 @@ var home_api = (function () {
 
         $("#slider-range").slider(conf_slider);
 
-        $("#close-modal-map").bind("click", function (e) {
-            $('#modal-map').modal('hide');
-        });
-
         $('#modal-map').on('shown.bs.modal', function (e) {
             $(this).css("padding-right", "0");
 

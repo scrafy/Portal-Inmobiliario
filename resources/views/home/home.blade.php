@@ -29,7 +29,7 @@
         <div class="modal-content l-modal-content" style="height: 100%">
             <div class="modal-body" style="height: 100%">
                 <div class="modal-map-close">
-                    <span id="close-modal-map">X</span>
+                    <span data-dismiss="modal" data-backdrop="false">X</span>
                 </div>
                 <div class="home-map" id="home-map" style="width: 100%;height: 100%;">
 
@@ -190,7 +190,7 @@
             </div>
             @endforeach
             @else
-            <h2>0 PROPERTIES...</h2>
+            <h2 class="no-properties">0 PROPERTIES...</h2>
             @endif
             @if($data["pagination"]->total_pages > 1)
             <div class="l-pagination">

@@ -24,6 +24,7 @@
             background-color: rgba(0,0,0,0.3);
             position: absolute;
             z-index: 500;
+            border-radius: 12px;
             transition: height 0.3s;
             & > span
             {
