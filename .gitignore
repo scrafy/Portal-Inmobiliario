@@ -6,3 +6,6 @@ public/img/Properties/*.png
 prepros-6.config
 nbproject
 .idea/
+.sass-cache/
+.env
+.env.example

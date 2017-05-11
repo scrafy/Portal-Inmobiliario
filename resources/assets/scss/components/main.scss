@@ -1,6 +1,6 @@
 .main
 {
-    position: relgit ative;
+    position: relative;
     & aside
     {
         margin-top: 1.5em;
@@ -61,6 +61,21 @@
                 & .results-list-item
                 {
                     display: inline-block;
+
+                    & a {
+                        font-size: 22px;
+                        color: $main-font-color;
+                        vertical-align: -webkit-baseline-middle;
+                        &:hover, &.active {
+                            color: $red-color;
+                        }
+
+                    }
+                    & a:not(.icon-thumbnails) {
+                        font-size: 20px;
+                        margin-right: 6px;
+                    }
+
                     &:first-child
                         {
                         padding-right: 0.2em;
@@ -79,11 +94,6 @@
                             }
                         }  
                         vertical-align: middle;
-                    }
-                    &:first-child span
-                        {
-                        color: $red-color;
-                        font-weight: bold;
                     }
                     &:nth-child(2)
                         {

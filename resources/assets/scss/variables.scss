@@ -5,8 +5,19 @@ $red-color: #e4250d;
 $menu-nav-color:#e12712;
 $menu-item-border-color:#f7f0f0;
 $background-search-form-color: #fff3e6;
+$grey-borders:#D5DBDB;
 
 
 /*FONT STYLES*/
-$font-family: Arial, Verdana, sans-serif;
 
+@font-face
+{
+    font-family: 'Glyphicons Halflings';
+    src: url('/public/fonts/glyphicons-halflings-regular.eot');
+    src: url('/public/fonts/glyphicons-halflings-regular.svg');
+    src: url('/public/fonts/glyphicons-halflings-regular.ttf');
+    src: url('/public/fonts/glyphicons-halflings-regular.woff');
+    src: url('/public/fonts/glyphicons-halflings-regular.woff2');
+}
+
+$font-family: Arial, Verdana, sans-serif;

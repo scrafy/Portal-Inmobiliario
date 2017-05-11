@@ -3,7 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=no">
-        {{ Html::style('css/app.css') }}
+        @if (file_exists('css/app.min.css'))
+            {{ Html::style('css/app.min.css') }}
+        @else
+            {{ Html::style('css/app.css') }}
+        @endif
         <link media="all" href={{URL::to('https://file.myfontastic.com/TKhv4HW6qV8tGeVkfgpQ8R/icons.css')}} rel="stylesheet"/>
         <link rel="icon" type="img/ico" href="/img/icons/favicon.ico">
         <title>Passion For Properties</title>
@@ -25,13 +29,18 @@
 
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key={{config("myparametersconfig.google_api_key")}}" async defer></script>
-        {{ Html::script('js/vendors/jquery.js')}}
-        {{ Html::script('js/vendors/jquery-ui.js')}}
-        {{ Html::script('js/vendors/bootstrap.js')}}
-        {{ Html::script('js/init.js')}}
-        {{ Html::script('js/home.js')}}
-        {{ Html::script('js/footer.js')}}
-        {{ Html::script('js/letting.js')}}
+        @if (file_exists('js/app.min.js'))
+            {{ Html::script('js/app.min.js')}}
+        @else
+            {{ Html::script('js/vendors/jquery.js')}}
+            {{ Html::script('js/vendors/jquery-ui.js')}}
+            {{ Html::script('js/vendors/bootstrap.js')}}
+            {{ Html::script('js/init.js')}}
+            {{ Html::script('js/home.js')}}
+            {{ Html::script('js/footer.js')}}
+            {{ Html::script('js/letting.js')}}
+        @endif
+        
     </head>
     <body ontouchstart="">
         <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
