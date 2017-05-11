@@ -21,6 +21,10 @@
         display: flex;
         justify-content: space-between;
         padding: 1em;
+        @media screen and (min-width: 991px) {
+            float: left;
+            display: block;
+        }
         & .l-main-logo
         {
             width: 9em;

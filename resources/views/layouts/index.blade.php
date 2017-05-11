@@ -91,9 +91,9 @@
                         <a href="{{action('Web\HomeController@News')}}">news</a>
                     </li>-->
                 </ul>
-                <div class="button-rounded-red margin-auto">
-                    <span>SIGN IN / SIGN UP</span>
-                </div>
+                {{--<div class="button-rounded-red margin-auto">--}}
+                    {{--<span>SIGN IN / SIGN UP</span>--}}
+                {{--</div>--}}
             </div>
 
             <!--END MOBILE MENU-->
@@ -217,19 +217,19 @@
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
-                            {{ Html::image('img/slides/apartment.jpg') }}
-                        </div>
-
-                        <div class="item">
-                            {{ Html::image('img/slides/attention.jpg') }}
-                        </div>
-
-                        <div class="item">
-                            {{ Html::image('img/slides/corporate.jpg') }}
+                            {{ Html::image('img/slides/M_2.jpg') }}
                         </div>
 
                         <div class="item">
                             {{ Html::image('img/slides/M_3.jpg') }}
+                        </div>
+
+                        <div class="item">
+                            {{ Html::image('img/slides/M_4.jpg') }}
+                        </div>
+
+                        <div class="item">
+                            {{ Html::image('img/slides/M_5.jpg') }}
                         </div>
                     </div>
                 </div>
@@ -308,7 +308,7 @@
             </div>
         </section>
         <section class="l-breadcrumbs">
-            <div>Passion For Property &#9400; 2017</div>
+            <div>Passion For Property &#9400; <?php echo date("Y"); ?></div>
             <ul>
                 <li><a href="#"><span class="icon-twitter"></span></a></li>
                 <li><a href="#"><span class="icon-facebook"></span></a></li>
