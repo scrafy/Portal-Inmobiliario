@@ -8,8 +8,11 @@ var letting = (function () {
     LettingApi.prototype.SetUp = function () {
 
         var that = this;
-
-        $.get(conf.endpoint + "getlatlngfrompostcode/BH6 3PA", null, function (data, status, xhr) {
+        
+        var postcode = $("#advert-address").text();
+        postcode = postcode.split(",")[1].trim();
+                
+        $.get(conf.endpoint + "getlatlngfrompostcode/" + postcode, null, function (data, status, xhr) {
 
             if (data.content !== null) {
                 var map = new google.maps.Map($(".l-aside-property-view-map")[0], {
@@ -139,4 +142,4 @@ var letting = (function () {
 
 })();
 
-letting.SetUp();
+

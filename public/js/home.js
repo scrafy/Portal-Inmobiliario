@@ -44,7 +44,8 @@ var home_api = (function () {
             return querystring;
         };
 
-    };
+    }
+    ;
 
     HomeApi.prototype.SetInfoWindow = function (content, marker, map)
     {
@@ -56,20 +57,27 @@ var home_api = (function () {
         marker.addListener('click', function () {
             infowindow.open(map, this);
         });
-    }
+    };
 
 
     HomeApi.prototype.SetUpMobileEvents = function ()
     {
+        var limitminprice = parseInt($("#input_minprice").val());
+        var limitmaxprice = parseInt($("#input_maxprice").val());
+        var minprice = limitminprice;
+        var maxprice = limitmaxprice;
+
         $('#show-menu-filter').click(function () {
             $('body').scrollTop(0);
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
         });
+
         $('.filter-menu-left-arrow').click(function () {
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
         });
+
         $('#show-menu-mobile').click(function () {
             $('body').scrollTop(0);
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
@@ -78,6 +86,7 @@ var home_api = (function () {
                 $(".mobile-menu").toggleClass("show-mobile-menu");
             }, 100);
         });
+
         $('.mobile-menu-header-right-arrow').click(function () {
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".mobile-menu").toggleClass("show-mobile-menu");
@@ -85,18 +94,131 @@ var home_api = (function () {
                 $(".mobile-menu").toggleClass("show");
             }, 500);
         });
+
         $(".close-mobile-menu").click(function () {
 
             $(".mobile-menu").toggleClass("show");
             $('.mobile-menu').toggleClass("show-mobile-menu");
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
         });
+
         $(".menu-nav-item-mobile").each(function (i, e) {
             $(this).bind("click", null, function (event) {
                 $('.mobile-menu').toggleClass("show-mobile-menu");
                 $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             });
         });
+
+        $("#filterclean_mob").bind("click", null, function (event) {
+            home_api.DeleteParamFilters();
+        });
+
+        $("#type-property-mob").selectmenu({
+            change: function (event, data) {
+                if (data.item.label !== "--Select a type--")
+                    home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
+                else
+                    home_api.ParametersFilter().type_property = null;
+            }
+        });
+
+        $("#location-mob").selectmenu({
+            change: function (event, data) {
+                if (data.item.index === home_api.FinalParameters().location) {
+                    home_api.ParametersFilter().area = null;
+                } else {
+                    if (data.item.label !== "--Any Area--") {
+                        home_api.ParametersFilter().area = data.item.value;
+                    } else
+                        home_api.ParametersFilter().area = null;
+                }
+            }
+        });
+
+        $("#numbeds-mob").children().each(function (index, el) {
+
+            $(this).bind("click", null, function (event) {
+                if ($(this).text().toLowerCase() === home_api.FinalParameters().numbeds) {
+                    home_api.ParametersFilter().numbeds = null;
+                } else {
+                    home_api.ParametersFilter().numbeds = $(this).text().toLowerCase();
+                }
+                $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
+                $(this).toggleClass("filter-prop-selected");
+            });
+        });
+
+        $("#furnished-mob").children().each(function (index, el) {
+
+            $(this).bind("click", null, function (event) {
+                if ($(this).text().toLowerCase() === home_api.FinalParameters().furnished) {
+                    home_api.ParametersFilter().furnished = null;
+                } else {
+                    home_api.ParametersFilter().furnished = $(this).text().toLowerCase();
+                }
+                $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
+                $(this).toggleClass("filter-prop-selected");
+            });
+        });
+
+        var conf_slider_mobile = {
+            range: true,
+            min: limitminprice,
+            max: limitmaxprice,
+            values: [minprice, maxprice],
+            slide: function (event, ui) {
+                $("#mobile-min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
+                $("#mobile-max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
+                home_api.ParametersFilter().minprice = ui.values[0];
+                home_api.ParametersFilter().maxprice = ui.values[1];
+            }
+        };
+        $("#filter-mobile-slider-range").slider(conf_slider_mobile);
+
+        var queryfilter = $("#queryfilter").attr("value");
+        if (queryfilter !== "") {
+            var params = this.GetParameterFilters();
+            var v = queryfilter.split("&");
+            $(v).each(function (i, e) {
+                var t = e.split("=");
+                switch (t[0])
+                {
+                    case "type_property":
+                        params.type_property = t[1];
+                        var type_mob = $("#type-property-mob");
+                        type_mob[0].selectedIndex = $("#type-property-mob > option[value='" + t[1] + "']")[0].index;
+                        $("#type-property-mob").selectmenu("refresh");
+                        break;
+                    case "minprice":
+                        params.minprice = t[1];
+                        minprice = parseInt(t[1]);
+                        break;
+                    case "maxprice":
+                        params.maxprice = t[1];
+                        maxprice = parseInt(t[1]);
+                        break;
+                    case "sortby":
+                        params.sortby = t[1];
+                        var order = $("#select-order-by");
+                        order[0].selectedIndex = $("#select-order-by > option[value='" + t[1] + "']")[0].index;
+                        $("#select-order-by").selectmenu("refresh");
+                        break;
+                    case "numbeds":
+                        params.numbeds = t[1];
+                        $("#numbeds-mob > div:contains(" + t[1] + ")").toggleClass("filter-prop-selected");
+                        break;
+                    case "furnished":
+                        params.furnished = t[1];
+                        $("#furnished-mob > div[data-value='" + t[1] + "']").toggleClass("filter-prop-selected");
+                        break;
+                    case "area":
+                        params.area = t[1];
+                        $("#location-mob > option[value='" + t[1] + "']").attr("selected", "");
+                        $("#location-mob").selectmenu("refresh");
+                        break;
+                }
+            });
+        }
     };
 
     HomeApi.prototype.SetUp = function () {
@@ -109,17 +231,7 @@ var home_api = (function () {
         $("#filterclean").bind("click", null, function (event) {
             home_api.DeleteParamFilters();
         });
-        $("#filterclean_mob").bind("click", null, function (event) {
-            home_api.DeleteParamFilters();
-        });
-        $("#type-property-mob").selectmenu({
-            change: function (event, data) {
-                if (data.item.label !== "--Select a type--")
-                    home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                else
-                    home_api.ParametersFilter().type_property = null;
-            }
-        });
+
         $("#type-property").selectmenu({
             change: function (event, data) {
                 if (data.item.label.toLowerCase().replace(/ /g, '').trim() === home_api.FinalParameters().type_property) {
@@ -132,24 +244,13 @@ var home_api = (function () {
                 }
             }
         });
+
         $("#location").selectmenu({
             change: function (event, data) {
                 if (data.item.label !== "--Any Area--") {
                     home_api.ParametersFilter().area = data.item.value;
                 } else
                     home_api.ParametersFilter().area = null;
-            }
-        });
-        $("#location-mob").selectmenu({
-            change: function (event, data) {
-                if (data.item.index === home_api.FinalParameters().location) {
-                    home_api.ParametersFilter().area = null;
-                } else {
-                    if (data.item.label !== "--Any Area--") {
-                        home_api.ParametersFilter().area = data.item.value;
-                    } else
-                        home_api.ParametersFilter().area = null;
-                }
             }
         });
 
@@ -172,18 +273,7 @@ var home_api = (function () {
                 $(this).toggleClass("filter-prop-selected");
             });
         });
-        $("#numbeds-mob").children().each(function (index, el) {
 
-            $(this).bind("click", null, function (event) {
-                if ($(this).text().toLowerCase() === home_api.FinalParameters().numbeds) {
-                    home_api.ParametersFilter().numbeds = null;
-                } else {
-                    home_api.ParametersFilter().numbeds = $(this).text().toLowerCase();
-                }
-                $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
-                $(this).toggleClass("filter-prop-selected");
-            });
-        });
         $("#furnished").children().each(function (index, el) {
 
             $(this).bind("click", null, function (event) {
@@ -196,18 +286,7 @@ var home_api = (function () {
                 $(this).toggleClass("filter-prop-selected");
             });
         });
-        $("#furnished-mob").children().each(function (index, el) {
 
-            $(this).bind("click", null, function (event) {
-                if ($(this).text().toLowerCase() === home_api.FinalParameters().furnished) {
-                    home_api.ParametersFilter().furnished = null;
-                } else {
-                    home_api.ParametersFilter().furnished = $(this).text().toLowerCase();
-                }
-                $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
-                $(this).toggleClass("filter-prop-selected");
-            });
-        });
         var queryfilter = $("#queryfilter").attr("value");
         if (queryfilter !== "") {
             var params = this.GetParameterFilters();
@@ -219,11 +298,8 @@ var home_api = (function () {
                     case "type_property":
                         params.type_property = t[1];
                         var type = $("#type-property");
-                        var type_mob = $("#type-property-mob");
                         type[0].selectedIndex = $("#type-property > option[value='" + t[1] + "']")[0].index;
-                        type_mob[0].selectedIndex = $("#type-property-mob > option[value='" + t[1] + "']")[0].index;
                         $("#type-property").selectmenu("refresh");
-                        $("#type-property-mob").selectmenu("refresh");
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -242,19 +318,15 @@ var home_api = (function () {
                     case "numbeds":
                         params.numbeds = t[1];
                         $("#numbeds > div:contains(" + t[1] + ")").toggleClass("filter-prop-selected");
-                        $("#numbeds-mob > div:contains(" + t[1] + ")").toggleClass("filter-prop-selected");
                         break;
                     case "furnished":
                         params.furnished = t[1];
                         $("#furnished > div[data-value='" + t[1] + "']").toggleClass("filter-prop-selected");
-                        $("#furnished-mob > div[data-value='" + t[1] + "']").toggleClass("filter-prop-selected");
                         break;
                     case "area":
                         params.area = t[1];
                         $("#location > option[value='" + t[1] + "']").attr("selected", "");
                         $("#location").selectmenu("refresh");
-                        $("#location-mob > option[value='" + t[1] + "']").attr("selected", "");
-                        $("#location-mob").selectmenu("refresh");
                         break;
                 }
             });
@@ -275,24 +347,10 @@ var home_api = (function () {
 
         $("#slider-range").slider(conf_slider);
 
-        var conf_slider_mobile = {
-            range: true,
-            min: limitminprice,
-            max: limitmaxprice,
-            values: [minprice, maxprice],
-            slide: function (event, ui) {
-                $("#mobile-min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
-                $("#mobile-max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
-                home_api.ParametersFilter().minprice = ui.values[0];
-                home_api.ParametersFilter().maxprice = ui.values[1];
-            }
-        };
-        $("#filter-mobile-slider-range").slider(conf_slider_mobile);
-
         $("#close-modal-map").bind("click", function (e) {
             $('#modal-map').modal('hide');
         });
-       
+
         $('#modal-map').on('shown.bs.modal', function (e) {
             $(this).css("padding-right", "0");
 
@@ -323,24 +381,50 @@ var home_api = (function () {
                 dataType: "json"
             });
         });
+
+        $("#show-sprite").bind("click", function (event) {
+
+            var ladverts = $("#l-adverts");
+            if (!ladverts.hasClass("l-adverts"))
+            {
+                ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
+                ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
+            }
+        });
+
+        $("#show-landscape").bind("click", function (event) {
+
+            var ladverts = $("#l-adverts");
+            if (!ladverts.hasClass("l-adverts-landscape"))
+            {
+                $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
+                $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
+            }
+        });
     };
+
     HomeApi.prototype.ParametersFilter = function () {
 
         return this.GetParameterFilters();
     };
+
     HomeApi.prototype.FinalParameters = function () {
 
         return this.GetFinalParameters();
     };
+
     HomeApi.prototype.DeleteParamFilters = function () {
 
         if ($("#apply_filter_link").length) {
             $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?");
             $("#apply_filter_link")[0].click();
         }
-        $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?");
-        $("#apply_filter_link_mob")[0].click();
+        if ($("#apply_filter_link_mob").length) {
+            $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?");
+            $("#apply_filter_link_mob")[0].click();
+        }
     };
+
     HomeApi.prototype.ApplyFilters = function (prop, newval) {
 
         var final_parameters = this.FinalParameters();
@@ -356,16 +440,18 @@ var home_api = (function () {
         if ($("#apply_filter_link").length) {
             $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?" + querystring);
         }
-        $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?" + querystring);
+        if ($("#apply_filter_link_mob").length){
+            $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?" + querystring);
+        }
         $(".page-link").each(function (index, el) {
 
             $(this).attr("href", $(this).attr("href").split("?")[0] + "?" + querystring + "&page=" + $(this).attr("data-page"));
         });
     };
+
     return new HomeApi();
 })();
-home_api.SetUpMobileEvents();
-home_api.SetUp();
+
 
 
 

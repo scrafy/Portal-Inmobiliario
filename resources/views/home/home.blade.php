@@ -195,15 +195,17 @@
             <div class="l-pagination">
                 <nav>
                     <ul class="pagination">
-                        <li class="page-item"><a data-page="1" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=1"}}">First</a></li>
+                        @if(1 < $data["pagination"]->limit_inf)
+                            <li class="page-item"><a data-page="1" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=1"}}">First</a></li>
+                        @endif
                         @if($data["pagination"]->pag_actual > 1)
-                        <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) - 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) - 1)}}">Prev</a></li>
+                            <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) - 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) - 1)}}">Prev</a></li>
                         @endif
                         @for($i=$data["pagination"]->limit_inf; $i <= $data["pagination"]->limit_sup; $i++)
                         @if($i == $data["pagination"]->pag_actual)
-                        <li class="page-item"><a data-page="{{$i}}" class="page-link actual-page" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
+                            <li class="page-item"><a data-page="{{$i}}" class="page-link actual-page" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
                         @else
-                        <li class="page-item"><a data-page="{{$i}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
+                            <li class="page-item"><a data-page="{{$i}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
                         @endif
                         @endfor
                         @if($data["pagination"]->limit_sup != $data["pagination"]->total_pages)
@@ -212,7 +214,9 @@
                         @if($data["pagination"]->pag_actual < $data["pagination"]->total_pages)
                         <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) + 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) + 1)}}">Next</a></li>
                         @endif
-                        <li class="page-item"><a data-page="{{$data["pagination"]->total_pages}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$data["pagination"]->total_pages}}">Last</a></li>
+                        @if($data["pagination"]->limit_sup < $data["pagination"]->total_pages)
+                            <li class="page-item"><a data-page="{{$data["pagination"]->total_pages}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$data["pagination"]->total_pages}}">Last</a></li>
+                        @endif
                     </ul>
                 </nav>		
             </div>
@@ -220,4 +224,5 @@
         </div>
     </section>		
 </main>
+<script>home_api.SetUp();</script>
 @endsection

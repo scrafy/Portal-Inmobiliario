@@ -11,6 +11,36 @@ var footer = (function () {
             that.SubmitContactForm();
         });
 
+        $("#contactus").bind("click", null, function (event) {
+
+            $(this).parent().siblings(".show-flex").toggleClass("show-flex");
+            $(this).siblings(".selected-red").toggleClass("selected-red");
+            $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex")
+            if (!$(this).hasClass("selected-red")) {
+                $(this).toggleClass("selected-red");
+            }
+        });
+
+        $("#openinghours").bind("click", null, function (event) {
+
+            $(this).parent().siblings(".show-flex").toggleClass("show-flex");
+            $(this).siblings(".selected-red").toggleClass("selected-red");
+            $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex");
+            if (!$(this).hasClass("selected-red")) {
+                $(this).toggleClass("selected-red");
+            }
+        });
+
+        $("#emailform").bind("click", null, function (event) {
+
+            $(this).parent().siblings(".show-flex").toggleClass("show-flex");
+            $(this).siblings(".selected-red").toggleClass("selected-red");
+            $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex");
+            if (!$(this).hasClass("selected-red")) {
+                $(this).toggleClass("selected-red");
+            }
+        });
+
     };
 
     FooterApi.prototype.SubmitContactForm = function ()
@@ -48,5 +78,3 @@ var footer = (function () {
     return new FooterApi();
 
 })();
-
-footer.SetUp();

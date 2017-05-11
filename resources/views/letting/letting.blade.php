@@ -222,7 +222,7 @@
     <aside class="l-aside-property-view no-padding">
         <div class="l-advert no-margin">
             <div class="l-advert-name" style="display: flex;justify-content: space-between;">
-                <span>{{$data['letting']->ShortAddress}}, {{$data['letting']->PostCode}}</span>
+                <span id="advert-address">{{$data['letting']->ShortAddress}}, {{$data['letting']->PostCode}}</span>
                 <!--<span class="icon-star" style="font-size: 1.5em;font-weight: bold;"></span>-->
             </div>
             <ul>
@@ -303,5 +303,5 @@
 </div>
 
 <!--END PROPERTY VIEW-->
-
+<script>letting.SetUp();</script>
 @endsection

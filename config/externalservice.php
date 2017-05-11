@@ -2,11 +2,11 @@
 
 return [
     'input_models_path' => 'App\Models\InputModels\ExternalApi\MainOperations',
-    'api_key' => 'JdRjeFJeihSNG50C06LY6K6GE3o5Sn4Bo77LdkKjY8c1',
-    'shortname' => 'letmcletting',
-    'endpoint' => 'https://live-api.letmc.com',
-    'num_max_records' => 100,
-    'tier' => 'tier1',
+    'api_key' => env('EXT_API_KEY','JdRjeFJeihSNG50C06LY6K6GE3o5Sn4Bo77LdkKjY8c1'),
+    'shortname' => env('SHORTNAME','letmcletting'),
+    'endpoint' => env('ENDPOINT','https://live-api.letmc.com'),
+    'num_max_records' => env('MAX_RECORDS',100),
+    'tier' => env('TIER','tier1'),
     'external_api_links' => [
         'main_operations' => [
             'property' => [
