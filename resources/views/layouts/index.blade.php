@@ -227,6 +227,10 @@
                         <div class="item">
                             {{ Html::image('img/slides/corporate.jpg') }}
                         </div>
+
+                        <div class="item">
+                            {{ Html::image('img/slides/M_3.jpg') }}
+                        </div>
                     </div>
                 </div>
             </section>
