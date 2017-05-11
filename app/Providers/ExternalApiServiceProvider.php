@@ -34,7 +34,6 @@ use App\Http\Controllers\ExternalApi\SalesController;
 use App\Http\Controllers\ExternalApi\StaffController;
 use App\Http\Controllers\ExternalApi\BookController;
 use App\Http\Controllers\ExternalApi\UpdateDBController;
-use App\Http\Controllers\Web\LettingController;
 
 class ExternalApiServiceProvider extends ServiceProvider {
 
@@ -126,18 +125,6 @@ class ExternalApiServiceProvider extends ServiceProvider {
         $this->app->when(UpdateDBController::class)->needs(IExternalApiMainAreaOperations::class)->give(function() {
 
             return new ExternalApiMainAreaOperations();
-        });
-
-        /* HAY QUE SACARLOS DE AQUI Y PONERLOS EN OTRO FICHERO PROVIDER */
-
-        $this->app->when(LettingController::class)->needs(IExternalApiMainPropertyOperations::class)->give(function() {
-
-            return new ExternalApiMainPropertyOperations();
-        });
-
-        $this->app->when(LettingController::class)->needs(IExternalApiMainLettingOperations::class)->give(function() {
-
-            return new ExternalApiMainLettingOperations();
         });
     }
 

@@ -2,17 +2,18 @@
 
 return [
     /* Path for property images */
-    'pathimgproperty' => '/app/public/img/Properties/',
+    'pathimgproperty' => env('PATH_IMG_PROPERTY','/app/public/img/Properties/'),
     /* Path for property brochures */
-    'pathimgbrochures' => '/app/public/img/Properties/Brochures/',
+    'pathimgbrochures' => env('PATH_IMG_BROCHURES','/app/public/img/Properties/Brochures/'),
     /* Path for property epcreports */
-    'pathimgepc' => '/app/public/img/Properties/EpcReports/',
+    'pathimgepc' => env('PATH_IMG_EPC','/app/public/img/Properties/EpcReports/'),
     /* Pagination values */
-    'records_x_page' => 10,
-    'limit_pages_to_show' => 10,
+    'records_x_page' => env('RECORDS_X_PAGE', 2),
+    'limit_pages_to_show' => env('LIMITS_PAGE_TO_SHOW', 5),
     /* Min and Max price for filter menu */
-    'minprice' => 0,
-    'maxprice' => 5000,
+    'minprice' => env('MIN_PRICE', 0),
+    'maxprice' => env('MAX_PRICE', 5000),
     /* path for input models */
-    'input_models_path' => 'App\Models\InputModels'
+    'input_models_path' => 'App\Models\InputModels',
+    'google_api_key' => env('GOOGLE_API_KEY','')
 ];

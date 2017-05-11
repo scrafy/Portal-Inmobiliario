@@ -1,6 +1,5 @@
 var conf = {
-    endpoint: location.protocol + "//" + location.host + "/",
-    maps_api_key: "AIzaSyDoKHLJAgM84rIyWXwvtxixdeJVyUAMpHI"
+    endpoint: location.protocol + "//" + location.host + "/"
 };
 
 
@@ -74,8 +73,11 @@ if (!Object.prototype.unwatch)
 
 $(document).ready(function () {
 
+    home_api.SetUpMobileEvents();
+    footer.SetUp();
+    
     var total_padding = Number.parseInt($('#wrapper').css("padding-left").replace("px", "")) +
-            Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
+        Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
 
     $('#header').width($('#wrapper').width() + total_padding);
     if ($(window).width() >= 640) {
@@ -164,3 +166,4 @@ $("#show-landscape").bind("click", function (event) {
     $('#show-sprite a').removeClass('active');
     $(this).find('a').addClass('active');
 });
+
