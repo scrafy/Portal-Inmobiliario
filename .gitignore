@@ -11,3 +11,5 @@ nbproject
 .env.example
 /node_modules/
 public/css/app.css
+public/img/Properties/Thumbnails/*.jpg
+public/img/Properties/Thumbnails/*.png
