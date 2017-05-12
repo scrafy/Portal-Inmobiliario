@@ -3,6 +3,8 @@
 return [
     /* Path for property images */
     'pathimgproperty' => env('PATH_IMG_PROPERTY','/app/public/img/Properties/'),
+    /* Path for property images */
+    'pathimgthumbnail' => env('PATH_IMG_THUMBNAIL','/app/public/img/Thumbnails/'),
     /* Path for property brochures */
     'pathimgbrochures' => env('PATH_IMG_BROCHURES','/app/public/img/Properties/Brochures/'),
     /* Path for property epcreports */

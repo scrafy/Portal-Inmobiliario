@@ -78,14 +78,20 @@ class UpdateDBController extends ExternalApiController {
             try {
                 $data = $this->DownLoadPhoto($photo['id']);
                 if (strlen($data) > 172) {
-                    $f = fopen(sprintf(config('myparametersconfig.pathimgproperty') . "%s.jpg", $photo['id']), "w");
+                    $thumb = imagecreatetruecolor(320, 220);
                     $img = imagecreatefromstring($data);
+                    $f = fopen(sprintf(config('myparametersconfig.pathimgproperty') . "%s.jpg", $photo['id']), "w");
                     imagejpeg($img, $f, $quality);
+                    fclose($f);
+                    list($ancho, $alto) = getimagesize(sprintf(config('myparametersconfig.pathimgproperty') . "%s.jpg", $photo['id']));
+                    imagecopyresampled($thumb, $img, 0, 0, 0, 0, 320, 220, $ancho, $alto);
+                    $f = fopen(sprintf(config('myparametersconfig.pathimgthumbnail') . "%s.jpg", $photo['id']), "w");
+                    imagejpeg($thumb, $f);
                     fclose($f);
                     $photo->DownLoaded = true;
                     $photo->save();
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception $ex) {
                 $error = true;
             }
         }

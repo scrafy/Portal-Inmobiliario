@@ -138,7 +138,7 @@
                     <div class="l-advert-price"><span>&pound; {{intval($letting->Price)}}</span></div>
                     <div class="l-advert-star"><a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
                     @if($letting->MainPhoto != null)
-                    {{Html::image('img/Properties/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
+                    {{Html::image('img/Properties/Thumbnails/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
                     @else
                     {{Html::image('img/no_property_pic.jpg',null,['class'=>'img-responsive'])}}
                     @endif
