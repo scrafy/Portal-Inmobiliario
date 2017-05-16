@@ -82,8 +82,6 @@ class SummaryLetting extends BaseModel {
                         break;
                 }
             }
-            //echo $result->toSql();
-            //exit;
             $result = $result->simplePaginate($records_x_page, ['*'], null, $page);
             $resp['data'] = $result->toArray()['data'];
         } else {
