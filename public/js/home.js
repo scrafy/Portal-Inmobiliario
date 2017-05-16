@@ -5,7 +5,6 @@ var home_api = (function () {
         var querystring = "";
         var param_filters = {
 
-            type_property: null,
             sortby: null,
             area: null,
             minprice: null,
@@ -15,7 +14,7 @@ var home_api = (function () {
         };
         var final_parameters = {
 
-            type_property: null,
+            type_property: [],
             sortby: null,
             area: null,
             minprice: null,
@@ -113,13 +112,47 @@ var home_api = (function () {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property-mob").selectmenu({
-            change: function (event, data) {
-                if (data.item.label !== "--Select a type--")
-                    home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                else
-                    home_api.ParametersFilter().type_property = null;
+        $("#type-property-mob").multiselect({classes:"my-multiselect"});
+
+        $("#type-property-mob").on("multiselectcheckall", function (event, ui) {
+            home_api.FinalParameters().type_property.length = 0;
+            $($(this).multiselect("getChecked")).each(function (i, e) {
+                home_api.FinalParameters().type_property.push(e.defaultValue);
+            });
+            home_api.ApplyFilters("type_property");
+
+            $("#type-property-mob").multiselect("getChecked").each(function (i, e) {
+                $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
+
+                    $(this)[0].checked = true;
+
+                });
+            });
+            $("#type-property").siblings("button").first().children("span").eq(1).text($("#type-property").multiselect("widget").find(":checkbox").length + " selected");
+
+        });
+
+        $("#type-property-mob").on("multiselectuncheckall", function (event, ui) {
+            home_api.FinalParameters().type_property.length = 0;
+            home_api.ApplyFilters("type_property");
+            $("#type-property").multiselect("uncheckAll");
+        });
+
+        $("#type-property-mob").on("multiselectclick", function (event, ui) {
+            var index = jQuery.inArray(ui.value, home_api.FinalParameters().type_property, 0);
+            var total_properties_selected = 0;
+            if (index === -1) {
+                home_api.FinalParameters().type_property.push(ui.value);
+            } else {
+                home_api.FinalParameters().type_property.splice(index, 1);
             }
+            home_api.ApplyFilters("type_property");
+            $("#type-property").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
+
+            $("#type-property").multiselect("getChecked").each(function (i, e) {
+                total_properties_selected++;
+            });
+            $("#type-property").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
         });
 
         $("#location-mob").selectmenu({
@@ -173,21 +206,26 @@ var home_api = (function () {
                 home_api.ParametersFilter().maxprice = ui.values[1];
             }
         };
+
         $("#filter-mobile-slider-range").slider(conf_slider_mobile);
 
         var queryfilter = $("#queryfilter").attr("value");
         if (queryfilter !== "") {
             var params = this.GetParameterFilters();
             var v = queryfilter.split("&");
+            var total_properties_selected = 0;
             $(v).each(function (i, e) {
                 var t = e.split("=");
                 switch (t[0])
                 {
-                    case "type_property":
-                        params.type_property = t[1];
-                        var type_mob = $("#type-property-mob");
-                        type_mob[0].selectedIndex = $("#type-property-mob > option[value='" + t[1] + "']")[0].index;
-                        $("#type-property-mob").selectmenu("refresh");
+                    case "type_property[]":
+                        $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
+                            if ($(this).attr("value") === t[1]) {
+                                $(this).attr('checked', true);
+                                total_properties_selected++;
+                            }
+                        });
+                        $("#type-property-mob").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -232,17 +270,47 @@ var home_api = (function () {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property").selectmenu({
-            change: function (event, data) {
-                if (data.item.label.toLowerCase().replace(/ /g, '').trim() === home_api.FinalParameters().type_property) {
-                    home_api.ParametersFilter().type_property = null;
-                } else {
-                    if (data.item.label !== "--Select a type--")
-                        home_api.ParametersFilter().type_property = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                    else
-                        home_api.ParametersFilter().type_property = null;
-                }
+        $("#type-property").multiselect({classes:"my-multiselect"});
+
+        $("#type-property").on("multiselectcheckall", function (event, ui) {
+
+            home_api.FinalParameters().type_property.length = 0;
+            $($(this).multiselect("getChecked")).each(function (i, e) {
+                home_api.FinalParameters().type_property.push(e.defaultValue);
+            });
+            home_api.ApplyFilters("type_property");
+            $("#type-property").multiselect("getChecked").each(function (i, e) {
+                $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
+
+                    $(this)[0].checked = true;
+
+                });
+            });
+            $("#type-property-mob").siblings("button").first().children("span").eq(1).text($("#type-property-mob").multiselect("widget").find(":checkbox").length + " selected");
+
+        });
+
+        $("#type-property").on("multiselectuncheckall", function (event, ui) {
+            home_api.FinalParameters().type_property.length = 0;
+            home_api.ApplyFilters("type_property");
+            $("#type-property-mob").multiselect("uncheckAll");
+        });
+
+        $("#type-property").on("multiselectclick", function (event, ui) {
+            var index = jQuery.inArray(ui.value, home_api.FinalParameters().type_property, 0);
+            var total_properties_selected = 0;
+            if (index === -1) {
+                home_api.FinalParameters().type_property.push(ui.value);
+            } else {
+                home_api.FinalParameters().type_property.splice(index, 1);
             }
+            home_api.ApplyFilters("type_property");
+            $("#type-property-mob").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
+
+            $("#type-property").multiselect("getChecked").each(function (i, e) {
+                total_properties_selected++;
+            });
+            $("#type-property-mob").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
         });
 
         $("#location").selectmenu({
@@ -291,15 +359,26 @@ var home_api = (function () {
         if (queryfilter !== "") {
             var params = this.GetParameterFilters();
             var v = queryfilter.split("&");
+            var total_properties_selected = 0;
             $(v).each(function (i, e) {
                 var t = e.split("=");
                 switch (t[0])
                 {
-                    case "type_property":
-                        params.type_property = t[1];
-                        var type = $("#type-property");
-                        type[0].selectedIndex = $("#type-property > option[value='" + t[1] + "']")[0].index;
-                        $("#type-property").selectmenu("refresh");
+                    case "type_property[]":
+                        $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
+                            if ($(this).attr("value") === t[1]) {
+                                $(this).attr('checked', true);
+                                total_properties_selected++;
+                            }
+                        });
+                        $("#type-property").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
+                        var index = jQuery.inArray(t[1], home_api.FinalParameters().type_property, 0);
+                        if (index === -1) {
+                            home_api.FinalParameters().type_property.push(t[1]);
+                        } else {
+                            home_api.FinalParameters().type_property.splice(index, 1);
+                        }
+                        home_api.ApplyFilters("type_property");
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -425,22 +504,31 @@ var home_api = (function () {
         }
     };
 
-    HomeApi.prototype.ApplyFilters = function (prop, newval) {
+    HomeApi.prototype.ApplyFilters = function (prop, newval = null) {
 
         var final_parameters = this.FinalParameters();
-        final_parameters[prop] = newval;
-        querystring = "";
+        if (prop !== "type_property")
+        {
+            final_parameters[prop] = newval;
+        }
+        var querystring = "";
         for (var p in final_parameters) {
 
-            if (final_parameters[p] !== null) {
-                querystring += p + "=" + final_parameters[p].toString().toLowerCase().replace(/ /g, '').trim() + "&";
+            if (Array.isArray(final_parameters[p])) {
+                $(final_parameters[p]).each(function (i, e) {
+                    querystring += p + "[]=" + e + "&";
+                });
+            } else {
+                if (final_parameters[p] !== null) {
+                    querystring += p + "=" + final_parameters[p].toString().toLowerCase().replace(/ /g, '').trim() + "&";
+                }
             }
         }
         querystring = querystring.substring(0, querystring.length - 1);
         if ($("#apply_filter_link").length) {
             $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?" + querystring);
         }
-        if ($("#apply_filter_link_mob").length){
+        if ($("#apply_filter_link_mob").length) {
             $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?" + querystring);
         }
         $(".page-link").each(function (index, el) {

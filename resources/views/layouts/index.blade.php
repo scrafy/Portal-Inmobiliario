@@ -36,6 +36,7 @@
             {{ Html::script('js/vendors/jquery-ui.js')}}
             {{ Html::script('js/vendors/jquery-cookie.js')}}
             {{ Html::script('js/vendors/bootstrap.js')}}
+            {{ Html::script('js/vendors/jquery-multiselect.js')}}
             {{ Html::script('js/init.js')}}
             {{ Html::script('js/home.js')}}
             {{ Html::script('js/footer.js')}}
@@ -103,7 +104,7 @@
 
             <!--FILTER MOBILE MENU-->
 
-            <div class="filter-menu filter-menu-mobile hidden-md hidden-lg">
+            <div class="filter-menu filter-menu-mobile /*hidden-md hidden-lg*/">
                 <div class="filter-menu-header">
                     <div class="filter-menu-header-row">
                         <ol class="filter-menu-header-list no-padding">
@@ -121,10 +122,9 @@
                     <div class="filter-group">
                         <div class="filter-menu-labels">TYPE PROPERTY</div>
                         <div class="filter-menu-input-group" >
-                            <select class="form-control my-select" id="type-property-mob">
-                                <option value="">--Select a type--</option>
+                            <select multiple="multiple" class="form-control my-select" id="type-property-mob">
                                 @foreach($data['type_properties'] as &$property)
-                                <option value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</option>
+                                    <option value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</option>
                                 @endforeach
                             </select>
                         </div>

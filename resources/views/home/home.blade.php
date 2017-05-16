@@ -59,8 +59,7 @@
                 <div class="filter-group">
                     <div class="filter-menu-labels">TYPE PROPERTY</div>
                     <div class="filter-menu-input-group">
-                        <select class="form-control my-select" id="type-property">
-                            <option value="">--Select a type--</option>
+                        <select class="form-control my-select" id="type-property" multiple="multiple">
                             @foreach($data['type_properties'] as &$property)
                             <option value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</option>
                             @endforeach
@@ -196,16 +195,16 @@
                 <nav>
                     <ul class="pagination">
                         @if(1 < $data["pagination"]->limit_inf)
-                            <li class="page-item"><a data-page="1" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=1"}}">First</a></li>
+                        <li class="page-item"><a data-page="1" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=1"}}">First</a></li>
                         @endif
                         @if($data["pagination"]->pag_actual > 1)
-                            <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) - 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) - 1)}}">Prev</a></li>
+                        <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) - 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) - 1)}}">Prev</a></li>
                         @endif
                         @for($i=$data["pagination"]->limit_inf; $i <= $data["pagination"]->limit_sup; $i++)
                         @if($i == $data["pagination"]->pag_actual)
-                            <li class="page-item"><a data-page="{{$i}}" class="page-link actual-page" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
+                        <li class="page-item"><a data-page="{{$i}}" class="page-link actual-page" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
                         @else
-                            <li class="page-item"><a data-page="{{$i}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
+                        <li class="page-item"><a data-page="{{$i}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$i}}" id="page_link">{{$i}}</a></li>
                         @endif
                         @endfor
                         @if($data["pagination"]->limit_sup != $data["pagination"]->total_pages)
@@ -215,7 +214,7 @@
                         <li class="page-item"><a data-page="{{intval($data["pagination"]->pag_actual) + 1}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".(intval($data["pagination"]->pag_actual) + 1)}}">Next</a></li>
                         @endif
                         @if($data["pagination"]->limit_sup < $data["pagination"]->total_pages)
-                            <li class="page-item"><a data-page="{{$data["pagination"]->total_pages}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$data["pagination"]->total_pages}}">Last</a></li>
+                        <li class="page-item"><a data-page="{{$data["pagination"]->total_pages}}" class="page-link" href="{{action('Web\LettingController@FilterLettings')."?page=".$data["pagination"]->total_pages}}">Last</a></li>
                         @endif
                     </ul>
                 </nav>		

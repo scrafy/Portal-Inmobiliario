@@ -39,10 +39,12 @@ class SummaryLetting extends BaseModel {
         $page = 1;
         $records_x_page = config("myparametersconfig.records_x_page");
         $resp = [];
-        foreach ($parameters as $key => $value) {
+        foreach ($parameters as $key => &$value) {
             switch ($key) {
                 case "type_property":
-                    $result = $result === null ? SummaryLetting::whereRaw("LOWER(TypeProperty)=?", [$value]) : $result->whereRaw("LOWER(TypeProperty)", [$value]);
+                    foreach ($value as $val) {
+                        $result = $result === null ? SummaryLetting::orWhereRaw("LOWER(TypeProperty)=?", [$val]) : $result->orWhereRaw("LOWER(TypeProperty)=?", [$val]);
+                    }
                     break;
                 case "sortby":
                     $sort = true;
