@@ -17,9 +17,38 @@
 .ui-state-default
 {
     background-color: $red-color !important;
+    border-radius: 9999px;
 }
 
-.form-control //overwrite bootstrap style
+/* overwrite jquery ui style */
+.ui-selectmenu-button.ui-button {
+    border: 1px solid #555;
+    border-radius: 999999px;
+    background-color: #fff;
+    &:focus {
+        outline: 0;
+    }
+}
+
+.ui-slider .ui-slider-handle {
+    border-radius: 50%;
+    &:focus {
+        outline: 0;
+    }
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -.5em;
+    border-color: #fff;
+}
+
+.slide-range.ui-widget.ui-widget-content {
+    border-color: #fff;
+    background: #aaa;
+    height: .4em;
+}
+
+.form-control /* overwrite bootstrap style */
 {	
     box-shadow: inset 0 1px 1px rgba(228, 37, 13, 0.075);
     &:focus
@@ -109,6 +138,10 @@ body
     }
 }
 
+body.no-scroll {
+    overflow-y: hidden;
+}
+
 a:hover,
 a:focus
 {
@@ -195,7 +228,7 @@ a:focus
 
 .button-rounded-red-view
 {
-    background-color: #e4250d;
+    background-color: $red-color;
     text-align: center;
     border-radius: 17px;
     color: white;
@@ -232,7 +265,7 @@ a:focus
     border-radius: 5px;
     display: inline-block;
     color: grey;
-    border: 1px solid grey;
+    border: 1px solid #aaa;
     padding: -2em;
     padding: 0.4em 1em 0.4em 1em;
 
@@ -325,3 +358,4 @@ a:focus
         padding-left: 1em;
     }
 }
+

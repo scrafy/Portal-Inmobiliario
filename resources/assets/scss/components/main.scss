@@ -29,7 +29,8 @@
             {
                 &
                 {
-                    border: 1px solid #D5DBDB;
+                    border-radius: 2px;
+                    box-shadow: 0 0 1px 1px rgba(0,0,0,.1);
                     margin-top: 1.5em;
                     padding: 0.7em 1em;
                 }
@@ -79,6 +80,12 @@
                     & a:not(.icon-thumbnails) {
                         font-size: 20px;
                         margin-right: 6px;
+                    }
+
+                    & a.icon-map {
+                        @media screen and (max-width: 320px) {
+                            font-size: 18px;
+                        }
                     }
 
                     &:first-child
