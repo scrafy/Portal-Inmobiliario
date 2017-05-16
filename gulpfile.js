@@ -25,11 +25,14 @@ function jsMin() {
     return gulp.src([
         'public/js/vendors/jquery.js',
         'public/js/vendors/jquery-ui.js',
+        'public/js/vendors/jquery-cookie.js',
         'public/js/vendors/bootstrap.js',
+        'public/js/vendors/jquery-multiselect.js',
         'public/js/init.js',
         'public/js/home.js',
-        'public/js/letting.js',
-        'public/js/footer.js'
+        'public/js/footer.js',
+        'public/js/letting.js'
+        
     ])
         .pipe(concat('app.min.js'))
         .pipe(uglify())
