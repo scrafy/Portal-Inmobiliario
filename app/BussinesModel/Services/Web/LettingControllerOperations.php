@@ -127,12 +127,12 @@ class LettingControllerOperations extends WebControllersOperations implements IL
             $arr_query = $request->query();
             if (isset($arr_query['records_x_page'])) {
                 $this->records_x_page = $arr_query['records_x_page'];
-            }else{
+            } else {
                 $arr_query['records_x_page'] = $this->records_x_page;
             }
             if (isset($arr_query['page'])) {
                 $page = $arr_query['page'];
-            }else{
+            } else {
                 $arr_query['page'] = $page;
             }
             if (isset($arr_query['minprice'])) {
@@ -145,8 +145,14 @@ class LettingControllerOperations extends WebControllersOperations implements IL
             } else {
                 $arr_query['maxprice'] = $this->data['maxprice'];
             }
-            foreach ($arr_query as $key => $value) {
-                $query .= $key . "=" . $value . "&";
+            foreach ($arr_query as $key => &$value) {
+                if (is_array($value)) {
+                    foreach ($value as $val) {
+                        $query .= $key . "[]=" . $val . "&";
+                    }
+                } else {
+                    $query .= $key . "=" . $value . "&";
+                }
             }
             $query = substr($query, 0, strlen($query) - 1);
             $this->data['queryfilter'] = $query;
