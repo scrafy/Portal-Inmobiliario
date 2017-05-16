@@ -42,9 +42,7 @@ class SummaryLetting extends BaseModel {
         foreach ($parameters as $key => &$value) {
             switch ($key) {
                 case "type_property":
-                    foreach ($value as $val) {
-                        $result = $result === null ? SummaryLetting::orWhereRaw("LOWER(TypeProperty)=?", [$val]) : $result->orWhereRaw("LOWER(TypeProperty)=?", [$val]);
-                    }
+                    $result = $result === null ? SummaryLetting::orWhereIn("TypeProperty", $value) : $result->orWhereIn("TypeProperty", $value);
                     break;
                 case "sortby":
                     $sort = true;
@@ -59,7 +57,7 @@ class SummaryLetting extends BaseModel {
                     $result = $result === null ? SummaryLetting::where("TotalBedrooms", ">=", $value) : $result->where("TotalBedrooms", ">=", $value);
                     break;
                 case "furnished":
-                    $result = $result === null ? SummaryLetting::whereRaw("LOWER(Furnished)=?", [$value]) : $result->whereRaw("LOWER(Furnished)=?", [$value]);
+                    $result = $result === null ? SummaryLetting::where("Furnished","=", [$value]) : $result->where("Furnished","=", [$value]);
                     break;
                 case "page":
                     $page = $value;

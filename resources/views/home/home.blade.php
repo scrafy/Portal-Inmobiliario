@@ -178,12 +178,9 @@
                 </div>
                 <div class="l-house-summary">
                     <hr class="l-house-summary-line">
-                    <!--<div class="l-house-summary-group-items">
-                        <div class="button-square-white"><span>central location</span></div>
-                        <div class="button-square-white"><span>deceptivly spacious</span></div>
-                        <div class="button-square-white"><span>separate bathroom</span></div>
-                        <div class="button-rounded-white"><span>fees apply</span></div>		
-                    </div>-->
+                    <div class="l-house-summary-group-items">
+                        <div class="button-square-white" id="tab-area-name" data-area-id="{{$letting->AreaId}}"><span>{{$letting->AreaName}}</span></div>
+                    </div>
                 </div>
             </div>
             @endforeach

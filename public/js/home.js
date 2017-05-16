@@ -112,14 +112,14 @@ var home_api = (function () {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property-mob").multiselect({classes:"my-multiselect"});
+        $("#type-property-mob").multiselect({classes: "my-multiselect"});
 
         $("#type-property-mob").on("multiselectcheckall", function (event, ui) {
             home_api.FinalParameters().type_property.length = 0;
             $($(this).multiselect("getChecked")).each(function (i, e) {
                 home_api.FinalParameters().type_property.push(e.defaultValue);
             });
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
 
             $("#type-property-mob").multiselect("getChecked").each(function (i, e) {
                 $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
@@ -134,7 +134,7 @@ var home_api = (function () {
 
         $("#type-property-mob").on("multiselectuncheckall", function (event, ui) {
             home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
             $("#type-property").multiselect("uncheckAll");
         });
 
@@ -146,7 +146,7 @@ var home_api = (function () {
             } else {
                 home_api.FinalParameters().type_property.splice(index, 1);
             }
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
             $("#type-property").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
 
             $("#type-property").multiselect("getChecked").each(function (i, e) {
@@ -266,11 +266,34 @@ var home_api = (function () {
         var minprice = limitminprice;
         var maxprice = limitmaxprice;
 
+        $("#show-sprite").click(function (event) {
+            var ladverts = $("#l-adverts");
+            if (!ladverts.hasClass("l-adverts"))
+            {
+                ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
+                ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
+            }
+            $('#show-landscape a').removeClass('active');
+            $('#show-sprite a').addClass('active');
+        });
+
+        $("#show-landscape").click(function (event) {
+            var ladverts = $("#l-adverts");
+            if (!ladverts.hasClass("l-adverts-landscape"))
+            {
+                $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
+                $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
+            }
+            $('#show-sprite a').removeClass('active');
+            $('#show-landscape a').addClass('active');
+        });
+
+
         $("#filterclean").bind("click", null, function (event) {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property").multiselect({classes:"my-multiselect"});
+        $("#type-property").multiselect({classes: "my-multiselect"});
 
         $("#type-property").on("multiselectcheckall", function (event, ui) {
 
@@ -278,7 +301,7 @@ var home_api = (function () {
             $($(this).multiselect("getChecked")).each(function (i, e) {
                 home_api.FinalParameters().type_property.push(e.defaultValue);
             });
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
             $("#type-property").multiselect("getChecked").each(function (i, e) {
                 $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
 
@@ -292,7 +315,7 @@ var home_api = (function () {
 
         $("#type-property").on("multiselectuncheckall", function (event, ui) {
             home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
             $("#type-property-mob").multiselect("uncheckAll");
         });
 
@@ -304,7 +327,7 @@ var home_api = (function () {
             } else {
                 home_api.FinalParameters().type_property.splice(index, 1);
             }
-            home_api.ApplyFilters("type_property","");
+            home_api.ApplyFilters("type_property", "");
             $("#type-property-mob").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
 
             $("#type-property").multiselect("getChecked").each(function (i, e) {
@@ -320,6 +343,13 @@ var home_api = (function () {
                 } else
                     home_api.ParametersFilter().area = null;
             }
+        });
+
+        $("div[data-area-id]").each(function (i, e) {
+            $(this).click(function () {
+                home_api.ParametersFilter().area = $("#tab-area-name").attr("data-area-id");
+                $("#apply_filter_link")[0].click();
+            });
         });
 
         $("#select-order-by").selectmenu({
@@ -378,7 +408,7 @@ var home_api = (function () {
                         } else {
                             home_api.FinalParameters().type_property.splice(index, 1);
                         }
-                        home_api.ApplyFilters("type_property","");
+                        home_api.ApplyFilters("type_property", "");
                         break;
                     case "minprice":
                         params.minprice = t[1];
