@@ -75,9 +75,9 @@ $(document).ready(function () {
 
     home_api.SetUpMobileEvents();
     footer.SetUp();
-    
+
     var total_padding = Number.parseInt($('#wrapper').css("padding-left").replace("px", "")) +
-        Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
+            Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
 
     $('#header').width($('#wrapper').width() + total_padding);
     if ($(window).width() >= 640) {
@@ -104,64 +104,17 @@ $(document).ready(function () {
     $('.modal').on('hidden.bs.modal', function (e) {
         $("#header").css("z-index", "6000");
     });
+
+    $(window).bind("resize", function (event) {
+
+        var total_padding = Number.parseInt($('#wrapper').css("padding-left").replace("px", "")) +
+                Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
+        $('#header').width($('#wrapper').width() + total_padding);
+        $('#header').trigger("CheckHeaderFixedHeight");
+
+    });
+
 });
 
-$(window).bind("resize", function (event) {
 
-    var total_padding = Number.parseInt($('#wrapper').css("padding-left").replace("px", "")) +
-            Number.parseInt($('#wrapper').css("padding-right").replace("px", ""));
-    $('#header').width($('#wrapper').width() + total_padding);
-    $('#header').trigger("CheckHeaderFixedHeight");
-
-});
-
-$("#contactus").bind("click", null, function (event) {
-
-    $(this).parent().siblings(".show-flex").toggleClass("show-flex");
-    $(this).siblings(".selected-red").toggleClass("selected-red");
-    $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex")
-    if (!$(this).hasClass("selected-red")) {
-        $(this).toggleClass("selected-red");
-    }
-});
-$("#openinghours").bind("click", null, function (event) {
-
-    $(this).parent().siblings(".show-flex").toggleClass("show-flex");
-    $(this).siblings(".selected-red").toggleClass("selected-red");
-    $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex");
-    if (!$(this).hasClass("selected-red")) {
-        $(this).toggleClass("selected-red");
-    }
-});
-$("#emailform").bind("click", null, function (event) {
-
-    $(this).parent().siblings(".show-flex").toggleClass("show-flex");
-    $(this).siblings(".selected-red").toggleClass("selected-red");
-    $("div[data-target='" + $(this).attr("id") + "']").toggleClass("show-flex");
-    if (!$(this).hasClass("selected-red")) {
-        $(this).toggleClass("selected-red");
-    }
-});
-
-$(document).on("click", "#show-sprite", function (event) {
-    var ladverts = $("#l-adverts");
-    if (!ladverts.hasClass("l-adverts"))
-    {
-        ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
-        ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
-    }
-    $('#show-landscape a').removeClass('active');
-    $('#show-sprite a').addClass('active');
-});
-
-$(document).on("click", "#show-landscape", function (event) {
-    var ladverts = $("#l-adverts");
-    if (!ladverts.hasClass("l-adverts-landscape"))
-    {
-        $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
-        $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
-    }
-    $('#show-sprite a').removeClass('active');
-    $('#show-landscape a').addClass('active');
-});
 
