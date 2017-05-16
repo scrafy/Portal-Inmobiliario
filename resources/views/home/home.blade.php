@@ -148,7 +148,7 @@
                 <div class="l-advert-data">
                     <div class="l-type-house">
                         <div class="l-type-house-img">
-                            <div>
+                            <div class="property-icon">
                                 {{ Html::image('img/icons/apartment.png') }}
                             </div>
                             <div class="type-property">

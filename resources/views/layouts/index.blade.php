@@ -217,7 +217,7 @@
             <!--SLIDES-->
 
             <section class="row l-slides" id="slides">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div id="myCarousel" class="carousel slide hidden-xs" data-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
                             {{ Html::image('img/slides/M_2.jpg') }}
