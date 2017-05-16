@@ -119,7 +119,7 @@ var home_api = (function () {
             $($(this).multiselect("getChecked")).each(function (i, e) {
                 home_api.FinalParameters().type_property.push(e.defaultValue);
             });
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
 
             $("#type-property-mob").multiselect("getChecked").each(function (i, e) {
                 $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
@@ -134,7 +134,7 @@ var home_api = (function () {
 
         $("#type-property-mob").on("multiselectuncheckall", function (event, ui) {
             home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
             $("#type-property").multiselect("uncheckAll");
         });
 
@@ -146,7 +146,7 @@ var home_api = (function () {
             } else {
                 home_api.FinalParameters().type_property.splice(index, 1);
             }
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
             $("#type-property").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
 
             $("#type-property").multiselect("getChecked").each(function (i, e) {
@@ -278,7 +278,7 @@ var home_api = (function () {
             $($(this).multiselect("getChecked")).each(function (i, e) {
                 home_api.FinalParameters().type_property.push(e.defaultValue);
             });
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
             $("#type-property").multiselect("getChecked").each(function (i, e) {
                 $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
 
@@ -292,7 +292,7 @@ var home_api = (function () {
 
         $("#type-property").on("multiselectuncheckall", function (event, ui) {
             home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
             $("#type-property-mob").multiselect("uncheckAll");
         });
 
@@ -304,7 +304,7 @@ var home_api = (function () {
             } else {
                 home_api.FinalParameters().type_property.splice(index, 1);
             }
-            home_api.ApplyFilters("type_property");
+            home_api.ApplyFilters("type_property","");
             $("#type-property-mob").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
 
             $("#type-property").multiselect("getChecked").each(function (i, e) {
@@ -378,7 +378,7 @@ var home_api = (function () {
                         } else {
                             home_api.FinalParameters().type_property.splice(index, 1);
                         }
-                        home_api.ApplyFilters("type_property");
+                        home_api.ApplyFilters("type_property","");
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -504,7 +504,7 @@ var home_api = (function () {
         }
     };
 
-    HomeApi.prototype.ApplyFilters = function (prop, newval = null) {
+    HomeApi.prototype.ApplyFilters = function (prop, newval) {
 
         var final_parameters = this.FinalParameters();
         if (prop !== "type_property")
