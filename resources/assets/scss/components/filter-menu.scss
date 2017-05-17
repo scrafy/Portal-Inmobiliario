@@ -58,7 +58,12 @@
                         font-weight: bold;
                         vertical-align: middle;
                         height: 100%;
-                    }   
+                    }
+                    .icon-filters {
+                        font-size: 22px;
+                        vertical-align: middle;
+                        margin-left: 8px;
+                    }
                 }
             }
 
@@ -68,7 +73,9 @@
     {
         padding: 1em;
         color:$red-color;
-        border: 1px solid #D5DBDB;
+        -webkit-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
+        -moz-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
+        box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
         & .filter-group:nth-child(3)
             {
             & .l-prices-label
@@ -89,11 +96,12 @@
                 padding-right: 1em;
                 vertical-align: middle;
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 padding-top: 2em;
                 & .apply-filter
                 {
-                    margin: 0 auto;
+                    border: 0;
+                    margin: 2px auto 0;
                 }
 
             }
@@ -101,7 +109,6 @@
             {
                 font-size: 1.5em;
                 color:grey;
-                //display: inline-block;
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
@@ -109,6 +116,7 @@
                 text-align: center;
                 padding-top:7px;
                 cursor:pointer;
+                margin-right: 30px;
             }
         }
         & .filter-group:nth-child(1)
@@ -142,7 +150,10 @@
             & .filter-menu-input-group
             {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
+                .filter-menu-group-item {
+                    margin-right: 14px;
+                }
             }
 
         }

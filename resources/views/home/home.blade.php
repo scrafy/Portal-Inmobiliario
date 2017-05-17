@@ -46,7 +46,7 @@
                 <div class="filter-menu-header-row">
                     <ol class="filter-menu-header-list no-padding">
                         <li class="filter-menu-header-list-item">
-                            <span class="icon-slider rotate"></span>
+                            <span class="icon-filters"></span>
                         </li>
                         <li class="filter-menu-header-list-item">
                             FILTERS
@@ -101,7 +101,7 @@
                     <div class="filter-menu-input-group">
                         <span class="icon-trash-bin" id="filterclean"></span>
                         <a href="{{action('Web\LettingController@FilterLettings')."?"}}" id="apply_filter_link">
-                            <div class="button-rounded-red filter-menu-group-item apply-filter">&#10004;APPLY FILTERS</div>
+                            <div class="button-rounded-red filter-menu-group-item apply-filter"><i class="icon-tick"></i> APPLY FILTERS</div>
                         </a>
                     </div>
                 </div>	
@@ -148,7 +148,7 @@
                 <div class="l-advert-data">
                     <div class="l-type-house">
                         <div class="l-type-house-img">
-                            <div>
+                            <div class="property-icon">
                                 {{ Html::image('img/icons/apartment.png') }}
                             </div>
                             <div class="type-property">
