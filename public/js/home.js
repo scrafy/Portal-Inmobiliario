@@ -97,7 +97,6 @@ var home_api = (function () {
         });
 
         $(".close-mobile-menu").click(function () {
-
             $(".mobile-menu").toggleClass("show");
             $('.mobile-menu').toggleClass("show-mobile-menu");
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");

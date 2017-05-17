@@ -164,7 +164,7 @@
                         <div class="filter-menu-input-group">
                             <span class="icon-trash-bin" id="filterclean_mob"></span>
                             <a href="{{action('Web\LettingController@FilterLettings')."?"}}" id="apply_filter_link_mob">
-                                <div class="button-rounded-red filter-menu-group-item apply-filter">&#10004;APPLY FILTERS</div>
+                                <div class="button-rounded-red filter-menu-group-item apply-filter"><i class="icon-tick"></i> APPLY FILTERS</div>
                             </a>
                         </div>
                     </div>	
