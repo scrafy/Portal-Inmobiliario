@@ -34,7 +34,7 @@
                     -moz-box-shadow: 0 0 1px 1px rgba(0,0,0,.1);
                     box-shadow: 0 0 1px 1px rgba(0,0,0,.1);
                     margin-top: 1.5em;
-                    padding: 0.7em 1em;
+                    padding: 0.5em 1em;
                 }
             } 
             & .my-select
@@ -45,9 +45,12 @@
             {
                 flex-grow: 1;
                 text-align: end;
-                font-size: 1.5em;
+                font-size: 1.2em;
                 padding-right: 1em;
                 display: none;
+                span {
+                    vertical-align: sub;
+                }
                 @media screen and (min-width: 480px) 
                 {
                     &

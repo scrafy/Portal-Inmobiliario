@@ -17,6 +17,18 @@
 
 }
 
+@media screen and (min-width: 992px) {
+    main {
+        aside.col-md-3 {
+            width: 22%;
+        }
+        section.col-md-9 {
+            width: 78%;
+        }
+    }
+
+}
+
 .filter-menu
 {
     width:100%;
@@ -26,7 +38,7 @@
         color: white;
         & .filter-menu-header-row
         {
-            padding:0.5em;
+            padding:0.3em;
             display: flex;
             justify-content: space-between;
             & .filter-menu-left-arrow
@@ -71,7 +83,7 @@
     }
     & .l-filter-menu
     {
-        padding: 1em;
+        padding: 35px 1em 1em;
         color:$red-color;
         -webkit-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
         -moz-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
@@ -160,9 +172,14 @@
         & .filter-group
         {
             margin-bottom: 2em;
-            & .slide-range
+            .slide-range, .ui-slider-handle
             {
                 cursor:pointer;
+            }
+            @media screen and (min-width: 992px) {
+                .ui-selectmenu-button {
+                    width: 100%;
+                }
             }
         }
         & .filter-menu-labels

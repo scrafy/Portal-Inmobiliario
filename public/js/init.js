@@ -114,6 +114,11 @@ $(document).ready(function () {
 
     });
 
+    // No scroll
+    $(document).on('touchmove', 'body.no-scroll', function (e) {
+        e.preventDefault();
+    });
+
 });
 
 
