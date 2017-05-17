@@ -319,10 +319,6 @@
         </section>
     </footer>
 
-            <!--END FOOTER-->
-        </div>
-    </body>
-
     <!--END FOOTER-->
 
 </html>
