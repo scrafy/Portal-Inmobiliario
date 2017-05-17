@@ -58,7 +58,12 @@
                         font-weight: bold;
                         vertical-align: middle;
                         height: 100%;
-                    }   
+                    }
+                    .icon-filters {
+                        font-size: 22px;
+                        vertical-align: middle;
+                        margin-left: 8px;
+                    }
                 }
             }
 
@@ -68,6 +73,8 @@
     {
         padding: 1em;
         color:$red-color;
+        -webkit-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
+        -moz-box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
         box-shadow: 0 0 2px 1px rgba(0,0,0,.1);
         & .filter-group:nth-child(3)
             {
