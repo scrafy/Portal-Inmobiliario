@@ -17,14 +17,47 @@
 .ui-state-default
 {
     background-color: $red-color !important;
+    border-radius: 9999px;
 }
 
-.form-control //overwrite bootstrap style
+/* overwrite jquery ui style */
+.ui-selectmenu-button.ui-button {
+    border: 1px solid #555;
+    //border-radius: 999999px;
+    background-color: #fff;
+    &:focus {
+        outline: 0;
+    }
+}
+
+.ui-slider .ui-slider-handle {
+    border-radius: 50%;
+    &:focus {
+        outline: 0;
+    }
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -.5em;
+    border-color: #fff;
+}
+
+.slide-range.ui-widget.ui-widget-content {
+    border-color: #fff;
+    background: #aaa;
+    height: .4em;
+}
+
+.form-control /* overwrite bootstrap style */
 {	
+    -webkit-box-shadow: inset 0 1px 1px rgba(228, 37, 13, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(228, 37, 13, 0.075);
     box-shadow: inset 0 1px 1px rgba(228, 37, 13, 0.075);
     &:focus
         {
         border-color: rgba(228,37,13,0.6);
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(228, 37, 13, 0.6);
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(228, 37, 13, 0.6);
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(228, 37, 13, 0.6);
         outline: 0 none;
     }
@@ -109,6 +142,10 @@ body
     }
 }
 
+body.no-scroll {
+    overflow-y: hidden;
+}
+
 a:hover,
 a:focus
 {
@@ -182,8 +219,7 @@ a:focus
     border-radius: 17px;
     color: white;
     border: 1px solid grey;
-    padding: -2em;
-    padding: 0.4em 1em 0.4em 1em;
+    padding: 0.4em 0;
     font-weight: bold;
     line-height: 26px;
     width: 11em;
@@ -191,11 +227,15 @@ a:focus
         {
         cursor:pointer;
     }
+    i {
+        font-size: 22px;
+        vertical-align: middle;
+    }
 }
 
 .button-rounded-red-view
 {
-    background-color: #e4250d;
+    background-color: $red-color;
     text-align: center;
     border-radius: 17px;
     color: white;
@@ -232,7 +272,7 @@ a:focus
     border-radius: 5px;
     display: inline-block;
     color: grey;
-    border: 1px solid grey;
+    border: 1px solid #aaa;
     padding: -2em;
     padding: 0.4em 1em 0.4em 1em;
 
@@ -261,7 +301,6 @@ a:focus
     position:relative;
     background-color: white;
     max-width: 1428px;
-    //box-shadow: 10px 10px 5px rgba(0,0,0,0.3);
 }
 
 .max-width
@@ -325,3 +364,4 @@ a:focus
         padding-left: 1em;
     }
 }
+

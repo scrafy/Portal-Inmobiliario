@@ -67,18 +67,19 @@ var home_api = (function () {
         var maxprice = limitmaxprice;
 
         $('#show-menu-filter').click(function () {
-            $('body').scrollTop(0);
+            $('body').scrollTop(0).toggleClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
         });
 
-        $('.filter-menu-left-arrow').click(function () {
+        $('.filter-menu-left-arrow, .filter-menu-header-list-item').click(function () {
+            $('body').removeClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
         });
 
         $('#show-menu-mobile').click(function () {
-            $('body').scrollTop(0);
+            $('body').scrollTop(0).toggleClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".mobile-menu").toggleClass("show");
             setTimeout(function () {
@@ -86,7 +87,8 @@ var home_api = (function () {
             }, 100);
         });
 
-        $('.mobile-menu-header-right-arrow').click(function () {
+        $('.mobile-menu-header-right-arrow, .mobile-menu-header-list-item').click(function () {
+            $('body').removeClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".mobile-menu").toggleClass("show-mobile-menu");
             setTimeout(function () {
@@ -95,7 +97,6 @@ var home_api = (function () {
         });
 
         $(".close-mobile-menu").click(function () {
-
             $(".mobile-menu").toggleClass("show");
             $('.mobile-menu').toggleClass("show-mobile-menu");
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");

@@ -161,7 +161,7 @@
                         <div class="filter-menu-input-group">
                             <span class="icon-trash-bin" id="filterclean_mob"></span>
                             <a href="{{action('Web\LettingController@FilterLettings')."?"}}" id="apply_filter_link_mob">
-                                <div class="button-rounded-red filter-menu-group-item apply-filter">&#10004;APPLY FILTERS</div>
+                                <div class="button-rounded-red filter-menu-group-item apply-filter"><i class="icon-tick"></i> APPLY FILTERS</div>
                             </a>
                         </div>
                     </div>	
@@ -214,7 +214,7 @@
             <!--SLIDES-->
 
             <section class="row l-slides" id="slides">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div id="myCarousel" class="carousel slide hidden-xs" data-ride="carousel">
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
                             {{ Html::image('img/slides/M_2.jpg') }}
@@ -298,7 +298,7 @@
                     <div>
                         <div class="form-group">
                             <textarea class="form-control" placeholder="Message" rows=4 cols=20 name="Message"></textarea>
-                            <div class="button-rounded-red max-width" id="sendcontactmessage">&#62;&nbsp;&nbsp;SEND</div>
+                            <div class="button-rounded-red max-width" id="sendcontactmessage">SEND</div>
                         </div>
                     </div>
                 </form>
@@ -310,15 +310,11 @@
         <section class="l-breadcrumbs">
             <div>Passion For Property &#9400; <?php echo date("Y"); ?></div>
             <ul>
-                <li><a href="#"><span class="icon-twitter"></span></a></li>
-                <li><a href="#"><span class="icon-facebook"></span></a></li>
+                <li><a target="" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fwww.passionforproperty.com%2F&ref_src=twsrc%5Etfw&region=follow_link&screen_name=PassProperty15&tw_p=followbutton"><span class="icon-twitter"></span></a></li>
+                <li><a target="_blank" href="https://www.facebook.com/Passion-For-Property-1485493165086550/"><span class="icon-facebook"></span></a></li>
             </ul>
         </section>
     </footer>
-
-            <!--END FOOTER-->
-        </div>
-    </body>
 
     <!--END FOOTER-->
 
