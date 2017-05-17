@@ -72,7 +72,7 @@ var home_api = (function () {
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
         });
 
-        $('.filter-menu-left-arrow').click(function () {
+        $('.filter-menu-left-arrow, .filter-menu-header-list-item').click(function () {
             $('body').removeClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
@@ -87,7 +87,7 @@ var home_api = (function () {
             }, 100);
         });
 
-        $('.mobile-menu-header-right-arrow').click(function () {
+        $('.mobile-menu-header-right-arrow, .mobile-menu-header-list-item').click(function () {
             $('body').removeClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".mobile-menu").toggleClass("show-mobile-menu");
