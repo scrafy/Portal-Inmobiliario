@@ -42,15 +42,12 @@
             {{ Html::script('js/footer.js')}}
             {{ Html::script('js/letting.js')}}
         @endif
-        <script>
-               $.ajaxSetup({ headers: { 'X-XSRF-TOKEN' : '{{ csrf_token() }}' } });
-        </script>
     </head>
     <body ontouchstart="">
         <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
         <input type="hidden" value="{{$data['limitmaxprice']}}" id="input_maxprice"/>
         @if($data['queryfilter'] !== "")
-        <input type="hidden" value="{{$data['queryfilter']}}" id="queryfilter"/>
+        <input type="hidden" value="{{$data['queryfilterstring']}}" id="queryfilterstring"/>
         @else
         <input type="hidden" value="" id="queryfilter"/>
         @endif

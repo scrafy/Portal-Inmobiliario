@@ -12,7 +12,7 @@ interface ILettingOperations {
 
     public function GetBrochure($id);
 
-    public function GetLettingsFilteredData(Request $request);
+    public function GetLettingsFilteredData($request_input);
 
     public function CreateAppointment(Appointment $appointment);
     

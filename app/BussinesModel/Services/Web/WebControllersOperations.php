@@ -4,6 +4,7 @@ namespace App\BussinesModel\Services\Web;
 
 use App\Models\ExternalApi\Property;
 use App\Models\ExternalApi\Area;
+use Illuminate\Support\Facades\Session;
 
 abstract class WebControllersOperations {
 
@@ -18,7 +19,28 @@ abstract class WebControllersOperations {
         $this->data['limitmaxprice'] = config("myparametersconfig.maxprice");
         $this->data['minprice'] = config("myparametersconfig.minprice");
         $this->data['maxprice'] = config("myparametersconfig.maxprice");
-        $this->data['queryfilter'] = "";
+        if (Session::has('queryfilter')) {
+            $value = Session::get('queryfilter');
+            $this->data['queryfilter'] = $value;
+            $this->data['queryfilterstring'] = $this->getQueryStringFromArray($value);
+        } else {
+            $this->data['queryfilterstring'] = "";
+            $this->data['queryfilter'] = [];
+        }
+    }
+
+    protected function getQueryStringFromArray($input_params = []) {
+        $query = "";
+        foreach ($input_params as $key => &$value) {
+            if (is_array($value)) {
+                foreach ($value as $val) {
+                    $query .= $key . "[]=" . $val . "&";
+                }
+            } else {
+                $query .= $key . "=" . $value . "&";
+            }
+        }
+        return substr($query, 0, strlen($query) - 1);
     }
 
     protected function getPaginationData($records_x_page, $total_records, $pag_actual) {

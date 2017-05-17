@@ -4,15 +4,22 @@ namespace App\BussinesModel\Services\Web;
 
 use App\Models\ExternalApi\SummaryLetting;
 use App\BussinesModel\Interfaces\Web\IHomeOperations;
+use App\BussinesModel\Interfaces\Web\ILettingOperations;
 
 class HomeControllerOperations extends WebControllersOperations implements IHomeOperations {
 
-    public function __construct() {
+    private $letting_operations = null;
+
+    public function __construct(ILettingOperations $_lettings_operations) {
         parent::__construct();
+        $this->letting_operations = $_lettings_operations;
     }
 
     public function GetHomeData() {
 
+        if (count($this->data['queryfilter']) > 0) {
+            return $this->letting_operations->GetLettingsFilteredData($this->data['queryfilter']);
+        }
         $this->data['lettings'] = SummaryLetting::orderBy("Price", "asc")->simplePaginate($this->records_x_page, ['*'], null, 1)->toArray()['data'];
         foreach ($this->data['lettings'] as &$letting) {
             $letting = (object) $letting;

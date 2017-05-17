@@ -210,7 +210,7 @@ var home_api = (function () {
 
         $("#filter-mobile-slider-range").slider(conf_slider_mobile);
 
-        var queryfilter = $("#queryfilter").attr("value");
+        var queryfilter = $("#queryfilterstring").attr("value");
         if (queryfilter !== "") {
             var params = this.GetParameterFilters();
             var v = queryfilter.split("&");
@@ -238,9 +238,11 @@ var home_api = (function () {
                         break;
                     case "sortby":
                         params.sortby = t[1];
-                        var order = $("#select-order-by");
-                        order[0].selectedIndex = $("#select-order-by > option[value='" + t[1] + "']")[0].index;
-                        $("#select-order-by").selectmenu("refresh");
+                        var order = $("#select-order-by")[0];
+                        if (order != null) {
+                            order[0].selectedIndex = $("#select-order-by > option[value='" + t[1] + "']")[0].index;
+                            $("#select-order-by").selectmenu("refresh");
+                        }
                         break;
                     case "numbeds":
                         params.numbeds = t[1];
@@ -386,7 +388,7 @@ var home_api = (function () {
             });
         });
 
-        var queryfilter = $("#queryfilter").attr("value");
+        var queryfilter = $("#queryfilterstring").attr("value");
         if (queryfilter !== "") {
             var params = this.GetParameterFilters();
             var v = queryfilter.split("&");
@@ -524,15 +526,9 @@ var home_api = (function () {
     };
 
     HomeApi.prototype.DeleteParamFilters = function () {
-
-        if ($("#apply_filter_link").length) {
-            $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?");
-            $("#apply_filter_link")[0].click();
-        }
-        if ($("#apply_filter_link_mob").length) {
-            $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?");
-            $("#apply_filter_link_mob")[0].click();
-        }
+        $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?");
+        $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?");
+        $("#apply_filter_link_mob")[0].click();
     };
 
     HomeApi.prototype.ApplyFilters = function (prop, newval) {
