@@ -11,6 +11,7 @@ use App\Models\OutputModels\Web\Letting\GetEpcReportImageModel;
 use App\Models\InputModels\Web\Letting\Appointment;
 use App\Models\ExternalApi\PostCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class LettingControllerOperations extends WebControllersOperations implements ILettingOperations {
 
@@ -104,12 +105,12 @@ class LettingControllerOperations extends WebControllersOperations implements IL
         return response()->json($resp);
     }
 
-    public function GetLettingsFilteredData(Request $request) {
+    public function GetLettingsFilteredData($request_input) {
         $query = "";
         $result = null;
         $page = 1;
-        if ((count($request->query()) === 0) || ((count($request->query()) === 1) && (isset($request->query()['page'])))) {
-            $page = isset($request->query()['page']) ? $request->query()['page'] : 1;
+        if ((count($request_input) === 0) || ((count($request_input) === 1) && (isset($request_input['page'])))) {
+            $page = isset($request_input['page']) ? $request_input['page'] : 1;
             $result = SummaryLetting::orderBy("Price", "asc")->simplePaginate($this->records_x_page, ['*'], null, $page)->toArray()['data'];
             if (($result === null) || (count($result) === 0 )) {
                 $this->data['lettings'] = null;
@@ -123,40 +124,36 @@ class LettingControllerOperations extends WebControllersOperations implements IL
                 $this->data['total_lettings'] = SummaryLetting::count();
                 $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
             }
+            $this->data['queryfilterstring'] = "";
+            if (Session::has('queryfilter')) {
+                Session::remove('queryfilter');
+            }
+            
         } else {
-            $arr_query = $request->query();
-            if (isset($arr_query['records_x_page'])) {
-                $this->records_x_page = $arr_query['records_x_page'];
+            if (isset($request_input['records_x_page'])) {
+                $this->records_x_page = $request_input['records_x_page'];
             } else {
-                $arr_query['records_x_page'] = $this->records_x_page;
+                $request_input['records_x_page'] = $this->records_x_page;
             }
-            if (isset($arr_query['page'])) {
-                $page = $arr_query['page'];
+            if (isset($request_input['page'])) {
+                $page = $request_input['page'];
             } else {
-                $arr_query['page'] = $page;
+                $request_input['page'] = $page;
             }
-            if (isset($arr_query['minprice'])) {
-                $this->data['minprice'] = ($arr_query['minprice'] === "" || $arr_query['minprice'] === null) ? 0 : $arr_query['minprice'];
+            if (isset($request_input['minprice'])) {
+                $this->data['minprice'] = ($request_input['minprice'] === "" || $request_input['minprice'] === null) ? 0 : $request_input['minprice'];
             } else {
-                $arr_query['minprice'] = $this->data['minprice'];
+                $request_input['minprice'] = $this->data['minprice'];
             }
-            if (isset($arr_query['maxprice'])) {
-                $this->data['maxprice'] = ($arr_query['maxprice'] === "" || $arr_query['maxprice'] === null) ? 0 : $arr_query['maxprice'];
+            if (isset($request_input['maxprice'])) {
+                $this->data['maxprice'] = ($request_input['maxprice'] === "" || $request_input['maxprice'] === null) ? 0 : $request_input['maxprice'];
             } else {
-                $arr_query['maxprice'] = $this->data['maxprice'];
+                $request_input['maxprice'] = $this->data['maxprice'];
             }
-            foreach ($arr_query as $key => &$value) {
-                if (is_array($value)) {
-                    foreach ($value as $val) {
-                        $query .= $key . "[]=" . $val . "&";
-                    }
-                } else {
-                    $query .= $key . "=" . $value . "&";
-                }
-            }
-            $query = substr($query, 0, strlen($query) - 1);
-            $this->data['queryfilter'] = $query;
-            $result = SummaryLetting::getPropertiesFiltered($arr_query);
+            $query = $this->getQueryStringFromArray($request_input);
+            $this->data['queryfilterstring'] = $query;
+            Session::put('queryfilter', $request_input);
+            $result = SummaryLetting::getPropertiesFiltered($request_input);
             if (($result['data'] === null) || ($result['total_records'] === 0 )) {
                 $this->data['lettings'] = null;
                 $this->data['total_lettings'] = 0;

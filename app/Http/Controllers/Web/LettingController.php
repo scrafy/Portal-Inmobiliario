@@ -30,7 +30,7 @@ class LettingController extends Controller {
     }
 
     public function FilterLettings(Request $request) {
-        return view('home.home')->with("data", $this->service->GetLettingsFilteredData($request));
+        return view('home.home')->with("data", $this->service->GetLettingsFilteredData($request->query()));
     }
 
     public function CreateAppointment(Appointment $appointment) {

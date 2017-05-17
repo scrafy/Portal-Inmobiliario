@@ -12,17 +12,18 @@ class VerifyCsrfToken extends BaseVerifier {
      * @var array
      */
     protected $except = [
-            //
+    
     ];
 
-    //enable in production
+    
     protected function tokensMatch($request) {
         $token = $request->session()->token();
-
-        $header = $request->header('X-XSRF-TOKEN');
-
-        return ($token===$request->input('_token')) ||
-                ($header && ($token===$header));
+        $header = null;
+        if (\Request::ajax()) {
+            $header = \Crypt::decrypt($_COOKIE['XSRF-TOKEN']);
+        }
+        return ($token === $request->input('_token')) ||
+                ($header && ($token === $header));
     }
 
 }

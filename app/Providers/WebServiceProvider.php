@@ -20,31 +20,10 @@ use App\Http\Controllers\Web\FooterController;
 class WebServiceProvider extends ServiceProvider {
 
     public function boot() {
-
-        $this->app->Resolving(LettingController::class, function($lettings_operations, $app) {
-            $app->when(LettingController::class)->needs(ILettingOperations::class)->give(function() {
-
-                return new LettingControllerOperations();
-            });
-        });
+        
     }
 
     public function register() {
-
-        $this->app->when(LettingController::class)->needs(IExternalApiMainPropertyOperations::class)->give(function() {
-
-            return new ExternalApiMainPropertyOperations();
-        });
-
-        $this->app->when(LettingController::class)->needs(IExternalApiMainLettingOperations::class)->give(function() {
-
-            return new ExternalApiMainLettingOperations();
-        });
-
-        $this->app->when(HomeController::class)->needs(IHomeOperations::class)->give(function() {
-
-            return new HomeControllerOperations();
-        });
 
         $this->app->when(LettingControllerOperations::class)->needs(IExternalApiMainPropertyOperations::class)->give(function() {
 
@@ -56,12 +35,11 @@ class WebServiceProvider extends ServiceProvider {
             return new ExternalApiMainLettingOperations();
         });
 
+        /* BINDS */
+
+        $this->app->bind(IHomeOperations::class, HomeControllerOperations::class);
         $this->app->bind(ILettingOperations::class, LettingControllerOperations::class);
-
-        $this->app->when(FooterController::class)->needs(IFooterOperations::class)->give(function() {
-
-            return new FooterControllerOperations();
-        });
+        $this->app->bind(IFooterOperations::class, FooterControllerOperations::class);
     }
 
 }
