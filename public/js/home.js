@@ -350,7 +350,7 @@ var home_api = (function () {
 
         $("div[data-area-id]").each(function (i, e) {
             $(this).click(function () {
-                home_api.ParametersFilter().area = $("#tab-area-name").attr("data-area-id");
+                home_api.ParametersFilter().area = $(this).attr("data-area-id");
                 $("#apply_filter_link")[0].click();
             });
         });

@@ -7,7 +7,7 @@
 <div class="l-corporate">
     <div class="l-corporate-body">
         <div class="l-corporate-img">
-            {{Html::image('img/house.jpg',null,['class'=>'img-responsive'])}}
+            {{Html::image('img/slides/M_3.jpg',null,['class'=>'img-responsive'])}}
         </div>
         <div class="l-corporate-data">
             <p class="title">
