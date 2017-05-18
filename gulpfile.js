@@ -25,6 +25,7 @@ function jsMin() {
     return gulp.src([
         'public/js/vendors/jquery.js',
         'public/js/vendors/jquery-ui.js',
+        'public/js/vendors/jquery-ui.touch-punch.js',
         'public/js/vendors/jquery-cookie.js',
         'public/js/vendors/bootstrap.js',
         'public/js/vendors/jquery-multiselect.js',

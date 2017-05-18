@@ -81,6 +81,9 @@ footer
             align-items: center;
             width: 50%;
             display: none;
+            @media screen and (max-width: 992px) {
+                width: 95%;
+            }
             & span
             {
                 display: block;
@@ -93,14 +96,6 @@ footer
             {
                 margin: 1em 0; 
                 width: 100%;
-                &:first-child
-                    {
-                    margin-top: 2em;
-                }
-                &:last-child
-                    {
-                    margin-bottom: 0;
-                }
                 & span:first-child
                     {
                     text-align:center;

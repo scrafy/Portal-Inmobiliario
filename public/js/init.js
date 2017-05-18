@@ -114,9 +114,12 @@ $(document).ready(function () {
 
     });
 
-    // No scroll
+
+    // Block scroll for > iPhone 5
     $(document).on('touchmove', 'body.no-scroll', function (e) {
-        e.preventDefault();
+        if ($('.show-mobile-menu').length > 0 || ($('.show-mobile-filter-menu')) && window.innerWidth > 320) {
+            e.preventDefault();
+        }
     });
 
 });

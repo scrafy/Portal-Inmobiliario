@@ -34,6 +34,7 @@
         @else
             {{ Html::script('js/vendors/jquery.js')}}
             {{ Html::script('js/vendors/jquery-ui.js')}}
+            {{ Html::script('js/vendors/jquery-ui.touch-punch.js')}}
             {{ Html::script('js/vendors/jquery-cookie.js')}}
             {{ Html::script('js/vendors/bootstrap.js')}}
             {{ Html::script('js/vendors/jquery-multiselect.js')}}

@@ -70,6 +70,25 @@ var home_api = (function () {
             $('body').scrollTop(0).toggleClass('no-scroll');
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
+
+            // fix scroll of menu on iphone 5
+            if (window.innerWidth <= 320) {
+                if (document.body.style.overflow == 'hidden') {
+                    $(document.body).css({
+                        'overflow': '',
+                        'position': '',
+                        'z-index': ''
+                    });
+                } else {
+                    //iOs fix - prevent hard scroll close menu
+                    $(document.body).css({
+                        'overflow': 'hidden',
+                        'z-index': '1000',
+                        'position': 'relative'
+                    });
+                }
+            }
+
         });
 
         $('.filter-menu-left-arrow, .filter-menu-header-list-item').click(function () {
@@ -208,7 +227,7 @@ var home_api = (function () {
             }
         };
 
-        $("#filter-mobile-slider-range").slider(conf_slider_mobile);
+        $("#filter-mobile-slider-range").slider(conf_slider_mobile).draggable();
 
         var queryfilter = $("#queryfilterstring").attr("value");
         if (queryfilter !== "") {
