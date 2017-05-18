@@ -8,7 +8,7 @@
     <body>
         @foreach($lettings as &$letting)
             <div class="l-advert l-advert-modal-map">
-                <a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}" class="wrapper-img-advert" style="position:absolute;">
+                <a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}" class="wrapper-img-advert-modal-map">
                     <span class="glyphicon glyphicon-eye-open"></span>
                 </a>
                 <div class="l-advert-img">
