@@ -9,6 +9,8 @@
     margin:0;
     transition: left 0.5s;
     padding-bottom: 1.5em;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .show-mobile-filter-menu

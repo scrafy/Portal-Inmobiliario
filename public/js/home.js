@@ -208,7 +208,7 @@ var home_api = (function () {
             }
         };
 
-        $("#filter-mobile-slider-range").slider(conf_slider_mobile);
+        $("#filter-mobile-slider-range").slider(conf_slider_mobile).draggable();
 
         var queryfilter = $("#queryfilterstring").attr("value");
         if (queryfilter !== "") {
