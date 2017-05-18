@@ -7,7 +7,7 @@
 <div class="l-landlord">
     <div class="l-landlord-body">
         <div class="l-landlord-img">
-            {{Html::image('img/house.jpg',null,['class'=>'img-responsive'])}}
+            {{Html::image('img/slides/M_4.jpg',null,['class'=>'img-responsive'])}}
         </div>
         <div class="l-landlord-title">
             <p>
