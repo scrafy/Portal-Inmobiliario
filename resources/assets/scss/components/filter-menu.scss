@@ -11,6 +11,9 @@
     padding-bottom: 1.5em;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    @media screen and (max-width: 320px) {
+        height: 100vh;
+    }
 }
 
 .show-mobile-filter-menu
