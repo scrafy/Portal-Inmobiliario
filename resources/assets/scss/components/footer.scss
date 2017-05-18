@@ -75,12 +75,10 @@ footer
         }
         & .l-section-bottom-data-openinghours
         {
-            display: flex;
-            flex-direction: row;
             margin: 0 auto;
-            align-items: center;
             width: 50%;
             display: none;
+            justify-content: center;
             @media screen and (max-width: 992px) {
                 width: 95%;
             }
@@ -94,8 +92,12 @@ footer
             }
             & div
             {
+                &:first-child
+                    {
+                    margin-left: 0;
+                }
                 margin: 1em 0; 
-                width: 100%;
+                margin-left:2em;
                 & span:first-child
                     {
                     text-align:center;
