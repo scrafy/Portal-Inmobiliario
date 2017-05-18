@@ -117,7 +117,7 @@ $(document).ready(function () {
 
     // Block scroll for > iPhone 5
     $(document).on('touchmove', 'body.no-scroll', function (e) {
-        if (window.innerWidth > 320) {
+        if ($('.show-mobile-menu').length > 0 || ($('.show-mobile-filter-menu')) && window.innerWidth > 320) {
             e.preventDefault();
         }
     });
