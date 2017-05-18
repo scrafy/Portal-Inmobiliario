@@ -98,12 +98,23 @@ var home_api = (function () {
         });
 
         $('#show-menu-mobile').click(function () {
-            $('body').scrollTop(0).toggleClass('no-scroll');
-            $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
-            $(".mobile-menu").toggleClass("show");
-            setTimeout(function () {
+
+            if ($('body').hasClass("no-scroll")) {
+                $('body').removeClass('no-scroll');
+                $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
                 $(".mobile-menu").toggleClass("show-mobile-menu");
-            }, 100);
+                setTimeout(function () {
+                    $(".mobile-menu").toggleClass("show");
+                }, 500);
+            } else {
+                $('body').scrollTop(0).toggleClass('no-scroll');
+                $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
+                $(".mobile-menu").toggleClass("show");
+                setTimeout(function () {
+                    $(".mobile-menu").toggleClass("show-mobile-menu");
+                }, 100);
+            }
+
         });
 
         $('.mobile-menu-header-right-arrow, .mobile-menu-header-list-item').click(function () {
