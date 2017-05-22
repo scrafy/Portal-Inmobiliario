@@ -121,24 +121,24 @@
                 <div class="l-filter-menu">
                     <div class="filter-group">
                         <div class="filter-menu-labels">TYPE PROPERTY</div>
-                        <div class="ui fluid multiple search selection dropdown" id="location-mob">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Area</div>
-                            <div class="menu">
-                                @foreach($data['areas'] as &$area)
-                                <div class="item" data-value="{{strtolower($area['id'])}}">{{$area['Name']}}</div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <div class="filter-menu-labels">AREAS</div>
                         <div class="ui fluid multiple search selection dropdown" id="type-property-mob">
                             <i class="dropdown icon"></i>
                             <div class="default text">Type Property</div>
                             <div class="menu">
                                 @foreach($data['type_properties'] as &$property)
                                 <div class="item" data-value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-menu-labels">AREAS</div>
+                        <div class="ui fluid multiple search selection dropdown" id="location-mob">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Area</div>
+                            <div class="menu">
+                                @foreach($data['areas'] as &$area)
+                                <div class="item" data-value="{{strtolower($area['id'])}}">{{$area['Name']}}</div>
                                 @endforeach
                             </div>
                         </div>
