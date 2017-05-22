@@ -87,3 +87,26 @@
 
 }
 
+.main-map .modal-dialog
+{
+    height: 90%;
+    width: 100%;
+    margin:0 auto;
+    top:0em;
+    & .l-modal-content
+    {
+        border-radius: 0;
+        border:0;
+        height: 100%;
+        & .modal-body
+        {
+            height: 100%;
+            & .home-map
+            {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+}

@@ -37,7 +37,9 @@
             {{ Html::script('js/vendors/jquery-ui.touch-punch.js')}}
             {{ Html::script('js/vendors/jquery-cookie.js')}}
             {{ Html::script('js/vendors/bootstrap.js')}}
-            {{ Html::script('js/vendors/jquery-multiselect.js')}}
+            {{ Html::script('js/vendors/semantic.js')}}
+            {{ Html::script('js/vendors/transition.js')}}
+            {{Html::script('js/vendors/dropdown.js')}}
             {{ Html::script('js/init.js')}}
             {{ Html::script('js/home.js')}}
             {{ Html::script('js/footer.js')}}
@@ -119,22 +121,27 @@
                 <div class="l-filter-menu">
                     <div class="filter-group">
                         <div class="filter-menu-labels">TYPE PROPERTY</div>
-                        <div class="filter-menu-input-group" >
-                            <select multiple="multiple" class="form-control my-select" id="type-property-mob">
-                                @foreach($data['type_properties'] as &$property)
-                                    <option value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</option>
+                        <div class="ui fluid multiple search selection dropdown" id="location-mob">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Area</div>
+                            <div class="menu">
+                                @foreach($data['areas'] as &$area)
+                                <div class="item" data-value="{{strtolower($area['id'])}}">{{$area['Name']}}</div>
                                 @endforeach
-                            </select>
+                            </div>
                         </div>
                     </div>
                     <div class="filter-group">
                         <div class="filter-menu-labels">AREAS</div>
-                        <select class="form-control my-select" id="location-mob">
-                            <option value>--Any Area--</option>
-                            @foreach($data['areas'] as &$area)
-                            <option value="{{strtolower($area['id'])}}">{{$area['Name']}}</option>
-                            @endforeach
-                        </select>
+                        <div class="ui fluid multiple search selection dropdown" id="type-property-mob">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Type Property</div>
+                            <div class="menu">
+                                @foreach($data['type_properties'] as &$property)
+                                <div class="item" data-value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                     <div class="filter-group">
                         <div class="l-prices-label">
