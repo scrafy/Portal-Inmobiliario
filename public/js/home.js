@@ -3,25 +3,29 @@ var home_api = (function () {
     function HomeApi() {
 
         var querystring = "";
+
         var param_filters = {
 
+            type_property: JSON.stringify({properties: []}),
             sortby: null,
-            area: null,
+            area: JSON.stringify({areas: []}),
             minprice: null,
             maxprice: null,
             numbeds: null,
             furnished: null
         };
+
         var final_parameters = {
 
-            type_property: [],
+            type_property: JSON.stringify({properties: []}),
             sortby: null,
-            area: null,
+            area: JSON.stringify({areas: []}),
             minprice: null,
             maxprice: null,
             numbeds: null,
             furnished: null
         };
+
         for (var prop in param_filters)
         {
             param_filters.watch(prop, function (prop, oldval, newval) {
@@ -143,61 +147,60 @@ var home_api = (function () {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property-mob").multiselect({classes: "my-multiselect"});
+        $("#type-property-mob").dropdown({
 
-        $("#type-property-mob").on("multiselectcheckall", function (event, ui) {
-            home_api.FinalParameters().type_property.length = 0;
-            $($(this).multiselect("getChecked")).each(function (i, e) {
-                home_api.FinalParameters().type_property.push(e.defaultValue);
-            });
-            home_api.ApplyFilters("type_property", "");
+            onAdd: function (added, addedText, addedChoice) {
+                var obj = JSON.parse(home_api.FinalParameters().type_property);
+                var index = jQuery.inArray(added, obj.properties, 0);
+                if (index === -1) {
+                    obj.properties.push(added);
+                    home_api.GetParameterFilters().type_property = JSON.stringify(obj);
+                    $("#type-property").dropdown('set selected', added);
+                }
+            },
 
-            $("#type-property-mob").multiselect("getChecked").each(function (i, e) {
-                $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
-
-                    $(this)[0].checked = true;
-
-                });
-            });
-            $("#type-property").siblings("button").first().children("span").eq(1).text($("#type-property").multiselect("widget").find(":checkbox").length + " selected");
-
-        });
-
-        $("#type-property-mob").on("multiselectuncheckall", function (event, ui) {
-            home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property", "");
-            $("#type-property").multiselect("uncheckAll");
-        });
-
-        $("#type-property-mob").on("multiselectclick", function (event, ui) {
-            var index = jQuery.inArray(ui.value, home_api.FinalParameters().type_property, 0);
-            var total_properties_selected = 0;
-            if (index === -1) {
-                home_api.FinalParameters().type_property.push(ui.value);
-            } else {
-                home_api.FinalParameters().type_property.splice(index, 1);
-            }
-            home_api.ApplyFilters("type_property", "");
-            $("#type-property").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
-
-            $("#type-property").multiselect("getChecked").each(function (i, e) {
-                total_properties_selected++;
-            });
-            $("#type-property").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
-        });
-
-        $("#location-mob").selectmenu({
-            change: function (event, data) {
-                if (data.item.index === home_api.FinalParameters().location) {
-                    home_api.ParametersFilter().area = null;
-                } else {
-                    if (data.item.label !== "--Any Area--") {
-                        home_api.ParametersFilter().area = data.item.value;
-                    } else
-                        home_api.ParametersFilter().area = null;
+            onLabelRemove: function (value) {
+                var obj = JSON.parse(home_api.FinalParameters().type_property);
+                var index = jQuery.inArray(value, obj.properties, 0);
+                $("#type-property-mob").click();
+                if (index !== -1) {
+                    obj.properties.splice(index, 1);
+                    home_api.GetParameterFilters().type_property = JSON.stringify(obj);
+                    $("#type-property").dropdown('remove selected', value);
                 }
             }
         });
+
+        $("#location-mob").dropdown({
+
+            label: {
+                transition: 'horizontal flip',
+                duration: 600,
+                variation: false
+            },
+
+            onAdd: function (added, addedText, addedChoice) {
+                var obj = JSON.parse(home_api.FinalParameters().area);
+                var index = jQuery.inArray(added, obj.areas, 0);
+                if (index === -1) {
+                    obj.areas.push(added);
+                    home_api.GetParameterFilters().area = JSON.stringify(obj);
+                    $("#location").dropdown('set selected', added);
+                }
+            },
+
+            onLabelRemove: function (value) {
+                var obj = JSON.parse(home_api.FinalParameters().area);
+                var index = jQuery.inArray(value, obj.areas, 0);
+                $("#location-mob").click();
+                if (index !== -1) {
+                    obj.areas.splice(index, 1);
+                    home_api.GetParameterFilters().area = JSON.stringify(obj);
+                    $("#location").dropdown('remove selected', value);
+                }
+            }
+        });
+
 
         $("#numbeds-mob").children().each(function (index, el) {
 
@@ -250,13 +253,7 @@ var home_api = (function () {
                 switch (t[0])
                 {
                     case "type_property[]":
-                        $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
-                            if ($(this).attr("value") === t[1]) {
-                                $(this).attr('checked', true);
-                                total_properties_selected++;
-                            }
-                        });
-                        $("#type-property-mob").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
+                        $("#type-property-mob").dropdown('set selected', t[1]);
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -282,10 +279,8 @@ var home_api = (function () {
                         params.furnished = t[1];
                         $("#furnished-mob > div[data-value='" + t[1] + "']").toggleClass("filter-prop-selected");
                         break;
-                    case "area":
-                        params.area = t[1];
-                        $("#location-mob > option[value='" + t[1] + "']").attr("selected", "");
-                        $("#location-mob").selectmenu("refresh");
+                    case "area[]":
+                        $("#location-mob").dropdown('set selected', t[1]);
                         break;
                 }
             });
@@ -326,61 +321,72 @@ var home_api = (function () {
             home_api.DeleteParamFilters();
         });
 
-        $("#type-property").multiselect({classes: "my-multiselect"});
+        $("#type-property").dropdown({
 
-        $("#type-property").on("multiselectcheckall", function (event, ui) {
+            label: {
+                transition: 'horizontal flip',
+                duration: 600,
+                variation: false
+            },
 
-            home_api.FinalParameters().type_property.length = 0;
-            $($(this).multiselect("getChecked")).each(function (i, e) {
-                home_api.FinalParameters().type_property.push(e.defaultValue);
-            });
-            home_api.ApplyFilters("type_property", "");
-            $("#type-property").multiselect("getChecked").each(function (i, e) {
-                $("#type-property-mob").multiselect("widget").find(":checkbox").each(function (i, e) {
+            onAdd: function (added, addedText, addedChoice) {
+                var obj = JSON.parse(home_api.FinalParameters().type_property);
+                var index = jQuery.inArray(added, obj.properties, 0);
+                if (index === -1) {
+                    obj.properties.push(added);
+                    home_api.GetParameterFilters().type_property = JSON.stringify(obj);
+                    $("#type-property-mob").dropdown('set selected', added);
+                }
+            },
 
-                    $(this)[0].checked = true;
-
-                });
-            });
-            $("#type-property-mob").siblings("button").first().children("span").eq(1).text($("#type-property-mob").multiselect("widget").find(":checkbox").length + " selected");
-
-        });
-
-        $("#type-property").on("multiselectuncheckall", function (event, ui) {
-            home_api.FinalParameters().type_property.length = 0;
-            home_api.ApplyFilters("type_property", "");
-            $("#type-property-mob").multiselect("uncheckAll");
-        });
-
-        $("#type-property").on("multiselectclick", function (event, ui) {
-            var index = jQuery.inArray(ui.value, home_api.FinalParameters().type_property, 0);
-            var total_properties_selected = 0;
-            if (index === -1) {
-                home_api.FinalParameters().type_property.push(ui.value);
-            } else {
-                home_api.FinalParameters().type_property.splice(index, 1);
+            onLabelRemove: function (value) {
+                var obj = JSON.parse(home_api.FinalParameters().type_property);
+                var index = jQuery.inArray(value, obj.properties, 0);
+                $("#type-property").click();
+                if (index !== -1) {
+                    obj.properties.splice(index, 1);
+                    home_api.GetParameterFilters().type_property = JSON.stringify(obj);
+                    $("#type-property-mob").dropdown('remove selected', value);
+                }
             }
-            home_api.ApplyFilters("type_property", "");
-            $("#type-property-mob").multiselect("widget").find(":checkbox[value='" + ui.value + "']").first()[0].checked = ui.checked;
-
-            $("#type-property").multiselect("getChecked").each(function (i, e) {
-                total_properties_selected++;
-            });
-            $("#type-property-mob").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
         });
 
-        $("#location").selectmenu({
-            change: function (event, data) {
-                if (data.item.label !== "--Any Area--") {
-                    home_api.ParametersFilter().area = data.item.value;
-                } else
-                    home_api.ParametersFilter().area = null;
+        $("#location").dropdown({
+
+            label: {
+                transition: 'horizontal flip',
+                duration: 600,
+                variation: false
+            },
+
+            onAdd: function (added, addedText, addedChoice) {
+                var obj = JSON.parse(home_api.FinalParameters().area);
+                var index = jQuery.inArray(added, obj.areas, 0);
+                if (index === -1) {
+                    obj.areas.push(added);
+                    home_api.GetParameterFilters().area = JSON.stringify(obj);
+                    $("#location-mob").dropdown('set selected', added);
+                }
+            },
+
+            onLabelRemove: function (value) {
+                var obj = JSON.parse(home_api.FinalParameters().area);
+                var index = jQuery.inArray(value, obj.areas, 0);
+                $("#location").click();
+                if (index !== -1) {
+                    obj.areas.splice(index, 1);
+                    home_api.GetParameterFilters().area = JSON.stringify(obj);
+                    $("#location-mob").dropdown('remove selected', value);
+                }
             }
         });
 
         $("div[data-area-id]").each(function (i, e) {
             $(this).click(function () {
-                home_api.ParametersFilter().area = $(this).attr("data-area-id");
+                var obj = JSON.parse(home_api.FinalParameters().area);
+                obj.areas.length = 0;
+                obj.areas.push($(this).attr("data-area-id"));
+                home_api.GetParameterFilters().area = JSON.stringify(obj);
                 $("#apply_filter_link")[0].click();
             });
         });
@@ -428,20 +434,7 @@ var home_api = (function () {
                 switch (t[0])
                 {
                     case "type_property[]":
-                        $("#type-property").multiselect("widget").find(":checkbox").each(function (i, e) {
-                            if ($(this).attr("value") === t[1]) {
-                                $(this).attr('checked', true);
-                                total_properties_selected++;
-                            }
-                        });
-                        $("#type-property").siblings("button").first().children("span").eq(1).text(total_properties_selected + " selected");
-                        var index = jQuery.inArray(t[1], home_api.FinalParameters().type_property, 0);
-                        if (index === -1) {
-                            home_api.FinalParameters().type_property.push(t[1]);
-                        } else {
-                            home_api.FinalParameters().type_property.splice(index, 1);
-                        }
-                        home_api.ApplyFilters("type_property", "");
+                        $("#type-property").dropdown('set selected', t[1]);
                         break;
                     case "minprice":
                         params.minprice = t[1];
@@ -465,10 +458,8 @@ var home_api = (function () {
                         params.furnished = t[1];
                         $("#furnished > div[data-value='" + t[1] + "']").toggleClass("filter-prop-selected");
                         break;
-                    case "area":
-                        params.area = t[1];
-                        $("#location > option[value='" + t[1] + "']").attr("selected", "");
-                        $("#location").selectmenu("refresh");
+                    case "area[]":
+                        $("#location").dropdown('set selected', t[1]);
                         break;
                 }
             });
@@ -564,21 +555,26 @@ var home_api = (function () {
     HomeApi.prototype.ApplyFilters = function (prop, newval) {
 
         var final_parameters = this.FinalParameters();
-        if (prop !== "type_property")
-        {
-            final_parameters[prop] = newval;
-        }
         var querystring = "";
+        final_parameters[prop] = newval;
         for (var p in final_parameters) {
-
-            if (Array.isArray(final_parameters[p])) {
-                $(final_parameters[p]).each(function (i, e) {
-                    querystring += p + "[]=" + e + "&";
-                });
-            } else {
-                if (final_parameters[p] !== null) {
-                    querystring += p + "=" + final_parameters[p].toString().toLowerCase().replace(/ /g, '').trim() + "&";
-                }
+            switch (p) {
+                case "type_property":
+                    var obj = JSON.parse(final_parameters[p]);
+                    $(obj.properties).each(function (i, e) {
+                        querystring += p + "[]=" + e + "&";
+                    });
+                    break;
+                case "area":
+                    var obj = JSON.parse(final_parameters[p]);
+                    $(obj.areas).each(function (i, e) {
+                        querystring += p + "[]=" + e + "&";
+                    });
+                    break;
+                default:
+                    if (final_parameters[p] !== null) {
+                        querystring += p + "=" + final_parameters[p].toString().toLowerCase().replace(/ /g, '').trim() + "&";
+                    }
             }
         }
         querystring = querystring.substring(0, querystring.length - 1);

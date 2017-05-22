@@ -42,7 +42,7 @@ class SummaryLetting extends BaseModel {
         foreach ($parameters as $key => &$value) {
             switch ($key) {
                 case "type_property":
-                    $result = $result === null ? SummaryLetting::orWhereIn("TypeProperty", $value) : $result->orWhereIn("TypeProperty", $value);
+                    $result = $result === null ? SummaryLetting::WhereIn("TypeProperty", $value) : $result->WhereIn("TypeProperty", $value);
                     break;
                 case "sortby":
                     $sort = true;
@@ -66,7 +66,7 @@ class SummaryLetting extends BaseModel {
                     $records_x_page = $value;
                     break;
                 case "area":
-                    $result = $result === null ? SummaryLetting::where("AreaId", "=", $value) : $result->where("AreaId", "=", $value);
+                    $result = $result === null ? SummaryLetting::WhereIn("AreaId", $value) : $result->WhereIn("AreaId", $value);
                     break;
             }
         }

@@ -3,6 +3,11 @@
     z-index: 8000 !important;
 }
 
+.ui.fluid.dropdown
+{
+    width: 240.991px;
+}
+
 .ui-state-active
 {
     background-color: $red-color !important;
@@ -129,15 +134,19 @@
     }
 }
 
+html
+{
+    position: relative;
+}
+
 body
 {
     position: relative;
     font-family: $font-family;
     color:$main-font-color;
     background-color: rgba(0,0,0,0.1);
-    min-height: 100vh;
     @media screen and (max-width: 768px) {
-        padding-bottom: 250px;
+        background-color:white;
     }
 }
 
