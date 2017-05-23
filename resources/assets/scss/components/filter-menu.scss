@@ -66,15 +66,17 @@
                     &:first-child 
                         {
                         font-size:2em;
+                        margin-top: 5px;
 
                     }
                     &:last-child
                         {
-                        margin-left:1em;
+                        margin-left: 14px;
                         font-size:1.5em;
                         font-weight: bold;
                         vertical-align: middle;
                         height: 100%;
+                        margin-top: -3px;
                     }
                     .icon-filters {
                         font-size: 22px;
