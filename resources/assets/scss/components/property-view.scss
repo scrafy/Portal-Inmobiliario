@@ -55,11 +55,11 @@
                 height: 30px;
                 border-top-right-radius: 50px;
                 border-bottom-right-radius: 50px;
-                padding-left: 0.3em;
+                padding-left: 0.5em;
+                padding-right: 1em;
                 & span
                 {
                     color: $red-color;
-                    font-weight: bold;
                     font-size: 1.5em;
                     display: block;
                     padding-top: 5px;
@@ -69,7 +69,6 @@
         & > article 
         {
             padding:1em;
-            border: 1px solid #D5DBDB;
             border: 1px solid #D5DBDB;
             margin-top: 9px;
             overflow-y: scroll;
@@ -180,7 +179,6 @@
             @media screen and (min-width: 1024px)
                 {
                 max-width: 100%;
-                border: 1px solid #D5DBDB;
             }
             @media screen and (min-width: 1024px)
                 {

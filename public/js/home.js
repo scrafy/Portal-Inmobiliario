@@ -95,9 +95,11 @@ var home_api = (function () {
         });
 
         $('.filter-menu-left-arrow, .filter-menu-header-list-item').click(function () {
-            $('body').removeClass('no-scroll');
-            $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
-            $(".filter-menu").toggleClass("show-mobile-filter-menu");
+            if (window.innerWidth < 992) {
+                $('body').removeClass('no-scroll');
+                $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
+                $(".filter-menu").toggleClass("show-mobile-filter-menu");
+            }
         });
 
         $('#show-menu-mobile').click(function () {

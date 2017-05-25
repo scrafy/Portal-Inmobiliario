@@ -232,7 +232,6 @@ a:focus
     text-align: center;
     border-radius: 17px;
     color: white;
-    border: 1px solid grey;
     padding: 0.3em 0;
     font-weight: bold;
     line-height: 26px;
@@ -253,12 +252,11 @@ a:focus
     text-align: center;
     border-radius: 17px;
     color: white;
-    border: 1px solid grey;
-    padding: -2em;
     font-weight: bold;
     padding: 0.4em;
     width: 151.34px;
     font-size: 1em;
+    margin: 0 4px;
     &:hover
         {
         cursor:pointer;
@@ -287,8 +285,7 @@ a:focus
     display: inline-block;
     color: grey;
     border: 1px solid #aaa;
-    padding: -2em;
-    padding: 0.4em 1em 0.4em 1em;
+    padding: 0.4em 1em;
 
 }
 
@@ -304,7 +301,6 @@ a:focus
     color: grey;
     border: 1px solid grey;
     padding: -2em;
-    weight: 30px;
     width: 30px;
     line-height: 26px;
 }

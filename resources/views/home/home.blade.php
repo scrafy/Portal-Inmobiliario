@@ -154,7 +154,13 @@
                     <div class="l-type-house">
                         <div class="l-type-house-img">
                             <div class="property-icon">
-                                {{ Html::image('img/icons/apartment.png') }}
+                                @if($letting->TypeProperty == 'FlatApartment' || $letting->TypeProperty == 'Flat Apartment')
+                                    {{ Html::image('img/icons/flat.png') }}
+                                @elseif($letting->TypeProperty == 'House')
+                                    {{ Html::image('img/icons/house.png') }}
+                                @else
+                                    {{ Html::image('img/icons/apartment.png') }}
+                                @endif
                             </div>
                             <div class="type-property">
                                 <span>{{$letting->TypeProperty}}</span>

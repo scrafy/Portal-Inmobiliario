@@ -49,7 +49,7 @@
                 padding-right: 1em;
                 display: none;
                 span {
-                    vertical-align: sub;
+                    vertical-align: -webkit-baseline-middle;
                 }
                 @media screen and (min-width: 480px) 
                 {
@@ -57,7 +57,12 @@
                     {
                         display: block;
                     }
-                } 
+                }
+            }
+            #select-order-by-button {
+                span {
+                    margin-top: 2px;
+                }
             }
             & .results-list
             {
