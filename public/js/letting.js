@@ -104,7 +104,7 @@ var letting = (function () {
                     $("#form-arrange .form-group > span").text("");
                     $("#form-arrange .form-group > input, #form-arrange .form-group > textarea").val("");
                     $(".buttons").children("div.filter-prop-selected").toggleClass("filter-prop-selected");
-                    $('#arrangeview-modal').modal('hide');
+                    $('#close-arrange-form').click();
                 }
             },
             error: function (xhr, status, error) {
