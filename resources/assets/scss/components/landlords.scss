@@ -18,7 +18,10 @@
         }
         & .l-landlord-title 
         {
-            border: 1px solid #D5DBDB;
+            -webkit-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            -moz-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            border-radius: 6px;
             padding: 1em;
             & p
             {
@@ -38,7 +41,10 @@
             }
             & > div
             {
-                border: 1px solid #D5DBDB;
+                -webkit-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+                -moz-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+                box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+                border-radius: 6px;
                 @media screen and (min-width: 320px)
                     {
                     width: 100%;
@@ -47,13 +53,17 @@
                     {
                     width: 49%;
                 }
-                margin-top: 0.5em;
+                margin-top: 1em;
+                padding-top: 10px;
             }
             & ul li:first-child
                 {
                 margin-bottom: 1em;
                 list-style: none;
                 font-weight: bold;
+            }
+            & ul li {
+                text-transform: capitalize;
             }
         }
     }

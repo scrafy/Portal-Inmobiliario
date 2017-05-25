@@ -49,11 +49,13 @@ footer
         {
             display: flex;
             flex-wrap: wrap;
-            max-width: 920px;
+            max-width: 1000px;
             margin: 0 auto;
             justify-content: space-between;
             display: none;
             padding: 1em;
+            position: relative;
+            top: 20px;
             & span:first-child
                 {
                 font-size: 1.5em;
@@ -79,6 +81,8 @@ footer
             width: 50%;
             display: none;
             justify-content: center;
+            position: relative;
+            top: 20px;
             @media screen and (max-width: 992px) {
                 width: 95%;
             }
@@ -135,6 +139,12 @@ footer
                     &:hover
                         {
                         cursor:pointer;
+                    }
+                    .icon-twitter:hover {
+                        color: #1da1f3;
+                    }
+                    .icon-facebook:hover {
+                        color: #3b5998;
                     }
                 }
             }

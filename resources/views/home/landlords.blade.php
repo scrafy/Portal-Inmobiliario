@@ -6,9 +6,6 @@
 
 <div class="l-landlord">
     <div class="l-landlord-body">
-        <div class="l-landlord-img">
-            {{Html::image('img/slides/M_4.jpg',null,['class'=>'img-responsive'])}}
-        </div>
         <div class="l-landlord-title">
             <p>
                 Whether you need full and ongoing property management or are looking for us to find the perfect tenant, our tailor made packages provide the exact level of service you need.
@@ -27,7 +24,6 @@
                 </ul>
             </div>
             <div>
-                <p></p>
                 <ul>
                     <li>FULL MANAGEMENT</li>
                     <li>internet marketing</li>
