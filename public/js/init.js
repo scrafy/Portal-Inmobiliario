@@ -101,7 +101,7 @@ $(document).ready(function () {
         $("#header").css("z-index", "-1");
     });
 
-    $('.modal').on('hidde.bs.modal', function (e) {
+    $('.modal').on('hide.bs.modal', function (e) {
         $("#header").css("z-index", "6000");
     });
 
