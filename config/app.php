@@ -154,7 +154,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ExternalApiServiceProvider::class,
-        App\Providers\WebServiceProvider::class
+        App\Providers\WebServiceProvider::class,
+        App\Providers\FacadesServiceProvider::class,
     ],
     /*
       |--------------------------------------------------------------------------
@@ -202,5 +203,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Strings' => App\Facades\Strings::class
     ],
 ];
