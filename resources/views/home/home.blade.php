@@ -63,7 +63,7 @@
                         <div class="default text">Type Property</div>
                         <div class="menu">
                             @foreach($data['type_properties'] as &$property)
-                            <div class="item" data-value="{{strtolower($property['PropertyType'])}}">{{$property['PropertyType']}}</div>
+                            <div class="item" data-value="{{Strings::StrToLower($property['PropertyType'])}}">{{Strings::SplitCapitalizeString($property['PropertyType'])}}</div>
                             @endforeach
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                         <div class="default text">Area</div>
                         <div class="menu">
                             @foreach($data['areas'] as &$area)
-                            <div class="item" data-value="{{strtolower($area['id'])}}">{{$area['Name']}}</div>
+                            <div class="item" data-value="{{Strings::StrToLower($area['id'])}}">{{$area['Name']}}</div>
                             @endforeach
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                                 @endif
                             </div>
                             <div class="type-property">
-                                <span>{{$letting->TypeProperty}}</span>
+                                <span>{{Strings::SplitCapitalizeString($letting->TypeProperty)}}</span>
                             </div>
                         </div>
                         <div class="furnished"><span>{{$letting->Furnished}}</span></div>

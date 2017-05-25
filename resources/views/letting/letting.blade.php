@@ -227,7 +227,7 @@
             </div>
             <ul>
                 <li>
-                    <span>Available </span><span>{{date('Y-m-d',strtotime($data['letting']->Start))}}</span>
+                    <span>Available </span><span>{{Strings::EnDateForNoTime($data['letting']->Start)}}</span>
                 </li>
                 <li>
                     <span>Deposit&nbsp;&nbsp;</span><span>&pound; {{intval($data['letting']->BondRequired)}}</span>
@@ -236,7 +236,7 @@
             <div class="l-advert-data">
                 <div class="l-type-house">
                     <div class="type-house-icon"></div>
-                    <div class="type-property">{{$data['letting']->TypeProperty}}</div>
+                    <div class="type-property">{{Strings::SplitCapitalizeString($data['letting']->TypeProperty)}}</div>
                     <div class="furnished">{{$data['letting']->Furnished}}</div>
                 </div>
                 <div class="l-house-data">
