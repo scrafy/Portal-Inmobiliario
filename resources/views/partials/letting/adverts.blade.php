@@ -30,7 +30,7 @@
                                 {{ Html::image('img/icons/apartment.png') }}
                             </div>
                             <div class="type-property">
-                                <span>{{$letting->TypeProperty}}</span>
+                                <span>{{Strings::SplitCapitalizeString($letting->TypeProperty)}}</span>
                             </div>
                         </div>
                         <div class="furnished"><span>{{$letting->Furnished}}</span></div>
