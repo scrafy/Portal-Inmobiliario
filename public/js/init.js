@@ -94,14 +94,14 @@ $(document).ready(function () {
             $("#separator").css("margin-top", "0px");
         }
     });
-
+    
     //FIXED MODALS
 
     $('.modal').on('show.bs.modal', function (e) {
         $("#header").css("z-index", "-1");
     });
 
-    $('.modal').on('hidden.bs.modal', function (e) {
+    $('.modal').on('hidde.bs.modal', function (e) {
         $("#header").css("z-index", "6000");
     });
 

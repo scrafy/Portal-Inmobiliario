@@ -383,3 +383,22 @@ a:focus
 {
     margin-top: 1em !important;
 }
+
+.ajax-loader
+{
+    top:0;
+    & img
+    {
+        width: 100px;
+        height: 100px;
+    }
+    & .modal-dialog
+    {
+        top:calc(50% - 66px);
+        left:calc(50% - 66px);
+        display: inline-block;
+        width: auto;
+        margin:0;
+        position: absolute;
+    }
+}

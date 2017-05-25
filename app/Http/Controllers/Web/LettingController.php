@@ -28,7 +28,12 @@ class LettingController extends Controller {
     public function GetBrochure($id) {
         return $this->service->GetBrochure($id);
     }
-
+    
+    public function CleanFilters() {
+        
+        return view('partials.letting.cleanfilters')->with("data", $this->service->CleanFilters());
+    }
+    
     public function FilterLettings(Request $request) {
         return view('home.home')->with("data", $this->service->GetLettingsFilteredData($request->query()));
     }

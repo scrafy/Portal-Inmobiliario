@@ -14,6 +14,11 @@
     @media screen and (max-width: 320px) {
         height: 100vh;
     }
+    & .filter-menu-left-arrow
+    {
+        margin-top: -3px !important;
+        line-height: 18px !important;
+    }
 }
 
 .show-mobile-filter-menu
@@ -124,7 +129,7 @@
                 }
 
             }
-            & span
+            & .filter-menu-input-group span
             {
                 font-size: 1.5em;
                 color:grey;
