@@ -8,10 +8,10 @@ var letting = (function () {
     LettingApi.prototype.SetUp = function () {
 
         var that = this;
-        
+
         var postcode = $("#advert-address").text();
         postcode = postcode.split(",")[1].trim();
-                
+
         $.get(conf.endpoint + "getlatlngfrompostcode/" + postcode, null, function (data, status, xhr) {
 
             if (data.content !== null) {
@@ -42,45 +42,23 @@ var letting = (function () {
             $(".buttons").children("div.filter-prop-selected").toggleClass("filter-prop-selected");
         });
 
-        $("#contact-by-phone").bind("click", function (event) {
+        $("#contact-by-phone,#contact-by-email,#no-contact").bind("click", function (event) {
 
+            if ($(this).hasClass("filter-prop-selected")) {
+                $("#form-arrange").children("input[name=ContactBy]").remove();
+            } else {
+                var input = $('<input/>');
+                input.attr("name", "ContactBy");
+                input.attr("value", $(this).text().toLowerCase());
+                input.attr("type", "hidden");
+                $("#form-arrange").children("input[name=ContactBy]").remove();
+                $("#form-arrange").append(input);
+            }
             $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
             $(this).toggleClass("filter-prop-selected");
-            var input = $('<input/>');
-            input.attr("name", "ContactBy");
-            input.attr("value", $(this).text().toLowerCase());
-            input.attr("type", "hidden");
-            $("#form-arrange").children("input[name=ContactBy]").remove();
-            $("#form-arrange").append(input);
+
 
         });
-
-        $("#contact-by-email").bind("click", function (event) {
-
-            $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
-            $(this).toggleClass("filter-prop-selected");
-            var input = $('<input/>');
-            input.attr("name", "ContactBy");
-            input.attr("value", $(this).text().toLowerCase());
-            input.attr("type", "hidden");
-            $("#form-arrange").children("input[name=ContactBy]").remove();
-            $("#form-arrange").append(input);
-
-        });
-
-        $("#no-contact").bind("click", function (event) {
-
-            $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
-            $(this).toggleClass("filter-prop-selected");
-            var input = $('<input/>');
-            input.attr("name", "ContactBy");
-            input.attr("value", "N/A");
-            input.attr("type", "hidden");
-            $("#form-arrange").children("input[name=ContactBy]").remove();
-            $("#form-arrange").append(input);
-
-        });
-
         $("#submit-arrange-form").bind("click", function (event) {
             that.SubmitArrangeForm();
         });
@@ -92,7 +70,8 @@ var letting = (function () {
             url: conf.endpoint + "getepcreport/" + id,
             success: function (data, status, xhr) {
                 if (data.error !== null) {
-                    alert(data.error);
+                    $("#epc-report-img").attr("src", "/img/no_epc_report.png");
+                    $("#epc-report-img").css("width", "250px");
                 } else {
                     $("#epc-report-img").attr("src", "/img/Properties/EpcReports/" + data.content.file);
                 }
