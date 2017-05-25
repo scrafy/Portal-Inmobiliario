@@ -27,6 +27,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/getepcreport/{id}', 'LettingController@GetEpcReport');
     Route::get('/getbrochure/{id}', 'LettingController@GetBrochure');
     Route::get('/filter', 'LettingController@FilterLettings');
+    Route::get('/cleanfilters', 'LettingController@CleanFilters');
     Route::get('/getmapinformation/{postcode?}', 'LettingController@GetMapInformation');
     Route::get('/getlatlngfrompostcode/{postcode}', 'LettingController@GetLatLongFromPostCode');
     Route::post('/appointment', 'LettingController@CreateAppointment')->middleware("binding:Appointment," . config('myparametersconfig.input_models_path') . "\Web\Letting");

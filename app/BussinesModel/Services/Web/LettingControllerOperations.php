@@ -105,6 +105,28 @@ class LettingControllerOperations extends WebControllersOperations implements IL
         return response()->json($resp);
     }
 
+    public function CleanFilters() {
+        $page = 1;
+        $result = SummaryLetting::orderBy("Price", "asc")->simplePaginate($this->records_x_page, ['*'], null, $page)->toArray()['data'];
+        if (($result === null) || (count($result) === 0 )) {
+            $this->data['lettings'] = null;
+            $this->data['total_lettings'] = 0;
+            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
+        } else {
+            foreach ($result as &$letting) {
+                $letting = (object) $letting;
+            }
+            $this->data['lettings'] = $result;
+            $this->data['total_lettings'] = SummaryLetting::count();
+            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
+        }
+        $this->data['queryfilterstring'] = "";
+        if (Session::has('queryfilter')) {
+            Session::remove('queryfilter');
+        }
+        return $this->data;
+    }
+
     public function GetLettingsFilteredData($request_input) {
         $query = "";
         $result = null;
@@ -128,7 +150,6 @@ class LettingControllerOperations extends WebControllersOperations implements IL
             if (Session::has('queryfilter')) {
                 Session::remove('queryfilter');
             }
-            
         } else {
             if (isset($request_input['records_x_page'])) {
                 $this->records_x_page = $request_input['records_x_page'];

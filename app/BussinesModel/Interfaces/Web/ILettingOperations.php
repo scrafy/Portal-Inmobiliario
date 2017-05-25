@@ -13,6 +13,8 @@ interface ILettingOperations {
     public function GetBrochure($id);
 
     public function GetLettingsFilteredData($request_input);
+    
+    public function CleanFilters();
 
     public function CreateAppointment(Appointment $appointment);
     

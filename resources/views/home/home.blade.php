@@ -104,7 +104,7 @@
                 </div>
                 <div class="filter-group">
                     <div class="filter-menu-input-group">
-                        <span class="icon-trash-bin" id="filterclean"></span>
+                        <span id="filterclean" class="icon-trash-bin"></span>
                         <a href="{{action('Web\LettingController@FilterLettings')."?"}}" id="apply_filter_link">
                             <div class="button-rounded-red filter-menu-group-item apply-filter"><i class="icon-tick"></i> APPLY FILTERS</div>
                         </a>
@@ -113,7 +113,7 @@
             </div>
         </div>	
     </aside>
-    <section class="col-xs-12 col-sm-12 col-md-9">
+    <section class="home-section col-xs-12 col-sm-12 col-md-9">
         <div class="l-results">
             <ul class="results-list">
                 <li class="results-list-item"><span>{{$data['total_lettings']}}</span> results</li>

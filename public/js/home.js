@@ -62,7 +62,6 @@ var home_api = (function () {
         });
     };
 
-
     HomeApi.prototype.SetUpMobileEvents = function ()
     {
         var limitminprice = parseInt($("#input_minprice").val());
@@ -144,6 +143,7 @@ var home_api = (function () {
         });
 
         $("#filterclean_mob").bind("click", null, function (event) {
+            $(".filter-menu-left-arrow").click();
             home_api.DeleteParamFilters();
         });
 
@@ -207,11 +207,15 @@ var home_api = (function () {
             $(this).bind("click", null, function (event) {
                 if ($(this).text().toLowerCase() === home_api.FinalParameters().numbeds) {
                     home_api.ParametersFilter().numbeds = null;
+
                 } else {
                     home_api.ParametersFilter().numbeds = $(this).text().toLowerCase();
+
                 }
                 $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
                 $(this).toggleClass("filter-prop-selected");
+                $("#numbeds").children(":contains('" + $(this).text().toLowerCase() + "')").first().siblings().removeClass("filter-prop-selected");
+                $("#numbeds").children(":contains('" + $(this).text().toLowerCase() + "')").first().toggleClass("filter-prop-selected");
             });
         });
 
@@ -225,23 +229,10 @@ var home_api = (function () {
                 }
                 $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
                 $(this).toggleClass("filter-prop-selected");
+                $("#furnished").children(":contains('" + $(this).text() + "')").first().siblings().removeClass("filter-prop-selected");
+                $("#furnished").children(":contains('" + $(this).text() + "')").first().toggleClass("filter-prop-selected");
             });
         });
-
-        var conf_slider_mobile = {
-            range: true,
-            min: limitminprice,
-            max: limitmaxprice,
-            values: [minprice, maxprice],
-            slide: function (event, ui) {
-                $("#mobile-min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
-                $("#mobile-max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
-                home_api.ParametersFilter().minprice = ui.values[0];
-                home_api.ParametersFilter().maxprice = ui.values[1];
-            }
-        };
-
-        $("#filter-mobile-slider-range").slider(conf_slider_mobile).draggable();
 
         var queryfilter = $("#queryfilterstring").attr("value");
         if (queryfilter !== "") {
@@ -285,6 +276,23 @@ var home_api = (function () {
                 }
             });
         }
+        var conf_slider_mobile = {
+            range: true,
+            min: limitminprice,
+            max: limitmaxprice,
+            values: [minprice, maxprice],
+            slide: function (event, ui) {
+                $("#mobile-min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
+                $("#mobile-max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
+                $("#min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
+                $("#max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
+                home_api.ParametersFilter().minprice = ui.values[0];
+                home_api.ParametersFilter().maxprice = ui.values[1];
+                $("#slider-range").slider("option", "values", [ui.values[0], ui.values[1]]);
+            }
+        };
+
+        $("#filter-mobile-slider-range").slider(conf_slider_mobile).draggable();
     };
 
     HomeApi.prototype.SetUp = function () {
@@ -294,18 +302,59 @@ var home_api = (function () {
         var minprice = limitminprice;
         var maxprice = limitmaxprice;
 
-        $("#show-sprite").click(function (event) {
-            var ladverts = $("#l-adverts");
-            if (!ladverts.hasClass("l-adverts"))
-            {
-                ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
-                ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
-            }
-            $('#show-landscape a').removeClass('active');
-            $('#show-sprite a').addClass('active');
+        var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+
+                    $(mutation.addedNodes).find("#select-order-by").selectmenu({
+                        change: function (event, data) {
+                            home_api.ParametersFilter().sortby = data.item.label.toLowerCase().replace(/ /g, '').trim();
+                            $("#apply_filter_link")[0].click();
+                        }
+                    });
+
+                    $(mutation.addedNodes).find("#show-landscape").bind("click", function () {
+                        var ladverts = $("#l-adverts");
+                        if (!ladverts.hasClass("l-adverts-landscape"))
+                        {
+                            $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
+                            $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
+                        }
+                        $('#show-sprite a').removeClass('active');
+                        $('#show-landscape a').addClass('active');
+                    });
+
+                    $(mutation.addedNodes).find("#show-sprite").bind("click", function () {
+                        var ladverts = $("#l-adverts");
+                        if (!ladverts.hasClass("l-adverts"))
+                        {
+                            ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
+                            ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
+                        }
+                        $('#show-landscape a').removeClass('active');
+                        $('#show-sprite a').addClass('active');
+                    });
+
+                    $(mutation.addedNodes).find("div[data-area-id]").click(function () {
+                        var obj = JSON.parse(home_api.FinalParameters().area);
+                        obj.areas.length = 0;
+                        obj.areas.push($(this).attr("data-area-id"));
+                        home_api.GetParameterFilters().area = JSON.stringify(obj);
+                        $("#apply_filter_link")[0].click();
+                    });
+                }
+            });
         });
 
-        $("#show-landscape").click(function (event) {
+        var config = {
+            attributes: true,
+            childList: true,
+            characterData: true
+        };
+
+        observer.observe($("section.home-section")[0], config);
+
+        $("#show-landscape").bind("click", function () {
             var ladverts = $("#l-adverts");
             if (!ladverts.hasClass("l-adverts-landscape"))
             {
@@ -316,6 +365,23 @@ var home_api = (function () {
             $('#show-landscape a').addClass('active');
         });
 
+        $("#show-sprite").bind("click", function () {
+            var ladverts = $("#l-adverts");
+            if (!ladverts.hasClass("l-adverts"))
+            {
+                ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
+                ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
+            }
+            $('#show-landscape a').removeClass('active');
+            $('#show-sprite a').addClass('active');
+        });
+
+        $("#select-order-by").selectmenu({
+            change: function (event, data) {
+                home_api.ParametersFilter().sortby = data.item.label.toLowerCase().replace(/ /g, '').trim();
+                $("#apply_filter_link")[0].click();
+            }
+        });
 
         $("#filterclean").bind("click", null, function (event) {
             home_api.DeleteParamFilters();
@@ -381,21 +447,12 @@ var home_api = (function () {
             }
         });
 
-        $("div[data-area-id]").each(function (i, e) {
-            $(this).click(function () {
-                var obj = JSON.parse(home_api.FinalParameters().area);
-                obj.areas.length = 0;
-                obj.areas.push($(this).attr("data-area-id"));
-                home_api.GetParameterFilters().area = JSON.stringify(obj);
-                $("#apply_filter_link")[0].click();
-            });
-        });
-
-        $("#select-order-by").selectmenu({
-            change: function (event, data) {
-                home_api.ParametersFilter().sortby = data.item.label.toLowerCase().replace(/ /g, '').trim();
-                $("#apply_filter_link")[0].click();
-            }
+        $("div[data-area-id]").click(function () {
+            var obj = JSON.parse(home_api.FinalParameters().area);
+            obj.areas.length = 0;
+            obj.areas.push($(this).attr("data-area-id"));
+            home_api.GetParameterFilters().area = JSON.stringify(obj);
+            $("#apply_filter_link")[0].click();
         });
 
         $("#numbeds").children().each(function (index, el) {
@@ -403,11 +460,15 @@ var home_api = (function () {
             $(this).bind("click", null, function (event) {
                 if ($(this).text().toLowerCase() === home_api.FinalParameters().numbeds) {
                     home_api.ParametersFilter().numbeds = null;
+
                 } else {
                     home_api.ParametersFilter().numbeds = $(this).text().toLowerCase();
                 }
                 $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
                 $(this).toggleClass("filter-prop-selected");
+                $("#numbeds-mob").children(":contains('" + $(this).text().toLowerCase() + "')").first().siblings().removeClass("filter-prop-selected");
+                $("#numbeds-mob").children(":contains('" + $(this).text().toLowerCase() + "')").first().toggleClass("filter-prop-selected");
+
             });
         });
 
@@ -421,6 +482,8 @@ var home_api = (function () {
                 }
                 $(this).siblings("div.filter-prop-selected").toggleClass("filter-prop-selected");
                 $(this).toggleClass("filter-prop-selected");
+                $("#furnished-mob").children(":contains('" + $(this).text() + "')").first().siblings().removeClass("filter-prop-selected");
+                $("#furnished-mob").children(":contains('" + $(this).text() + "')").first().toggleClass("filter-prop-selected");
             });
         });
 
@@ -473,8 +536,11 @@ var home_api = (function () {
             slide: function (event, ui) {
                 $("#min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
                 $("#max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
+                $("#mobile-min-price").text(String.fromCharCode('163') + " " + ui.values[0]);
+                $("#mobile-max-price").text(String.fromCharCode('163') + " " + ui.values[1]);
                 home_api.ParametersFilter().minprice = ui.values[0];
                 home_api.ParametersFilter().maxprice = ui.values[1];
+                $("#filter-mobile-slider-range").slider("option", "values", [ui.values[0], ui.values[1]]);
             }
         };
 
@@ -511,25 +577,6 @@ var home_api = (function () {
             });
         });
 
-        $("#show-sprite").bind("click", function (event) {
-
-            var ladverts = $("#l-adverts");
-            if (!ladverts.hasClass("l-adverts"))
-            {
-                ladverts.children().not(".l-pagination").toggleClass("l-advert-landscape").toggleClass("l-advert");
-                ladverts.toggleClass("l-adverts-landscape").toggleClass("l-adverts");
-            }
-        });
-
-        $("#show-landscape").bind("click", function (event) {
-
-            var ladverts = $("#l-adverts");
-            if (!ladverts.hasClass("l-adverts-landscape"))
-            {
-                $("#l-adverts").children().not(".l-pagination").toggleClass("l-advert").toggleClass("l-advert-landscape");
-                $("#l-adverts").toggleClass("l-adverts").toggleClass("l-adverts-landscape");
-            }
-        });
     };
 
     HomeApi.prototype.ParametersFilter = function () {
@@ -543,9 +590,63 @@ var home_api = (function () {
     };
 
     HomeApi.prototype.DeleteParamFilters = function () {
-        $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?");
-        $("#apply_filter_link_mob").attr("href", $("#apply_filter_link_mob").attr("href").split("?")[0] + "?");
-        $("#apply_filter_link_mob")[0].click();
+        var final_params = this.GetFinalParameters();
+        window.history.pushState("", "", conf.endpoint);
+        var params = this.GetParameterFilters();
+        for (var p in final_params) {
+            switch (p) {
+                case "type_property":
+                    var obj = JSON.parse(final_params[p]);
+                    $(obj.properties).each(function (i, e) {
+                        $("#type-property").dropdown('remove selected', e);
+                        $("#type-property-mob").dropdown('remove selected', e);
+                    });
+                    obj.properties.length = 0;
+                    params.type_property = JSON.stringify(obj);
+                    break;
+                case "area":
+                    var obj = JSON.parse(final_params[p]);
+                    $(obj.areas).each(function (i, e) {
+                        $("#location").dropdown('remove selected', e);
+                        $("#location-mob").dropdown('remove selected', e);
+                    });
+                    obj.areas.length = 0;
+                    params.area = JSON.stringify(obj);
+                    break;
+                default:
+                    params[p] = null;
+            }
+        }
+        $("#numbeds > div.filter-prop-selected").toggleClass("filter-prop-selected");
+        $("#numbeds-mob > div.filter-prop-selected").toggleClass("filter-prop-selected");
+        $("#furnished > div.filter-prop-selected").toggleClass("filter-prop-selected");
+        $("#furnished-mob > div.filter-prop-selected").toggleClass("filter-prop-selected");
+        $("#slider-range").slider("option", "values", [$("#slider-range").slider("option", "min"), $("#slider-range").slider("option", "max")]);
+        $("#filter-mobile-slider-range").slider("option", "values", [$("#filter-mobile-slider-range").slider("option", "min"), $("#filter-mobile-slider-range").slider("option", "max")]);
+        $("#min-price").text("£ " + $("#slider-range").slider("option", "min"));
+        $("#max-price").text("£ " + $("#slider-range").slider("option", "max"));
+        $("#mobile-min-price").text("£ " + $("#filter-mobile-slider-range").slider("option", "min"));
+        $("#mobile-max-price").text("£ " + $("#filter-mobile-slider-range").slider("option", "max"));
+        if ($("#queryfilterstring").attr("value") !== "") {
+            $.ajax({
+                url: conf.endpoint + "cleanfilters",
+                beforeSend: function () {
+                    $("#header").css("z-index", "-1");
+                    $('#ajax-loader').modal("show");
+                },
+                success: function (data, status, xhr) {
+                    $("section.home-section").empty();
+                    $("section.home-section").append(data);
+                    $("#header").css("z-index", "6000");
+                    $('#ajax-loader').modal("hide");
+                    $("#queryfilterstring").attr("value", "");
+                },
+                error: function (xhr, status, error) {
+                    alert(error);
+                },
+                dataType: "html"
+            });
+        }
     };
 
     HomeApi.prototype.ApplyFilters = function (prop, newval) {
@@ -573,7 +674,9 @@ var home_api = (function () {
                     }
             }
         }
-        querystring = querystring.substring(0, querystring.length - 1);
+        if (querystring !== "") {
+            querystring = querystring.substring(0, querystring.length - 1);
+        }
         if ($("#apply_filter_link").length) {
             $("#apply_filter_link").attr("href", $("#apply_filter_link").attr("href").split("?")[0] + "?" + querystring);
         }
