@@ -2,6 +2,12 @@ body.property-view {
     #myCarousel {
         display: none;
     }
+    .carousel-inner {
+        @media screen and (min-width: 1024px) {
+            width: 1015px;
+            height: 676px;
+        }
+    }
 }
 
 .l-property-view
@@ -100,6 +106,8 @@ body.property-view {
         {	
             width: 90%;
             border: 0;
+            border-radius: 0;
+            padding: 0 7px;
             margin-bottom:1em;
             @media screen and (min-width: 1024px)
             {
@@ -140,7 +148,7 @@ body.property-view {
                 @media screen and (min-width: 1024px)
                     {
                     margin-left: -15px;
-                    marging-right: -15px;
+                    margin-right: -15px;
                 }
             }
             & .l-advert-name
@@ -158,11 +166,11 @@ body.property-view {
                 padding-left: 0;
                 padding-right: 0;
                 margin-top:1.5em;
-                border-bottom: 1px solid #D5DBDB;
                 @media screen and (min-width: 1024px)
                     {
                     padding-bottom: 20px;
                     margin-top:1em;
+                    border-bottom: 1px solid #D5DBDB;
                 }
                 & .l-type-house
                 {
