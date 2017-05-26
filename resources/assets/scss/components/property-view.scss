@@ -69,9 +69,11 @@
         & > article 
         {
             padding:1em;
-            border: 1px solid #D5DBDB;
+            -webkit-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            -moz-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
             margin-top: 9px;
-            overflow-y: scroll;
+            overflow-y: auto;
             @media screen and (min-width: 1024px)
                 {
                 height: 118px;
@@ -144,23 +146,23 @@
                     padding: 0;
                 }
             }
-            border:0;
             & .l-advert-data
             {
                 flex-wrap: nowrap;
                 padding-left: 0;
-                padding-left: 1em;
+                padding-right: 0;
                 margin-top:1.5em;
                 border-bottom: 1px solid #D5DBDB;
                 @media screen and (min-width: 1024px)
                     {
-                    padding: 0;
+                    padding-bottom: 20px;
                     margin-top:1em;
                 }
                 & .l-type-house
                 {
                     & .type-property
                     {
+                        display: inline;
                         margin-top: 0.5em;
 
                     }
@@ -189,9 +191,10 @@
         & > article 
         {
             padding:1em;
-            border-top: 1px solid #D5DBDB;
-            border-bottom: 1px solid #D5DBDB;
-            overflow-y: scroll; 
+            -webkit-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            -moz-box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+            overflow-y: auto;
             & > p
             {
                 text-align: justify;

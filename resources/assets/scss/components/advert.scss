@@ -173,12 +173,12 @@
             }
             & .type-house-icon
             {
-                background-image: url("/img/icons/apartment.png");
-                width: 32px;
-                height: 32px;
-                background-repeat: no-repeat;
-                background-size: contain; 
-                line-height: 31px;
+                display: inline;
+                & img {
+                    width: 32px;
+                    height: 32px;
+                    line-height: 31px;
+                }
                 & span
                 {
                     padding-left: 2.5em;
@@ -415,14 +415,13 @@
                     height: 22px;
                 }
             }
-            & .type-house-icon
-            {
-                background-image: url("/img/icons/apartment.png");
-                width: 32px;
-                height: 32px;
-                background-repeat: no-repeat;
-                background-size: contain; 
-                line-height: 31px;
+            & .type-house-icon {
+                display: inline;
+                & img {
+                    width: 32px;
+                    height: 32px;
+                    line-height: 31px;
+                }
                 & span
                 {
                     padding-left: 2.5em;
