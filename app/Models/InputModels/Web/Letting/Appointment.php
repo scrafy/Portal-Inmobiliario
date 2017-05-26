@@ -67,8 +67,8 @@ class Appointment extends BaseModel {
         'Email' => 'email',
         'Mobile' => 'required',
         'Message' => 'required',
-        'ContactBy' => 'in:N/A,email,phone',
-        'FirstDate' => 'date_format:Y-m-d G:i:s',
+        'ContactBy' => 'in:n/a,email,phone',
+        'FirstDate' => 'date_format:Y-m-d H:i:s',
         'LettingId' => 'required'
     ];
 
