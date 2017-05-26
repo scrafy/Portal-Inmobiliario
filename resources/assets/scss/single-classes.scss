@@ -377,7 +377,7 @@ a:focus
 
 .ajax-loader
 {
-    top:0;
+    top:0 !important;
     & img
     {
         width: 100px;
