@@ -144,9 +144,9 @@
                     <div class="l-advert-price"><span>&pound; {{intval($letting->Price)}}</span></div>
                     <div class="l-advert-star"><a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
                     @if($letting->MainPhoto != null)
-                    {{Html::image('img/Properties/Thumbnails/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
+                        {{Html::image('img/Properties/Thumbnails/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
                     @else
-                    {{Html::image('img/no_property_pic.jpg',null,['class'=>'img-responsive'])}}
+                        {{Html::image('img/no_property_pic.jpg',null,['class'=>'img-responsive'])}}
                     @endif
                 </div>
                 <div class="l-advert-name">
@@ -156,9 +156,9 @@
                     <div class="l-type-house">
                         <div class="l-type-house-img">
                             <div class="property-icon">
-                                @if($letting->TypeProperty == 'FlatApartment' || $letting->TypeProperty == 'Flat Apartment')
+                                @if(Strings::PropertyName($letting->TypeProperty) == 'flatapartment')
                                     {{ Html::image('img/icons/flat.png') }}
-                                @elseif($letting->TypeProperty == 'House')
+                                @elseif(Strings::PropertyName($letting->TypeProperty) == 'house')
                                     {{ Html::image('img/icons/house.png') }}
                                 @else
                                     {{ Html::image('img/icons/apartment.png') }}

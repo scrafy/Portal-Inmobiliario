@@ -62,33 +62,6 @@
     }
 }
 
-.modal-map-close
-{
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    position: absolute;
-    z-index: 1;
-    top: 20px;
-    right: 25px;
-    border-radius: 63em;
-    color: black;
-    & span
-    {
-        font-weight: bold;
-        padding-top: 4px;
-        font-size: 1.5em;
-        display: inline-block;
-        position: absolute;
-        left: 8px;
-        top: 1px;
-        &:hover
-        {
-            cursor:pointer;
-        }
-    }
-}
-
 .pagination > li > a //overwrite bootstrap style
 {
     color:$red-color;

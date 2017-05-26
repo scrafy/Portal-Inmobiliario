@@ -19,4 +19,9 @@ class Strings
         return strtolower($input);
     }
     
+    public function PropertyName($input)
+    {
+        return strtolower(str_replace(" ","",$input));
+    }
+    
 }
