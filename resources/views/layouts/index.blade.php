@@ -48,7 +48,7 @@
         {{ Html::script('js/letting.js')}}
     @endif
 </head>
-<body ontouchstart="">
+<body ontouchstart="" @unless(empty($body_class))class="{{$body_class}}"@endunless>
 <input type="hidden" value="{{$data['limitminprice']}}" id="input_minprice"/>
 <input type="hidden" value="{{$data['limitmaxprice']}}" id="input_maxprice"/>
 @if($data['queryfilter'] !== "")

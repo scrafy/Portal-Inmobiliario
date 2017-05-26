@@ -3,7 +3,9 @@
         <li class="results-list-item"><span>{{$data['total_lettings']}}</span> results</li>
         <li class="results-list-item hidden-xs hidden-sm">View</li>
         <li class="results-list-item hidden-xs" id="show-sprite"><a href="#" class="icon-thumbnails active"></a></li>
-        <li class="results-list-item hidden-xs" id="show-landscape"><a href="#" class="icon-bars"></a></li>
+        <li class="results-list-item hidden-xs" id="show-landscape">
+            {{--<a href="#" class="icon-bars"></a>--}}
+        </li>
         <li class="results-list-item"><a href="#" data-toggle="modal" data-target="#modal-map" class="icon-map" id="open-map"></a></li>
     </ul>
     <div class="l-results-sortby">
