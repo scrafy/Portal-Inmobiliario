@@ -122,6 +122,10 @@
                 display: flex;
                 justify-content: space-between;
                 padding-top: 2em;
+                @media screen and (min-width: 1024px) and (max-width: 1024px) {
+                    padding-left: 0.4em;
+                    padding-right: 0.4em;
+                }
                 & .apply-filter
                 {
                     border: 0;
@@ -174,6 +178,13 @@
             {
                 display: flex;
                 justify-content: flex-start;
+                @media screen and (min-width: 1024px) and (max-width: 1024px) {
+                    flex-wrap:wrap;
+                    & div:last-child
+                    {
+                        margin-top: 1em;
+                    }
+                }   
                 .filter-menu-group-item {
                     margin-right: 14px;
                 }
