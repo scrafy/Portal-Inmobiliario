@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.index', ['body_class' => 'property-view'])
 
 
 @section('content')
