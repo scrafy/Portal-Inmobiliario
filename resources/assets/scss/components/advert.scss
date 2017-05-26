@@ -149,12 +149,13 @@
     & .l-advert-data
     {
         display: flex;
-        margin-top: 2em;
+        margin-top: 1.5em;
         padding: 0 12px 20px;
         & .l-type-house
         {
             width:40%;
             border-right: 1px solid #D5DBDB;
+            padding-top: 0.5em;
             & .l-type-house-img 
             {
                 .property-icon {
@@ -194,6 +195,7 @@
             display: flex;
             justify-content: space-around;
             width: 60%;
+            padding-top: 0.5em;
             & .l-house-data-item
             {
                 padding-left: 0.2em;
@@ -391,11 +393,12 @@
     {
         display: flex;
         padding: 0 12px 20px;
-        margin-top: 2em;
+        margin-top: 1.5em;
         & .l-type-house
         {
             border-right: 1px solid #D5DBDB;
             width:40%;
+            padding-top: 0.5em;
             & .l-type-house-img
             {
                 width: 100%;
@@ -438,6 +441,7 @@
             display: flex;
             justify-content: space-around;
             width: 60%;
+            padding-top: 0.5em;
             padding-right: 0.3em;
             & .l-house-data-item
             {

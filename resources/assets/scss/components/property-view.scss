@@ -3,6 +3,9 @@ body.property-view {
         display: none;
     }
     .carousel-inner {
+        @media screen and (min-width: 1024px) and (max-width: 1442px) {
+            max-width: 613px;
+        }
         @media screen and (min-width: 1443px) {
             width: 1015px;
             height: 676px;
