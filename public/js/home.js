@@ -74,7 +74,7 @@ var home_api = (function () {
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
 
-            // fix scroll of menu on iphone 5
+            // fix scroll of background instead of menu on iphone 5
             if (window.innerWidth <= 320) {
                 if (document.body.style.overflow == 'hidden') {
                     $(document.body).css({
