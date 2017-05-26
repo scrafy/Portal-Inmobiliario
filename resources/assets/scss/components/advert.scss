@@ -69,12 +69,11 @@
             height: 30px;
             border-top-right-radius: 50px;
             border-bottom-right-radius: 50px;
-            padding-left: 0.3em;
-            padding-right: 0.4em;
+            padding-left: 0.5em;
+            padding-right: 1em;
             & span
             {
                 color: $red-color;
-                font-weight: bold;
                 font-size: 1.5em;
                 padding-top: 4px;
                 display: block;
@@ -110,13 +109,13 @@
     & .l-advert-name
     {
         color:$red-color;
-        font-weight: bold;
-        font-size: 1.3em;
+        font-size: 1.5em;
         margin-top: 0.5em;
-        padding: 0 0.5em;
+        padding: 0 12px;
     }
     & .l-house-summary
     {
+        padding: 10px;
         & .l-house-summary-line
         {
             color: $grey-borders;
@@ -150,9 +149,8 @@
     & .l-advert-data
     {
         display: flex;
-        padding-left: 0.5em;
-        margin-top: 1em;
-        padding-bottom: 20px;
+        margin-top: 1.5em;
+        padding: 0 12px 20px;
         & .l-type-house
         {
             width:40%;
@@ -175,12 +173,12 @@
             }
             & .type-house-icon
             {
-                background-image: url("/img/icons/apartment.png");
-                width: 32px;
-                height: 32px;
-                background-repeat: no-repeat;
-                background-size: contain; 
-                line-height: 31px;
+                display: inline;
+                & img {
+                    width: 32px;
+                    height: 32px;
+                    line-height: 31px;
+                }
                 & span
                 {
                     padding-left: 2.5em;
@@ -309,16 +307,15 @@
             position: absolute;
             top: 10px;
             left: 0;
-            padding-right: 0.4em;
             background-color: white;
             height: 30px;
             border-top-right-radius: 50px;
             border-bottom-right-radius: 50px;
-            padding-left: 0.3em;
+            padding-right: 1em;
+            padding-left: 0.5em;
             & span
             {
                 color: $red-color;
-                font-weight: bold;
                 font-size: 1.5em;
                 display: block;
                 padding-top: 5px;
@@ -342,7 +339,6 @@
             & span
             {
                 color:$red-color;
-                font-weight: bold;
                 font-size: 2em;
                 display: inline-block;
                 position: absolute;
@@ -354,13 +350,13 @@
     & .l-advert-name
     {
         color:$red-color;
-        font-weight: bold;
-        font-size: 1.3em;
+        font-size: 1.5em;
         margin-top: 0.5em;
-        padding: 0 0.5em;
+        padding: 0 12px;
     }
     & .l-house-summary
     {
+        padding: 10px;
         & .l-house-summary-line
         {
             color: $grey-borders;
@@ -394,9 +390,8 @@
     & .l-advert-data
     {
         display: flex;
-        padding-left: 0.5em;
-        margin-top: 1em;
-        padding-bottom: 20px;
+        padding: 0 12px 20px;
+        margin-top: 1.5em;
         & .l-type-house
         {
             border-right: 1px solid #D5DBDB;
@@ -412,6 +407,7 @@
                     display: inline;
                     width: 100%;
                     margin-top: 0.5em;
+                    font-size: 13px;
                 }
                 & > div > img
                 {
@@ -419,14 +415,13 @@
                     height: 22px;
                 }
             }
-            & .type-house-icon
-            {
-                background-image: url("/img/icons/apartment.png");
-                width: 32px;
-                height: 32px;
-                background-repeat: no-repeat;
-                background-size: contain; 
-                line-height: 31px;
+            & .type-house-icon {
+                display: inline;
+                & img {
+                    width: 32px;
+                    height: 32px;
+                    line-height: 31px;
+                }
                 & span
                 {
                     padding-left: 2.5em;
@@ -461,8 +456,8 @@
                 }
                 & div:first-child
                     {
-                    width: 28px;
-                    height: 28px;
+                    width: 25px;
+                    height: 25px;
                     background-repeat: no-repeat;
                     background-size: contain; 
                 }

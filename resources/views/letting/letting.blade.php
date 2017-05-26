@@ -235,7 +235,15 @@
             </ul>
             <div class="l-advert-data">
                 <div class="l-type-house">
-                    <div class="type-house-icon"></div>
+                    <div class="type-house-icon">
+                        @if($data['letting']->TypeProperty == 'FlatApartment' || $data['letting']->TypeProperty == 'Flat Apartment')
+                            {{ Html::image('img/icons/flat.png') }}
+                        @elseif($data['letting']->TypeProperty == 'House')
+                            {{ Html::image('img/icons/house.png') }}
+                        @else
+                            {{ Html::image('img/icons/apartment.png') }}
+                        @endif
+                    </div>
                     <div class="type-property">{{Strings::SplitCapitalizeString($data['letting']->TypeProperty)}}</div>
                     <div class="furnished">{{$data['letting']->Furnished}}</div>
                 </div>

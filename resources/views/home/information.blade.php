@@ -6,9 +6,6 @@
 
 <div class="l-corporate">
     <div class="l-corporate-body">
-        <div class="l-corporate-img">
-            {{Html::image('img/slides/M_3.jpg',null,['class'=>'img-responsive'])}}
-        </div>
         <div class="l-corporate-data">
             <p class="title">
                 Passion For Property has an enviable reputation as a dynamic lettings agent for the corporate sector.

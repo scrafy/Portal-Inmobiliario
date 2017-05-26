@@ -6,9 +6,6 @@
 
 <div class="l-about">
     <div class="l-about-body">
-        <div class="l-about-img">
-            {{Html::image('img/slides/M_5.jpg',null,['class'=>'img-responsive'])}}
-        </div>
         <div class="l-about-data">
             <p class="title">
                 About Passion for Property
