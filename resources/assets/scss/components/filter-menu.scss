@@ -42,7 +42,9 @@
 .filter-menu
 {
     width:100%;
-    overflow-y: scroll;
+    @media screen and (max-width: 768px) {
+        overflow-y: scroll;
+    }
     & .filter-menu-header
     {
         background-color: $red-color;
