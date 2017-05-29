@@ -81,6 +81,8 @@ class SummaryLetting extends BaseModel {
                         $result = $result->orderBy("Price", "desc");
                         break;
                 }
+            }else{
+                $result = $result->orderBy("Price", "asc");
             }
             $result = $result->simplePaginate($records_x_page, ['*'], null, $page);
             $resp['data'] = $result->toArray()['data'];

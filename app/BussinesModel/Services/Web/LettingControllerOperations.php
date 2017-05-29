@@ -238,7 +238,7 @@ class LettingControllerOperations extends WebControllersOperations implements IL
                 foreach ($data->$name->lettings as $_name => $_value) {
                     $aux[] = (object) $_value;
                 }
-                $data->$name->html = view("partials.letting.adverts")->with("lettings", $aux)->__toString();
+                $data->$name->html = view("partials.views.letting.map-tooltip-adverts")->with("lettings", $aux)->__toString();
             }
             $resp->content = $data;
         } catch (\Exception $ex) {
