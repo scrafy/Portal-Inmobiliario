@@ -307,15 +307,15 @@
             <form id="form_message">
                 <div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your name" name="Name">
+                        <input type="text" class="form-control" placeholder="Name" name="Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Email address" name="Email">
+                        <input type="text" class="form-control" placeholder="Email" name="Email">
                     </div>
                 </div>
                 <div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Telephone number" name="Phone">
+                        <input type="text" class="form-control" placeholder="Telephone" name="Phone">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Subject" name="Subject">
@@ -323,8 +323,8 @@
                 </div>
                 <div>
                     <div class="form-group">
-                        <textarea class="form-control" placeholder="Message" rows=4 cols=20 name="Message"></textarea>
-                        <div class="button-rounded-red max-width" id="sendcontactmessage">SEND</div>
+                        <textarea class="form-control" placeholder="Message" rows=4 cols=25 name="Message"></textarea>
+                        <div class="button-rounded-red" id="sendcontactmessage">{{ Html::image('img/icons/email.png') }}</div>
                     </div>
                 </div>
             </form>
