@@ -31,7 +31,7 @@ class LettingController extends Controller {
     
     public function CleanFilters() {
         
-        return view('partials.letting.cleanfilters')->with("data", $this->service->CleanFilters());
+        return view('partials.components.letting.panel-adverts')->with("data", $this->service->CleanFilters());
     }
     
     public function FilterLettings(Request $request) {
