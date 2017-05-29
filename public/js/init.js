@@ -115,9 +115,9 @@ $(document).ready(function () {
     });
 
 
-    // Block scroll for > iPhone 5
+    // Block scroll for > iPhone 6 - not landscape
     $(document).on('touchmove', 'body.no-scroll', function (e) {
-        if ($('.show-mobile-menu').length > 0 || ($('.show-mobile-filter-menu')) && window.innerWidth > 320) {
+        if ($('.show-mobile-menu').length > 0 || ($('.show-mobile-filter-menu')) && window.innerWidth > 375 && window.innerHeight > 568) {
             e.preventDefault();
         }
     });
