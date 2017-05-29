@@ -15,9 +15,9 @@
                     <div class="l-advert-price l-advert-price-modal-map"><span>&pound; {{intval($letting->Price)}}</span></div>
                     <div class="l-advert-star l-advert-star-modal-map"><a href="{{action('Web\LettingController@View', ['id' => $letting->PropertyId])}}"><span class="glyphicon glyphicon-eye-open"></span></a></div>
                     @if($letting->MainPhoto != null)
-                    {{Html::image('img/Properties/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
+                        {{Html::image('img/Properties/'.$letting->MainPhoto.'.jpg',null,['class'=>'img-responsive'])}}
                     @else
-                    {{Html::image('img/no_property_pic.jpg',null,['class'=>'img-responsive'])}}
+                        {{Html::image('img/no_property_pic.jpg',null,['class'=>'img-responsive'])}}
                     @endif
                 </div>
                 <div class="l-advert-name">
@@ -27,7 +27,13 @@
                     <div class="l-type-house l-type-house-modal-map">
                         <div class="l-type-house-img">
                             <div>
-                                {{ Html::image('img/icons/apartment.png') }}
+                                @if(Strings::PropertyName($letting->TypeProperty) == 'flatapartment')
+                                    {{ Html::image('img/icons/flat.png') }}
+                                @elseif(Strings::PropertyName($letting->TypeProperty) == 'house')
+                                    {{ Html::image('img/icons/house.png') }}
+                                @else
+                                    {{ Html::image('img/icons/apartment.png') }}
+                                @endif
                             </div>
                             <div class="type-property">
                                 <span>{{Strings::SplitCapitalizeString($letting->TypeProperty)}}</span>

@@ -236,9 +236,9 @@
             <div class="l-advert-data">
                 <div class="l-type-house">
                     <div class="type-house-icon">
-                        @if($data['letting']->TypeProperty == 'FlatApartment' || $data['letting']->TypeProperty == 'Flat Apartment')
+                        @if(Strings::PropertyName($data['letting']->TypeProperty) == 'flatapartment')
                             {{ Html::image('img/icons/flat.png') }}
-                        @elseif($data['letting']->TypeProperty == 'House')
+                        @elseif(Strings::PropertyName($data['letting']->TypeProperty) == 'house')
                             {{ Html::image('img/icons/house.png') }}
                         @else
                             {{ Html::image('img/icons/apartment.png') }}

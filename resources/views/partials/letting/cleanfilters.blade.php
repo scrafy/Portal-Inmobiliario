@@ -40,7 +40,13 @@
             <div class="l-type-house">
                 <div class="l-type-house-img">
                     <div class="property-icon">
-                        {{ Html::image('img/icons/apartment.png') }}
+                        @if(Strings::PropertyName($letting->TypeProperty) == 'flatapartment')
+                            {{ Html::image('img/icons/flat.png') }}
+                        @elseif(Strings::PropertyName($letting->TypeProperty) == 'house')
+                            {{ Html::image('img/icons/house.png') }}
+                        @else
+                            {{ Html::image('img/icons/apartment.png') }}
+                        @endif
                     </div>
                     <div class="type-property">
                         <span>{{Strings::SplitCapitalizeString($letting->TypeProperty)}}</span>

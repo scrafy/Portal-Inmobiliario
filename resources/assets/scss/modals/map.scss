@@ -72,6 +72,20 @@
         & .l-type-house-modal-map
         {
             width: 100%;
+            border: 0;
+            & .l-type-house-img
+            {
+                div:first-child
+                {
+                    display: inline-block;
+                    & + div
+                    {
+                        display: inline-block;
+                        width: auto;
+                        margin-left: 0.5em;
+                    }
+                }
+            }
         }
         & .l-house-data-modal-map
         {
@@ -110,4 +124,31 @@
         }
     }
 
+}
+
+.modal-map-close
+{
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    right: 25px;
+    border-radius: 63em;
+    color: black;
+    & span
+    {
+        font-weight: bold;
+        padding-top: 4px;
+        font-size: 1.5em;
+        display: inline-block;
+        position: absolute;
+        left: 10px;
+        top: 4px;
+        &:hover
+        {
+            cursor:pointer;
+        }
+    }
 }
