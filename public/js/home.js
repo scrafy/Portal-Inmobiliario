@@ -74,8 +74,8 @@ var home_api = (function () {
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
 
-            // fix scroll of background instead of menu on iphone 5
-            if (window.innerWidth <= 320) {
+            // fix scroll of background instead of menu on iphone 6
+            if (window.innerWidth <= 375 && window.innerHeight <= 568) {
                 if (document.body.style.overflow == 'hidden') {
                     $(document.body).css({
                         'overflow': '',
@@ -83,7 +83,6 @@ var home_api = (function () {
                         'z-index': ''
                     });
                 } else {
-                    //iOs fix - prevent hard scroll close menu
                     $(document.body).css({
                         'overflow': 'hidden',
                         'z-index': '1000',

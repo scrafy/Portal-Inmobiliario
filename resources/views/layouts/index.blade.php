@@ -321,7 +321,7 @@
                         <input type="text" class="form-control" placeholder="Subject" name="Subject">
                     </div>
                 </div>
-                <div>
+                <div class="form-last-box">
                     <div class="form-group">
                         <textarea class="form-control" placeholder="Message" rows=4 cols=25 name="Message"></textarea>
                         <div class="button-rounded-red" id="sendcontactmessage">{{ Html::image('img/icons/email.png') }}</div>

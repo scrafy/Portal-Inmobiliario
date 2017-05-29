@@ -42,6 +42,7 @@
 .filter-menu
 {
     width:100%;
+    overflow-y: scroll;
     & .filter-menu-header
     {
         background-color: $red-color;
