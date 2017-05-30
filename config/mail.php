@@ -15,7 +15,7 @@ return [
       |
      */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => 'smtp',
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Address
@@ -26,7 +26,7 @@ return [
       | the Mailgun mail service which will provide reliable deliveries.
       |
      */
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => 'aspmx.l.google.com',
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Port
@@ -37,7 +37,7 @@ return [
       | stay compatible with the Mailgun e-mail application by default.
       |
      */
-    'port' => env('MAIL_PORT', 587),
+    'port' => 25,
     /*
       |--------------------------------------------------------------------------
       | Global "From" Address
@@ -49,8 +49,8 @@ return [
       |
      */
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => 'scrafy26@gmail.com',
+        'name' => 'Passion For Property'
     ],
     /*
       |--------------------------------------------------------------------------
@@ -62,7 +62,7 @@ return [
       | transport layer security protocol should provide great security.
       |
      */
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => 'tls',
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Username
@@ -73,8 +73,8 @@ return [
       | connection. You may also set the "password" value below this one.
       |
      */
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
+    'username' => 'scrafy26@gmail.com',
+    'password' => 'compaq9393',
     /*
       |--------------------------------------------------------------------------
       | Sendmail System Path
