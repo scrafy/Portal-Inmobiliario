@@ -18,7 +18,8 @@ class FooterControllerOperations extends WebControllersOperations implements IFo
             if ($message->Validate()) {
                 \Mail::send('mailtemplates.contact-form', ['data' => $message], function ($_message) use($message){
                     $_message->subject($message->Subject);
-                    $_message->to($message->Email);
+                    $_message->to(config("mail.from.address"), config("mail.from.address.name"));
+                    $_message->from(config("mail.from.address"), config("mail.from.address.name"));
                 });
                 $resp->content = "ok";
                 return response()->json($resp);

@@ -13,6 +13,7 @@
             <div class="line-header" style="border-bottom: 1px solid #e4250d;margin-top: 0.5em;"></div>
             <p style="margin-top: 2em;"><b>Name:</b> {{$data->Name}}</p>
             <p class="l-phone"><b>Phone:</b> {{$data->Phone}}</p>
+            <p class=""><b>Email:</b> {{$data->Email}}</p>
             <p class="l-message" style="margin-top: 2em;"><b>Message:</b></p>
             <p class="l-message-text" style="text-align: justify;">{{$data->Message}}</p>
             <div class="line-header" style="border-bottom: 1px solid rgba(128,128,128,0.3);margin-top: 5em;"></div>
