@@ -16,6 +16,10 @@ class FooterControllerOperations extends WebControllersOperations implements IFo
         $resp = new JsonResponseModel();
         try {
             if ($message->Validate()) {
+                \Mail::send('mailtemplates.contact-form', ['data' => $message], function ($_message) use($message){
+                    $_message->subject($message->Subject);
+                    $_message->to($message->Email);
+                });
                 $resp->content = "ok";
                 return response()->json($resp);
             } else {
@@ -28,4 +32,5 @@ class FooterControllerOperations extends WebControllersOperations implements IFo
         }
         return response()->json($resp);
     }
+
 }
