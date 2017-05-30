@@ -1,6 +1,9 @@
 <?php
 
 return [
+    /* Path for images */
+    'pathimg' => '/app/public/img/',
+    
     /* Path for property images */
     'pathimgproperty' => env('PATH_IMG_PROPERTY','/app/public/img/Properties/'),
     /* Path for property images */
