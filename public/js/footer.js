@@ -48,6 +48,10 @@ var footer = (function () {
         var form = $("#form_message").serializeFormJSON();
         $.ajax({
             url: conf.endpoint + "sendmessagecontact",
+            beforeSend: function () {
+                $("#header").css("z-index", "-1");
+                $('#ajax-loader').modal("show");
+            },
             success: function (data, status, xhr) {
                 if (data.error !== null) {
                     if (data.error === "validation_errors") {
@@ -61,7 +65,11 @@ var footer = (function () {
                         alert(data.error);
                     }
                 } else {
-                    alert("Your message has been sent correctly...");
+                    $("#header").css("z-index", "6000");
+                    $('#ajax-loader').modal("hide");
+                    setTimeout(function(){
+                        alert("Your message has been sent correctly...");
+                    },500);
                     $("#form_message input, #form_message textarea").val("");
                 }
             },

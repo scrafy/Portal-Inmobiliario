@@ -49,7 +49,7 @@ return [
       |
      */
     'from' => [
-        'address' => 'scrafy26@gmail.com',
+        'address' => 'info@passionforproperty.com',
         'name' => 'Passion For Property'
     ],
     /*
@@ -73,8 +73,8 @@ return [
       | connection. You may also set the "password" value below this one.
       |
      */
-    'username' => 'scrafy26@gmail.com',
-    'password' => 'compaq9393',
+    'username' => 'info@passionforproperty.com',
+    'password' => 'Passion1180',
     /*
       |--------------------------------------------------------------------------
       | Sendmail System Path
