@@ -74,21 +74,19 @@ var home_api = (function () {
             $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
             $(".filter-menu").toggleClass("show-mobile-filter-menu");
 
-            // fix scroll of background instead of menu on iphone 6
-            if (window.innerWidth <= 375 && window.innerHeight <= 568) {
-                if (document.body.style.overflow == 'hidden') {
-                    $(document.body).css({
-                        'overflow': '',
-                        'position': '',
-                        'z-index': ''
-                    });
-                } else {
-                    $(document.body).css({
-                        'overflow': 'hidden',
-                        'z-index': '1000',
-                        'position': 'relative'
-                    });
-                }
+            // fix scroll of background instead of menu
+            if (document.body.style.overflow == 'hidden') {
+                $(document.body).css({
+                    'overflow': '',
+                    'position': '',
+                    'z-index': ''
+                });
+            } else {
+                $(document.body).css({
+                    'overflow': 'hidden',
+                    'z-index': '2',
+                    'position': 'relative'
+                });
             }
 
         });
@@ -99,6 +97,11 @@ var home_api = (function () {
                 $(".wrapper-back-black").toggleClass("wrapper-back-black-init");
                 $(".filter-menu").toggleClass("show-mobile-filter-menu");
             }
+            $(document.body).css({
+                'overflow': '',
+                'position': '',
+                'z-index': ''
+            });
         });
 
         $('#show-menu-mobile').click(function () {

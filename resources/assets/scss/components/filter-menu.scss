@@ -42,8 +42,9 @@
 .filter-menu
 {
     width:100%;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 375px), screen and (orientation: landscape){
         overflow-y: scroll;
+        height: 100%;
     }
     & .filter-menu-header
     {
