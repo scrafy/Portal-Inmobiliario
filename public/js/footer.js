@@ -53,28 +53,37 @@ var footer = (function () {
                 $('#ajax-loader').modal("show");
             },
             success: function (data, status, xhr) {
+                $("#header").css("z-index", "6000");
+                $('#ajax-loader').modal("hide");
                 if (data.error !== null) {
                     if (data.error === "validation_errors") {
                         var errors = "";
                         for (var error in data.validation_errors) {
                             errors += data.validation_errors[error] + "\n";
                         }
-                        alert(errors);
-                    } else
-                    {
-                        alert(data.error);
+                        setTimeout(function () {
+                            alert(errors);
+                        }, 500);
+                    } else {
+                        setTimeout(function () {
+                            alert(data.error);
+                        }, 500);
                     }
                 } else {
                     $("#header").css("z-index", "6000");
                     $('#ajax-loader').modal("hide");
-                    setTimeout(function(){
+                    setTimeout(function () {
                         alert("Your message has been sent correctly...");
-                    },500);
+                    }, 500);
                     $("#form_message input, #form_message textarea").val("");
                 }
             },
             error: function (xhr, status, error) {
-                alert(error);
+                $("#header").css("z-index", "6000");
+                $('#ajax-loader').modal("hide");
+                setTimeout(function () {
+                    alert(error);
+                }, 500);
             },
             dataType: "json",
             data: JSON.stringify(form),
