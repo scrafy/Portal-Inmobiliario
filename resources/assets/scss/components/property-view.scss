@@ -2,7 +2,7 @@ body.property-view {
     #myCarousel {
         display: none;
     }
-    .carousel-inner {
+    .carousel-inner, .carousel.slide, .l-sec-property-view article {
         @media screen and (min-width: 1024px) and (max-width: 1442px) {
             max-width: 613px;
         }
