@@ -14,7 +14,7 @@ return [
       |
      */
 
-    'default' => env('CACHE_DRIVER', 'file'),
+    'default' => env('CACHE_DRIVER', 'memcached'),
     /*
       |--------------------------------------------------------------------------
       | Cache Stores
@@ -60,7 +60,7 @@ return [
             ],
         ],
         'redis' => [
-            'driver' => 'redis',
+            'driver' => env('REDIS_HOST', '127.0.0.1'),
             'connection' => 'default',
         ],
     ],

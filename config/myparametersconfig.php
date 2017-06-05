@@ -20,5 +20,7 @@ return [
     'maxprice' => env('MAX_PRICE', 5000),
     /* path for input models */
     'input_models_path' => 'App\Models\InputModels',
-    'google_api_key' => env('GOOGLE_API_KEY','')
+    'google_api_key' => env('GOOGLE_API_KEY',''),
+    
+    'cache_minutes' => env('CACHE_MINUTES', 30),
 ];

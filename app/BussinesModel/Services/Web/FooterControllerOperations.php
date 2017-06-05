@@ -6,6 +6,7 @@ use App\BussinesModel\Interfaces\Web\IFooterOperations;
 use \App\Models\InputModels\Web\Footer\ContactMessage;
 use App\Models\OutputModels\JsonResponseModel;
 
+
 class FooterControllerOperations extends WebControllersOperations implements IFooterOperations {
 
     public function __construct() {

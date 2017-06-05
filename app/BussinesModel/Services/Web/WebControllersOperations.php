@@ -6,15 +6,24 @@ use App\Models\ExternalApi\Property;
 use App\Models\ExternalApi\Area;
 use Illuminate\Support\Facades\Session;
 
-abstract class WebControllersOperations {
+
+ abstract class WebControllersOperations {
 
     protected $data = [];
     protected $records_x_page;
-
+    protected $cache_service;
+    
     public function __construct() {
+        $this->cache_service = \App::make('App\BussinesModel\Interfaces\Common\ICacheOperations');
         $this->records_x_page = config("myparametersconfig.records_x_page");
-        $this->data['type_properties'] = Property::orderBy("PropertyType", "asc")->get(['PropertyType'])->unique('PropertyType')->toArray();
-        $this->data['areas'] = Area::orderBy("Name", "asc")->get()->toArray();
+        if (!$this->cache_service->hasKey("type_properties")) {
+            $this->cache_service->setValue("type_properties", Property::orderBy("PropertyType", "asc")->get(['PropertyType'])->unique('PropertyType')->toArray());
+        }
+        if (!$this->cache_service->hasKey("areas")) {
+            $this->cache_service->setValue("areas", Area::orderBy("Name", "asc")->get()->toArray());
+        }
+        $this->data['type_properties'] = $this->cache_service->getValue("type_properties");
+        $this->data['areas'] = $this->cache_service->getValue("areas");
         $this->data['limitminprice'] = config("myparametersconfig.minprice");
         $this->data['limitmaxprice'] = config("myparametersconfig.maxprice");
         $this->data['minprice'] = config("myparametersconfig.minprice");

@@ -16,7 +16,12 @@ class SummaryLetting extends BaseModel {
         'Start', 'Description', 'MainPhoto', 'TypeProperty', 'Price', 'BondRequired', 'Furnished', 'TotalKitchens',
         'TotalBedrooms', 'TotalBathrooms', 'TotalGarages'
     ];
-
+    
+    /*public function __construct()
+    {
+        parent::__construct();
+    }*/
+    
     public function getPhotos() {
         return Photo::where('PropertyId', $this->PropertyId)->get();
     }
@@ -32,8 +37,26 @@ class SummaryLetting extends BaseModel {
     public function getRoom($id) {
         return Room::where('id', $id)->first();
     }
+    
+    public function getLettings($options) {
+        $lettings = null;
+        $key = $this->getKeyFromOptions($options);
+        if ($this->cache_service->hasKey($key)) {
+            $lettings = $this->cache_service->getValue($key);
+        } else {
+            $lettings = SummaryLetting::orderBy($options['orderby'], $options['direction'])->simplePaginate($options['records_x_page'], ['*'], null, $options['page'])->toArray()['data'];
+            $this->cache_service->setValue($key, $lettings);
+        }
+        return $lettings;
+    }
 
-    public static function getPropertiesFiltered($parameters = []) {
+    public function getLettingsFiltered($parameters = [], $cache_key = null) {
+        
+        if ($cache_key != null) {
+            if ($this->cache_service->hasKey($cache_key)) {
+                return $this->cache_service->getValue($cache_key);
+            }
+        }
         $result = null;
         $sort = false;
         $page = 1;
@@ -89,6 +112,9 @@ class SummaryLetting extends BaseModel {
         } else {
             $resp['total_records'] = 0;
             $resp['data'] = null;
+        }
+        if ($cache_key != null) {
+            $this->cache_service->setValue($cache_key, $resp);
         }
         return $resp;
     }

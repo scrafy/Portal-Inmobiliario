@@ -6,15 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 use Validator;
 use ReflectionClass;
 use ReflectionProperty;
+use App\BussinesModel\Services\Common\CacheOperations;
 
 abstract class BaseModel extends Model {
 
     private $errors = [];
     protected $validator = null;
     private $validation_errors = null;
+    protected $cache_service = null;
 
     function __construct(array $attributes = []) {
         parent::__construct($attributes);
+        $this->cache_service = \App::make('App\BussinesModel\Interfaces\Common\ICacheOperations');
+    }
+    
+    protected function getKeyFromOptions($input_params = []) {
+        $query = "";
+        foreach ($input_params as $key => &$value) {
+            if (is_array($value)) {
+                foreach ($value as $val) {
+                    $query .= $key . "[]=" . $val . "&";
+                }
+            } else {
+                $query .= $key . "=" . $value . "&";
+            }
+        }
+        return substr($query, 0, strlen($query) - 1);
     }
 
     protected function setKeysForSaveQuery(\Illuminate\Database\Eloquent\Builder $query) {

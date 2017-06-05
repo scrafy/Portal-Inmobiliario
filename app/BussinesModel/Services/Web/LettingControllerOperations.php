@@ -10,18 +10,21 @@ use App\Models\OutputModels\JsonResponseModel;
 use App\Models\OutputModels\Web\Letting\GetEpcReportImageModel;
 use App\Models\InputModels\Web\Letting\Appointment;
 use App\Models\ExternalApi\PostCode;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+
 
 class LettingControllerOperations extends WebControllersOperations implements ILettingOperations {
 
-    private $service_properties;
-    private $service_lettings;
-
-    public function __construct(IExternalApiMainPropertyOperations $_service_properties, IExternalApiMainLettingOperations $_service_lettings) {
+    private $service_properties = null;
+    private $service_lettings = null;
+    private $summary_lettings = null;
+   
+   
+    public function __construct(IExternalApiMainPropertyOperations $_service_properties, IExternalApiMainLettingOperations $_service_lettings, SummaryLetting $summary_lettings) {
         parent::__construct();
         $this->service_properties = $_service_properties;
         $this->service_lettings = $_service_lettings;
+        $this->summary_lettings = $summary_lettings;
     }
 
     public function CreateAppointment(Appointment $appointment) {
@@ -44,43 +47,37 @@ class LettingControllerOperations extends WebControllersOperations implements IL
 
     public function GetBrochure($id) {
         try {
-            $letting = SummaryLetting::where('PropertyId', '=', $id)->first();
-            if ($letting != null) {
-                if (!file_exists(config("myparametersconfig.pathimgbrochures") . $id . "pdf")) {
-                    $link = $this->service_lettings->getBrochure($letting->LettingId);
-                    $data = file_get_contents($link);
-                    $f = fopen(sprintf(config('myparametersconfig.pathimgbrochures') . "%s.pdf", $id), "w");
-                    fwrite($f, $data);
-                    fclose($f);
-                }
-                return response(file_get_contents(config("myparametersconfig.pathimgbrochures") . $id . ".pdf"))->withHeaders(['Content-type' => 'application/pdf', 'Content-Disposition' => 'inline; filename=brochure.pdf']);
+
+            if (!file_exists(config("myparametersconfig.pathimgbrochures") . $id . "pdf")) {
+                $link = $this->service_lettings->getBrochure($letting->LettingId);
+                $data = file_get_contents($link);
+                $f = fopen(sprintf(config('myparametersconfig.pathimgbrochures') . "%s.pdf", $id), "w");
+                fwrite($f, $data);
+                fclose($f);
             }
-            //set error
+            return response(file_get_contents(config("myparametersconfig.pathimgbrochures") . $id . ".pdf"))->withHeaders(['Content-type' => 'application/pdf', 'Content-Disposition' => 'inline; filename=brochure.pdf']);
+  
         } catch (\Exception $ex) {
-            //set error
+          
         }
     }
 
     public function GetEpcReport($id) {
         try {
-            $letting = SummaryLetting::where('PropertyId', '=', $id)->first();
+
             $resp = new JsonResponseModel();
             $content = new GetEpcReportImageModel();
-            if ($letting != null) {
-                if (!file_exists(config("myparametersconfig.pathimgepc") . $id . "jpg")) {
-                    $data = $this->service_properties->getEnergyEfficiencyReport($id);
-                    $f = fopen(sprintf(config('myparametersconfig.pathimgepc') . "%s.jpg", $id), "w");
-                    $img = imagecreatefromstring($data);
-                    imagejpeg($img, $f, 100);
-                    fclose($f);
-                }
-                $content->file = $id . ".jpg";
-                $resp->content = $content;
-                $resp->pagination = null;
-            } else {
-                $resp->error = "There is any Property with the id: $id";
-                $resp->pagination = null;
+
+            if (!file_exists(config("myparametersconfig.pathimgepc") . $id . "jpg")) {
+                $data = $this->service_properties->getEnergyEfficiencyReport($id);
+                $f = fopen(sprintf(config('myparametersconfig.pathimgepc') . "%s.jpg", $id), "w");
+                $img = imagecreatefromstring($data);
+                imagejpeg($img, $f, 100);
+                fclose($f);
             }
+            $content->file = $id . ".jpg";
+            $resp->content = $content;
+            $resp->pagination = null;
         } catch (\Exception $ex) {
             $resp->error = $ex->getMessage();
             $resp->pagination = null;
@@ -89,36 +86,41 @@ class LettingControllerOperations extends WebControllersOperations implements IL
     }
 
     public function GetLatLongFromPostCode($postcode) {
+
         $resp = new JsonResponseModel();
         $data = [];
-        try {
-            $result = PostCode::where('PostCode', "=", $postcode)->first();
-            if ($result === null) {
-                return response()->json($resp);
+        if ($this->cache_service->hasKey("postcode" . $postcode)) {
+            $result = $this->cache_service->getValue("postcode" . $postcode);
+        } else {
+            try {
+                $result = PostCode::where('PostCode', "=", $postcode)->first();
+                if ($result === null) {
+                    return response()->json($resp);
+                }
+                $this->cache_service->setValue("postcode".$postcode, $result);
+            } catch (\Exception $ex) {
+                $resp->error = $ex->getMessage();
             }
-            $data["lat"] = floatval($result->Latitude);
-            $data["lng"] = floatval($result->Longitude);
-            $resp->content = (object) $data;
-        } catch (\Exception $ex) {
-            $resp->error = $ex->getMessage();
         }
+        $data["lat"] = floatval($result->Latitude);
+        $data["lng"] = floatval($result->Longitude);
+        $resp->content = (object) $data;
         return response()->json($resp);
     }
 
     public function CleanFilters() {
-        $page = 1;
-        $result = SummaryLetting::orderBy("Price", "asc")->simplePaginate($this->records_x_page, ['*'], null, $page)->toArray()['data'];
+        $result = $this->summary_lettings->getLettings(['orderby' => 'Price', 'direction' => 'asc', 'records_x_page' => $this->records_x_page, 'page' => 1]);
         if (($result === null) || (count($result) === 0 )) {
             $this->data['lettings'] = null;
             $this->data['total_lettings'] = 0;
-            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
+            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], 1);
         } else {
             foreach ($result as &$letting) {
                 $letting = (object) $letting;
             }
             $this->data['lettings'] = $result;
-            $this->data['total_lettings'] = SummaryLetting::count();
-            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
+            $this->data['total_lettings'] = $this->summary_lettings->count();
+            $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], 1);
         }
         $this->data['queryfilterstring'] = "";
         if (Session::has('queryfilter')) {
@@ -133,7 +135,7 @@ class LettingControllerOperations extends WebControllersOperations implements IL
         $page = 1;
         if ((count($request_input) === 0) || ((count($request_input) === 1) && (isset($request_input['page'])))) {
             $page = isset($request_input['page']) ? $request_input['page'] : 1;
-            $result = SummaryLetting::orderBy("Price", "asc")->simplePaginate($this->records_x_page, ['*'], null, $page)->toArray()['data'];
+            $result = $this->summary_lettings->getLettings(['orderby' => 'Price', 'direction' => 'asc', 'records_x_page' => $this->records_x_page, 'page' => $page]);
             if (($result === null) || (count($result) === 0 )) {
                 $this->data['lettings'] = null;
                 $this->data['total_lettings'] = 0;
@@ -143,7 +145,7 @@ class LettingControllerOperations extends WebControllersOperations implements IL
                     $letting = (object) $letting;
                 }
                 $this->data['lettings'] = $result;
-                $this->data['total_lettings'] = SummaryLetting::count();
+                $this->data['total_lettings'] = $this->summary_lettings->count();
                 $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
             }
             $this->data['queryfilterstring'] = "";
@@ -174,7 +176,7 @@ class LettingControllerOperations extends WebControllersOperations implements IL
             $query = $this->getQueryStringFromArray($request_input);
             $this->data['queryfilterstring'] = $query;
             Session::put('queryfilter', $request_input);
-            $result = SummaryLetting::getPropertiesFiltered($request_input);
+            $result = $this->summary_lettings->getLettingsFiltered($request_input, $query);
             if (($result['data'] === null) || ($result['total_records'] === 0 )) {
                 $this->data['lettings'] = null;
                 $this->data['total_lettings'] = 0;
@@ -192,6 +194,10 @@ class LettingControllerOperations extends WebControllersOperations implements IL
     }
 
     public function GetMapInformation($postcode = null) {
+        
+        if($this->cache_service->hasKey("mapinf")){
+            return response()->json(json_decode($this->cache_service->getValue("mapinf")));
+        }
         $data = [];
         $resp = new JsonResponseModel();
         try {
@@ -247,15 +253,22 @@ class LettingControllerOperations extends WebControllersOperations implements IL
         }
         if (count($data) > 1)
             $resp->content = $data;
-
+        
+        $this->cache_service->setValue("mapinf", json_encode($resp));
         return response()->json($resp);
     }
 
     public function GetViewData($id) {
+        if($this->cache_service->hasKey("letting:".$id)){
+            $letting = $this->cache_service->getValue("letting:".$id);
+            $this->data['letting'] = $letting;
+            return $this->data;
+        }
         $letting = SummaryLetting::where('PropertyId', '=', $id)->first();
         if ($letting != null) {
             $letting->Photos = $letting->getPhotos()->toArray();
             $this->data['letting'] = (object) $letting->toArray();
+            $this->cache_service->setValue("letting:".$id, (object)$letting->toArray());
         } else {
             $this->data['letting'] = null;
         }

@@ -10,17 +10,16 @@ use Illuminate\Support\ServiceProvider;
 use App\BussinesModel\Interfaces\Web\IHomeOperations;
 use App\BussinesModel\Interfaces\Web\ILettingOperations;
 use App\BussinesModel\Interfaces\Web\IFooterOperations;
+use App\BussinesModel\Interfaces\Common\ICacheOperations;
 use App\BussinesModel\Services\Web\FooterControllerOperations;
 use App\BussinesModel\Services\Web\HomeControllerOperations;
 use App\BussinesModel\Services\Web\LettingControllerOperations;
-use App\Http\Controllers\Web\LettingController;
-use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\Web\FooterController;
+use App\BussinesModel\Services\Common\CacheOperations;
 
 class WebServiceProvider extends ServiceProvider {
 
     public function boot() {
-        
+ 
     }
 
     public function register() {
@@ -34,12 +33,14 @@ class WebServiceProvider extends ServiceProvider {
 
             return new ExternalApiMainLettingOperations();
         });
-
+        
         /* BINDS */
-
+        $this->app->bind(ICacheOperations::class, CacheOperations::class);
         $this->app->bind(IHomeOperations::class, HomeControllerOperations::class);
         $this->app->bind(ILettingOperations::class, LettingControllerOperations::class);
         $this->app->bind(IFooterOperations::class, FooterControllerOperations::class);
+        
+        
+       
     }
-
 }
