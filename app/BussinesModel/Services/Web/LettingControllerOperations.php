@@ -47,18 +47,16 @@ class LettingControllerOperations extends WebControllersOperations implements IL
 
     public function GetBrochure($id) {
         try {
-
-            if (!file_exists(config("myparametersconfig.pathimgbrochures") . $id . "pdf")) {
-                $link = $this->service_lettings->getBrochure($letting->LettingId);
+            if (!file_exists(config("myparametersconfig.pathimgbrochures") . $id . ".pdf")) {
+                $link = $this->service_lettings->getBrochure($id);
                 $data = file_get_contents($link);
                 $f = fopen(sprintf(config('myparametersconfig.pathimgbrochures') . "%s.pdf", $id), "w");
                 fwrite($f, $data);
                 fclose($f);
             }
             return response(file_get_contents(config("myparametersconfig.pathimgbrochures") . $id . ".pdf"))->withHeaders(['Content-type' => 'application/pdf', 'Content-Disposition' => 'inline; filename=brochure.pdf']);
-  
         } catch (\Exception $ex) {
-          
+            
         }
     }
 

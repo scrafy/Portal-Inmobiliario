@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Validator;
 use ReflectionClass;
 use ReflectionProperty;
-use App\BussinesModel\Services\Common\CacheOperations;
 
 abstract class BaseModel extends Model {
 
@@ -19,7 +18,7 @@ abstract class BaseModel extends Model {
         parent::__construct($attributes);
         $this->cache_service = \App::make('App\BussinesModel\Interfaces\Common\ICacheOperations');
     }
-    
+ 
     protected function getKeyFromOptions($input_params = []) {
         $query = "";
         foreach ($input_params as $key => &$value) {
@@ -118,11 +117,14 @@ abstract class BaseModel extends Model {
         if ($rc->getName() != "stdClass") {
             array_push($objects_graph, $me);
         }
-        foreach ($me as $value) {
-            if (is_object($value)) {
-                self::extractObjects($value, $objects_graph);
-            } else if (is_array($value)) {
-                self::extractObjects((object) $value, $objects_graph);
+        $properties = $rc->getProperties();
+        foreach ($properties as &$prop) {
+            if ($prop->isPublic() && $prop->class === $rc->getName()) {
+                if (is_object($prop->getvalue($me))) {
+                    self::extractObjects($prop->getvalue($me), $objects_graph);
+                } else if (is_array($prop->getvalue($me))) {
+                    self::extractObjects((object) $prop->getvalue($me), $objects_graph);
+                }
             }
         }
     }
