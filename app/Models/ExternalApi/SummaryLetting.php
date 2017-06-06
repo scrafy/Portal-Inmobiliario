@@ -16,12 +16,7 @@ class SummaryLetting extends BaseModel {
         'Start', 'Description', 'MainPhoto', 'TypeProperty', 'Price', 'BondRequired', 'Furnished', 'TotalKitchens',
         'TotalBedrooms', 'TotalBathrooms', 'TotalGarages'
     ];
-    
-    /*public function __construct()
-    {
-        parent::__construct();
-    }*/
-    
+      
     public function getPhotos() {
         return Photo::where('PropertyId', $this->PropertyId)->get();
     }
