@@ -146,10 +146,9 @@ class LettingControllerOperations extends WebControllersOperations implements IL
                 $this->data['total_lettings'] = $this->summary_lettings->count();
                 $this->data['pagination'] = $this->getPaginationData($this->records_x_page, $this->data['total_lettings'], $page);
             }
-            $this->data['queryfilterstring'] = "";
-            if (Session::has('queryfilter')) {
-                Session::remove('queryfilter');
-            }
+            $query = $this->getQueryStringFromArray($request_input);
+            $this->data['queryfilterstring'] = $query;
+            Session::put('queryfilter', $request_input);
         } else {
             if (isset($request_input['records_x_page'])) {
                 $this->records_x_page = $request_input['records_x_page'];
