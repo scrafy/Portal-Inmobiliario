@@ -15,7 +15,7 @@ return [
       |
      */
 
-    'driver' => 'smtp',
+    'driver' => env('MAIL_DRIVER','smtp'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Address
@@ -26,7 +26,7 @@ return [
       | the Mailgun mail service which will provide reliable deliveries.
       |
      */
-    'host' => 'aspmx.l.google.com',
+    'host' => env('MAIL_HOST','aspmx.l.google.com'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Host Port
@@ -37,7 +37,7 @@ return [
       | stay compatible with the Mailgun e-mail application by default.
       |
      */
-    'port' => 25,
+    'port' => env('MAIL_PORT',25),
     /*
       |--------------------------------------------------------------------------
       | Global "From" Address
@@ -49,8 +49,8 @@ return [
       |
      */
     'from' => [
-        'address' => 'info@passionforproperty.com',
-        'name' => 'Passion For Property'
+        'address' => env('MAIL_ADDRESS','info@passionforproperty.com'),
+        'name' => env('MAIL_NAME','Passion For Property'),
     ],
     /*
       |--------------------------------------------------------------------------
@@ -62,7 +62,7 @@ return [
       | transport layer security protocol should provide great security.
       |
      */
-    'encryption' => 'tls',
+    'encryption' => env('MAIL_ENCRYPTION','tls'),
     /*
       |--------------------------------------------------------------------------
       | SMTP Server Username
@@ -73,8 +73,8 @@ return [
       | connection. You may also set the "password" value below this one.
       |
      */
-    'username' => 'info@passionforproperty.com',
-    'password' => 'Passion1180',
+    'username' => env('MAIL_USERNAME','info@passionforproperty.com'),
+    'password' => env('MAIL_PASSWORD','Passion1180'),
     /*
       |--------------------------------------------------------------------------
       | Sendmail System Path

@@ -59,9 +59,9 @@
 <div id="separator"></div>
 @component('partials/components/common/filtermenu-mob', ['data' => $data])
 @endcomponent
+<div class="wrapper-back-black wrapper-back-black-init"></div>
 <div class="wrapper container-fluid" id="wrapper">
-    <div class="wrapper-back-black wrapper-back-black-init"></div>
-
+    
     <!--MODAL AJAX LOADER-->
     <div class="modal ajax-loader" id="ajax-loader">
         <div class="modal-dialog">

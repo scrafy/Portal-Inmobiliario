@@ -11,6 +11,9 @@
     padding-bottom: 1.5em;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    @media screen and (max-width: 375px), screen and (orientation: landscape){
+        height: 100%;
+    }
     @media screen and (max-width: 320px) {
         height: 100vh;
     }
@@ -19,6 +22,7 @@
         margin-top: -3px !important;
         line-height: 18px !important;
     }
+    
 }
 
 .show-mobile-filter-menu
@@ -42,10 +46,6 @@
 .filter-menu
 {
     width:100%;
-    @media screen and (max-width: 375px), screen and (orientation: landscape){
-        overflow-y: scroll;
-        height: 100%;
-    }
     & .filter-menu-header
     {
         background-color: $red-color;
